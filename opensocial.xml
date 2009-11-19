@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Gifts part 0 - Boilerplate">
+    <Require feature="opensocial-0.8"/>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+    <script type="text/javascript">
+  //take the data that the server has returned and print it  
+  function onLoadFriends(data) {
+  var viewer = data.get('viewer').getData();
+  var viewerFriends = data.get('viewerFriends').getData();
+  //make htmk list
+  html = new Array();
+  html.push('<ul>');
+  //for each friend print his name
+  viewerFriends.each(function(person) {
+    if (person.getId()) {
+      html.push('<li>' + person.getDisplayName() + "</li>");
+    }
+  });
+  html.push('</ul>');
+  //element friends contain the list of user friends
+  document.getElementById('friends').innerHTML = html.join('');
+}  
+    
+  //load the friends of the user  
+  function loadFriends() {
+  var req = opensocial.newDataRequest();
+  //get the viewer
+  req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), 'viewer');
+ //get viewer friends
+  var viewerFriends = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
+  var opt_params = {};
+  //max number of friends is 100
+  opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
+  req.add(req.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
+  //call onLoadFriends when you have the user and his friends
+  req.send(onLoadFriends);
+}
+    gadgets.util.registerOnLoadHandler(init);
+    //function that is called once the gadget is loaded
+     function init() {
+     loadFriends();
+      } 
+    </script>
+    <div id='main'>
+    Your friends:
+    <div id='friends'></div>
+    </div>
+    ]]>
+  </Content>
+</Module>
