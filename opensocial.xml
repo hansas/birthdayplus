@@ -115,6 +115,7 @@
   opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
   req.add(req.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
   //get the presents
+  var viewer = opensocial.newIdSpec({"userID" : "VIEWER"});
   req.add(req.newFetchPersonAppDataRequest(viewer, 'gifts', opt_params), 'data');
   //call onLoadFriends when you have the user and his friends
   req.send(onLoadFriends);
