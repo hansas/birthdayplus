@@ -11,7 +11,8 @@
     //the gifts the viewer gave
     var globalGivenGifts={};
     
-    
+   
+
   //get the presents that you've received from your friends   
   function updateReceivedList(viewer, data, friends) {
   var viewerId = viewer.getId();
@@ -33,7 +34,7 @@
       }
  
       for (i in gifts) {
-        if (i.hasOwnProperty &amp;&amp; i == viewerId) {
+        if (i.hasOwnProperty && i == viewerId) {
           html.push('<li>', globalGiftList[gifts[i]], ' from ', person.getDisplayName(), '</li>');
         }
       }
@@ -138,6 +139,12 @@
   updateGiftList(viewer, giftData, viewerFriends);
   updateReceivedList(viewer, viewerFriendData, viewerFriends);
 }  
+    
+    
+
+   
+    
+    
     
   //load the friends of the user  
   function loadFriends() {
