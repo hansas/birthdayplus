@@ -12,7 +12,20 @@
     var globalGivenGifts={};
     
    
+  //requests a data from a URL
+  function requestGiftList(url) {
+  var params = {};
+  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+  gadgets.io.makeRequest(url, onGiftList, params);
+}
 
+function onGiftList(data) {
+   if (data.data && data.data.length) {
+     globalGiftList = data.data;
+   }
+   loadFriends();
+     makeOptionsMenu();
+}
   //get the presents that you've received from your friends   
   function updateReceivedList(viewer, data, friends) {
   var viewerId = viewer.getId();
@@ -186,8 +199,7 @@
     
     //function that is called once the gadget is loaded
      function init() {
-     loadFriends();
-     makeOptionsMenu();
+     requestGiftList("http://birthdayplus.googlecode.com/svn/trunk/gifts.json");
       } 
     </script>
     <div id='main'>
