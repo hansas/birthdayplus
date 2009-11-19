@@ -35,7 +35,11 @@
  
       for (i in gifts) {
         if (i.hasOwnProperty && i == viewerId) {
-          html.push('<li>', globalGiftList[gifts[i]], ' from ', person.getDisplayName(), '</li>');
+          for (j in gifts[i]) {
+            if (j.hasOwnProperty) {
+              html.push('<li>', globalGiftList[gifts[i][j]], ' from ', person.getDisplayName(), '</li>');
+            }
+          }
         }
       }
     }
@@ -66,7 +70,11 @@
   html.push('<ul>');
   for (i in globalGivenGifts) {
     if (i.hasOwnProperty) {
-      html.push('<li>', friends.getById(i).getDisplayName(), ' received ', globalGiftList[globalGivenGifts[i]], '</li>');
+        for (j in globalGivenGifts[i]) {
+        if (j.hasOwnProperty) {
+          html.push('<li>', friends.getById(i).getDisplayName(), ' received ', globalGiftList[globalGivenGifts[i][j]], '</li>');
+        }
+      }
     }
   }
   html.push('</ul>');
@@ -80,8 +88,14 @@
   //read the id of the friend you want to give a present to 
   var friend = document.getElementById('person').value;
  
-  //write this to the global variable
-  globalGivenGifts[friend] = nut;
+  if (!globalGivenGifts) {
+    globalGivenGifts = {};
+  }
+  if (!globalGivenGifts[friend]) {
+    globalGivenGifts[friend] = new Array();
+  }
+  globalGivenGifts[friend].push(nut);
+  
   //write to persistent storage, update openSocial data
   var json = gadgets.json.stringify(globalGivenGifts);
  
