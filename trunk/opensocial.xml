@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <ModulePrefs title="Gifts part 0 - Boilerplate">
+  <ModulePrefs title="Gifts part 7 ">
     <Require feature="opensocial-0.8"/>
+    <Preload href="http://birthdayplus.googlecode.com/svn/trunk/gifts.json" />
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
