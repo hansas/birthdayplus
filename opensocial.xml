@@ -10,7 +10,37 @@
     var globalGiftList= ['a cashew nut', 'a peanut', 'a hazelnut', 'a red pistachio nut'];
     //the gifts the viewer gave
     var globalGivenGifts={};
-  // function called when the user clicks on "Give!", saves the presents you gave  
+ 
+ //update the global object globalGivenGifts and display the gifts   
+   function updateGiftList(viewer, data, friends) {
+  var json = null;
+  if (data[viewer.getId()]) {
+    json = data[viewer.getId()]['gifts'];
+  }
+  //get the list of the presents you gave
+  if (!json) {
+    globalGivenGifts = {};
+  }
+  try {
+    globalGivenGifts = gadgets.json.parse(gadgets.util.unescapeString(json));
+  } catch (e) {
+    globalGivenGifts = {};
+  }
+ 
+  //show this list
+  var html = new Array();
+  html.push('You have given:');
+  html.push('<ul>');
+  for (i in globalGivenGifts) {
+    if (i.hasOwnProperty) {
+      html.push('<li>', friends.getById(i).getDisplayName(), ' received ', globalGiftList[globalGivenGifts[i]], '</li>');
+    }
+  }
+  html.push('</ul>');
+  document.getElementById('given').innerHTML = html.join('');
+} 
+    
+  // function called when the user clicks on "Give!", saves the presents you gave and reloads the list of the present that you gave  
    function giveGift() {
    //read the id of the present you want to give
   var nut = document.getElementById('nut').value;
@@ -23,8 +53,20 @@
   var json = gadgets.json.stringify(globalGivenGifts);
  
   var req = opensocial.newDataRequest();
+  //send the gift
   req.add(req.newUpdatePersonAppDataRequest("VIEWER", 'gifts', json));
-  req.send();
+  //view the changes, update the list of present you've sent
+  req.add(req.newFetchPersonRequest("VIEWER"), 'viewer');
+ 
+  var viewerFriends = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
+  var opt_params = {};
+  opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
+  req.add(req.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
+ 
+  var viewer = opensocial.newIdSpec({ "userId" : "VIEWER" });
+  //fetch the data you've stored
+  req.add(req.newFetchPersonAppDataRequest(viewer, 'gifts'), 'data');
+  req.send(onLoadFriends);
 }
  
   //make option list menu for gifts  
@@ -44,6 +86,8 @@
   function onLoadFriends(data) {
   var viewer = data.get('viewer').getData();
   var viewerFriends = data.get('viewerFriends').getData();
+  var giftData = data.get('data').getData();
+  
   //make html list
   html = new Array();
   html.push('<select id="person">');
@@ -56,6 +100,7 @@
   html.push('</select>');
   //element friends contain the list of user friends
   document.getElementById('friends').innerHTML = html.join('');
+  updateGiftList(viewer, giftData, viewerFriends);
 }  
     
   //load the friends of the user  
@@ -69,10 +114,14 @@
   //max number of friends is 100
   opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
   req.add(req.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
+  //get the presents
+  req.add(req.newFetchPersonAppDataRequest(viewer, 'gifts', opt_params), 'data');
   //call onLoadFriends when you have the user and his friends
   req.send(onLoadFriends);
 }
+
     gadgets.util.registerOnLoadHandler(init);
+    
     //function that is called once the gadget is loaded
      function init() {
      loadFriends();
@@ -84,7 +133,8 @@
         <form id='gift form'>
            Give <span id='gifts'></span> to <span id='friends'></span>. <a href='javascript:void(0);' onclick='giveGift();'>Give!</a>
         </form>
-       </div>   
+       </div>  
+       <div id='given'></div> 
     </div>
     ]]>
   </Content>
