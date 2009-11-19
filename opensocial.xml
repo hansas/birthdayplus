@@ -134,6 +134,7 @@
   html.push('</select>');
   //element friends contain the list of user friends
   document.getElementById('friends').innerHTML = html.join('');
+  
   updateGiftList(viewer, giftData, viewerFriends);
   updateReceivedList(viewer, viewerFriendData, viewerFriends);
 }  
@@ -141,6 +142,7 @@
   //load the friends of the user  
   function loadFriends() {
   var req = opensocial.newDataRequest();
+  
   //get the viewer
   req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER), 'viewer');
  //get viewer friends
@@ -149,9 +151,10 @@
   //max number of friends is 100
   opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
   req.add(req.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
+  
   //get the presents that you gave
   var viewer = opensocial.newIdSpec({"userID" : "VIEWER"});
-  req.add(req.newFetchPersonAppDataRequest(viewer, 'gifts', opt_params), 'data');
+  req.add(req.newFetchPersonAppDataRequest(viewer, 'gifts'), 'data');
   //get the presents that your friends gave to you
   req.add(req.newFetchPersonAppDataRequest(viewerFriends, 'gifts', opt_params), 'viewerFriendData');
   //call onLoadFriends when you have the user and his friends
@@ -173,7 +176,7 @@
         </form>
        </div>  
        <div id='given'></div> 
-       <div id = 'received'></div>
+       <div id ='received'></div>
     </div>
     ]]>
   </Content>
