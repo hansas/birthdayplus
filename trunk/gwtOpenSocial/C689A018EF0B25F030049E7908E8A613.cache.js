@@ -1,0 +1,4 @@
+(function(){var $gwt_version = "1.7.1";var $wnd = window;var $doc = $wnd.document;var $moduleName, $moduleBase;var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null;$stats && $stats({moduleName:'friends',subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});var u='Hello World!',t='com.example.friends.client.Friends',r='moduleStartup',s='onModuleLoadStart',q='startup';var _;function pb(){}
+_=pb.prototype={};_=String.prototype;function lb(){!!$stats&&$stats({moduleName:$moduleName,subSystem:q,evtGroup:r,millis:(new Date()).getTime(),type:s,className:t});$wnd.alert(u)}
+function gwtOnLoad(b,d,c){$moduleName=d;$moduleBase=c;if(b)try{lb()}catch(a){b(d)}else{lb()}}
+$stats && $stats({moduleName:'friends',subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalEnd'});if (friends) friends.onScriptLoad(gwtOnLoad);})();
