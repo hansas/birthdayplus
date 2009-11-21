@@ -32,3 +32,10 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+#table {
+	align: left;
+	vertical-align: top;
+	width: 250px;
+	border: 1px solid;	
+}
