@@ -5,7 +5,7 @@ var $doc = $wnd.document;
 var $moduleName, $moduleBase;
 var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null;
 $stats && $stats({moduleName:'friends',subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
-var $intern_2 = ' ', $intern_5 = 'FRIENDS', $intern_11 = 'Object;', $intern_4 = 'VIEWER', $intern_10 = '[Ljava.lang.', $intern_9 = 'com.example.friends.client.Friends', $intern_7 = 'moduleStartup', $intern_3 = 'noop', $intern_8 = 'onModuleLoadStart', $intern_6 = 'startup', $intern_0 = 'viewer', $intern_1 = 'viewerFriends';
+var $intern_3 = ' ', $intern_2 = '1', $intern_6 = 'FRIENDS', $intern_12 = 'Object;', $intern_5 = 'VIEWER', $intern_11 = '[Ljava.lang.', $intern_10 = 'com.example.friends.client.Friends', $intern_8 = 'moduleStartup', $intern_4 = 'noop', $intern_9 = 'onModuleLoadStart', $intern_7 = 'startup', $intern_0 = 'viewer', $intern_1 = 'viewerFriends';
 var _;
 function java_lang_Object(){
 }
@@ -25,17 +25,18 @@ function com_example_friends_client_Friends_onLoadFriends__Lcom_google_gwt_core_
     var viewer = data.get($intern_0).getData();
     var viewerFriends = data.get($intern_1).getData();
     var us = this.com_example_friends_client_Friends_user;
+    us.setId__Ljava_lang_String_2($intern_2);
     viewerFriends.each(function(person){
       if (person.getId()) {
         $wnd.document.write(person.getId());
-        $wnd.document.write($intern_2);
+        $wnd.document.write($intern_3);
         $wnd.document.write(person.getDisplayName());
       }
     }
     );
   }
    else {
-    $wnd.document.write($intern_3);
+    $wnd.document.write($intern_4);
   }
 }
 
@@ -52,8 +53,8 @@ function com_example_friends_client_FriendsGadgetImpl_$FriendsGadgetImpl__Lcom_e
   java_util_ArrayList_$ArrayList__Ljava_util_ArrayList_2(new java_util_ArrayList());
   this$static.initializeFeature__Lcom_example_friends_client_OpenSocialFeature_2(new com_example_friends_client_OpenSocialFeature());
   com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_req_0 = $wnd.opensocial.newDataRequest();
-  com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_req_0.add(com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_req_0.newFetchPersonRequest($intern_4), $intern_0);
-  com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_viewerFriends_0 = $wnd.opensocial.newIdSpec({userId:$intern_4, groupId:$intern_5});
+  com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_req_0.add(com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_req_0.newFetchPersonRequest($intern_5), $intern_0);
+  com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_viewerFriends_0 = $wnd.opensocial.newIdSpec({userId:$intern_5, groupId:$intern_6});
   com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_opt_params_0 = {};
   com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_opt_params_0[$wnd.opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
   com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_req_0.add(com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_req_0.newFetchPeopleRequest(com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_viewerFriends_0, com_example_friends_client_Friends_$getName__Lcom_example_friends_client_Friends_2_opt_params_0), $intern_1);
@@ -71,10 +72,14 @@ function com_example_friends_client_OpenSocialFeature(){
 
 _ = com_example_friends_client_OpenSocialFeature.prototype = new java_lang_Object();
 _.java_lang_Object_typeId$ = 0;
+function com_example_friends_client_Person_setId__Ljava_lang_String_2(id){
+}
+
 function com_example_friends_client_Person(){
 }
 
 _ = com_example_friends_client_Person.prototype = new java_lang_Object();
+_.setId__Ljava_lang_String_2 = com_example_friends_client_Person_setId__Ljava_lang_String_2;
 _.java_lang_Object_typeId$ = 0;
 function com_google_gwt_lang_Array_createFromSeed__II(seedType, length){
   var array = new Array(length);
@@ -161,7 +166,7 @@ function java_util_ArrayList(){
 _ = java_util_ArrayList.prototype = new java_util_AbstractList();
 _.java_lang_Object_typeId$ = 13;
 function init(){
-  !!$stats && $stats({moduleName:$moduleName, subSystem:$intern_6, evtGroup:$intern_7, millis:(new Date()).getTime(), type:$intern_8, className:$intern_9});
+  !!$stats && $stats({moduleName:$moduleName, subSystem:$intern_7, evtGroup:$intern_8, millis:(new Date()).getTime(), type:$intern_9, className:$intern_10});
   com_example_friends_client_FriendsGadgetImpl_$FriendsGadgetImpl__Lcom_example_friends_client_FriendsGadgetImpl_2(new com_example_friends_client_FriendsGadgetImpl());
 }
 
@@ -183,7 +188,7 @@ function gwtOnLoad(errFn, modName, modBase){
 function nullMethod(){
 }
 
-var com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_10, $intern_11);
+var com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_11, $intern_12);
 $stats && $stats({moduleName:'friends',subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalEnd'});
 if (friends) friends.onScriptLoad(gwtOnLoad);
 })();
