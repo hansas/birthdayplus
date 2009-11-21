@@ -1,5 +1,7 @@
 package com.tau.birthdayplus.client;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,25 +45,25 @@ public class Birthdayplus implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		final TabPanel  tab = new TabPanel();
+		List<Person> listFriends = new ArrayList<Person>();
 		tab.getElement().setId("tab");
+		tab.setAnimationEnabled(true);
 		
 		RootPanel.get("tabBarContainer").add(tab);
-		
-	    DecoratedStackPanel stackPanel = new DecoratedStackPanel();
 
+	    listFriends.add(new Person("1", "Eugene"));
+	    listFriends.add(new Person("2", "Olga"));
+	    listFriends.add(new Person("3", "Irena"));
+	    listFriends.add(new Person("4", "Eugene 2"));
 	    // Add the birthdays
-	    String eugeneHeader = getHeaderString("Eugene");
-	    stackPanel.add(createFriendWishlist(), eugeneHeader, true);
-	    String olgaHeader = getHeaderString("Olga");
-	    stackPanel.add(createFriendWishlist(), olgaHeader, true);
-
+	    DecoratedStackPanel stackPanel = friendsEvents(listFriends);
 	    tab.add(stackPanel, "Events");
 		
 	    HTML wishlistText = new HTML("Wishlist");
 		tab.add(wishlistText, "Wishlist");
 		
 		tab.selectTab(0);
-		
+		/*
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
 		final Button closeButton = new Button("Close");
@@ -86,20 +88,20 @@ public class Birthdayplus implements EntryPoint {
 				dialogBox.hide();
 			}
 		});
-
+*/
 		// Create a handler for the tab
-		class MyHandler implements SelectionHandler {
+/*		class MyHandler implements SelectionHandler {
 			/**
 			 * Fired when the user clicks on the sendButton.
 			 */
-			public void onSelection(SelectionEvent event) {
-				sendNameToServer();
+/*			public void onSelection(SelectionEvent event) {
+				//sendNameToServer();
 			}
 
 			/**
 			 * Send the name from the nameField to the server and wait for a response.
 			 */
-			private void sendNameToServer() {
+/*			private void sendNameToServer() {
 				String textToServer = tab.getTabBar().getTitle();
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
@@ -127,10 +129,10 @@ public class Birthdayplus implements EntryPoint {
 						});
 			}
 		}
-
+*/
 		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
-		tab.addSelectionHandler(handler);
+		//MyHandler handler = new MyHandler();
+		//tab.addSelectionHandler(handler);
 	}
 	
 	/**
@@ -177,6 +179,15 @@ public class Birthdayplus implements EntryPoint {
 	      });
 	    }
 	    return itemsPanel;
+	  }
+	  
+	  private DecoratedStackPanel friendsEvents(List<Person> list){
+		  DecoratedStackPanel dsPanel = new DecoratedStackPanel();
+		  for (Person p : list){
+			  String pName = getHeaderString(p.getName());
+			  dsPanel.add(createFriendWishlist(), pName, true);
+		  }
+		return dsPanel;  
 	  }
 
 
