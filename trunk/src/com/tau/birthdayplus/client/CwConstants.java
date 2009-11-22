@@ -21,13 +21,18 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cwDisclosurePanelFormLocation")
     String cwDisclosurePanelFormLocation();
     
-    @DefaultStringValue("cwDisclosurePanelFormName")
+    @DefaultStringValue("Name")
     String cwDisclosurePanelFormName();
     
     @DefaultStringValue("cwDisclosurePanelFormTitle")
     String cwDisclosurePanelFormTitle();
     
-    @DefaultStringValue("cwDisclosurePanelName")
-    String cwDisclosurePanelName();
-
+    @DefaultStringValue("OK")
+    String cwDialogBoxOK();
+    
+    @DefaultStringValue("Cancel")
+    String cwDialogBoxCancel();
+    
+    @DefaultStringValue("Birthday")
+    String cwDisclosurePanelFormBirthday();
 }

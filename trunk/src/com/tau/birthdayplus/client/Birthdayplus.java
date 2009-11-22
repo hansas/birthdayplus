@@ -6,25 +6,23 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedStackPanel;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -52,7 +50,9 @@ public class Birthdayplus implements EntryPoint {
 		final TabPanel  tab = new TabPanel();
 		List<Person> listFriends = new ArrayList<Person>();
 		VerticalPanel vPanel = new VerticalPanel();
+		VerticalPanel vEventPanel = new VerticalPanel();
 		vPanel.setSpacing(5);
+		vEventPanel.setSpacing(5);
 
 		tab.getElement().setId("tab");
 		tab.setAnimationEnabled(true);
@@ -61,7 +61,6 @@ public class Birthdayplus implements EntryPoint {
 		vPanel.add(tab);
 		
 		final Button btnAddEvent = new Button("Add Event"); 
-		vPanel.add(btnAddEvent);
 		
 	    listFriends.add(new Person("1", "Eugene"));
 	    listFriends.add(new Person("2", "Olga"));
@@ -69,7 +68,10 @@ public class Birthdayplus implements EntryPoint {
 	    listFriends.add(new Person("4", "Eugene 2"));
 	    // Add the birthdays
 	    DecoratedStackPanel stackPanel = friendsEvents(listFriends);
-	    tab.add(stackPanel, "Events");
+	    stackPanel.setWidth("100%");
+	    vEventPanel.add(stackPanel);
+	    vEventPanel.add(btnAddEvent);
+	    tab.add(vEventPanel, "Events");
 		
 	    HTML wishlistText = new HTML("Wishlist");
 		tab.add(wishlistText, "Wishlist");
@@ -81,9 +83,10 @@ public class Birthdayplus implements EntryPoint {
 		
 		//Create the popup add event dialog box
 		final DialogBox dialogBox = createAddEventDialogBox();
-		
+
 		btnAddEvent.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				dialogBox.center();
 				dialogBox.show();
 			}
 		});
@@ -194,79 +197,61 @@ public class Birthdayplus implements EntryPoint {
 	   */
 	  private DialogBox createAddEventDialogBox() {
 		  final DialogBox dialogBox = new DialogBox();
-		  final Button btnOK = new Button("Ok");
-		  final Button btnCancel = new Button("Cancel");
-		  
-		  btnOK.getElement().setId("OkButton");
-		  btnOK.getElement().setId("CancelButton");
+
 		  dialogBox.setText("Add Event");
 		  dialogBox.setAnimationEnabled(true);
-		  dialogBox.center();
-		  //final Label textToServerLabel = new Label();
-		  //final HTML serverResponseLabel = new HTML();
+	
 		  HorizontalPanel buttonHPanel = new HorizontalPanel();
 		  buttonHPanel.addStyleName("buttonHPanel");
-		  
-		  /*dialogVPanel.add(new HTML("<b>Sending text to the server:</b>"));
-		  dialogVPanel.add(textToServerLabel);
-		  dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
-		  dialogVPanel.add(serverResponseLabel);*/
-		  buttonHPanel.setHorizontalAlignment(VerticalPanel.ALIGN_CENTER);
-		  buttonHPanel.add(btnOK);
-		  buttonHPanel.add(btnCancel);
+		  buttonHPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
 
 		  // Add a handler to close the DialogBox
-		  btnOK.addClickHandler(new ClickHandler() {
-			  public void onClick(ClickEvent event) {
-				  dialogBox.hide();
-			  }
-		  });
+		  final Button btnOK = new Button(constants.cwDialogBoxOK(),
+			        new ClickHandler() {
+			          public void onClick(ClickEvent event) {
+			            dialogBox.hide();
+			          }
+			        });
+		  btnOK.getElement().setId("OkButton");
 		  
+		  final Button btnCancel = new Button(constants.cwDialogBoxCancel(),
+			        new ClickHandler() {
+			          public void onClick(ClickEvent event) {
+			            dialogBox.hide();
+			          }
+			        });
+		  btnCancel.getElement().setId("CancelButton");
+		
+		  if (LocaleInfo.getCurrentLocale().isRTL()) {
+		      buttonHPanel.add(btnCancel);
+		      buttonHPanel.add(btnOK);
+		  } 
+		  else {
+			  buttonHPanel.add(btnOK);
+		      buttonHPanel.add(btnCancel);
+		  }
+
 		  // Create a table to layout the form options
 		  FlexTable layout = new FlexTable();
 		  layout.setCellSpacing(6);
-		  layout.setWidth("75%");
-		  FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
-
-		  //Add a title to the form
-		  layout.setHTML(0, 0, constants.cwDisclosurePanelFormTitle());
-		  cellFormatter.setColSpan(0, 0, 2);
-		  cellFormatter.setHorizontalAlignment(0, 0,
-				  HasHorizontalAlignment.ALIGN_CENTER);
+		  layout.setWidth("50%");
 
 		  //Add some standard form options
 		  layout.setHTML(1, 0, constants.cwDisclosurePanelFormName());
-		  layout.setWidget(1, 1, new TextBox());
-		  layout.setHTML(2, 0, constants.cwDisclosurePanelFormDescription());
-		  layout.setWidget(2, 1, new TextBox());
-
-		  // Create some advanced options
-		  HorizontalPanel genderPanel = new HorizontalPanel();
-		  String[] genderOptions = constants.cwDisclosurePanelFormGenderOptions();
-		  for (int i = 0; i < genderOptions.length; i++) {
-			  genderPanel.add(new RadioButton("gender", genderOptions[i]));
-		  }
-		  Grid advancedOptions = new Grid(2, 2);
-		  advancedOptions.setCellSpacing(6);
-		  advancedOptions.setHTML(0, 0, constants.cwDisclosurePanelFormLocation());
-		  advancedOptions.setWidget(0, 1, new TextBox());
-		  advancedOptions.setHTML(1, 0, constants.cwDisclosurePanelFormGender());
-		  advancedOptions.setWidget(1, 1, genderPanel);
-
-		  //Add advanced options to form in a disclosure panel
-		  DisclosurePanel advancedDisclosure = new DisclosurePanel(
-				  constants.cwDisclosurePanelFormAdvancedCriteria());
-		  advancedDisclosure.setAnimationEnabled(true);
-		  advancedDisclosure.ensureDebugId("cwDisclosurePanel");
-		  advancedDisclosure.setContent(advancedOptions);
-		  layout.setWidget(3, 0, advancedDisclosure);
-		  cellFormatter.setColSpan(3, 0, 2);
-
+		  TextBox txtName = new TextBox();
+		  layout.setWidget(1, 1, txtName);
+		  layout.setHTML(2, 0, constants.cwDisclosurePanelFormBirthday());
+		  DateBox  txtBirthday = new DateBox();
+		  txtBirthday.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getShortDateFormat()));
+		  layout.setWidget(2, 1, txtBirthday);
 		  // Wrap the contents in a DecoratorPanel
 		  DecoratorPanel decPanel = new DecoratorPanel();
 		  decPanel.setWidget(layout);
-		  dialogBox.add(decPanel);
-		  //dialogBox.add(buttonHPanel);
+		  VerticalPanel vPanel = new VerticalPanel();
+		  vPanel.add(decPanel);
+		  vPanel.add(buttonHPanel);
+		  dialogBox.add(vPanel);
+
 		  return dialogBox;
   }
 }
