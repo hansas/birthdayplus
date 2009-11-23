@@ -1,6 +1,7 @@
 package com.tau.birthdayplus.client;
 
-import com.google.appengine.api.datastore.Key;
+//import com.google.appengine.api.datastore.Key;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.jdo.PersistenceManager;
@@ -10,35 +11,49 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Event {
+
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Event implements Serializable  {
+    	private static final long serialVersionUID = 1L;
+
 	   @PrimaryKey
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	   private Key key;
+	 //  private Key key;
+	   private Long key;
 	   @Persistent
 	   private String eventName;
 	   @Persistent
 	   private Date eventDate;
 	   @Persistent
 	   private Boolean recurrence;
-	   @Persistent
-	   List<Participator> participators;
+//	   @Persistent
+	//   List<Participator> participators;
 	   
 	public Event(String name, Date date, Boolean recurrence){
 		this.eventName = name;
 		this.eventDate = date;
 		this.recurrence = recurrence;
 	}
-	
+	/*
 	static Event getEventByKey(Key key){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Event e = pm.getObjectById(Event.class, key);
 		return e;
 	}
-	
+	*/
+	/*
 	public void setKey(Key key) {
 		this.key = key;
 	}
 	public Key getKey() {
+		return key;
+	}
+	*/
+	
+	public void setKey(Long key) {
+		this.key = key;
+	}
+	public Long getKey() {
 		return key;
 	}
 	public void setEventName(String eventName) {

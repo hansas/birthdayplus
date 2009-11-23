@@ -1,7 +1,7 @@
 package com.tau.birthdayplus.client;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.users.User;
+//import com.google.appengine.api.datastore.Key;
+//import com.google.appengine.api.users.User;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -12,7 +12,8 @@ import javax.jdo.annotations.PrimaryKey;
 public class Proposal{
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key key;
+	private Long key;
+//	private Key key;
 	@Persistent
 	private String userId;
 	@Persistent
@@ -28,11 +29,11 @@ public class Proposal{
 		this.setLink(link);
 		this.setPrice(price);
 	}
-	
+	/*
 	public Proposal(User googleAccount, String name, String link,Integer price) {
 		   this(googleAccount.getUserId(),name,link,price);
 	}
-	
+	*/
 	public Proposal(Guest g, String name, String link,Integer price) {
 		   this(g.getId(),name,link,price);
 	}
@@ -72,8 +73,12 @@ public class Proposal{
 //	public void setKey(Key key) {
 //		this.key = key;
 //	}
-
+/*
 	public Key getKey() {
+		return key;
+	}
+	*/
+	public Long getKey(){
 		return key;
 	}
 	   

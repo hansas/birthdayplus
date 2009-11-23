@@ -1,8 +1,8 @@
 package com.tau.birthdayplus.client;
 
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.users.User;
+//import com.google.appengine.api.datastore.Key;
+//import com.google.appengine.api.datastore.KeyFactory;
+//import com.google.appengine.api.users.User;
 import java.util.Date;
 import java.util.List;
 import javax.jdo.PersistenceManager;
@@ -16,8 +16,8 @@ import javax.jdo.annotations.PrimaryKey;
 		@PrimaryKey
 		@Persistent
 		private String id;
-		@Persistent
-		private User googleAccount;
+	//	@Persistent
+	//	private User googleAccount;
 		@Persistent
 		private String firstName;
 		@Persistent
@@ -30,7 +30,8 @@ import javax.jdo.annotations.PrimaryKey;
 		List<Event> events;
 		@Persistent
 		List<WishlistItem> wishlistItems;
-		
+
+		/*
 		public Guest(User googleAccount, String firstName, String lastName, Date birthday) {
 			this.setGoogleAccount(googleAccount);
 			this.setFirstName(firstName);
@@ -38,6 +39,7 @@ import javax.jdo.annotations.PrimaryKey;
 			this.setBirthday(birthday);
 			this.id = googleAccount.getUserId();
 		}
+		*/
 		
 		public void addEvent(Event e){
 			events.add(e);
@@ -55,13 +57,15 @@ import javax.jdo.annotations.PrimaryKey;
 			wishlistItems.remove(item);
 		}
 		
+		/*
 		static Guest loadGuest(User googleAccount){
 			Key k = KeyFactory.createKey(Guest.class.getSimpleName(), googleAccount.getUserId());
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 			Guest g = pm.getObjectById(Guest.class, k);
 			return g;
 		}
-		
+		*/
+		/*
 		public void saveGuest(Guest g){
 	        PersistenceManager pm = PMF.get().getPersistenceManager();
 	        try {
@@ -71,6 +75,8 @@ import javax.jdo.annotations.PrimaryKey;
 	        }
 		}
 
+*/
+		/*
 		public void setGoogleAccount(User googleAccount) {
 			this.googleAccount = googleAccount;
 		}
@@ -78,7 +84,7 @@ import javax.jdo.annotations.PrimaryKey;
 		public User getGoogleAccount() {
 			return googleAccount;
 		}
-
+*/
 		public void setFirstName(String firstName) {
 			this.firstName = firstName;
 		}

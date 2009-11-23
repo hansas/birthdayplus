@@ -2,7 +2,7 @@ package com.tau.birthdayplus.client;
 
 import java.util.List;
 
-import com.google.appengine.api.users.User;
+//import com.google.appengine.api.users.User;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -26,10 +26,11 @@ public class Participator{
 		   this.userId = id;
 		   this.setMoney(money);
 	   }
-	   
+	   /*
 	   public Participator(User googleAccount, Integer money) {
 		   this(googleAccount.getUserId(), money);
 	   }
+	   */
 
 	   public Participator(Guest guest, Integer money) {
 		   this(guest.getId(), money);
