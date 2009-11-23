@@ -11,4 +11,9 @@ import com.tau.birthdayplus.client.WishlistService;
 public class WishlistServiceImpl extends RemoteServiceServlet implements
 WishlistService  {
 
+	public void printHello() {
+		System.out.println("Hello from the WishlistService");
+		
+	}
+
 }

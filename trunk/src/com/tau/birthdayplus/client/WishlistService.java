@@ -9,5 +9,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("wishlist")
 public interface WishlistService extends RemoteService{
+	/*
+	 * function that checks that client can call to the remote service
+	 */
+	void printHello();
 
 }

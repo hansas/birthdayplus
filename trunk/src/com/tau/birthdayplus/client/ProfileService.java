@@ -9,5 +9,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("profile")
 
 public interface ProfileService extends RemoteService{
+	/*
+	 * function that checks that client can call to the remote service
+	 */
+	void printHello();
 
 }

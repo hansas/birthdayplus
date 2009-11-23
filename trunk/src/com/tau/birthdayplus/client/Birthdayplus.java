@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratedStackPanel;
@@ -42,11 +43,28 @@ public class Birthdayplus implements EntryPoint {
 	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
+	/**
+	 * Create a remote service proxy to talk to the server-side Event service.
+	 */
+	private final EventServiceAsync eventService = GWT.create(EventService.class); 
+	
+	/**
+	 * Create a remote service proxy to talk to the server-side Profile service.
+	 */
+	private final ProfileServiceAsync profileService = GWT.create(ProfileService.class); 
+	
+	/**
+	 * Create a remote service proxy to talk to the server-side Profile service.
+	 */
+	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class); 
+	
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+		
+		
 		final TabPanel  tab = new TabPanel();
 		List<Person> listFriends = new ArrayList<Person>();
 		VerticalPanel vPanel = new VerticalPanel();
@@ -90,6 +108,42 @@ public class Birthdayplus implements EntryPoint {
 				dialogBox.show();
 			}
 		});
+		//check that can communicate with remote services 
+		eventService.printHello(
+				new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						
+					}
+
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+		
+		profileService.printHello(new AsyncCallback<Void>() {
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		wishlistService.printHello(new AsyncCallback<Void>() {
+			public void onFailure(Throwable caught) {
+				
+			}
+
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 
 		// Create a handler for the tab
 /*		class MyHandler implements SelectionHandler {

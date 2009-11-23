@@ -12,4 +12,9 @@ import com.tau.birthdayplus.client.ProfileService;
 public class ProfileServiceImpl extends RemoteServiceServlet implements
 ProfileService {
 
+	public void printHello() {
+		System.out.println("Hello from ProfileService");
+		
+	}
+
 }
