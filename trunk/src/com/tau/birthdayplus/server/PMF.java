@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.server;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
 

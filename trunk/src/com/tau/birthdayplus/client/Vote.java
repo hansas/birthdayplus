@@ -1,6 +1,6 @@
 package com.tau.birthdayplus.client;
 
-import com.google.appengine.api.datastore.Key;
+//import com.google.appengine.api.datastore.Key;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -9,7 +9,8 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Vote{
 	@PrimaryKey
-	private Key key;
+	//private Key key;
+	private Long key;
 	@Persistent
 	private Integer rate;
 	
@@ -21,11 +22,14 @@ public class Vote{
 //	public void setKey(Key key) {
 //		this.key = key;
 //	}
-
+ /*
 	public Key getKey() {
 		return key;
 	}
-
+*/
+	public Long getKey(){
+		return key;
+	}
 	public void setRate(Integer rate) {
 		this.rate = rate;
 	}
