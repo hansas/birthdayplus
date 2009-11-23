@@ -8,5 +8,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("event")
 public interface EventService extends RemoteService{
+	/*
+	 * function that checks that client can call to the remote service
+	 */
+	void printHello();
 
 }

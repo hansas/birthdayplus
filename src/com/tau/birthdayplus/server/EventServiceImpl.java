@@ -12,4 +12,9 @@ import com.tau.birthdayplus.client.EventService;
 public class EventServiceImpl extends RemoteServiceServlet implements
 EventService {
 
+	public void printHello() {
+	   System.out.println("hello from Event Service");
+		
+	}
+
 }
