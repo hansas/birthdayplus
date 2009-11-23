@@ -8,8 +8,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Proposal{
+public class Proposal implements IsSerializable{
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long key;
@@ -22,6 +24,15 @@ public class Proposal{
 	private String link;
 	@Persistent
 	private Integer price;
+	
+	/*
+     * constructor for isSerializable
+     * A user-defined class that serializable  must have a default (zero argument) constructor 
+     * (with any access modifier) or no constructor at all.
+     */
+	private Proposal(){
+		
+	}
 	
 	public Proposal(String userId, String name, String link, Integer price){
 		this.setUserId(userId);

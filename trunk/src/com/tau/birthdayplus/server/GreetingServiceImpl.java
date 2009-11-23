@@ -34,18 +34,20 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return null;
 	}
 
-	@Override
+
+    */
+	
 	public Event createEvent(Event event, String uid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+ 
 	public WishlistItem createWishlistItem(WishlistItem wItem, String uid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+    /*
 	@Override
 	public Event deleteEvent(Event event, String uid) {
 		// TODO Auto-generated method stub
@@ -63,13 +65,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
+    */
 	public Guest loadGuest(String myid) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+    /*
 	@Override
 	public Event updateEvent(Event event, String uid) {
 		// TODO Auto-generated method stub

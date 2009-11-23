@@ -14,15 +14,15 @@ public interface GreetingServiceAsync {
 
 //	void getEventList(String uid, AsyncCallback<ArrayList<Event>> callback);
 
-//	void loadGuest(String myid, AsyncCallback<Guest> callback);
+	void loadGuest(String myid, AsyncCallback<Guest> callback);
 
-//	void createWishlistItem(WishlistItem w_item, String uid,
-		//	AsyncCallback<WishlistItem> callback);
+	void createWishlistItem(WishlistItem w_item, String uid,
+			AsyncCallback<WishlistItem> callback);
 
 	//void updateWishlistItem(WishlistItem w_item, String uid,
 		//	AsyncCallback<WishlistItem> callback);
 
-	//void createEvent(Event event, String uid, AsyncCallback<Event> callback);
+	void createEvent(Event event, String uid, AsyncCallback<Event> callback);
 
 	//void deleteWishlistItem(WishlistItem w_item, String uid,
 		//	AsyncCallback<WishlistItem> callback);

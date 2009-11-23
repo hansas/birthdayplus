@@ -1,7 +1,6 @@
 package com.tau.birthdayplus.client;
 
 //import com.google.appengine.api.datastore.Key;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.jdo.PersistenceManager;
@@ -11,9 +10,11 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Event implements Serializable  {
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Event implements IsSerializable  {
     	private static final long serialVersionUID = 1L;
 
 	   @PrimaryKey
@@ -28,6 +29,16 @@ import javax.jdo.annotations.PrimaryKey;
 	   private Boolean recurrence;
 //	   @Persistent
 	//   List<Participator> participators;
+	   
+	   
+	/*
+	 * constructor for isSerializable
+	 * A user-defined class that serializable  must have a default (zero argument) constructor 
+	 * (with any access modifier) or no constructor at all.
+	 */
+	private Event(){
+		
+	}
 	   
 	public Event(String name, Date date, Boolean recurrence){
 		this.eventName = name;
