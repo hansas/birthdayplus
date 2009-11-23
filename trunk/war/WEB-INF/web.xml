@@ -16,6 +16,45 @@
     <url-pattern>/birthdayplus/greet</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>eventServlet</servlet-name>
+    <servlet-class>com.tau.birthdayplus.server.EventServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>eventServlet</servlet-name>
+    <url-pattern>/birthdayplus/event</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>wishlistServlet</servlet-name>
+    <servlet-class>com.tau.birthdayplus.server.WishlistServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>wishlistServlet</servlet-name>
+    <url-pattern>/birthdayplus/wishlist</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>profileServlet</servlet-name>
+    <servlet-class>com.tau.birthdayplus.server.ProfileServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>profileServlet</servlet-name>
+    <url-pattern>/birthdayplus/profile</url-pattern>
+  </servlet-mapping>
+  
+  
+ 
+  
+  
+  
+  
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>Birthdayplus.html</welcome-file>
