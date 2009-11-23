@@ -84,7 +84,10 @@ public class Birthdayplus implements EntryPoint {
 	    listFriends.add(new Person("2", "Olga"));
 	    listFriends.add(new Person("3", "Irena"));
 	    listFriends.add(new Person("4", "Eugene 2"));
-	    // Add the birthdays
+	    
+	    /**
+	     *  Add events tab
+	     */
 	    DecoratedStackPanel stackPanel = friendsEvents(listFriends);
 	    stackPanel.setWidth("100%");
 	    vEventPanel.add(stackPanel);
@@ -217,7 +220,7 @@ public class Birthdayplus implements EntryPoint {
 	   * 
 	   * @return the wishlist
 	   */
-	  private VerticalPanel createFriendWishlist() {
+	  private VerticalPanel createFriendWishlist(Person friend) {
 	    VerticalPanel itemsPanel = new VerticalPanel();
 	    itemsPanel.setSpacing(4);
 	    String[] items = {"Korova", "Krokodil", "Hryak"};
@@ -241,7 +244,7 @@ public class Birthdayplus implements EntryPoint {
 		  DecoratedStackPanel dsPanel = new DecoratedStackPanel();
 		  for (Person p : list){
 			  String pName = getHeaderString(p.getName());
-			  dsPanel.add(createFriendWishlist(), pName, true);
+			  dsPanel.add(createFriendWishlist(p), pName, true);
 		  }
 		return dsPanel;  
 	  }
