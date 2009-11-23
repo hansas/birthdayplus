@@ -11,8 +11,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Guest {
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Guest implements IsSerializable{
 		@PrimaryKey
 		@Persistent
 		private String id;
@@ -30,6 +32,16 @@ import javax.jdo.annotations.PrimaryKey;
 		List<Event> events;
 		@Persistent
 		List<WishlistItem> wishlistItems;
+		
+		/*
+	     * constructor for isSerializable
+	     * A user-defined class that serializable  must have a default (zero argument) constructor 
+	     * (with any access modifier) or no constructor at all.
+	     */
+		 
+		private Guest(){
+			
+		}
 
 		/*
 		public Guest(User googleAccount, String firstName, String lastName, Date birthday) {

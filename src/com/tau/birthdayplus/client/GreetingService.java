@@ -17,7 +17,7 @@ public interface GreetingService extends RemoteService {
 	 * @param guest
 	 * @return
 	 */
-//	Guest loadGuest(String myid);
+	Guest loadGuest(String myid);
 	/**
 	 * Create gadget's user
 	 * @param guest
@@ -35,7 +35,7 @@ public interface GreetingService extends RemoteService {
 	 * @param guest
 	 * @return
 	 */
-//	Event createEvent(Event event, String uid);
+	Event createEvent(Event event, String uid);
 	/**
 	 * Update user event
 	 * @param guest
@@ -60,7 +60,7 @@ public interface GreetingService extends RemoteService {
 	 * @param guest
 	 * @return
 	 */
-//	WishlistItem createWishlistItem(WishlistItem w_item, String uid);
+	WishlistItem createWishlistItem(WishlistItem w_item, String uid);
 	/**
 	 * Update user wishlist item
 	 * @param guest

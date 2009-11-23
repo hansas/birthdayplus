@@ -10,7 +10,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class WishlistItem {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+    public class WishlistItem implements IsSerializable{
 	   @PrimaryKey
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	   private Long key;
@@ -22,10 +25,20 @@ import javax.jdo.annotations.PrimaryKey;
 	   @Persistent
 	   List<Proposal> proposals;
 	
+	/*
+	 * constructor for isSerializable
+	 * A user-defined class that serializable  must have a default (zero argument) constructor 
+	 * (with any access modifier) or no constructor at all.
+	 */
+	private WishlistItem(){
+		
+	}
 	public WishlistItem(String name, Integer priority){
 		this.itemName = name;
 		this.priority = priority;
 	}
+	
+	
 	/*
 	static WishlistItem getItemByKey(Key key){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
