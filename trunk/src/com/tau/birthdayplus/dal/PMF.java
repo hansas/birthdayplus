@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.server;
+package com.tau.birthdayplus.dal;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
 

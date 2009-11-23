@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.domain;
 
 //import com.google.appengine.api.datastore.Key;
 import java.util.Date;
@@ -27,8 +27,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 	   private Date eventDate;
 	   @Persistent
 	   private Boolean recurrence;
-//	   @Persistent
-	//   List<Participator> participators;
+
 	   
 	   
 	/*
