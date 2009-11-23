@@ -3,6 +3,9 @@ package com.tau.birthdayplus.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.tau.birthdayplus.domain.Event;
+import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.WishlistItem;
 
 /**
  * The async counterpart of <code>GreetingService</code>.
@@ -14,7 +17,7 @@ public interface GreetingServiceAsync {
 
 //	void getEventList(String uid, AsyncCallback<ArrayList<Event>> callback);
 
-	void loadGuest(String myid, AsyncCallback<Guest> callback);
+	void loadGuest(String guestId, AsyncCallback<Guest> callback);
 
 	void createWishlistItem(WishlistItem w_item, String uid,
 			AsyncCallback<WishlistItem> callback);

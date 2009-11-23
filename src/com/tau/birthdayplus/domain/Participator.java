@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.domain;
 
 import java.util.List;
 
@@ -9,19 +9,15 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Participator{
 	   @PrimaryKey
 	   @Persistent
-	private
 	   String userId;
 	   @Persistent
-	private
 	   Integer money;
-	   @Persistent
-	   List<Vote> votes;
-	   
-	   
+
 	   public Participator(String id, Integer money){
 		   this.userId = id;
 		   this.setMoney(money);
@@ -36,9 +32,6 @@ public class Participator{
 		   this(guest.getId(), money);
 	   }
 	   
-	   public List<Vote> getVotes(){
-		   return votes;
-	   }
 
 	/*void setUserId(String userId) {
 		this.userId = userId;

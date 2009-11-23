@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.domain;
 
 //import com.google.appengine.api.datastore.Key;
 //import com.google.appengine.api.datastore.KeyFactory;
@@ -43,15 +43,14 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 			
 		}
 
-		/*
-		public Guest(User googleAccount, String firstName, String lastName, Date birthday) {
-			this.setGoogleAccount(googleAccount);
+		
+		public Guest(String googleId, String firstName, String lastName, Date birthday) {
 			this.setFirstName(firstName);
 			this.setLastName(lastName);
 			this.setBirthday(birthday);
-			this.id = googleAccount.getUserId();
+			this.id = googleId;
 		}
-		*/
+		
 		
 		public void addEvent(Event e){
 			events.add(e);
@@ -88,15 +87,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 		}
 
 */
-		/*
-		public void setGoogleAccount(User googleAccount) {
-			this.googleAccount = googleAccount;
-		}
-
-		public User getGoogleAccount() {
-			return googleAccount;
-		}
-*/
+		
 		public void setFirstName(String firstName) {
 			this.firstName = firstName;
 		}

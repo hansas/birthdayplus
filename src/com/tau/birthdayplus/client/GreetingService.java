@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.tau.birthdayplus.domain.Event;
+import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.WishlistItem;
 
 /**
  * The client side stub for the RPC service.
@@ -14,10 +17,10 @@ public interface GreetingService extends RemoteService {
 	
 	/**
 	 * Load existing user info from server  
-	 * @param guest
+	 * @param guestId
 	 * @return
 	 */
-	Guest loadGuest(String myid);
+	Guest loadGuest(String guestId);
 	/**
 	 * Create gadget's user
 	 * @param guest

@@ -1,5 +1,6 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //import com.google.appengine.api.datastore.Key;
@@ -23,7 +24,13 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 	   @Persistent
 	   private Integer priority;
 	   @Persistent
-	   List<Proposal> proposals;
+	   private String link;
+	   @Persistent
+	   private Integer price;
+	   @Persistent
+	   List<Participator> participators;
+	   @Persistent
+	   private Boolean isActive;
 	
 	/*
 	 * constructor for isSerializable
@@ -33,9 +40,13 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 	private WishlistItem(){
 		
 	}
-	public WishlistItem(String name, Integer priority){
+	public WishlistItem(String name, Integer priority, String link, Integer price){
 		this.itemName = name;
 		this.priority = priority;
+		this.link = link;
+		this.price = price;
+		this.participators = new ArrayList<Participator>();
+		this.setIsActive(true);
 	}
 	
 	
@@ -55,6 +66,13 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 		return key;
 	}
 	*/
+	public void addParticipator(Participator p){
+		this.participators.add(p);
+	}
+	
+	public void removeParticipator(Participator p){
+		this.participators.remove(p);
+	}
 	
 	public void setKey(Long key) {
 		this.key = key;
@@ -73,6 +91,24 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 	}
 	public Integer getPriority() {
 		return priority;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public String getLink() {
+		return link;
+	}
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+	public Integer getPrice() {
+		return price;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	public Boolean getIsActive() {
+		return isActive;
 	}
 
 	

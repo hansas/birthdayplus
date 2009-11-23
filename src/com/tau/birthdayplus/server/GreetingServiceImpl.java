@@ -2,10 +2,11 @@ package com.tau.birthdayplus.server;
 
 import java.util.ArrayList;
 
-import com.tau.birthdayplus.client.Event;
 import com.tau.birthdayplus.client.GreetingService;
-import com.tau.birthdayplus.client.Guest;
-import com.tau.birthdayplus.client.WishlistItem;
+import com.tau.birthdayplus.domain.Event;
+import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.WishlistItem;
+import com.tau.birthdayplus.logic.UserManagement;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -66,9 +67,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return null;
 	}
     */
-	public Guest loadGuest(String myid) {
-		// TODO Auto-generated method stub
-		return null;
+	public Guest loadGuest(String guestId) {
+		return UserManagement.loadGuest(guestId);
 	}
     /*
 	@Override
