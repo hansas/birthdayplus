@@ -1,7 +1,7 @@
 package com.tau.birthdayplus.dto;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 
 
@@ -20,6 +20,8 @@ public class WishlistItem implements  IsSerializable{
 	   private String link;
 	
 	   private Integer price;
+	   
+	   ArrayList<Participator> participators;
 
 	   private Boolean isActive;
 	
@@ -39,6 +41,7 @@ public class WishlistItem implements  IsSerializable{
 		this.priority = priority;
 		this.link = link;
 		this.price = price;
+		this.participators = new ArrayList<Participator>();
 		this.setIsActive(true);
 	}
 	
@@ -84,6 +87,10 @@ public class WishlistItem implements  IsSerializable{
 	}
 	public Boolean getIsActive() {
 		return isActive;
+	}
+	
+	public ArrayList<Participator> getParticipators(){
+		return this.participators;
 	}
 
 }
