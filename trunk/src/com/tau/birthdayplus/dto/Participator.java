@@ -1,23 +1,26 @@
 package com.tau.birthdayplus.dto;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-public class Participator {
-	   String wishlistItemId;
-	   
+
+public class Participator implements IsSerializable{
 	   String userId;
 	   
 	   Integer money;
-
-	   public Participator(String wishlistItemId,String userId, Integer money){
-		   this.wishlistItemId=wishlistItemId;
+	   
+	   /*
+	    * empty constructor for isSerializable
+	    */
+       private Participator(){
+    	   
+       }
+	   public Participator(String userId, Integer money){
 		   this.userId = userId;
 		   this.setMoney(money);
 	   }
 	   
-       String getWishlistItemId(){
-    	   return this.wishlistItemId;
-       }
+      
 	
 	   String getUserId() {
 		   return userId;
