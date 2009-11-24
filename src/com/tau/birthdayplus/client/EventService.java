@@ -36,6 +36,7 @@ public interface EventService extends RemoteService{
 	void deleteEvent(String uId,EventData event);
 	/*
 	 * get events by user id
+	 * Server - events should be sorted by date
 	 */
 	ArrayList<EventData> getEvents(ArrayList<String> uIdlist);
 
