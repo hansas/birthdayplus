@@ -24,36 +24,47 @@ public interface WishlistService extends RemoteService{
 	 */
 	void createWishlistItem(WishlistItemData item);
 	/*
-	 * update the item
-	 * check if the user is the item owner
+	 * update the item, don't update isActive
+	 * user can update only his wishlist
 	 */
-	void updateWishlistItem(String userId,WishlistItemData item);
+	void updateWishlistItem(WishlistItemData item);
 	/*
 	 * delete the item 
-	 * check if the user is the item owner
+	 * user can delete only his wishlist items
 	 */
-	void deleteWishlistItem(String userId,String wishlistItemId);
+	void deleteWishlistItem(String wishlistItemId);
+	/*
+	 * user wants to buy this item
+	 * check that item is active
+	 */
+	void setInactive(String userId,String wishlistItemId);
+	/*
+	 * user don't want to buy it 
+	 * user can cancel only from "i'm buying " tab
+	 */
+	void setActive(String wishlistItemId);
 	/*
 	 * return user's wishlist
 	 */
 	ArrayList<WishlistItemData> getWishlist(String userId);
 	/*
 	 * add participator
+	 * check if the item is active and the user isn't already participate
 	 */
-	void createParticipator(ParticipatorData participator);
+	void createParticipator(String wishlistItemId,ParticipatorData participator);
 	/*
 	 * update participator (update money only)
-	 * check that the user is a participator
+	 * check if exists
 	 */
-	void updatePartcipator(String userId,ParticipatorData participator);
+	void updatePartcipator(String wishlistItemId,ParticipatorData participator);
 	/*
-	 * delete the participator
-	 * check if the user is a participator
+	 * delete  participator from the list
+	 * 
 	 */
-	void deleteParticipator(String userId,ParticipatorData participator);
+	void deleteParticipator(String wishlistItemId ,ParticipatorData participator);
 	/*
-	 * return participators in the given wishlist item
+	 * return all the items this user booked
 	 */
-	ArrayList<ParticipatorData> getParticipators(String wishlistItemId);
+	ArrayList<WishlistItemData> getBookedWishlistItems(String usetId);
 
 }
