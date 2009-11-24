@@ -9,25 +9,21 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.ParticipatorData;
+
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Participator{
-	   @PrimaryKey
-	   @Persistent
-	   String userId;
-	   @Persistent
-	   Integer money;
+public class Participator extends ParticipatorData implements IsSerializable{
+	   
+	   private Participator(){ }
+	   
 
-	   public Participator(String id, Integer money){
-		   this.userId = id;
-		   this.setMoney(money);
+	   public Participator(String userId, Integer money) {
+		   super(userId, money);
 	   }
-	   /*
-	   public Participator(User googleAccount, Integer money) {
-		   this(googleAccount.getUserId(), money);
-	   }
-	   */
-
+	   
 	   public Participator(Guest guest, Integer money) {
 		   this(guest.getId(), money);
 	   }
@@ -37,15 +33,4 @@ public class Participator{
 		this.userId = userId;
 	}*/
 
-	String getUserId() {
-		return userId;
-	}
-
-	void setMoney(Integer money) {
-		this.money = money;
-	}
-
-	Integer getMoney() {
-		return money;
-	}
 }

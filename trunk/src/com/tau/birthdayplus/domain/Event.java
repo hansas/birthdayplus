@@ -3,31 +3,24 @@ package com.tau.birthdayplus.domain;
 //import com.google.appengine.api.datastore.Key;
 import java.util.Date;
 import java.util.List;
-import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.tau.birthdayplus.dto.client.EventData;
 
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Event implements IsSerializable  {
+@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Event extends EventData implements IsSerializable  {
     	private static final long serialVersionUID = 1L;
 
 	   @PrimaryKey
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	 //  private Key key;
-	   private Long key;
-	   @Persistent
-	   private String eventName;
-	   @Persistent
-	   private Date eventDate;
-	   @Persistent
-	   private Boolean recurrence;
-
+	   private Key key;
 	   
 	   
 	/*
@@ -35,14 +28,16 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 	 * A user-defined class that serializable  must have a default (zero argument) constructor 
 	 * (with any access modifier) or no constructor at all.
 	 */
-	private Event(){
+	public Event(){
 		
 	}
 	   
-	public Event(String name, Date date, Boolean recurrence){
-		this.eventName = name;
-		this.eventDate = date;
-		this.recurrence = recurrence;
+	public Event(String userId,String eventName,Date eventDate,Boolean recurrence){
+		super(userId,eventName,eventDate,recurrence);
+	}
+	
+	public Event(EventData eventD){
+		this(eventD.getUserId(),eventD.getEventName(),eventD.getEventDate(),eventD.getRecurrence());
 	}
 	/*
 	static Event getEventByKey(Key key){
@@ -51,38 +46,15 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 		return e;
 	}
 	*/
-	/*
-	public void setKey(Key key) {
-		this.key = key;
-	}
+	
+//	public void setKey(Key key) {
+//		this.key = key;
+//	}
 	public Key getKey() {
 		return key;
 	}
-	*/
 	
-	public void setKey(Long key) {
-		this.key = key;
-	}
-	public Long getKey() {
-		return key;
-	}
-	public void setEventName(String eventName) {
-		this.eventName = eventName;
-	}
-	public String getEventName() {
-		return eventName;
-	}
-	public void setEventDate(Date eventDate) {
-		this.eventDate = eventDate;
-	}
-	public Date getEventDate() {
-		return eventDate;
-	}
-	public void setRecurrence(Boolean recurrence) {
-		this.recurrence = recurrence;
-	}
-	public Boolean getRecurrence() {
-		return recurrence;
-	}
+
+
 	
 }

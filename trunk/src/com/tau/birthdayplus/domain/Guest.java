@@ -3,6 +3,7 @@ package com.tau.birthdayplus.domain;
 //import com.google.appengine.api.datastore.Key;
 //import com.google.appengine.api.datastore.KeyFactory;
 //import com.google.appengine.api.users.User;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.jdo.PersistenceManager;
@@ -10,24 +11,15 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.tau.birthdayplus.dto.client.GuestData;
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Guest implements IsSerializable{
-		@PrimaryKey
-		@Persistent
-		private String id;
-	//	@Persistent
-	//	private User googleAccount;
-		@Persistent
-		private String firstName;
-		@Persistent
-		private String lastName;
-		@Persistent
-		private Date birthday;
-		@Persistent
-		List<Guest> friends;
+@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Guest
+extends GuestData implements IsSerializable {
+
+//		@Persistent
+//		List<Guest> friends;
 		@Persistent
 		List<Event> events;
 		@Persistent
@@ -38,19 +30,12 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 	     * A user-defined class that serializable  must have a default (zero argument) constructor 
 	     * (with any access modifier) or no constructor at all.
 	     */
-		 
-		private Guest(){
-			
-		}
-
+		private Guest(){}
 		
 		public Guest(String googleId, String firstName, String lastName, Date birthday) {
-			this.setFirstName(firstName);
-			this.setLastName(lastName);
-			this.setBirthday(birthday);
-			this.id = googleId;
+			super(googleId,firstName,lastName,birthday);
+			this.events = new ArrayList<Event>();
 		}
-		
 		
 		public void addEvent(Event e){
 			events.add(e);
@@ -87,38 +72,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 		}
 
 */
-		
-		public void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
 
-		public String getFirstName() {
-			return firstName;
-		}
-
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
-
-		public String getLastName() {
-			return lastName;
-		}
-
-		public void setBirthday(Date birthday) {
-			this.birthday = birthday;
-		}
-
-		public Date getBirthday() {
-			return birthday;
-		}
-
-		/*public void setId(String id) {
-			this.id = id;
-		}*/
-
-		public String getId() {
-			return id;
-		}
 }
 
 
