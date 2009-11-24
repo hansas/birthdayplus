@@ -26,14 +26,14 @@ public interface EventService extends RemoteService{
 	void createEvent(EventData event);
 	/*
 	 * update the event
-	 * Server (?)- check if the user is the event owner
+	 * Client - give only to owner to update event
 	 */
-	void updateEvent(String uId,EventData event);
+	void updateEvent(EventData event);
 	/*
 	 * delete the event 
-	 * Server (?)-check if the user is the event owner
+	 * Client- give only to owner to delete event
 	 */
-	void deleteEvent(String uId,EventData event);
+	void deleteEvent(EventData event);
 	/*
 	 * get events by user id
 	 * Server - events should be sorted by date
