@@ -18,7 +18,7 @@ public interface EventService extends RemoteService{
 	 */
 	void printHello();
 	/*
-	 * creates new event for the given user
+	 * creates new event for the user
 	 */
 	void createEvent(Event event);
 	/*
