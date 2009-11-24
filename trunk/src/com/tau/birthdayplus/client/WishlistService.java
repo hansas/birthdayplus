@@ -25,22 +25,22 @@ public interface WishlistService extends RemoteService{
 	void createWishlistItem(WishlistItemData item);
 	/*
 	 * update the item, don't update isActive
-	 * user can update only his wishlist
+	 * GUI-user can update only his wishlist
 	 */
 	void updateWishlistItem(WishlistItemData item);
 	/*
 	 * delete the item 
-	 * user can delete only his wishlist items
+	 * GUI - user can delete only his wishlist items
 	 */
 	void deleteWishlistItem(String wishlistItemId);
 	/*
 	 * user wants to buy this item
-	 * check that item is active
+	 * Server - check that item is active
 	 */
 	void setInactive(String userId,String wishlistItemId);
 	/*
 	 * user don't want to buy it 
-	 * user can cancel only from "i'm buying " tab
+	 * GUI - user can cancel only from "i'm buying " tab
 	 */
 	void setActive(String wishlistItemId);
 	/*
@@ -49,12 +49,12 @@ public interface WishlistService extends RemoteService{
 	ArrayList<WishlistItemData> getWishlist(String userId);
 	/*
 	 * add participator
-	 * check if the item is active and the user isn't already participate
+	 * Server - check if the item is active and the user isn't already participate
 	 */
 	void createParticipator(String wishlistItemId,ParticipatorData participator);
 	/*
 	 * update participator (update money only)
-	 * check if exists
+	 * Server - check if exists
 	 */
 	void updatePartcipator(String wishlistItemId,ParticipatorData participator);
 	/*
