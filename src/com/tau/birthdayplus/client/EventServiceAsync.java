@@ -3,7 +3,8 @@ package com.tau.birthdayplus.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.tau.birthdayplus.domain.Event;
+import com.tau.birthdayplus.dto.Event;
+
 
 /**
  * The async counterpart of <code>EventService</code>.
@@ -14,10 +15,7 @@ public interface EventServiceAsync {
 	 * function that checks that client can call to the remote service
 	 */
 	void printHello(AsyncCallback<Void> callback);
-	/*
-	 * creates new event for the given user
-	 */
-	void createEvent(String uId, Event event, AsyncCallback<Void> callback);
+	
 	/*
 	 * update the event
 	 * check if the user is the event owner
@@ -31,7 +29,10 @@ public interface EventServiceAsync {
 	/*
 	 * get events by user id
 	 */
-	void getEvents(String uId, AsyncCallback<ArrayList<Event>> callback);
+	
+	void getEvents(ArrayList<String> uIdlist,
+			AsyncCallback<ArrayList<Event>> callback);
+	void createEvent(Event event, AsyncCallback<Void> callback);
 
 
 }
