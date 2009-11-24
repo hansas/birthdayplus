@@ -13,6 +13,7 @@
 
   <!-- Other module inherits                                      -->
   <inherits name="com.google.gwt.i18n.I18N"/>
+  <inherits name="com.tau.birthdayplus.dto.dto"/>
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.tau.birthdayplus.client.Birthdayplus'/>
