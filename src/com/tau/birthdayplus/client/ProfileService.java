@@ -2,8 +2,8 @@ package com.tau.birthdayplus.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.tau.birthdayplus.dto.Guest;
-import com.tau.birthdayplus.dto.GuestData;
+import com.tau.birthdayplus.dto.client.GuestData;
+
 
 /**
  * The client side stub for the RPC service.
