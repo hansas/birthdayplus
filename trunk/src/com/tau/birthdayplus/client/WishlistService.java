@@ -5,9 +5,10 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.tau.birthdayplus.dto.client.ParticipatorData;
+import com.tau.birthdayplus.dto.client.WishlistItemData;
 
-import com.tau.birthdayplus.dto.ParticipatorData;
-import com.tau.birthdayplus.dto.WishlistItemData;
+
 
 /**
  * The client side stub for the RPC service.

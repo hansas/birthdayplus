@@ -3,7 +3,10 @@ package com.tau.birthdayplus.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.tau.birthdayplus.dto.EventData;
+import com.tau.birthdayplus.dto.client.EventData;
+
+
+
 
 
 
