@@ -62,7 +62,32 @@ public class BirthdayplusGUI {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
 	////////////////////////endEvents\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+	////////////////////////Profile\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+	public void service_createProfileFailed(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_createProfileSuccessful() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_updateProfileFailed(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_updateProfileSuccessful() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	////////////////////////endProfile\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 }

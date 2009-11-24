@@ -28,12 +28,12 @@ public interface EventService extends RemoteService{
 	 * update the event
 	 * Client - give only to owner to update event
 	 */
-	void updateEvent(EventData event);
+	void updateEvent(String uId, EventData event);
 	/*
 	 * delete the event 
 	 * Client- give only to owner to delete event
 	 */
-	void deleteEvent(EventData event);
+	void deleteEvent(String uId, EventData event);
 	/*
 	 * get events by user id
 	 * Server - events should be sorted by date
