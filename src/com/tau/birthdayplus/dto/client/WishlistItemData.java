@@ -2,11 +2,13 @@ package com.tau.birthdayplus.dto.client;
 
 import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.tau.birthdayplus.domain.Participator;
 
 
 public class WishlistItemData implements  IsSerializable{
+	   //owner of this wishlist item
 	   private String userId;
-	   
+	   //item id
 	   private String wishlistItemId;
 
 	   private String itemName;
@@ -16,10 +18,12 @@ public class WishlistItemData implements  IsSerializable{
 	   private String link;
 	
 	   private Integer price;
-	   
+	   //people that want to buy this together
 	   ArrayList<ParticipatorData> participators;
-
+       //if booked or not
 	   private Boolean isActive;
+	   //id of the person that booked this item
+	   private String giverId;
 	
 	/*
 	 * constructor for isSerializable
@@ -30,7 +34,7 @@ public class WishlistItemData implements  IsSerializable{
 		
 	}
 	
-	public WishlistItemData(String userId,String wishlistItemId,String name, Integer priority, String link, Integer price){
+	public WishlistItemData(String userId,String wishlistItemId,String name, Integer priority, String link, Integer price, String giverId){
 		this.userId=userId;
 		this.wishlistItemId=wishlistItemId;
 		this.itemName = name;
@@ -39,10 +43,11 @@ public class WishlistItemData implements  IsSerializable{
 		this.price = price;
 		this.participators = new ArrayList<ParticipatorData>();
 		this.setIsActive(true);
+		this.giverId=giverId;
 	}
 	
-	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price){
-		this(userId,"",name,priority,link,price);
+	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price,String giverId){
+		this(userId,"",name,priority,link,price,giverId);
 	}
 	
 	
@@ -78,6 +83,15 @@ public class WishlistItemData implements  IsSerializable{
 	public Integer getPrice() {
 		return price;
 	}
+	
+	public void addParticipator(ParticipatorData p){
+		this.participators.add(p);
+	}
+	
+	public void removeParticipator(ParticipatorData p){
+		this.participators.remove(p);
+	}
+	
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
@@ -87,6 +101,10 @@ public class WishlistItemData implements  IsSerializable{
 	
 	public ArrayList<ParticipatorData> getParticipators(){
 		return this.participators;
+	}
+	
+	public String giverId(){
+		return this.giverId;
 	}
 
 }
