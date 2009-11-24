@@ -3,7 +3,8 @@ package com.tau.birthdayplus.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.tau.birthdayplus.dto.Event;
+import com.tau.birthdayplus.dto.EventData;
+
 
 
 /**
@@ -20,19 +21,19 @@ public interface EventServiceAsync {
 	 * update the event
 	 * check if the user is the event owner
 	 */
-	void updateEvent(String uId, Event event, AsyncCallback<Void> callback);
+	void updateEvent(String uId, EventData event, AsyncCallback<Void> callback);
 	/*
 	 * delete the event 
 	 * check if the user is the event owner
 	 */
-	void deleteEvent(String uId, Event event, AsyncCallback<Void> callback);
+	void deleteEvent(String uId, EventData event, AsyncCallback<Void> callback);
 	/*
 	 * get events by user id
 	 */
 	
 	void getEvents(ArrayList<String> uIdlist,
-			AsyncCallback<ArrayList<Event>> callback);
-	void createEvent(Event event, AsyncCallback<Void> callback);
+			AsyncCallback<ArrayList<EventData>> callback);
+	void createEvent(EventData event, AsyncCallback<Void> callback);
 
 
 }

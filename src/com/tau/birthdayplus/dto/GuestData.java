@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 
-public class Guest implements IsSerializable{
+public class GuestData implements IsSerializable{
 	private String id;
 
 	private String firstName;
@@ -24,12 +24,12 @@ public class Guest implements IsSerializable{
      * (with any access modifier) or no constructor at all.
      */
 	 
-	private Guest(){
+	private GuestData(){
 		
 	}
 
 	
-	public Guest(String googleId, String firstName, String lastName, Date birthday) {
+	public GuestData(String googleId, String firstName, String lastName, Date birthday) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setBirthday(birthday);

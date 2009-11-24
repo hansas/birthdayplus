@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.tau.birthdayplus.dto.Event;
+import com.tau.birthdayplus.dto.EventData;
+
 
 
 /**
@@ -20,20 +21,20 @@ public interface EventService extends RemoteService{
 	/*
 	 * creates new event for the user
 	 */
-	void createEvent(Event event);
+	void createEvent(EventData event);
 	/*
 	 * update the event
 	 * check if the user is the event owner
 	 */
-	void updateEvent(String uId,Event event);
+	void updateEvent(String uId,EventData event);
 	/*
 	 * delete the event 
 	 * check if the user is the event owner
 	 */
-	void deleteEvent(String uId,Event event);
+	void deleteEvent(String uId,EventData event);
 	/*
 	 * get events by user id
 	 */
-	ArrayList<Event> getEvents(ArrayList<String> uIdlist);
+	ArrayList<EventData> getEvents(ArrayList<String> uIdlist);
 
 }

@@ -1,7 +1,8 @@
 package com.tau.birthdayplus.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.tau.birthdayplus.dto.Guest;
+import com.tau.birthdayplus.dto.GuestData;
+
 /**
  * The async counterpart of <code>ProfileService</code>.
  */
@@ -11,10 +12,10 @@ public interface ProfileServiceAsync {
 	 */
 	void printHello(AsyncCallback<Void> callback);
 
-	void createProfile(Guest guset, AsyncCallback<Void> callback);
+	void createProfile(GuestData guset, AsyncCallback<Void> callback);
 
-	void updateProfile(Guest profile, AsyncCallback<Void> callback);
+	void updateProfile(GuestData profile, AsyncCallback<Void> callback);
 
-	void getProfile(AsyncCallback<Guest> callback);
+	void getProfile(AsyncCallback<GuestData> callback);
 
 }
