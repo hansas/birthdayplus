@@ -33,7 +33,9 @@ public class WishlistItemData implements  IsSerializable{
 	private WishlistItemData(){
 		
 	}
-	
+	/*
+	 * constructor for server side
+	 */
 	public WishlistItemData(String userId,String wishlistItemId,String name, Integer priority, String link, Integer price, String giverId){
 		this.userId=userId;
 		this.wishlistItemId=wishlistItemId;
@@ -45,7 +47,9 @@ public class WishlistItemData implements  IsSerializable{
 		this.setIsActive(true);
 		this.giverId=giverId;
 	}
-	
+	/*
+	 * constructor for client side (?) , don't know iem id, can generate(?)
+	 */
 	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price,String giverId){
 		this(userId,"",name,priority,link,price,giverId);
 	}
