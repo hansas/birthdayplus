@@ -22,15 +22,15 @@ public interface WishlistServiceAsync {
 	void createWishlistItem(WishlistItemData item, AsyncCallback<Void> callback);
 	/*
 	 * update the item
-	 * check if the user is the item owner
+	 * user can update only his wishlist items
 	 */
-	void updateWishlistItem(String userId, WishlistItemData item,
+	void updateWishlistItem( WishlistItemData item,
 			AsyncCallback<Void> callback);
 	/*
 	 * delete the item 
-	 * check if the user is the item owner
+	 * user can delete only his items
 	 */
-	void deleteWishlistItem(String userId, String wishlistItemId,
+	void deleteWishlistItem( String wishlistItemId,
 			AsyncCallback<Void> callback);
 	/*
 	 * return user's wishlist
@@ -41,20 +41,25 @@ public interface WishlistServiceAsync {
 	 * delete the participator
 	 * check if the user is a participator
 	 */
-	void deleteParticipator(String userId, ParticipatorData participator,
+	void deleteParticipator(String wishlistItem, ParticipatorData participator,
 			AsyncCallback<Void> callback);
 	/*
 	 * update participator (update money only)
 	 * check that the user is a participator
 	 */
-	void updatePartcipator(String userId, ParticipatorData participator,
+	void updatePartcipator(String wishlistItemId, ParticipatorData participator,
 			AsyncCallback<Void> callback);
 	/*
 	 * add participator
 	 */
-	void createParticipator(ParticipatorData participator,
+	void createParticipator(String wishlistItemId,ParticipatorData participator,
 			AsyncCallback<Void> callback);
-	void getParticipators(String wishlistItemId,
-			AsyncCallback<ArrayList<ParticipatorData>> callback);
+	
+	void setInactive(String userId, String wishlistItemId,
+			AsyncCallback<Void> callback);
+	void setActive( String wishlistItemId,
+			AsyncCallback<Void> callback);
+	void getBookedWishlistItems(String usetId,
+			AsyncCallback<ArrayList<WishlistItemData>> callback);
 
 }
