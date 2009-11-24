@@ -2,6 +2,7 @@ package com.tau.birthdayplus.logic;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.Event;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dto.client.EventData;
 
@@ -11,14 +12,15 @@ import com.tau.birthdayplus.dto.client.EventData;
 
 public class EventManagement {
 	
-	public void createEvent(String id, EventData event) {
+	public static void createEvent(EventData event) {
 		try{
 			BusinessObjectDAL.createEvent(event);
 		}catch(Exception ex){
 			throw new RuntimeException(ex);
 		}
-		
 	}
+	
+	
 
 	public void deleteEvent(String id, EventData event) {
 		// TODO Auto-generated method stub

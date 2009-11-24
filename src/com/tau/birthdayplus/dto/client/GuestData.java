@@ -3,32 +3,32 @@ package com.tau.birthdayplus.dto.client;
 import java.util.Date;
 import java.util.List;
 
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 
 public class GuestData implements IsSerializable{
+	@PrimaryKey
+	@Persistent
 	private String id;
-
+	@Persistent
 	private String firstName;
-
+	@Persistent
 	private String lastName;
-
+	@Persistent
 	private Date birthday;
 
-
-	
 	/*
      * constructor for isSerializable
      * A user-defined class that serializable  must have a default (zero argument) constructor 
      * (with any access modifier) or no constructor at all.
      */
 	 
-	private GuestData(){
-		
-	}
+	protected GuestData(){}
 
-	
 	public GuestData(String googleId, String firstName, String lastName, Date birthday) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
@@ -62,7 +62,5 @@ public class GuestData implements IsSerializable{
 	public Date getBirthday() {
 		return birthday;
 	}
-
-	
 
 }
