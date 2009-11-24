@@ -25,7 +25,7 @@ EventService {
 	}
 
 	public void createEvent(EventData eventD) {
-		EventManagement.createEvent(eventD);
+	//	EventManagement.createEvent(eventD);
 	}
 	/*
 	 * delete the event 
