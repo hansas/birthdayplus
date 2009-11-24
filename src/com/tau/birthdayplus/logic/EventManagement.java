@@ -3,7 +3,8 @@ package com.tau.birthdayplus.logic;
 import java.util.ArrayList;
 
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
-import com.tau.birthdayplus.dto.EventData;
+import com.tau.birthdayplus.dto.client.EventData;
+
 
 
 
