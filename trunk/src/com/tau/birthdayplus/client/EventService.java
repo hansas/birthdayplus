@@ -26,12 +26,12 @@ public interface EventService extends RemoteService{
 	void createEvent(EventData event);
 	/*
 	 * update the event
-	 * check if the user is the event owner
+	 * Server (?)- check if the user is the event owner
 	 */
 	void updateEvent(String uId,EventData event);
 	/*
 	 * delete the event 
-	 * check if the user is the event owner
+	 * Server (?)-check if the user is the event owner
 	 */
 	void deleteEvent(String uId,EventData event);
 	/*
