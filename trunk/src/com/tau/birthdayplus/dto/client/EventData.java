@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 public class EventData  implements IsSerializable{
+	   //the owner of event
 	   private String userId;
 	   
 	   private String eventId;
@@ -24,14 +25,22 @@ public class EventData  implements IsSerializable{
 		   
 	   }
 	   
-	   
-	   public EventData(String usetId,String eventId,String eventName,Date eventDate,Boolean recurrence){
+	   /*
+	    * full constructor for the server side
+	    */
+	   public EventData(String userId,String eventId,String eventName,Date eventDate,Boolean recurrence){
 		   this.eventId=userId;
 		   this.eventId=eventId;
 		   this.eventDate=eventDate;
 		   this.recurrence=recurrence;
 	   }
-	   
+	   /*
+	    * constructor for client side-don't have event id
+	    */
+	   public EventData(String userId,String eventName,Date eventDate,Boolean recurrence){
+		   this(userId,"",eventName,eventDate,recurrence);
+		   
+	   }
 	   
 	   
 	   public void setUserId(String userId){
