@@ -3,6 +3,7 @@ package com.tau.birthdayplus.client;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.tau.birthdayplus.dto.Guest;
+import com.tau.birthdayplus.dto.GuestData;
 
 /**
  * The client side stub for the RPC service.
@@ -18,13 +19,13 @@ public interface ProfileService extends RemoteService{
 	/*
 	 * create new profile
 	 */
-	void createProfile(Guest guset);
+	void createProfile(GuestData guset);
 	/*
 	 * update profile
 	 */
-    void updateProfile(Guest profile);
+    void updateProfile(GuestData profile);
     /*
      * 
      */
-    Guest getProfile();
+    GuestData getProfile();
 }

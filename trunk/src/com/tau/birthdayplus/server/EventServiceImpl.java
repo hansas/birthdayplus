@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.EventService;
-import com.tau.birthdayplus.dto.Event;
+import com.tau.birthdayplus.dto.EventData;
+
 import com.tau.birthdayplus.logic.EventManagement;
 
 
@@ -22,22 +23,22 @@ EventService {
 		
 	}
 
-	public void createEvent( Event event) {
+	public void createEvent( EventData event) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void deleteEvent(String id, Event event) {
+	public void deleteEvent(String id, EventData event) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public ArrayList<Event> getEvents(ArrayList<String> id) {
+	public ArrayList<EventData> getEvents(ArrayList<String> id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void updateEvent(String id, Event event) {
+	public void updateEvent(String id, EventData event) {
 		EventManagement.updatEvent(id, event);
 		
 	}

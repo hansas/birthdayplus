@@ -3,7 +3,8 @@ package com.tau.birthdayplus.dal;
 import javax.jdo.PersistenceManager;
 
 import com.tau.birthdayplus.domain.Guest;
-import com.tau.birthdayplus.dto.Event;
+import com.tau.birthdayplus.dto.EventData;
+
 
 public class BusinessObjectDAL {
 	
@@ -19,7 +20,7 @@ public class BusinessObjectDAL {
 		return g;
 	}
 
-	public static void updateEvent(Event event) {
+	public static void updateEvent(EventData event) {
 		// TODO Auto-generated method stub
 		
 	}

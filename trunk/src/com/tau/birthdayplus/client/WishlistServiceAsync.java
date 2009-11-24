@@ -3,8 +3,9 @@ package com.tau.birthdayplus.client;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.tau.birthdayplus.dto.Participator;
-import com.tau.birthdayplus.dto.WishlistItem;
+
+import com.tau.birthdayplus.dto.ParticipatorData;
+import com.tau.birthdayplus.dto.WishlistItemData;
 
 /**
  * The async counterpart of <code>WishlistService</code>.
@@ -18,12 +19,12 @@ public interface WishlistServiceAsync {
 	/*
 	 * creates new item for the user
 	 */
-	void createWishlistItem(WishlistItem item, AsyncCallback<Void> callback);
+	void createWishlistItem(WishlistItemData item, AsyncCallback<Void> callback);
 	/*
 	 * update the item
 	 * check if the user is the item owner
 	 */
-	void updateWishlistItem(String userId, WishlistItem item,
+	void updateWishlistItem(String userId, WishlistItemData item,
 			AsyncCallback<Void> callback);
 	/*
 	 * delete the item 
@@ -35,25 +36,25 @@ public interface WishlistServiceAsync {
 	 * return user's wishlist
 	 */
 	void getWishlist(String userId,
-			AsyncCallback<ArrayList<WishlistItem>> callback);
+			AsyncCallback<ArrayList<WishlistItemData>> callback);
 	/*
 	 * delete the participator
 	 * check if the user is a participator
 	 */
-	void deleteParticipator(String userId, Participator participator,
+	void deleteParticipator(String userId, ParticipatorData participator,
 			AsyncCallback<Void> callback);
 	/*
 	 * update participator (update money only)
 	 * check that the user is a participator
 	 */
-	void updatePartcipator(String userId, Participator participator,
+	void updatePartcipator(String userId, ParticipatorData participator,
 			AsyncCallback<Void> callback);
 	/*
 	 * add participator
 	 */
-	void createParticipator(Participator participator,
+	void createParticipator(ParticipatorData participator,
 			AsyncCallback<Void> callback);
 	void getParticipators(String wishlistItemId,
-			AsyncCallback<ArrayList<Participator>> callback);
+			AsyncCallback<ArrayList<ParticipatorData>> callback);
 
 }

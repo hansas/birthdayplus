@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.tau.birthdayplus.dto.Participator;
-import com.tau.birthdayplus.dto.WishlistItem;
+
+import com.tau.birthdayplus.dto.ParticipatorData;
+import com.tau.birthdayplus.dto.WishlistItemData;
 
 /**
  * The client side stub for the RPC service.
@@ -20,12 +21,12 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * creates new item for the user
 	 */
-	void createWishlistItem(WishlistItem item);
+	void createWishlistItem(WishlistItemData item);
 	/*
 	 * update the item
 	 * check if the user is the item owner
 	 */
-	void updateWishlistItem(String userId,WishlistItem item);
+	void updateWishlistItem(String userId,WishlistItemData item);
 	/*
 	 * delete the item 
 	 * check if the user is the item owner
@@ -34,24 +35,24 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * return user's wishlist
 	 */
-	ArrayList<WishlistItem> getWishlist(String userId);
+	ArrayList<WishlistItemData> getWishlist(String userId);
 	/*
 	 * add participator
 	 */
-	void createParticipator(Participator participator);
+	void createParticipator(ParticipatorData participator);
 	/*
 	 * update participator (update money only)
 	 * check that the user is a participator
 	 */
-	void updatePartcipator(String userId,Participator participator);
+	void updatePartcipator(String userId,ParticipatorData participator);
 	/*
 	 * delete the participator
 	 * check if the user is a participator
 	 */
-	void deleteParticipator(String userId,Participator participator);
+	void deleteParticipator(String userId,ParticipatorData participator);
 	/*
 	 * return participators in the given wishlist item
 	 */
-	ArrayList<Participator> getParticipators(String wishlistItemId);
+	ArrayList<ParticipatorData> getParticipators(String wishlistItemId);
 
 }

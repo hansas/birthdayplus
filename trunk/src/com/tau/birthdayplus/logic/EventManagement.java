@@ -3,13 +3,14 @@ package com.tau.birthdayplus.logic;
 import java.util.ArrayList;
 
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
-import com.tau.birthdayplus.dto.Event;
+import com.tau.birthdayplus.dto.EventData;
+
 
 
 
 public class EventManagement {
 	
-	public void createEvent(String id, Event event) {
+	public void createEvent(String id, EventData event) {
 		try{
 			BusinessObjectDAL.createEvent(event);
 		}catch(Exception ex){
@@ -18,13 +19,13 @@ public class EventManagement {
 		
 	}
 
-	public void deleteEvent(String id, Event event) {
+	public void deleteEvent(String id, EventData event) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	
-	public static void updatEvent(String id, Event event){
+	public static void updatEvent(String id, EventData event){
 	    if(event.getUserId().equals(id)){
 	    	try{
 	    	   BusinessObjectDAL.updateEvent(event);
@@ -37,7 +38,7 @@ public class EventManagement {
 		
 	}
 	
-	public ArrayList<Event> getEvents(ArrayList<String> id) {
+	public ArrayList<EventData> getEvents(ArrayList<String> id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -4,7 +4,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 
-public class Participator implements IsSerializable{
+public class ParticipatorData implements IsSerializable{
 	   String userId;
 	   
 	   Integer money;
@@ -12,10 +12,10 @@ public class Participator implements IsSerializable{
 	   /*
 	    * empty constructor for isSerializable
 	    */
-       private Participator(){
+       private ParticipatorData(){
     	   
        }
-	   public Participator(String userId, Integer money){
+	   public ParticipatorData(String userId, Integer money){
 		   this.userId = userId;
 		   this.setMoney(money);
 	   }

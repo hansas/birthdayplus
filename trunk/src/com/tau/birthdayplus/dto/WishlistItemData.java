@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.tau.birthdayplus.domain.Participator;
 
-public class WishlistItem implements  IsSerializable{
+
+public class WishlistItemData implements  IsSerializable{
 	   private String userId;
 	   
 	   private String wishlistItemId;
@@ -21,7 +21,7 @@ public class WishlistItem implements  IsSerializable{
 	
 	   private Integer price;
 	   
-	   ArrayList<Participator> participators;
+	   ArrayList<ParticipatorData> participators;
 
 	   private Boolean isActive;
 	
@@ -30,22 +30,22 @@ public class WishlistItem implements  IsSerializable{
 	 * A user-defined class that serializable  must have a default (zero argument) constructor 
 	 * (with any access modifier) or no constructor at all.
 	 */
-	private WishlistItem(){
+	private WishlistItemData(){
 		
 	}
 	
-	public WishlistItem(String userId,String wishlistItemId,String name, Integer priority, String link, Integer price){
+	public WishlistItemData(String userId,String wishlistItemId,String name, Integer priority, String link, Integer price){
 		this.userId=userId;
 		this.wishlistItemId=wishlistItemId;
 		this.itemName = name;
 		this.priority = priority;
 		this.link = link;
 		this.price = price;
-		this.participators = new ArrayList<Participator>();
+		this.participators = new ArrayList<ParticipatorData>();
 		this.setIsActive(true);
 	}
 	
-	public WishlistItem(String userId,String name,Integer priority,String link,Integer price){
+	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price){
 		this(userId,"",name,priority,link,price);
 	}
 	
@@ -89,7 +89,7 @@ public class WishlistItem implements  IsSerializable{
 		return isActive;
 	}
 	
-	public ArrayList<Participator> getParticipators(){
+	public ArrayList<ParticipatorData> getParticipators(){
 		return this.participators;
 	}
 
