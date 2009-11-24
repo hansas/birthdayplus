@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
+import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class BirthdayplusServiceDelegate {
 	// Create a remote service proxy to talk to the server-side Event service.
@@ -111,5 +113,63 @@ public class BirthdayplusServiceDelegate {
 
 ////////////////////////////////////////EndProfile////////////////////////////////////
 	   
+///////////////////////////////////////Wishlist//////////////////////////////////////////////// 
+	    
+		 
+	    void getWishlist(final ArrayList<String> uIdlist) {
+	    	wishlistService.getWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemData>>(){
+
+	    		public void onFailure(Throwable caught){
+	    			gui.service_eventGetWishlistFailed(caught);
+	    		}
+	    		public void onSuccess(ArrayList<WishlistItemData> result){
+	    			gui.service_eventGetWishlistSuccesfull(result);
+	    		}
+	    	}//end of inner class
+	    	);//end of method call
+	    	}
+	       
+	    
+	    
+	    void createWishlistItem(final WishlistItemData item){
+	    	wishlistService.createWishlistItem(item, new AsyncCallback<Void>(){
+	    		public void onFailure(Throwable caught){
+	    			gui.service_eventCreateWishlistItemFailed(caught);
+	    		}
+	    		
+	    		public void onSuccess(Void result){
+	    			gui.service_eventCreateWishlistItemSuccessful();
+	    		}
+	    	}//end of inner class
+	    );//end of method call
+	    }
+	    
+	    void updateWishlistItem(final WishlistItemData item){
+	    	wishlistService.updateWishlistItem(item, new AsyncCallback<Void>(){
+	    		public void onFailure(Throwable caught){
+	    			gui.service_eventUpdateWishlistItemFailed(caught);
+	    		}
+	    		
+	    		public void onSuccess(Void result){
+	    			gui.service_eventUpdateWishlistItemSuccessful();
+	    		}
+	    	}//end of inner class
+	    	);//end of method call
+	    }
+
+//	   void deleteEvent(final String uId, final EventData event){
+//		   eventService.deleteEvent(uId, event, new AsyncCallback<Void>(){
+//			   public void onFailure(Throwable caught){
+//				   gui.service_eventDeleteEventFailed(caught);
+//			   }
+//			   
+//			   public void onSuccess(Void result){
+//				   gui.service_eventDeleteEventSuccessful();
+//			   }
+//		   }//end of inner class
+//		   );//end of method call
+//	   }        
+	    
+////////////////////////////////////////EndWishlist////////////////////////////////////
 
 }

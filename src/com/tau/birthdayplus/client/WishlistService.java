@@ -46,7 +46,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * return user's wishlist
 	 */
-	ArrayList<WishlistItemData> getWishlist(String userId);
+	ArrayList<WishlistItemData> getWishlist(ArrayList<String> uIdlist);
 	/*
 	 * add participator
 	 * Server - check if the item is active and the user isn't already participate
