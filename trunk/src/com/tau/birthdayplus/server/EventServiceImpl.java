@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.EventService;
-import com.tau.birthdayplus.dto.EventData;
+import com.tau.birthdayplus.dto.client.EventData;
+
 
 import com.tau.birthdayplus.logic.EventManagement;
 
