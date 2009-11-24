@@ -25,7 +25,7 @@ public interface ProfileService extends RemoteService{
 	 */
     void updateProfile(GuestData profile);
     /*
-     * 
+     * get user's profile
      */
-    GuestData getProfile();
+    GuestData getProfile(String userId);
 }
