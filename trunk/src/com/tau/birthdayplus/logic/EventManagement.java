@@ -12,9 +12,9 @@ import com.tau.birthdayplus.dto.client.EventData;
 
 public class EventManagement {
 	
-	public static void createEvent(EventData event) {
+	public static void createEvent(EventData event){
 		try{
-			BusinessObjectDAL.createEvent(event);
+		//	BusinessObjectDAL.createEvent(event);
 		}catch(Exception ex){
 			throw new RuntimeException(ex);
 		}
@@ -31,7 +31,7 @@ public class EventManagement {
 	public static void updatEvent(String id, EventData event){
 	    if(event.getUserId().equals(id)){
 	    	try{
-	    	   BusinessObjectDAL.updateEvent(event);
+	    	//   BusinessObjectDAL.updateEvent(event);
 	    	}catch(Exception ex){
 	    		throw new RuntimeException(ex);
 	    	}
