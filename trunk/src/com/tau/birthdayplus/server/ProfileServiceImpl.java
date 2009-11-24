@@ -4,6 +4,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.tau.birthdayplus.client.ProfileService;
 import com.tau.birthdayplus.dto.client.GuestData;
+import com.tau.birthdayplus.logic.UserManagement;
+
 
 
 /**
@@ -19,26 +21,23 @@ ProfileService {
 		
 	}
 
-	/*
-	 * create new profile
-	 */
-	public void createProfile(GuestData guset) {
+	@Override
+	public void createProfile(GuestData guest) {
 		// TODO Auto-generated method stub
 		
 	}
-	/*
-     * get user's profile
-     */
+
+	@Override
 	public GuestData getProfile(String userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	/*
-	 * update profile
-	 */
+
+	@Override
 	public void updateProfile(GuestData profile) {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }
