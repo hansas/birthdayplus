@@ -18,30 +18,45 @@ import com.tau.birthdayplus.logic.EventManagement;
 @SuppressWarnings("serial")
 public class EventServiceImpl extends RemoteServiceServlet implements
 EventService {
-
-	public void printHello() {
-	   System.out.println("hello from Event Service");
-		
-	}
-
-	public void createEvent( EventData event) {
+	/*
+	 * creates new event for the user
+	 */
+	public void createEvent(EventData event) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void deleteEvent(String id, EventData event) {
+	/*
+	 * delete the event 
+	 * Client- give only to owner to delete event
+	 */
+	public void deleteEvent(EventData event) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public ArrayList<EventData> getEvents(ArrayList<String> id) {
+	/*
+	 * get events by user id
+	 * Server - events should be sorted by date
+	 */
+	public ArrayList<EventData> getEvents(ArrayList<String> idlist) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void updateEvent(String id, EventData event) {
-		EventManagement.updatEvent(id, event);
+	/*
+	 * function that checks that client can call to the remote service
+	 */
+	public void printHello() {
+		// TODO Auto-generated method stub
 		
 	}
+	/*
+	 * update the event
+	 * Client - give only to owner to update event
+	 */
+	public void updateEvent(EventData event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 
 }
