@@ -22,14 +22,14 @@ public interface EventServiceAsync {
 	
 	/*
 	 * update the event
-	 * check if the user is the event owner
+	 * 
 	 */
-	void updateEvent(String uId, EventData event, AsyncCallback<Void> callback);
+	void updateEvent( EventData event, AsyncCallback<Void> callback);
 	/*
 	 * delete the event 
-	 * check if the user is the event owner
+	 * 
 	 */
-	void deleteEvent(String uId, EventData event, AsyncCallback<Void> callback);
+	void deleteEvent( EventData event, AsyncCallback<Void> callback);
 	/*
 	 * get events by user id
 	 */
