@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.GuestData;
 
 public class BirthdayplusServiceDelegate {
 	// Create a remote service proxy to talk to the server-side Event service.
@@ -75,5 +76,40 @@ public class BirthdayplusServiceDelegate {
 	   }        
 	    
 ////////////////////////////////////////EndEvents////////////////////////////////////
+
+	   
+	   
+///////////////////////////////////////Profile//////////////////////////////////////////////// 
+	       
+	    
+	    
+	    void createProfile(final GuestData guest){
+	    	profileService.createProfile(guest, new AsyncCallback<Void>(){
+	    		public void onFailure(Throwable caught){
+	    			gui.service_createProfileFailed(caught);
+	    		}
+	    		
+	    		public void onSuccess(Void result){
+	    			gui.service_createProfileSuccessful();
+	    		}
+	    	}//end of inner class
+	    );//end of method call
+	    }
+	    
+	    void updateProfile(final GuestData guest){
+	    	profileService.updateProfile(guest, new AsyncCallback<Void>(){
+	    		public void onFailure(Throwable caught){
+	    			gui.service_updateProfileFailed(caught);
+	    		}
+	    		
+	    		public void onSuccess(Void result){
+	    			gui.service_updateProfileSuccessful();
+	    		}
+	    	}//end of inner class
+	    	);//end of method call
+	    }
+
+////////////////////////////////////////EndProfile////////////////////////////////////
+	   
 
 }

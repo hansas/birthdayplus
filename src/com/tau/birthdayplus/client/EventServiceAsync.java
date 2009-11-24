@@ -24,12 +24,12 @@ public interface EventServiceAsync {
 	 * update the event
 	 * 
 	 */
-	void updateEvent( EventData event, AsyncCallback<Void> callback);
+	void updateEvent( String uId, EventData event, AsyncCallback<Void> callback);
 	/*
 	 * delete the event 
 	 * 
 	 */
-	void deleteEvent( EventData event, AsyncCallback<Void> callback);
+	void deleteEvent( String uId, EventData event, AsyncCallback<Void> callback);
 	/*
 	 * get events by user id
 	 */
