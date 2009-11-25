@@ -123,6 +123,16 @@ public class BirthdayplusGUI {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void service_deleteWishlistItemFailed(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_deleteWishlistItemSuccessful() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	////////////////////////Wishlist\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 }

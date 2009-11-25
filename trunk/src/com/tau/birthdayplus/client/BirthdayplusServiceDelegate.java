@@ -157,18 +157,18 @@ public class BirthdayplusServiceDelegate {
 	    	);//end of method call
 	    }
 
-//	   void deleteEvent(final String uId, final EventData event){
-//		   eventService.deleteEvent(uId, event, new AsyncCallback<Void>(){
-//			   public void onFailure(Throwable caught){
-//				   gui.service_eventDeleteEventFailed(caught);
-//			   }
-//			   
-//			   public void onSuccess(Void result){
-//				   gui.service_eventDeleteEventSuccessful();
-//			   }
-//		   }//end of inner class
-//		   );//end of method call
-//	   }        
+	   void deleteWishlistItem(final String wishlistItemId){
+		   wishlistService.deleteWishlistItem(wishlistItemId, new AsyncCallback<Void>(){
+			   public void onFailure(Throwable caught){
+				   gui.service_deleteWishlistItemFailed(caught);
+			   }
+			   
+			   public void onSuccess(Void result){
+				   gui.service_deleteWishlistItemSuccessful();
+			   }
+		   }//end of inner class
+		   );//end of method call
+	   }        
 	    
 ////////////////////////////////////////EndWishlist////////////////////////////////////
 
