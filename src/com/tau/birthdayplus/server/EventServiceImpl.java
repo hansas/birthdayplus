@@ -31,32 +31,24 @@ EventService {
 	 * delete the event 
 	 * Client- give only to owner to delete event
 	 */
-	public void deleteEvent(EventData event) {
-		// TODO Auto-generated method stub
+	 public void deleteEvent(String uId, EventData eventD) {
+		EventManagement.deleteEvent(uId,eventD);
 		
 	}
 	/*
 	 * get events by user id
 	 * Server - events should be sorted by date
 	 */
-	public ArrayList<EventData> getEvents(ArrayList<String> idlist) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
+		return EventManagement.getEvents(UserIdList);
 	}
-	/*
-	 * function that checks that client can call to the remote service
-	 */
 
-	public void deleteEvent(String uId, EventData event) {
-		// TODO Auto-generated method stub
-		
-	}
 	/*
 	 * update the event
 	 * Client - give only to owner to update event
 	 */
-	public void updateEvent(String uId, EventData event) {
-		EventManagement.updatEvent(uId,event);
+	public void updateEvent(String uId, EventData eventD) {
+		EventManagement.updatEvent(uId,eventD);
 		
 	}
 
