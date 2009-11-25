@@ -197,7 +197,7 @@ public class BirthdayplusServiceDelegate {
 		   );//end of method call
 	   }        
 
-	   void createParticipator(final String wishlistItemId,ParticipatorData participator){
+	   void createParticipator(final String wishlistItemId,final ParticipatorData participator){
 		   wishlistService.createParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
 			   public void onFailure(Throwable caught){
 				   gui.service_createParticipatorFailed(caught);
@@ -209,6 +209,45 @@ public class BirthdayplusServiceDelegate {
 		   }//end of inner class
 		   );//end of method call
 	   }        
+
+	   void updateParticipator(final String wishlistItemId,final ParticipatorData participator){
+		   wishlistService.updateParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
+			   public void onFailure(Throwable caught){
+				   gui.service_updateParticipatorFailed(caught);
+			   }
+			   
+			   public void onSuccess(Void result){
+				   gui.service_updateParticipatorSuccessful();
+			   }
+		   }//end of inner class
+		   );//end of method call
+	   }        
+
+	   void deleteParticipator(final String wishlistItemId,final ParticipatorData participator){
+		   wishlistService.deleteParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
+			   public void onFailure(Throwable caught){
+				   gui.service_deleteParticipatorFailed(caught);
+			   }
+			   
+			   public void onSuccess(Void result){
+				   gui.service_deleteParticipatorSuccessful();
+			   }
+		   }//end of inner class
+		   );//end of method call
+	   }        
+
+	    void getBookedWishlist(final String userId) {
+	    	wishlistService.getBookedWishlistItems(userId, new AsyncCallback<ArrayList<WishlistItemData>>(){
+
+	    		public void onFailure(Throwable caught){
+	    			gui.service_getBookedWishlistFailed(caught);
+	    		}
+	    		public void onSuccess(ArrayList<WishlistItemData> result){
+	    			gui.service_getBookedWishlistSuccesfull(result);
+	    		}
+	    	}//end of inner class
+	    	);//end of method call
+	    	}
 
 ////////////////////////////////////////EndWishlist////////////////////////////////////
 

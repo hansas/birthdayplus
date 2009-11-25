@@ -71,7 +71,7 @@ WishlistService  {
 	}
 
 	@Override
-	public void updatePartcipator(String wishlistItemId,
+	public void updateParticipator(String wishlistItemId,
 			ParticipatorData participator) {
 		// TODO Auto-generated method stub
 		
