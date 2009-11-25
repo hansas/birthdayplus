@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
+import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class BirthdayplusServiceDelegate {
@@ -178,6 +179,32 @@ public class BirthdayplusServiceDelegate {
 			   
 			   public void onSuccess(Void result){
 				   gui.service_setInactiveWishlistitemSuccessful();
+			   }
+		   }//end of inner class
+		   );//end of method call
+	   }        
+
+	   void setActiveWishlistitem(final String wishlistItemId){
+		   wishlistService.setActive(wishlistItemId, new AsyncCallback<Void>(){
+			   public void onFailure(Throwable caught){
+				   gui.service_setActiveWishlistitemFailed(caught);
+			   }
+			   
+			   public void onSuccess(Void result){
+				   gui.service_setActiveWishlistitemSuccessful();
+			   }
+		   }//end of inner class
+		   );//end of method call
+	   }        
+
+	   void createParticipator(final String wishlistItemId,ParticipatorData participator){
+		   wishlistService.createParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
+			   public void onFailure(Throwable caught){
+				   gui.service_createParticipatorFailed(caught);
+			   }
+			   
+			   public void onSuccess(Void result){
+				   gui.service_createParticipatorSuccessful();
 			   }
 		   }//end of inner class
 		   );//end of method call
