@@ -143,6 +143,26 @@ public class BirthdayplusGUI {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void service_setActiveWishlistitemFailed(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_setActiveWishlistitemSuccessful() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_createParticipatorFailed(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_createParticipatorSuccessful() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	////////////////////////Wishlist\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 }
