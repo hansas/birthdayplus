@@ -169,7 +169,20 @@ public class BirthdayplusServiceDelegate {
 		   }//end of inner class
 		   );//end of method call
 	   }        
-	    
+
+	   void setInactiveWishlistitem(final String userId, final String wishlistItemId){
+		   wishlistService.setInactive(userId, wishlistItemId, new AsyncCallback<Void>(){
+			   public void onFailure(Throwable caught){
+				   gui.service_setInactiveWishlistitemFailed(caught);
+			   }
+			   
+			   public void onSuccess(Void result){
+				   gui.service_setInactiveWishlistitemSuccessful();
+			   }
+		   }//end of inner class
+		   );//end of method call
+	   }        
+
 ////////////////////////////////////////EndWishlist////////////////////////////////////
 
 }
