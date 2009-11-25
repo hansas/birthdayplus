@@ -35,4 +35,8 @@ public interface CwConstants extends Constants {
     
     @DefaultStringValue("Birthday")
     String cwDisclosurePanelFormBirthday();
+    
+    @DefaultStringValue("cw-FlexTable")
+    String cwFlexTableStyle();
+
 }
