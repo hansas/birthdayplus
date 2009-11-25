@@ -53,7 +53,7 @@ WishlistService  {
 	}
 
 	@Override
-	public ArrayList<WishlistItemData> getWishlist(String userId) {
+	public ArrayList<WishlistItemData> getWishlist(ArrayList<String> uIdlist) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -82,5 +82,7 @@ WishlistService  {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 }
