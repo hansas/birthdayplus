@@ -56,6 +56,18 @@ EventService {
 		
 	}
 
+	@Override
+	public void deleteEvent(String uId, EventData event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateEvent(String uId, EventData event) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }
