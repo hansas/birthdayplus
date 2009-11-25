@@ -32,12 +32,12 @@ import com.tau.birthdayplus.dto.client.EventData;
 		
 	}
 	   
-	public Event(String userId,String eventName,Date eventDate,Boolean recurrence){
-		super(userId,eventName,eventDate,recurrence);
+	public Event(String eventName,Date eventDate,Boolean recurrence){
+		super(eventName,eventDate,recurrence);
 	}
 	
 	public Event(EventData eventD){
-		this(eventD.getUserId(),eventD.getEventName(),eventD.getEventDate(),eventD.getRecurrence());
+		this(eventD.getEventName(),eventD.getEventDate(),eventD.getRecurrence());
 	}
 	/*
 	static Event getEventByKey(Key key){
