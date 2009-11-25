@@ -33,8 +33,11 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("Cancel")
     String cwDialogBoxCancel();
     
-    @DefaultStringValue("Birthday")
-    String cwDisclosurePanelFormBirthday();
+    @DefaultStringValue("Event")
+    String cwEventLabel();
+    
+    @DefaultStringValue("Due")
+    String cwEventDueEvent();
     
     @DefaultStringValue("cw-FlexTable")
     String cwFlexTableStyle();

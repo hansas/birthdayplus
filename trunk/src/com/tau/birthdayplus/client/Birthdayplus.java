@@ -1,6 +1,7 @@
 package com.tau.birthdayplus.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.tau.birthdayplus.client.widgets.EventTab;
+import com.tau.birthdayplus.dto.client.EventData;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -81,7 +83,10 @@ public class Birthdayplus implements EntryPoint {
 	    /**
 	     *  Add events tab
 	     */
-	    EventTab tabEvent = new EventTab(); 
+	    List<EventData> list = new ArrayList<EventData>(); 
+	    EventData event = new EventData("1","smert", new Date(2000), false);
+	    list.add(event);
+	    EventTab tabEvent = new EventTab(list); 
 	    tab.add(tabEvent, "Events");
 		
 	    HTML wishlistText = new HTML("Wishlist");
@@ -281,7 +286,7 @@ public class Birthdayplus implements EntryPoint {
 		  layout.setHTML(1, 0, constants.cwDisclosurePanelFormName());
 		  TextBox txtName = new TextBox();
 		  layout.setWidget(1, 1, txtName);
-		  layout.setHTML(2, 0, constants.cwDisclosurePanelFormBirthday());
+		  layout.setHTML(2, 0, constants.cwEventLabel());
 		  DateBox  txtBirthday = new DateBox();
 		  txtBirthday.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getShortDateFormat()));
 		  layout.setWidget(2, 1, txtBirthday);
