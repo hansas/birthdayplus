@@ -1,15 +1,15 @@
 package com.tau.birthdayplus.dal;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.jdo.Transaction;
-
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.EventData;
-
-
 
 public class BusinessObjectDAL {
 	
@@ -45,7 +45,44 @@ public class BusinessObjectDAL {
 		    }
 		}
 		pm.close();
-		throw new RuntimeException(new Exception("You cannot update someone else's event "));
+	}
+	
+	public static void deleteEvent(EventData eventD) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Transaction tx = (Transaction)pm.currentTransaction();
+		try
+		{
+		    tx.begin();
+		    Key eventKey = KeyFactory.stringToKey(eventD.getEventId());
+   		    Key parentKey = eventKey.getParent();
+   		    Guest parent = pm.getObjectById(Guest.class, parentKey);
+   		    Event event = pm.getObjectById(Event.class, eventKey);
+		    parent.removeEvent(event);
+		    pm.makePersistent(parent);
+		    pm.deletePersistent(event);
+		    tx.commit();
+		}
+		finally
+		{
+		    if (tx.isActive())
+		    {
+		        tx.rollback();
+		    }
+		}
+		pm.close();
+	}
+	
+	public static void createEvent(EventData eventD){
+		Key eventKey = KeyFactory.stringToKey(eventD.getEventId());
+		Event event = new Event(eventD);
+		event.setKey(eventKey);
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		pm.makePersistent(event);
+		Key parentKey = eventKey.getParent();
+		Guest parent = pm.getObjectById(Guest.class, parentKey);
+		parent.addEvent(event);
+		pm.makePersistent(parent);
+		pm.close();
 	}
 	
 	//checks if user with id uId has eventD in his events
@@ -53,11 +90,18 @@ public class BusinessObjectDAL {
 //		Key parentKey = KeyFactory.stringToKey(eventD.getEventId());
 //		return uId.equals(parentKey);
 //	}
-	
-	public static void createEvent(EventData eventD){
-		Event event = new Event(eventD);
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.makePersistent(event);
+	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
+		ArrayList<EventData> events;
+		PersistenceManager pm = PMF.get().getPersistenceManager();    
+		Query query = pm.newQuery(EventData.class);
+		query.declareImports("import com.google.appengine.api.datastore.KeyFactory;");
+	    query.setFilter("KeyFactory.keyToString((KeyFactory.stringToKey(this.eventId)).getParent()) == :keyList");
+	    query.setOrdering("eventDate asceding");
+	    events = (ArrayList<EventData>)query.execute(UserIdList);
+	    events.size();
 		pm.close();
+		return events;
 	}
+	
+
 }
