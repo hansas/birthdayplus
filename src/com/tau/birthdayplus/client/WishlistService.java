@@ -56,7 +56,7 @@ public interface WishlistService extends RemoteService{
 	 * update participator (update money only)
 	 * Server - check if exists
 	 */
-	void updatePartcipator(String wishlistItemId,ParticipatorData participator);
+	void updateParticipator(String wishlistItemId,ParticipatorData participator);
 	/*
 	 * delete  participator from the list
 	 * 

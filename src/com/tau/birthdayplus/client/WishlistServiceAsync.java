@@ -47,7 +47,7 @@ public interface WishlistServiceAsync {
 	 * update participator (update money only)
 	 * check that the user is a participator
 	 */
-	void updatePartcipator(String wishlistItemId, ParticipatorData participator,
+	void updateParticipator(String wishlistItemId, ParticipatorData participator,
 			AsyncCallback<Void> callback);
 	/*
 	 * add participator
