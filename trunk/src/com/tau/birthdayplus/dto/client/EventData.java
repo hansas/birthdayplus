@@ -12,10 +12,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class EventData  implements IsSerializable{
-	   //the owner of event
+	   
 	   @Persistent
-	   private String userId;
-	   @NotPersistent
 	   private String eventId;
 	   @Persistent
 	   private String eventName;
@@ -32,8 +30,7 @@ public class EventData  implements IsSerializable{
 	   /*
 	    * full constructor for the server side
 	    */
-	   public EventData(String userId,String eventId,String eventName,Date eventDate,Boolean recurrence){
-		   this.userId = userId;
+	   public EventData(String eventId,String eventName,Date eventDate,Boolean recurrence){
 		   this.eventId = eventId;
 		   this.eventName = eventName;
 		   this.eventDate = eventDate;
@@ -42,24 +39,12 @@ public class EventData  implements IsSerializable{
 	   /*
 	    * constructor for client side-don't have event id
 	    */
-	   public EventData(String userId,String eventName,Date eventDate,Boolean recurrence){
-		   this(userId,"",eventName,eventDate,recurrence);
+	   public EventData(String eventName,Date eventDate,Boolean recurrence){
+		   this("",eventName,eventDate,recurrence);
 		   
 	   }
 	   
-//	   public void setUserId(String userId){
-//		   this.userId=userId;
-//	   }
-	   
-	   public String getUserId(){
-		   return this.userId;
-	   }
-	   
-//	   public void setEventId(String eventId){
-//		   this.eventId=eventId;
-//	   }
-	   
-	   public String getEventId(){
+  	   public String getEventId(){
 		   return this.eventId;
 		   
 	   }

@@ -9,9 +9,6 @@ import com.tau.birthdayplus.domain.Participator;
 
 
 public class WishlistItemData implements  IsSerializable{
-	   //owner of this wishlist item
-		@Persistent
-	   private String userId;
 	   //item id
 	   @Persistent
 	   private String wishlistItemId;
@@ -44,8 +41,7 @@ public class WishlistItemData implements  IsSerializable{
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemData(String userId,String wishlistItemId,String name, Integer priority, String link, Integer price, String giverId){
-		this.userId=userId;
+	public WishlistItemData(String wishlistItemId,String name, Integer priority, String link, Integer price, String giverId){
 		this.wishlistItemId=wishlistItemId;
 		this.itemName = name;
 		this.priority = priority;
@@ -58,13 +54,8 @@ public class WishlistItemData implements  IsSerializable{
 	/*
 	 * constructor for client side (?) , don't know iem id, can generate(?)
 	 */
-	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price,String giverId){
-		this(userId,"",name,priority,link,price,giverId);
-	}
-	
-	
-	public String getUserId(){
-		return this.userId;
+	public WishlistItemData(String name,Integer priority,String link,Integer price,String giverId){
+		this("",name,priority,link,price,giverId);
 	}
 	
 	public String getWishlistItemId(){
