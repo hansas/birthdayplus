@@ -25,7 +25,7 @@ EventService {
 	}
 
 	public void createEvent(EventData eventD) {
-	//	EventManagement.createEvent(eventD);
+		EventManagement.createEvent(eventD);
 	}
 	/*
 	 * delete the event 
@@ -47,24 +47,16 @@ EventService {
 	 * function that checks that client can call to the remote service
 	 */
 
-	/*
-	 * update the event
-	 * Client - give only to owner to update event
-	 */
-	public void updateEvent(EventData event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void deleteEvent(String uId, EventData event) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
+	/*
+	 * update the event
+	 * Client - give only to owner to update event
+	 */
 	public void updateEvent(String uId, EventData event) {
-		// TODO Auto-generated method stub
+		EventManagement.updatEvent(uId,event);
 		
 	}
 
