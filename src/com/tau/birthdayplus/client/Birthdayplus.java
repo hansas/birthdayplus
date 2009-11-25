@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.tau.birthdayplus.client.widgets.EventTab;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -63,22 +64,14 @@ public class Birthdayplus implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		
-		
 		final TabPanel  tab = new TabPanel();
 		List<Person> listFriends = new ArrayList<Person>();
-		VerticalPanel vPanel = new VerticalPanel();
-		VerticalPanel vEventPanel = new VerticalPanel();
-		vPanel.setSpacing(5);
-		vEventPanel.setSpacing(5);
 
 		tab.getElement().setId("tab");
 		tab.setAnimationEnabled(true);
 		
-		RootPanel.get("tabBarContainer").add(vPanel);
-		vPanel.add(tab);
+		RootPanel.get("tabBarContainer").add(tab);
 		
-		final Button btnAddEvent = new Button("Add Event"); 
 		
 	    listFriends.add(new Person("1", "Eugene"));
 	    listFriends.add(new Person("2", "Olga"));
@@ -88,11 +81,8 @@ public class Birthdayplus implements EntryPoint {
 	    /**
 	     *  Add events tab
 	     */
-	    DecoratedStackPanel stackPanel = friendsEvents(listFriends);
-	    stackPanel.setWidth("100%");
-	    vEventPanel.add(stackPanel);
-	    vEventPanel.add(btnAddEvent);
-	    tab.add(vEventPanel, "Events");
+	    EventTab tabEvent = new EventTab(); 
+	    tab.add(tabEvent, "Events");
 		
 	    HTML wishlistText = new HTML("Wishlist");
 		tab.add(wishlistText, "Wishlist");
@@ -105,12 +95,6 @@ public class Birthdayplus implements EntryPoint {
 		//Create the popup add event dialog box
 		final DialogBox dialogBox = createAddEventDialogBox();
 
-		btnAddEvent.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				dialogBox.center();
-				dialogBox.show();
-			}
-		});
 		//check that can communicate with remote services 
 		eventService.printHello(
 				new AsyncCallback<Void>() {
