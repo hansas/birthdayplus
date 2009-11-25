@@ -47,9 +47,9 @@ import com.tau.birthdayplus.dto.client.EventData;
 	}
 	*/
 	
-//	public void setKey(Key key) {
-//		this.key = key;
-//	}
+	public void setKey(Key key) {
+		this.key = key;
+	}
 	public Key getKey() {
 		return key;
 	}
