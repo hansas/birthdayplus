@@ -41,5 +41,7 @@ public interface CwConstants extends Constants {
     
     @DefaultStringValue("cw-FlexTable")
     String cwFlexTableStyle();
+    @DefaultStringArrayValue({"5","4","3","2","1"})
+    String[] cwListBoxCategories();
 
 }
