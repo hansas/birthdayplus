@@ -35,7 +35,7 @@ public interface WishlistServiceAsync {
 	/*
 	 * return user's wishlist
 	 */
-	void getWishlist(ArrayList<String> uIdlist,
+	void getWishlist(String uId,
 			AsyncCallback<ArrayList<WishlistItemData>> callback);
 	/*
 	 * delete the participator
