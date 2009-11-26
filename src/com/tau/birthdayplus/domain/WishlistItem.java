@@ -16,7 +16,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-    public class WishlistItem extends WishlistItemData implements IsSerializable{
+    public class WishlistItem extends WishlistItemData
+    implements IsSerializable{
 	   @PrimaryKey
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	   private Key key;
