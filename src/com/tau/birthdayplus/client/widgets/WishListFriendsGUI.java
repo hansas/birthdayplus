@@ -97,7 +97,7 @@ public class WishListFriendsGUI  {
 		    
 		    closeFriendWishlistBox.setStyleName("cw-Button");
 		    
-		   // create panel to layou the content
+		   // create panel to layout the content
 		    wishlistBoxVerticalPanel = new VerticalPanel();
 		    wishlistBoxVerticalPanel.setSpacing(4);
 		    
@@ -270,7 +270,7 @@ public class WishListFriendsGUI  {
 		 buildParticipationBox();
 		 buildFriendWishlistBox();
 		   
-		    // Create a button to show the dialog Box
+		    /* Create a button to show the dialog Box
 		    Button openButton = new Button("openFriendsWishlist",
 		        new ClickHandler() {
 		          public void onClick(ClickEvent sender) {
@@ -281,7 +281,7 @@ public class WishListFriendsGUI  {
 		    
 		 // Associate the Main panel with the HTML host page.
 		//    RootPanel.get("eventList").add(openButton);
-		    
+		    */
 		    for (int i=0;i<5;i++){
 		    	fillRowFriendWishTable("dummy");
 		    	
