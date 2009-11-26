@@ -57,8 +57,8 @@ public class WishlistItemData implements  IsSerializable{
 	/*
 	 * constructor for client side (?) , don't know iem id, can generate(?)
 	 */
-	public WishlistItemData(String name,Integer priority,String link,Integer price,String giverId){
-		this("",name,priority,link,price,giverId);
+	public WishlistItemData(String name,Integer priority,String link,Integer price){
+		this("",name,priority,link,price,"");
 	}
 	
 	public String getWishlistItemId(){
@@ -115,6 +115,10 @@ public class WishlistItemData implements  IsSerializable{
 
 	private String getGiverId() {
 		return giverId;
+	}
+	
+	public String toString(){
+		return "name is: "+ itemName +" "+"priority is: "+priority+" "+"link is :" +link+"price is : "+ price;
 	}
 
 }
