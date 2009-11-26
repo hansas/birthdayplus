@@ -16,20 +16,20 @@ public class EventManagement {
 		}
 	}
 	
-	public static void deleteEvent(String uId, EventData eventD) {
-		if(KeyFactory.stringToKey(eventD.getEventId()).equals(uId)){
+	public static void deleteEvent( EventData eventD) {
+	//	if(KeyFactory.stringToKey(eventD.getEventId()).equals(uId)){
 	    	BusinessObjectDAL.deleteEvent(eventD);
-	    }else{
-	    	throw new RuntimeException(new Exception("You cannot delete someone else's event!"));
-	    }
+	 //   }else{
+	  //  	throw new RuntimeException(new Exception("You cannot delete someone else's event!"));
+	 //   }
 	}
 
-	public static void updatEvent(String uId, EventData eventD){
-	    if(KeyFactory.stringToKey(eventD.getEventId()).equals(uId)){
+	public static void updatEvent( EventData eventD){
+	//    if(KeyFactory.stringToKey(eventD.getEventId()).equals(uId)){
 	    	BusinessObjectDAL.updateEvent(eventD);
-	    }else{
-	    	throw new RuntimeException(new Exception("You cannot update someone else's event!"));
-	    }
+	  //  }else{
+	  //  	throw new RuntimeException(new Exception("You cannot update someone else's event!"));
+	   // }
 	}
 	
 	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
