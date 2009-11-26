@@ -52,8 +52,8 @@ public class BirthdayplusServiceDelegate {
 	    );//end of method call
 	    }
 	    
-	    void updateEvent(final String uId , final EventData event){
-	    	eventService.updateEvent(uId, event, new AsyncCallback<Void>(){
+	    void updateEvent( final EventData event){
+	    	eventService.updateEvent( event, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){
 	    			gui.service_eventUpdateEventFailed(caught);
 	    		}
@@ -65,8 +65,8 @@ public class BirthdayplusServiceDelegate {
 	    	);//end of method call
 	    }
 
-	   void deleteEvent(final String uId, final EventData event){
-		   eventService.deleteEvent(uId, event, new AsyncCallback<Void>(){
+	   void deleteEvent( final EventData event){
+		   eventService.deleteEvent( event, new AsyncCallback<Void>(){
 			   public void onFailure(Throwable caught){
 				   gui.service_eventDeleteEventFailed(caught);
 			   }
