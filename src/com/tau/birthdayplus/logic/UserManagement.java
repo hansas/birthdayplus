@@ -1,22 +1,19 @@
 package com.tau.birthdayplus.logic;
 
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.dto.client.GuestData;
 
 public class UserManagement {
-	public static Guest loadGuest(String guestId){
-		return BusinessObjectDAL.loadGuest(guestId);
+	
+	public static GuestData loadGuestData(String guestId){
+		return BusinessObjectDAL.loadGuestData(guestId);
 	}
 	
-	public static Guest loadMyGuest(){
-		UserService userService = UserServiceFactory.getUserService();
-		User user = userService.getCurrentUser();
-		if (user == null){
-			return null;
-		}
-		return BusinessObjectDAL.loadGuest(user.getUserId());
+	public static void createProfile(GuestData guestData) {
+		Guest guest = new Guest(guestData);
+		BusinessObjectDAL.createProfile(guest,guestData);
 	}
+	
 }
