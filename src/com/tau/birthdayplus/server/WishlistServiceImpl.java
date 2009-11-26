@@ -32,7 +32,7 @@ WishlistService  {
 	 * creates new item for the user
 	 */
 	public void createWishlistItem(WishlistItemData item) {
-		// TODO Auto-generated method stub
+		System.out.println("creating new item : "+item);
 		
 	}
 	/*
@@ -49,7 +49,7 @@ WishlistService  {
 	 * GUI - user can delete only his wishlist items
 	 */
 	public void deleteWishlistItem(String wishlistItemId) {
-		// TODO Auto-generated method stub
+		System.out.println("deleting item : "+wishlistItemId);
 		
 	}
 	/*
@@ -97,7 +97,7 @@ WishlistService  {
 	 * GUI-user can update only his wishlist
 	 */
 	public void updateWishlistItem(WishlistItemData item) {
-		// TODO Auto-generated method stub
+		System.out.println("updating item : "+item);
 		
 	}
 
