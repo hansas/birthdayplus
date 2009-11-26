@@ -19,65 +19,83 @@ WishlistService  {
 		System.out.println("Hello from the WishlistService");
 		
 	}
-
-	@Override
+	/*
+	 * add participator
+	 * Server - check if the item is active and the user isn't already participate
+	 */
 	public void createParticipator(String wishlistItemId,
 			ParticipatorData participator) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
+	/*
+	 * creates new item for the user
+	 */
 	public void createWishlistItem(WishlistItemData item) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
+	/*
+	 * delete  participator from the list
+	 * 
+	 */
 	public void deleteParticipator(String wishlistItemId,
 			ParticipatorData participator) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
+	/*
+	 * delete the item 
+	 * GUI - user can delete only his wishlist items
+	 */
 	public void deleteWishlistItem(String wishlistItemId) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
+	/*
+	 * return all the items this user booked
+	 */
 	public ArrayList<WishlistItemData> getBookedWishlistItems(String usetId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public ArrayList<WishlistItemData> getWishlist(ArrayList<String> uIdlist) {
+	/*
+	 * return user's wishlist
+	 */
+	public ArrayList<WishlistItemData> getWishlist(String uId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
+	/*
+	 * user don't want to buy it 
+	 * GUI - user can cancel only from "i'm buying " tab
+	 */
 	public void setActive(String wishlistItemId) {
 		// TODO Auto-generated method stub
 		
 	}
+	/*
+	 * user wants to buy this item
+	 * Server - check that item is active
+	 */
 
-	@Override
 	public void setInactive(String userId, String wishlistItemId) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
+	/*
+	 * update participator (update money only)
+	 * Server - check if exists
+	 */
 	public void updateParticipator(String wishlistItemId,
 			ParticipatorData participator) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
+	/*
+	 * update the item, don't update isActive
+	 * GUI-user can update only his wishlist
+	 */
 	public void updateWishlistItem(WishlistItemData item) {
 		// TODO Auto-generated method stub
 		
