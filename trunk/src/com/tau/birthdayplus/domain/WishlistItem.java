@@ -12,22 +12,17 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.gwt.user.client.rpc.IsSerializable;
+
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
     public class WishlistItem extends WishlistItemData
-    implements IsSerializable{
+   {
 	   @PrimaryKey
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	   private Key key;
 
-	/*
-	 * constructor for isSerializable
-	 * A user-defined class that serializable  must have a default (zero argument) constructor 
-	 * (with any access modifier) or no constructor at all.
-	 */
-	private WishlistItem(){}
+
 	
 	public WishlistItem(String name, Integer priority, String link, Integer price,String giverId){
 		super(name,priority,link,price,giverId);
