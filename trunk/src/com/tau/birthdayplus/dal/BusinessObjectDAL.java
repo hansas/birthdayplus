@@ -10,21 +10,32 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.GuestData;
 
 public class BusinessObjectDAL {
 	
-	public static Guest loadGuest(String guestId, PersistenceManager pm){
-		return pm.getObjectById(Guest.class, guestId);
+	public static GuestData loadGuestData(String guestId, PersistenceManager pm){
+		return pm.getObjectById(GuestData.class, guestId);
 	}
 	
 	// Automatically open and close PMF
-	public static Guest loadGuest(String guestId){
+	public static GuestData loadGuestData(String guestId){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Guest g = loadGuest(guestId, pm);
+		GuestData g = loadGuestData(guestId, pm);
 		pm.close();
 		return g;
 	}
-
+	
+	public static void createProfile(Guest guest, GuestData guestData) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+        	pm.makePersistent(guestData);
+        	pm.makePersistent(guest);
+        } finally {
+        	pm.close();
+        }
+	}
+	
 	public static void updateEvent(EventData eventD) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction)pm.currentTransaction();
