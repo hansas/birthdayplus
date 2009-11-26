@@ -9,16 +9,16 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Participator extends ParticipatorData
-implements IsSerializable{
+{
 	   
-	   private Participator(){ }
+	  
 	   
 
 	   public Participator(String userId,String userFirstName,String userLastName,Integer money) {
