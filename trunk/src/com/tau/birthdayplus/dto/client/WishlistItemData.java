@@ -37,7 +37,8 @@ public class WishlistItemData implements  IsSerializable{
 	 * A user-defined class that serializable  must have a default (zero argument) constructor 
 	 * (with any access modifier) or no constructor at all.
 	 */
-	protected WishlistItemData(){
+	public WishlistItemData(){
+		participators=new ArrayList<ParticipatorData>();
 		
 	}
 	/*
