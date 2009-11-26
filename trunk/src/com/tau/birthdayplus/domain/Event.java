@@ -15,7 +15,8 @@ import com.tau.birthdayplus.dto.client.EventData;
 
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Event extends EventData implements IsSerializable  {
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class Event extends EventData implements IsSerializable  {
     	private static final long serialVersionUID = 1L;
 
 	   @PrimaryKey

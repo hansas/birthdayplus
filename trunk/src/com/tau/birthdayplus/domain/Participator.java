@@ -15,17 +15,18 @@ import com.tau.birthdayplus.dto.client.ParticipatorData;
 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Participator extends ParticipatorData implements IsSerializable{
+public class Participator extends ParticipatorData
+implements IsSerializable{
 	   
 	   private Participator(){ }
 	   
 
-	   public Participator(String userId, Integer money) {
-		   super(userId, money);
+	   public Participator(String userId,String userFirstName,String userLastName,Integer money) {
+		   super(userId,userFirstName,userLastName,money);
 	   }
 	   
 	   public Participator(Guest guest, Integer money) {
-		   this(guest.getId(), money);
+		   this(guest.getId(),guest.getFirstName(),guest.getLastName(),money);
 	   }
 	   
 

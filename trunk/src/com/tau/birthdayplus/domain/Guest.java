@@ -15,8 +15,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.tau.birthdayplus.dto.client.GuestData;
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)public class Guest
-extends GuestData implements IsSerializable {
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class Guest extends GuestData implements IsSerializable {
 
 //		@Persistent
 //		List<Guest> friends;
