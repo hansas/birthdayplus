@@ -26,13 +26,14 @@ EventService {
 
 	public void createEvent(EventData eventD) {
 		EventManagement.createEvent(eventD);
+		
 	}
 	/*
 	 * delete the event 
 	 * Client- give only to owner to delete event
 	 */
-	 public void deleteEvent(String uId, EventData eventD) {
-		EventManagement.deleteEvent(uId,eventD);
+	 public void deleteEvent( EventData eventD) {
+		EventManagement.deleteEvent(eventD);
 		
 	}
 	/*
@@ -47,8 +48,8 @@ EventService {
 	 * update the event
 	 * Client - give only to owner to update event
 	 */
-	public void updateEvent(String uId, EventData eventD) {
-		EventManagement.updatEvent(uId,eventD);
+	public void updateEvent( EventData eventD) {
+		EventManagement.updatEvent(eventD);
 		
 	}
 
