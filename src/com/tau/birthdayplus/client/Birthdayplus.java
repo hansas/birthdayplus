@@ -24,8 +24,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.tau.birthdayplus.client.widgets.EventTab;
+import com.tau.birthdayplus.client.widgets.MyWishlistDeligate;
+import com.tau.birthdayplus.client.widgets.MyWishlistTabGUI;
 import com.tau.birthdayplus.dto.client.EventData;
 
 /**
@@ -61,6 +64,48 @@ public class Birthdayplus implements EntryPoint {
 	 */
 	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class); 
 	
+	
+	/*
+	 * for second tab
+	 */
+	private MyWishlistTabGUI gui;
+	private MyWishlistDeligate delegate;
+	
+	/*
+	 * listen to the widgets of second tab
+	 */
+	private void wireGUIEvents() {
+        gui.wishTable.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+                 Cell cellForEvent = gui.wishTable.getCellForEvent(event);
+                 gui.gui_eventItemGridClicked(cellForEvent);                
+            }});
+        
+        gui.addItemButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui.gui_eventAddItemButtonClicked();
+            }});
+
+        gui.updateButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+                gui.gui_eventUpdateButtonClicked();
+            }});
+        
+        gui.addButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui.gui_eventAddButtonClicked();
+                
+            }});
+        
+        gui.cancelButton.addClickHandler(new ClickHandler(){
+        	public void onClick(ClickEvent event){
+        		gui.gui_eventCancelButtonClicked();
+        	}
+        });
+        
+
+    }
+
 
 	/**
 	 * This is the entry point method.
@@ -89,13 +134,28 @@ public class Birthdayplus implements EntryPoint {
 	    EventTab tabEvent = new EventTab(list); 
 	    tab.add(tabEvent, "Events");
 		
+	    /*
+	     * add MyWishlist to the second tab
+	     */
+	    gui = new MyWishlistTabGUI();
+        delegate = new MyWishlistDeligate();
+        gui.wishlistService = delegate;
+        delegate.gui = gui;
+        gui.init();
+        
 	    HTML wishlistText = new HTML("Wishlist");
-		tab.add(wishlistText, "Wishlist");
+		tab.add(gui.wishlistVerticalPanel, "Wishlist");
+		
+		//listen to the events in second tab
+		wireGUIEvents();
 		
 		HTML buyListText = new HTML("Need to buy");
 		tab.add(buyListText, "Need to buy");
 		
 		tab.selectTab(0);
+		
+		 
+
 		
 		//Create the popup add event dialog box
 		final DialogBox dialogBox = createAddEventDialogBox();
