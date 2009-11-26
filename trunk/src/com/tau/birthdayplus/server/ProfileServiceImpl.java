@@ -22,15 +22,14 @@ ProfileService {
 	}
 
 	@Override
-	public void createProfile(GuestData guest) {
-		// TODO Auto-generated method stub
+	public void createProfile(GuestData guestData) {
+		UserManagement.createProfile(guestData);
 		
 	}
 
 	@Override
 	public GuestData getProfile(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return UserManagement.loadGuestData(userId);
 	}
 
 	@Override
