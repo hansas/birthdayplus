@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -25,20 +28,21 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class MyWishlistTabGUI {
     /*
-     * constunts
+     * constants
      */
 	CwConstants constants = GWT.create(CwConstants.class);
-	private static final int UPDATE_LINK = 4;
-    private static final int DELETE_LINK = 5;
+	private static final int LINK = 0;
+	private static final int UPDATE_LINK = 3;
+    private static final int DELETE_LINK = 4;
 
 	/*GUI Widgets*/
 
 	//VerticalPanel for the content of wishlist
-	protected VerticalPanel wishlistVerticalPanel;
+	public VerticalPanel wishlistVerticalPanel;
 	// wishlist table
-	protected TableWithHeader wishTable;
+	public TableWithHeader wishTable;
 	// add new item button
-	protected Button addItemButton;
+	public Button addItemButton;
 	//box for adding new item
 	
 	
@@ -54,10 +58,10 @@ public class MyWishlistTabGUI {
     //item's price
     protected TextBox priceField;
     //ok button in dialog box
-    protected Button updateButton;
-    protected Button addButton;
+    public Button updateButton;
+    public Button addButton;
     //cancel button
-    protected Button cancelButton;
+    public Button cancelButton;
 
 
 	
@@ -67,9 +71,8 @@ public class MyWishlistTabGUI {
 	 */
 	private ArrayList<WishlistItemData> items;
     private WishlistItemData currentItem;
-    protected MyWishlistDeligate wishlistService;
-    protected String userId;
-    
+    public MyWishlistDeligate wishlistService;
+    protected String userId="5";
     
     
 
@@ -77,6 +80,7 @@ public class MyWishlistTabGUI {
 	 * This is the entry point method.
 	 */
 	public void init() {
+		//it's the main panel for this tab
 		wishlistVerticalPanel=new VerticalPanel();
 		buildWishlistTable();
 		buildAddItemBox();
@@ -88,12 +92,17 @@ public class MyWishlistTabGUI {
 		wishlistVerticalPanel.add(addItemButton);
 		    
 		 // Associate the Main panel with the HTML host page.
-		    RootPanel.get("eventList").add(wishlistVerticalPanel);
+		  //  RootPanel.get("eventList").add(wishlistVerticalPanel);
 		    
-		  //  for (int i=0;i<5;i++){
-		    //	fillRowFriendWishTable("dummy");
+		   
+		    ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
+		    for(int i=0;i<5;i++){
+		    	data.add(new WishlistItemData("name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 		    	
-		   // }
+		    	
+		    }
+		    
+		    service_eventGetWishlistSuccesfull(data);
 		
 	}
 
@@ -176,9 +185,9 @@ public class MyWishlistTabGUI {
 	    wishTable.setStyleName("cw-TableWithHeader");
 	    
 	    FlexCellFormatter cellFormatter =  wishTable.getFlexCellFormatter();
-	    wishTable.setWidth("32em");
+	 //   wishTable.setWidth("16em");
 	    wishTable.setCellSpacing(5);
-	    wishTable.setCellPadding(3);
+	//    wishTable.setCellPadding(3);
 	    
 	    
 	    wishTable.setHeader(0,"Item");
@@ -199,16 +208,19 @@ public class MyWishlistTabGUI {
 	    wishTable.setWidget(numRows, 3, new Hyperlink("update", null));
 	    wishTable.setWidget(numRows,4,new Hyperlink("delete", null));
 	  }
-	  */
+	  
+	*/
 	
-	
+	/*
+	 * on click in the table
+	 */
 	 public void gui_eventItemGridClicked(Cell cellClicked) {
          int row = cellClicked.getRowIndex();
          int col = cellClicked.getCellIndex();
         
-         WishlistItemData item = this.items.get(row);
+        WishlistItemData item = this.items.get(row);
          
-        
+       
          if (col==UPDATE_LINK) {
              this.addButton.setVisible(false);
              this.updateButton.setVisible(true);
@@ -216,9 +228,14 @@ public class MyWishlistTabGUI {
              loadForm(item);
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item.getWishlistItemId());
+         }else if(col==LINK){
+        	 if(item.getLink()!=null)
+        		 Window.open(item.getLink(), "_blank", null);
          }
     }
 	 
+
+	
 	 /*
 	  * show the popup box with filled fields
 	  */
@@ -232,7 +249,9 @@ public class MyWishlistTabGUI {
 	    }
 
 
-
+    /*
+     * add new item
+     */
     public void gui_eventAddButtonClicked() {
     	boolean valid=true;
         try{    
@@ -241,12 +260,15 @@ public class MyWishlistTabGUI {
      //   	showMessage("The price should be a number");
         }
         if(valid){
-            addButton.setVisible(true);
+            addItemButton.setVisible(true);
             addItemBox.hide();
             this.wishlistService.createWishlistItem(currentItem);
         }
     }
-
+    
+    /*
+     * update item
+     */
     public void gui_eventUpdateButtonClicked() {
     	boolean valid=true;
         try{
@@ -256,7 +278,7 @@ public class MyWishlistTabGUI {
      //   	showMessage("The price should be a number");
         }
         if(valid){
-            addButton.setVisible(true);
+            addItemButton.setVisible(true);
             addItemBox.hide();
             this.wishlistService.updateWishlistItem(currentItem);
         }
@@ -266,6 +288,7 @@ public class MyWishlistTabGUI {
      */
     private void copyFieldDateToItem(){
     	int price;
+    	//add user id to item
     	currentItem.setItemName(itemField.getText());
         currentItem.setLink(linkField.getText());
         currentItem.setPriority(Integer.parseInt(constants.cwListBoxCategories()[priorityField.getSelectedIndex()]));
@@ -277,7 +300,10 @@ public class MyWishlistTabGUI {
         currentItem.setPrice(price);
 
     }
-
+    
+    /*
+     * on click on add item
+     */
     public void gui_eventAddItemButtonClicked() {
         this.addItemButton.setVisible(false);
         this.updateButton.setVisible(false);
@@ -285,18 +311,27 @@ public class MyWishlistTabGUI {
         loadForm(new WishlistItemData());
     }
     
+    /*
+     * on click on cancel button in dialog box
+     */
     public void gui_eventCancelButtonClicked(){
+    	addItemButton.setVisible(true);
     	 addItemBox.hide();
     }
 
-	  
+	/*
+	 * wishlist returned from the server
+	 */
 	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemData> result) {
 	        this.items = result;
 	        this.wishTable.clear();
 	        
 	        int row = wishTable.getRowCount();
 	        for (WishlistItemData item : result) {
-	        	wishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),item.getLink()));
+	        	if (item.getLink()== null)
+	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
+	        	else
+	        		wishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
 	    	    wishTable.setWidget(row,1,new Label(item.getPriority().toString()));
 	    	    wishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
 	    	    wishTable.setWidget(row, 3, new Hyperlink("update", null));
@@ -307,24 +342,24 @@ public class MyWishlistTabGUI {
 	
 	public void service_eventCreateWishlistItemSuccessful(){
 	//	showMessage("Item was successfully created");
-        this.wishlistService.getWishlist(userId);
+      //  this.wishlistService.getWishlist(userId);
 
 		
 	}
 	
 	public void service_eventUpdateWishlistItemSuccessful(){
 		//showMessage("Item was successfully updated");
-        this.wishlistService.getWishlist(userId);
+     //   this.wishlistService.getWishlist(userId);
 		
 	}
 	
 	public void service_deleteWishlistItemSuccessful(){
 	//	showMessage("Item was successfully deleteded");
-        this.wishlistService.getWishlist(userId);
+    //    this.wishlistService.getWishlist(userId);
 	}
 	
 	public void service_eventGetWishlistFailed(Throwable caught){
-		// showMessage("Unable to get  wishlist");
+	//	 showMessage("Unable to get  wishlist");
 
 	}
 	
