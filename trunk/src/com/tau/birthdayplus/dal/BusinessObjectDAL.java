@@ -36,6 +36,11 @@ public class BusinessObjectDAL {
         }
 	}
 	
+	
+	/*
+	 *  We don't have a reference to the Event we want to update.
+		 So we have to look it up first,
+	 */
 	public static void updateEvent(EventData eventD) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction)pm.currentTransaction();
@@ -47,6 +52,9 @@ public class BusinessObjectDAL {
 		    e.setKey(eventKey);
 		    pm.makePersistent(e);
 		    tx.commit();
+		}catch (Exception ex) {
+		//	pm.currentTransaction().rollback();
+			throw new RuntimeException("error in data base");
 		}
 		finally
 		{
@@ -54,8 +62,9 @@ public class BusinessObjectDAL {
 		    {
 		        tx.rollback();
 		    }
+		    pm.close();
 		}
-		pm.close();
+		
 	}
 	
 	public static void deleteEvent(EventData eventD) {
@@ -72,15 +81,18 @@ public class BusinessObjectDAL {
 		    pm.makePersistent(parent);
 		    pm.deletePersistent(event);
 		    tx.commit();
-		}
-		finally
+		}catch (Exception ex) {
+		//	pm.currentTransaction().rollback();
+			throw new RuntimeException("error in data base");
+		}finally
 		{
 		    if (tx.isActive())
 		    {
 		        tx.rollback();
 		    }
+		    pm.close();
 		}
-		pm.close();
+		
 	}
 	
 	public static void createEvent(EventData eventD){
