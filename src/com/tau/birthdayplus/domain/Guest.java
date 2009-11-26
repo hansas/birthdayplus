@@ -35,6 +35,11 @@ public class Guest extends GuestData implements IsSerializable {
 		public Guest(String googleId, String firstName, String lastName, Date birthday) {
 			super(googleId,firstName,lastName,birthday);
 			this.events = new ArrayList<Event>();
+			this.wishlistItems = new ArrayList<WishlistItem>();
+		}
+		
+		public Guest(GuestData guestData){
+			this(guestData.getId(),guestData.getFirstName(),guestData.getLastName(),guestData.getBirthday());
 		}
 		
 		public void addEvent(Event e){
