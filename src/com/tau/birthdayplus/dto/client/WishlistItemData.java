@@ -2,12 +2,14 @@ package com.tau.birthdayplus.dto.client;
 
 import java.util.ArrayList;
 
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.tau.birthdayplus.domain.Participator;
 
-
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class WishlistItemData implements  IsSerializable{
 	   //item id
 	   @Persistent
