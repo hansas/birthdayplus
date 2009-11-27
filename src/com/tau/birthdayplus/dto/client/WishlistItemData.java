@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.NotPersistent;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -14,6 +15,8 @@ public class WishlistItemData implements  IsSerializable{
 	   //item id
 	   @Persistent
 	   private String wishlistItemId;
+	   @NotPersistent
+	   private String userId;
 	   @Persistent
 	   private String itemName;
 	   @Persistent
@@ -44,7 +47,7 @@ public class WishlistItemData implements  IsSerializable{
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemData(String wishlistItemId,String name, Integer priority, String link, Integer price, String giverId){
+	public WishlistItemData(String wishlistItemId,String userId,String name, Integer priority, String link, Integer price, String giverId){
 		this.wishlistItemId=wishlistItemId;
 		this.itemName = name;
 		this.priority = priority;
@@ -55,14 +58,14 @@ public class WishlistItemData implements  IsSerializable{
 		this.setGiverId(giverId);
 	}
 	
-	public WishlistItemData(String name,Integer priority,String link,Integer price,String giverId){
-		this("",name,priority,link,price,giverId);
+	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price,String giverId){
+		this("",userId,name,priority,link,price,giverId);
 	}
 	/*
 	 * constructor for client side 
 	 */
-	public WishlistItemData(String name,Integer priority,String link,Integer price){
-		this("",name,priority,link,price,"");
+	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price){
+		this("",userId,name,priority,link,price,"");
 	}
 	
 	public String getWishlistItemId(){
@@ -123,6 +126,10 @@ public class WishlistItemData implements  IsSerializable{
 	
 	public String toString(){
 		return "name is: "+ itemName +" "+"priority is: "+priority+" "+"link is :" +link+"price is : "+ price;
+	}
+	
+	public String getUserId() {
+		return userId;
 	}
 
 }
