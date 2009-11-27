@@ -116,6 +116,7 @@ public class Birthdayplus implements EntryPoint {
 			
 		
 			//listen to the events in the tabs
+			wireEventGUIEvents();
 			wireMyWishlistGUIEvents();
 			wireIBuyGUIEvents();
 			
@@ -192,6 +193,15 @@ public class Birthdayplus implements EntryPoint {
 				public void onClick(ClickEvent event){
 					Cell cellForEvent=iBuyGUI.wishTable.getCellForEvent(event);
 					iBuyGUI.gui_eventItemGridClicked(cellForEvent);
+				}
+			});
+		}
+		
+		private void wireEventGUIEvents(){
+			eventGui.eventTable.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event){
+					Cell cellForEvent = eventGui.eventTable.getCellForEvent(event);
+					eventGui.gui_eventTableEventClicked(cellForEvent);
 				}
 			});
 		}
