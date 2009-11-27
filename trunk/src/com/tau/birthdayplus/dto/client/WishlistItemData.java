@@ -40,8 +40,9 @@ public class WishlistItemData implements  IsSerializable{
 	 * A user-defined class that serializable  must have a default (zero argument) constructor 
 	 * (with any access modifier) or no constructor at all.
 	 */
-	public WishlistItemData(){
-		participators=new ArrayList<ParticipatorData>();
+	private WishlistItemData(){
+		
+		
 		
 	}
 	/*
@@ -61,16 +62,15 @@ public class WishlistItemData implements  IsSerializable{
 	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price,String giverId){
 		this("",userId,name,priority,link,price,giverId);
 	}
-	/*
-	 * constructor for client side 
-	 */
+	
 	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price){
 		this("",userId,name,priority,link,price,"");
 	}
-	
-	//TODO: delete this
-	public WishlistItemData(String name,Integer priority,String link,Integer price){
-		this("","",name,priority,link,price,"");
+	/*
+	 * constructor for client side - create new item 
+	 */
+	public WishlistItemData(String userId){
+		this("",userId,"",5,"",0,"");
 	}
 	
 	public String getWishlistItemId(){
