@@ -12,7 +12,7 @@ public class EventManagement {
 		try{
 			BusinessObjectDAL.createEvent(event);
 		}catch(Exception ex){
-			throw new RuntimeException(ex);
+			throw new RuntimeException("createEvent(EventData event) failed", ex);
 		}
 	}
 	

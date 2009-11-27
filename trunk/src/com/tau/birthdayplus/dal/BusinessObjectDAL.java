@@ -1,5 +1,6 @@
 package com.tau.birthdayplus.dal;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import javax.jdo.PersistenceManager;
@@ -15,7 +16,14 @@ import com.tau.birthdayplus.dto.client.GuestData;
 public class BusinessObjectDAL {
 	
 	public static GuestData loadGuestData(String guestId, PersistenceManager pm){
-		return pm.getObjectById(GuestData.class, guestId);
+		Guest guest = null;
+		try{
+			guest = pm.getObjectById(Guest.class, guestId);
+		}
+		catch (Exception ex){
+			System.out.print(ex.getMessage());
+		}
+		return guest; 
 	}
 	
 	// Automatically open and close PMF
@@ -26,12 +34,14 @@ public class BusinessObjectDAL {
 		return g;
 	}
 	
-	public static void createProfile(Guest guest, GuestData guestData) {
+	public static void createProfile(Guest guest) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-        	pm.makePersistent(guestData);
-        	pm.makePersistent(guest);
-        } finally {
+           	pm.makePersistent(guest);
+        } catch (Exception ex){
+        	System.out.println(ex.getMessage());
+        }
+		finally {
         	pm.close();
         }
 	}
@@ -96,23 +106,33 @@ public class BusinessObjectDAL {
 	}
 	
 	public static void createEvent(EventData eventD){
-		Key eventKey = KeyFactory.stringToKey(eventD.getEventId());
-		Event event = new Event(eventD);
-		event.setKey(eventKey);
+		String userId = eventD.getUserId();
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		pm.makePersistent(event);
-		Key parentKey = eventKey.getParent();
-		Guest parent = pm.getObjectById(Guest.class, parentKey);
-		parent.addEvent(event);
-		pm.makePersistent(parent);
-		pm.close();
+		Transaction tx = (Transaction)pm.currentTransaction();
+		Event event = new Event(eventD);
+		try
+		{
+		    tx.begin();
+		    Guest user = pm.getObjectById(Guest.class, userId);
+		    user.addEvent(event);
+		    pm.makePersistent(event);
+		  	pm.makePersistent(user);
+		    tx.commit();
+		}catch (Exception ex) {
+			throw new RuntimeException("error in data base", ex);
+		}finally
+		{
+		    if (tx.isActive()){
+		        tx.rollback();
+		    }
+		    else{
+		    	event.setEventId(KeyFactory.keyToString(event.getKey()));
+		    	pm.makePersistent(event);
+		    }
+		    pm.close();
+		}
 	}
 	
-	//checks if user with id uId has eventD in his events
-//	public static Boolean isMyEvent (String uId, EventData eventD){
-//		Key parentKey = KeyFactory.stringToKey(eventD.getEventId());
-//		return uId.equals(parentKey);
-//	}
 	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
 		ArrayList<EventData> events;
 		PersistenceManager pm = PMF.get().getPersistenceManager();    

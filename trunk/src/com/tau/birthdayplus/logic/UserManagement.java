@@ -13,7 +13,7 @@ public class UserManagement {
 	
 	public static void createProfile(GuestData guestData) {
 		Guest guest = new Guest(guestData);
-		BusinessObjectDAL.createProfile(guest,guestData);
+		BusinessObjectDAL.createProfile(guest);
 	}
 	
 }

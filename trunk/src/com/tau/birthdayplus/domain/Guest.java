@@ -29,8 +29,8 @@ public class Guest extends GuestData  {
 		
 		public Guest(String googleId, String firstName, String lastName, Date birthday) {
 			super(googleId,firstName,lastName,birthday);
-			this.events = new ArrayList<Event>();
-			this.wishlistItems = new ArrayList<WishlistItem>();
+			//this.events = new ArrayList<Event>();
+			//this.wishlistItems = new ArrayList<WishlistItem>();
 		}
 		
 		public Guest(GuestData guestData){
@@ -38,7 +38,10 @@ public class Guest extends GuestData  {
 		}
 		
 		public void addEvent(Event e){
-			events.add(e);
+			if (this.events == null){
+				this.events = new ArrayList<Event>();
+			}
+			this.events.add(e);
 		}
 		
 		public void removeEvent(Event e){
@@ -46,7 +49,10 @@ public class Guest extends GuestData  {
 		}
 		
 		public void addWishlistItem(WishlistItem item){
-			wishlistItems.add(item);
+			if (this.wishlistItems == null){
+				this.wishlistItems = new ArrayList<WishlistItem>();
+			}
+			this.wishlistItems.add(item);
 		}
 		
 		public void removeWishlistItem(WishlistItem item){

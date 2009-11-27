@@ -10,7 +10,7 @@ import javax.jdo.annotations.Persistent;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+//@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class EventData  implements IsSerializable{
 	   
 	   @Persistent
@@ -50,6 +50,10 @@ public class EventData  implements IsSerializable{
   	   public String getEventId(){
 		   return this.eventId;
 		   
+	   }
+  	   
+	   public void setEventId(String eventId){
+		   this.eventId = eventId;
 	   }
 	   
 	   public void setEventName(String eventName){

@@ -36,6 +36,7 @@ public interface EventServiceAsync {
 	
 	void getEvents(ArrayList<String> uIdlist,
 			AsyncCallback<ArrayList<EventData>> callback);
+	
 	void createEvent(EventData event, AsyncCallback<Void> callback);
 
 
