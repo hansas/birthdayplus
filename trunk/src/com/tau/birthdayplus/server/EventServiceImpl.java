@@ -31,7 +31,7 @@ EventService {
 	 * delete the event 
 	 * Client- give only to owner to delete event
 	 */
-	 public void deleteEvent( EventData eventD) {
+	 public void deleteEvent(EventData eventD) {
 		EventManagement.deleteEvent(eventD);
 		
 	}
@@ -47,7 +47,7 @@ EventService {
 	 * update the event
 	 * Client - give only to owner to update event
 	 */
-	public void updateEvent( EventData eventD) {
+	public void updateEvent(EventData eventD) {
 		EventManagement.updatEvent(eventD);
 		
 	}

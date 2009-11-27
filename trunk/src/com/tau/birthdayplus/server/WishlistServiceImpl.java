@@ -52,6 +52,13 @@ WishlistService  {
 		List<Event> events = g.getEvents();
 		for (Event e: events){
 			System.out.print(e.getEventName());
+		}
+		ArrayList<String> users = new ArrayList<String>();
+		users.add("123");
+		ArrayList<EventData> eventsData = new ArrayList<EventData>();
+		eventsData = EventManagement.getEvents(users);
+		for (EventData eD: eventsData){
+			System.out.print(eD.getEventName());
 		}*/
 	}
 	/*
