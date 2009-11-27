@@ -46,6 +46,11 @@ public class Event  {
 	public Event(EventData eventD){
 		this(eventD.getEventName(),eventD.getUserId(),eventD.getEventDate(),eventD.getRecurrence());
 	}
+	
+	public void copyFromEventData(EventData eventD){
+		setEventName(eventD.getEventName());
+		setEventDate(eventD.getEventDate());
+	}
 	/*
 	static Event getEventByKey(Key key){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
