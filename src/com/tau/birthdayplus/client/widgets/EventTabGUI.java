@@ -34,7 +34,7 @@ public class EventTabGUI extends Composite {
 	private TextBox txtName;
 	private DateBox txtDate;
 	private CheckBox chkRecurrence;
-	public EventTabDeligate eventService;
+	public EventTabDelegate eventService;
 	
 	private List<EventData> eventList;
 	private EventData currentEvent;
