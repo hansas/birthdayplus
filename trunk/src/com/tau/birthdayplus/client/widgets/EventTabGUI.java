@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.CwConstants;
@@ -29,20 +30,22 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 public class EventTabGUI extends Composite{
 	protected VerticalPanel vPanel;
 	private CwConstants constants;
-	protected TableWithHeader eventTable;
+	public TableWithHeader eventTable;
 	public Button btnAddEvent; 
 	public DialogBox eventDialogBox;
 	private TextBox txtName;
 	private DateBox txtDate;
 	private CheckBox chkRecurrence;
 	public EventTabDelegate eventService;
-	
+	private WishListFriendsGUI wishlistFriendGui;
 	private ArrayList<EventData> eventList;
 	private EventData currentEvent;
 	public void init(){
 		buildEventTab();
 		placeWidgets();
 		initWidget(vPanel);
+		wishlistFriendGui = new WishListFriendsGUI();
+		wishlistFriendGui.init();
 	}
 	
 	private void buildEventTab(){
@@ -194,8 +197,24 @@ public class EventTabGUI extends Composite{
 		
 	}
 	public void service_eventDeleteEventFailed(Throwable caught) {
+		// TODO Auto-generated method stub	
+	}
+	
+	public void service_eventGetWishlistSuccess() {
+	}
+
+	public void service_eventGetWishlistFailed(Throwable caught) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	public void gui_eventTableEventClicked(Cell cellClicked) {
+		int row = cellClicked.getRowIndex();
+        int col = cellClicked.getCellIndex();
+        
+        wishlistFriendGui.friendWishlistBox.center();
+        wishlistFriendGui.friendWishlistBox.show();
+		
+	}
+	
 }
