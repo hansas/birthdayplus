@@ -26,7 +26,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.tau.birthdayplus.client.widgets.EventTab;
+import com.tau.birthdayplus.client.widgets.EventTabDeligate;
+import com.tau.birthdayplus.client.widgets.EventTabGUI;
 import com.tau.birthdayplus.client.widgets.MyWishlistDeligate;
 import com.tau.birthdayplus.client.widgets.MyWishlistTabGUI;
 import com.tau.birthdayplus.dto.client.EventData;
@@ -64,6 +65,11 @@ public class Birthdayplus implements EntryPoint {
 	 */
 	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class); 
 	
+	/*
+	 *  Event tab
+	 */
+	private EventTabGUI eventGui;
+	private EventTabDeligate eventDeligate;
 	
 	/*
 	 * for second tab
@@ -103,7 +109,13 @@ public class Birthdayplus implements EntryPoint {
         	}
         });
         
-
+       /* eventGui.btnAddEvent.addClickHandler(new ClickHandler(){
+        	public void onClick(ClickEvent event){
+        		eventGui.gui_eventAddEventButtonClicked();
+        	}
+        });
+        
+*/
     }
 
 
@@ -131,8 +143,11 @@ public class Birthdayplus implements EntryPoint {
 	    List<EventData> list = new ArrayList<EventData>(); 
 	    EventData event = new EventData("1","smert", new Date(2000), false);
 	    list.add(event);
-	    EventTab tabEvent = new EventTab(list); 
-	    tab.add(tabEvent, "Events");
+	    
+	    //eventGui = new EventTabGUI(list); 
+	    //eventDeligate = new EventTabDeligate();
+	    //eventGui.eventService = eventDeligate;
+	    //tab.add(eventGui, "Events");
 		
 	    /*
 	     * add MyWishlist to the second tab
@@ -143,7 +158,6 @@ public class Birthdayplus implements EntryPoint {
         delegate.gui = gui;
         gui.init();
         
-	    HTML wishlistText = new HTML("Wishlist");
 		tab.add(gui.wishlistVerticalPanel, "Wishlist");
 		
 		//listen to the events in second tab
@@ -153,12 +167,6 @@ public class Birthdayplus implements EntryPoint {
 		tab.add(buyListText, "Need to buy");
 		
 		tab.selectTab(0);
-		
-		 
-
-		
-		//Create the popup add event dialog box
-		final DialogBox dialogBox = createAddEventDialogBox();
 
 		//check that can communicate with remote services 
 		eventService.printHello(
@@ -194,53 +202,6 @@ public class Birthdayplus implements EntryPoint {
 				
 			}
 		});
-		
-		
-
-		// Create a handler for the tab
-/*		class MyHandler implements SelectionHandler {
-			/**
-			 * Fired when the user clicks on the sendButton.
-			 */
-/*			public void onSelection(SelectionEvent event) {
-				//sendNameToServer();
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-/*			private void sendNameToServer() {
-				String textToServer = tab.getTabBar().getTitle();
-				textToServerLabel.setText(textToServer);
-				serverResponseLabel.setText("");
-				greetingService.greetServer(textToServer,
-						new AsyncCallback<String>() {
-							public void onFailure(Throwable caught) {
-								// Show the RPC error message to the user
-								dialogBox
-										.setText("Remote Procedure Call - Failure");
-								serverResponseLabel
-										.addStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(SERVER_ERROR);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-
-							public void onSuccess(String result) {
-								dialogBox.setText("Remote Procedure Call");
-								serverResponseLabel
-										.removeStyleName("serverResponseLabelError");
-								serverResponseLabel.setHTML(result);
-								dialogBox.center();
-								closeButton.setFocus(true);
-							}
-						});
-			}
-		}
-*/
-		// Add a handler to send the name to the server
-		//MyHandler handler = new MyHandler();
-		//tab.addSelectionHandler(handler);
 	}
 	
 	/**
@@ -264,100 +225,5 @@ public class Birthdayplus implements EntryPoint {
 	    return hPanel.getElement().getString();
 	  }
 	  
-	  /**
-	   * Create the wishlist of specific contact.
-	   * 
-	   * @return the wishlist
-	   */
-	  private VerticalPanel createFriendWishlist(Person friend) {
-	    VerticalPanel itemsPanel = new VerticalPanel();
-	    itemsPanel.setSpacing(4);
-	    String[] items = {"Korova", "Krokodil", "Hryak"};
-	    for (int i = 0; i < items.length; i++) {
-	      final String item = items[i];
-	      final HTML contactLink = new HTML("<a href=\"javascript:undefined;\">"
-	          + item + "</a>");
-	      itemsPanel.add(contactLink);
-
-	      // Open the contact info popup when the user clicks a contact
-	      contactLink.addClickHandler(new ClickHandler() {
-	        public void onClick(ClickEvent event) {
-		         Window.alert("Clicked");
-	        }
-	      });
-	    }
-	    return itemsPanel;
-	  }
 	  
-	  private DecoratedStackPanel friendsEvents(List<Person> list){
-		  DecoratedStackPanel dsPanel = new DecoratedStackPanel();
-		  for (Person p : list){
-			  String pName = getHeaderString(p.getName());
-			  dsPanel.add(createFriendWishlist(p), pName, true);
-		  }
-		return dsPanel;  
-	  }
-	  
-	  /**
-	   * Create a form that contains undisclosed advanced options.
-	   */
-	  private DialogBox createAddEventDialogBox() {
-		  final DialogBox dialogBox = new DialogBox();
-
-		  dialogBox.setText("Add Event");
-		  dialogBox.setAnimationEnabled(true);
-	
-		  HorizontalPanel buttonHPanel = new HorizontalPanel();
-		  buttonHPanel.addStyleName("buttonHPanel");
-		  buttonHPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
-
-		  // Add a handler to close the DialogBox
-		  final Button btnOK = new Button(constants.cwDialogBoxOK(),
-			        new ClickHandler() {
-			          public void onClick(ClickEvent event) {
-			            dialogBox.hide();
-			          }
-			        });
-		  btnOK.getElement().setId("OkButton");
-		  
-		  final Button btnCancel = new Button(constants.cwDialogBoxCancel(),
-			        new ClickHandler() {
-			          public void onClick(ClickEvent event) {
-			            dialogBox.hide();
-			          }
-			        });
-		  btnCancel.getElement().setId("CancelButton");
-		
-		  if (LocaleInfo.getCurrentLocale().isRTL()) {
-		      buttonHPanel.add(btnCancel);
-		      buttonHPanel.add(btnOK);
-		  } 
-		  else {
-			  buttonHPanel.add(btnOK);
-		      buttonHPanel.add(btnCancel);
-		  }
-
-		  // Create a table to layout the form options
-		  FlexTable layout = new FlexTable();
-		  layout.setCellSpacing(6);
-		  layout.setWidth("50%");
-
-		  //Add some standard form options
-		  layout.setHTML(1, 0, constants.cwDisclosurePanelFormName());
-		  TextBox txtName = new TextBox();
-		  layout.setWidget(1, 1, txtName);
-		  layout.setHTML(2, 0, constants.cwEventLabel());
-		  DateBox  txtBirthday = new DateBox();
-		  txtBirthday.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getShortDateFormat()));
-		  layout.setWidget(2, 1, txtBirthday);
-		  // Wrap the contents in a DecoratorPanel
-		  DecoratorPanel decPanel = new DecoratorPanel();
-		  decPanel.setWidget(layout);
-		  VerticalPanel vPanel = new VerticalPanel();
-		  vPanel.add(decPanel);
-		  vPanel.add(buttonHPanel);
-		  dialogBox.add(vPanel);
-
-		  return dialogBox;
-  }
 }
