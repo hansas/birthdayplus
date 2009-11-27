@@ -1,7 +1,5 @@
 package com.tau.birthdayplus.domain;
 
-import java.util.List;
-
 //import com.google.appengine.api.users.User;
 
 import javax.jdo.annotations.IdentityType;
@@ -10,28 +8,53 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 
-import com.tau.birthdayplus.dto.client.EventData;
-import com.tau.birthdayplus.dto.client.ParticipatorData;
-
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Participator extends ParticipatorData
+public class Participator
 {
-	   
+	   @PrimaryKey
+	   @Persistent
+	   String userId;
+	   @Persistent
+	   private
+	   String userFirstName;
+	   @Persistent
+	   private
+	   String userLastName;
+	   @Persistent
+	   Integer money; 
 	  
 	   
 
 	   public Participator(String userId,String userFirstName,String userLastName,Integer money) {
-		   super(userId,userFirstName,userLastName,money);
+		   this.userId = userId;
+		   this.userFirstName = userFirstName;
+		   this.userLastName = userLastName;
+		   this.money =  money;
 	   }
 	   
 	   public Participator(Guest guest, Integer money) {
 		   this(guest.getId(),guest.getFirstName(),guest.getLastName(),money);
 	   }
 	   
+	   String getUserId() {
+		   return userId;
+	   }
 
-	/*void setUserId(String userId) {
-		this.userId = userId;
-	}*/
+	   void setMoney(Integer money) {
+		    this.money = money;
+    	}
+
+	   Integer getMoney() {
+		    return money;
+    	}
+
+		String getUserFirstName() {
+			return userFirstName;
+		}
+
+		String getUserLastName() {
+			return userLastName;
+		}
 
 }

@@ -11,11 +11,11 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.EventData;
-import com.tau.birthdayplus.dto.client.GuestData;
+//import com.tau.birthdayplus.dto.client.GuestData;
 
 public class BusinessObjectDAL {
 	
-	public static GuestData loadGuestData(String guestId, PersistenceManager pm){
+	public static Guest loadGuest(String guestId, PersistenceManager pm){
 		Guest guest = null;
 		try{
 			guest = pm.getObjectById(Guest.class, guestId);
@@ -27,12 +27,19 @@ public class BusinessObjectDAL {
 	}
 	
 	// Automatically open and close PMF
-	public static GuestData loadGuestData(String guestId){
+	public static Guest loadGuest(String guestId){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		GuestData g = loadGuestData(guestId, pm);
+		Guest g = loadGuest(guestId, pm);
 		pm.close();
 		return g;
 	}
+	
+	/*public static Guest loadGuest(String guestId){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Guest guest = pm.getObjectById(Guest.class, guestId);
+		pm.close();
+		return guest;
+	}*/
 	
 	public static void createProfile(Guest guest) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -115,8 +122,9 @@ public class BusinessObjectDAL {
 		    tx.begin();
 		    Guest user = pm.getObjectById(Guest.class, userId);
 		    user.addEvent(event);
-		    pm.makePersistent(event);
+		    //event.setEventId(KeyFactory.keyToString(event.getKey()));
 		  	pm.makePersistent(user);
+		    pm.makePersistent(event);
 		    tx.commit();
 		}catch (Exception ex) {
 			throw new RuntimeException("error in data base", ex);
@@ -124,10 +132,6 @@ public class BusinessObjectDAL {
 		{
 		    if (tx.isActive()){
 		        tx.rollback();
-		    }
-		    else{
-		    	event.setEventId(KeyFactory.keyToString(event.getKey()));
-		    	pm.makePersistent(event);
 		    }
 		    pm.close();
 		}

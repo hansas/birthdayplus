@@ -2,37 +2,22 @@ package com.tau.birthdayplus.dto.client;
 
 import java.util.ArrayList;
 
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.NotPersistent;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-//@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class WishlistItemData implements  IsSerializable{
 	   //item id
-	   @Persistent
 	   private String wishlistItemId;
-	   @NotPersistent
 	   private String userId;
-	   @Persistent
 	   private String itemName;
-	   @Persistent
 	   private Integer priority;
-	   @Persistent
 	   private String link;
-	   @Persistent
 	   private Integer price;
 	   //people that want to buy this together
-	   @Persistent
 	   ArrayList<ParticipatorData> participators;
        //if booked or not
-	   @Persistent
 	   private Boolean isActive;
 	   //id of the person that booked this item
-	   @Persistent
 	   private String giverId;
 	
 	/*
@@ -40,9 +25,7 @@ public class WishlistItemData implements  IsSerializable{
 	 * A user-defined class that serializable  must have a default (zero argument) constructor 
 	 * (with any access modifier) or no constructor at all.
 	 */
-	private WishlistItemData(){
-		
-		
+	public WishlistItemData(){	
 		
 	}
 	/*
@@ -65,6 +48,10 @@ public class WishlistItemData implements  IsSerializable{
 	
 	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price){
 		this("",userId,name,priority,link,price,"");
+	}
+	
+	public WishlistItemData(String name,Integer priority,String link,Integer price){
+		this("","",name,priority,link,price,"");
 	}
 	/*
 	 * constructor for client side - create new item 

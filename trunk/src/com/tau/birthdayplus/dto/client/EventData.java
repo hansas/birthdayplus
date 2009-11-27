@@ -2,26 +2,14 @@ package com.tau.birthdayplus.dto.client;
 
 import java.util.Date;
 
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.NotPersistent;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-
-//@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class EventData  implements IsSerializable{
-	   
-	   @Persistent
 	   private String eventId;
-	   @NotPersistent
 	   private String userId;
-	   @Persistent
+
 	   private String eventName;
-	   @Persistent
 	   private Date eventDate;
-	   @Persistent
 	   private Boolean recurrence;
 	   
 	   /*

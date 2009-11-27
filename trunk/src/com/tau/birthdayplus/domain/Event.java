@@ -16,13 +16,17 @@ import com.tau.birthdayplus.dto.client.EventData;
 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Event extends EventData  {
-    	
-
+public class Event  {
 	   @PrimaryKey
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	   private Key key;
 	   
+	   @Persistent
+	   private String eventName;
+	   @Persistent
+	   private Date eventDate;
+	   @Persistent
+	   private Boolean recurrence;
 	   
 	/*
 	 * constructor for isSerializable
@@ -34,7 +38,9 @@ public class Event extends EventData  {
 	}
 	   
 	public Event(String eventName,String userId,Date eventDate,Boolean recurrence){
-		super(eventName,userId,eventDate,recurrence);
+		   this.eventName = eventName;
+		   this.eventDate = eventDate;
+		   this.recurrence = recurrence;
 	}
 	
 	public Event(EventData eventD){
@@ -55,6 +61,30 @@ public class Event extends EventData  {
 		return key;
 	}
 	
+	   public void setEventName(String eventName){
+		   this.eventName=eventName;
+	   }
+	   
+	   public String getEventName(){
+		   return this.eventName;
+	   }
+	   
+	   public void setEventDate(Date eventDate){
+		   this.eventDate=eventDate;
+	   }
+	   
+	   public Date getEventDate(){
+		   return this.eventDate;
+		   
+	   }
+	   
+	   public void setRecurrence(Boolean recurrence){
+		   this.recurrence=recurrence;
+	   }
+	   
+	   public Boolean getRecurrence(){
+		   return this.recurrence;
+	   }
 
 
 	
