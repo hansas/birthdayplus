@@ -10,7 +10,7 @@ import javax.jdo.annotations.NotPersistent;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
+//@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class WishlistItemData implements  IsSerializable{
 	   //item id
 	   @Persistent
@@ -66,6 +66,11 @@ public class WishlistItemData implements  IsSerializable{
 	 */
 	public WishlistItemData(String userId,String name,Integer priority,String link,Integer price){
 		this("",userId,name,priority,link,price,"");
+	}
+	
+	//TODO: delete this
+	public WishlistItemData(String name,Integer priority,String link,Integer price){
+		this("","",name,priority,link,price,"");
 	}
 	
 	public String getWishlistItemId(){

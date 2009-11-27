@@ -1,11 +1,16 @@
 package com.tau.birthdayplus.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.WishlistService;
+import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.logic.EventManagement;
+import com.tau.birthdayplus.logic.UserManagement;
 
 
 /**
@@ -33,7 +38,13 @@ WishlistService  {
 	 */
 	public void createWishlistItem(WishlistItemData item) {
 		System.out.println("creating new item : "+item);
-		
+		/*
+		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
+		UserManagement.createProfile(guestData);
+		GuestData savedGuest = UserManagement.loadGuestData("123"); 
+		EventData eventData = new EventData("Test1", "123", new Date(1,1,1), false);
+		EventManagement.createEvent(eventData);
+		*/
 	}
 	/*
 	 * delete  participator from the list
