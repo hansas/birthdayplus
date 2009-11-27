@@ -97,7 +97,7 @@ public class MyWishlistTabGUI {
 		   
 		    ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
 		    for(int i=0;i<5;i++){
-		    	data.add(new WishlistItemData("name"+i,i,"http://techblog.maydu.eu/?p=7",500));
+		    	data.add(new WishlistItemData(userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 		    	
 		    	
 		    }
@@ -308,7 +308,7 @@ public class MyWishlistTabGUI {
         this.addItemButton.setVisible(false);
         this.updateButton.setVisible(false);
         this.addButton.setVisible(true);
-        loadForm(new WishlistItemData());
+        loadForm(new WishlistItemData(userId));
     }
     
     /*
