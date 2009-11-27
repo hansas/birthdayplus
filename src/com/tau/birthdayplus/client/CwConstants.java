@@ -37,10 +37,14 @@ public interface CwConstants extends Constants {
     String cwEventLabel();
     
     @DefaultStringValue("Due")
-    String cwEventDueEvent();
+    String cwEventDue();
     
-    @DefaultStringValue("cw-FlexTable")
-    String cwFlexTableStyle();
+    @DefaultStringValue("Add Event")
+    String cwAddEvent();
+    
+    @DefaultStringValue("cw-TableWithHeader")
+    String cwTableStyle();
+    
     @DefaultStringArrayValue({"5","4","3","2","1"})
     String[] cwListBoxCategories();
 

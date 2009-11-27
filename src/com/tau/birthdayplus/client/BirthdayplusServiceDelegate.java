@@ -117,7 +117,7 @@ public class BirthdayplusServiceDelegate {
 ///////////////////////////////////////Wishlist//////////////////////////////////////////////// 
 	    
 		 
-	    void getWishlist(final ArrayList<String> uIdlist) {
+	    void getWishlist(final String uIdlist) {
 	    	wishlistService.getWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemData>>(){
 
 	    		public void onFailure(Throwable caught){
