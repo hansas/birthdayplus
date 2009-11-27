@@ -24,8 +24,8 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 
 	
-	public WishlistItem(String name, Integer priority, String link, Integer price,String giverId){
-		super(name,priority,link,price);
+	public WishlistItem(String userId, String name, Integer priority, String link, Integer price,String giverId){
+		super(userId,name,priority,link,price,giverId);
 	}
 	
 	/*

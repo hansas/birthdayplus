@@ -33,12 +33,12 @@ public class Event extends EventData  {
 		
 	}
 	   
-	public Event(String eventName,Date eventDate,Boolean recurrence){
-		super(eventName,eventDate,recurrence);
+	public Event(String eventName,String userId,Date eventDate,Boolean recurrence){
+		super(eventName,userId,eventDate,recurrence);
 	}
 	
 	public Event(EventData eventD){
-		this(eventD.getEventName(),eventD.getEventDate(),eventD.getRecurrence());
+		this(eventD.getEventName(),eventD.getUserId(),eventD.getEventDate(),eventD.getRecurrence());
 	}
 	/*
 	static Event getEventByKey(Key key){
