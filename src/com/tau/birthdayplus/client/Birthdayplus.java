@@ -26,9 +26,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.tau.birthdayplus.client.widgets.EventTabDeligate;
+import com.tau.birthdayplus.client.widgets.EventTabDelegate;
 import com.tau.birthdayplus.client.widgets.EventTabGUI;
-import com.tau.birthdayplus.client.widgets.MyWishlistDeligate;
+import com.tau.birthdayplus.client.widgets.MyWishlistDelegate;
 import com.tau.birthdayplus.client.widgets.MyWishlistTabGUI;
 import com.tau.birthdayplus.dto.client.EventData;
 
@@ -69,13 +69,13 @@ public class Birthdayplus implements EntryPoint {
 	 *  Event tab
 	 */
 	private EventTabGUI eventGui;
-	private EventTabDeligate eventDeligate;
+	private EventTabDelegate eventDeligate;
 	
 	/*
 	 * for second tab
 	 */
 	private MyWishlistTabGUI gui;
-	private MyWishlistDeligate delegate;
+	private MyWishlistDelegate delegate;
 	
 	/*
 	 * listen to the widgets of second tab
@@ -153,7 +153,7 @@ public class Birthdayplus implements EntryPoint {
 	     * add MyWishlist to the second tab
 	     */
 	    gui = new MyWishlistTabGUI();
-        delegate = new MyWishlistDeligate();
+        delegate = new MyWishlistDelegate();
         gui.wishlistService = delegate;
         delegate.gui = gui;
         gui.init();
