@@ -1,6 +1,7 @@
 package com.tau.birthdayplus.client.widgets;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -21,11 +24,9 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.WishlistItemData;
 
-public class EventTabGUI extends Composite {
-	/* Constants. */
-	private static final String EVENT_TAB_ROOT_PANEL = "vEventTabPanel";
-	
+public class EventTabGUI extends Composite{
 	protected VerticalPanel vPanel;
 	private CwConstants constants;
 	protected TableWithHeader eventTable;
@@ -36,12 +37,11 @@ public class EventTabGUI extends Composite {
 	private CheckBox chkRecurrence;
 	public EventTabDelegate eventService;
 	
-	private List<EventData> eventList;
+	private ArrayList<EventData> eventList;
 	private EventData currentEvent;
-	public EventTabGUI(List<EventData> eventList){
-		this.eventList = eventList;
+	public void init(){
 		buildEventTab();
-		placeWidgets();		 
+		placeWidgets();
 		initWidget(vPanel);
 	}
 	
@@ -49,25 +49,31 @@ public class EventTabGUI extends Composite {
 		vPanel = new VerticalPanel();
 		btnAddEvent = new Button("Add Event");
 		
-		vPanel.getElement().setId(EVENT_TAB_ROOT_PANEL);
 		buildEventTable();
+		eventList = new ArrayList<EventData>(); 
+		EventData event = new EventData("den rojdenie u menia", "1", new Date("03/10/2010"), false);
+		eventList.add(event);
+		eventList.add(event);
+		eventList.add(event);
+		eventList.add(event);
+		service_eventGetEventsSuccess(eventList);
 	}
 	/*
 	* create flex table for wishlist items
 	*/
 	private void buildEventTable(){
 		eventTable=new TableWithHeader();
-		eventTable.setStyleName(constants.cwTableStyle());
+		//eventTable.setStyleName(constants.cwTableStyle());
 		FlexCellFormatter cellFormatter =  eventTable.getFlexCellFormatter();
 		eventTable.setCellSpacing(5);
 		  
-		eventTable.setHeader(0, constants.cwEventLabel());
-		eventTable.setHeader(1, constants.cwEventDue());   
+		eventTable.setHeader(0, "Event");
+		eventTable.setHeader(1, "Due");   
 	}
 	
 	private void placeWidgets() {
-		RootPanel.get(EVENT_TAB_ROOT_PANEL).add(eventTable);
-		RootPanel.get(EVENT_TAB_ROOT_PANEL).add(btnAddEvent);
+		vPanel.add(eventTable);
+		vPanel.add(btnAddEvent);
 	}
 	
 	/**
@@ -145,8 +151,23 @@ public class EventTabGUI extends Composite {
     	this.eventDialogBox.hide();
     }
 	public void service_eventGetEventsSuccess(ArrayList<EventData> result) {
-		// TODO Auto-generated method stub
+		String due;
+		this.eventList = result;
+		this.eventTable.clear();
 		
+		int row = eventTable.getRowCount();
+		for (EventData event : result) {
+			eventTable.setWidget(row, 0, new Label(event.getEventName()));
+			due = String.valueOf(daysBetween(new Date(), event.getEventDate()));
+			Label lblEventDate = new Label(due);
+			lblEventDate.setTitle(event.getEventDate().toString());
+			eventTable.setWidget(row, 1, lblEventDate);
+			row++;
+		}
+	}
+	private long daysBetween(Date d1, Date d2) {
+		final long ONE_HOUR = 60 * 60 * 1000L;
+	    return ((d2.getTime() - d1.getTime() + ONE_HOUR) / (ONE_HOUR * 24));
 	}
 	public void service_eventGetEventsFailed(Throwable caught) {
 		// TODO Auto-generated method stub

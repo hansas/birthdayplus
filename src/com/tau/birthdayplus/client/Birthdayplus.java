@@ -43,7 +43,7 @@ public class Birthdayplus implements EntryPoint {
 	 *  Event tab
 	 */
 	private EventTabGUI eventGui;
-	private EventTabDelegate eventDeligate;
+	private EventTabDelegate eventDelegate;
 	
 	/*
 	 * MyWishlistTab tab
@@ -87,10 +87,12 @@ public class Birthdayplus implements EntryPoint {
 		//    EventData event = new EventData("1","smert", new Date(2000), false);
 		 //   list.add(event);
 		    
-		    //eventGui = new EventTabGUI(list); 
-		    //eventDeligate = new EventTabDeligate();
-		    //eventGui.eventService = eventDeligate;
-		    //tab.add(eventGui, "Events");
+		    eventGui = new EventTabGUI(); 
+		    eventDelegate = new EventTabDelegate();
+		    eventGui.eventService = eventDelegate;
+		    eventDelegate.eventGui = eventGui;
+		    eventGui.init();
+		    tab.add(eventGui, "Events");
 			
 			
 		    //add MyWishlist to the second tab
