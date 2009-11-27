@@ -35,7 +35,7 @@ public class IBuyTabGUI {
 	ArrayList<WishlistItemData> itemsToBuy;
 	WishlistItemData currentItem;
 	public IBuyDelegate wishlistService;
-	String userId;
+	String userId="5";
 	
 
 	
@@ -52,7 +52,7 @@ public class IBuyTabGUI {
 		    
 		 ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
 		    for(int i=0;i<5;i++){
-		    	data.add(new WishlistItemData("name"+i,i,"http://techblog.maydu.eu/?p=7",500));
+		    	data.add(new WishlistItemData(userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 		    }
 		    
 		service_getBookedWishlistSuccesfull(data);
