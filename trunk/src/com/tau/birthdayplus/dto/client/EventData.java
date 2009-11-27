@@ -15,6 +15,8 @@ public class EventData  implements IsSerializable{
 	   
 	   @Persistent
 	   private String eventId;
+	   @NotPersistent
+	   private String userId;
 	   @Persistent
 	   private String eventName;
 	   @Persistent
@@ -30,8 +32,9 @@ public class EventData  implements IsSerializable{
 	   /*
 	    * full constructor for the server side
 	    */
-	   public EventData(String eventId,String eventName,Date eventDate,Boolean recurrence){
+	   public EventData(String eventId,String userId,String eventName,Date eventDate,Boolean recurrence){
 		   this.eventId = eventId;
+		   this.userId = userId;
 		   this.eventName = eventName;
 		   this.eventDate = eventDate;
 		   this.recurrence = recurrence;
@@ -39,8 +42,8 @@ public class EventData  implements IsSerializable{
 	   /*
 	    * constructor for client side-don't have event id
 	    */
-	   public EventData(String eventName,Date eventDate,Boolean recurrence){
-		   this("",eventName,eventDate,recurrence);
+	   public EventData(String eventName,String userId,Date eventDate,Boolean recurrence){
+		   this("",userId,eventName,eventDate,recurrence);
 		   
 	   }
 	   
@@ -73,6 +76,10 @@ public class EventData  implements IsSerializable{
 	   public Boolean getRecurrence(){
 		   return this.recurrence;
 	   }
+
+		public String getUserId() {
+			return userId;
+		}
 
 
 }
