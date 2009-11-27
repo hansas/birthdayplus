@@ -71,7 +71,7 @@ public class MyWishlistTabGUI {
 	 */
 	private ArrayList<WishlistItemData> items;
     private WishlistItemData currentItem;
-    public MyWishlistDeligate wishlistService;
+    public MyWishlistDelegate wishlistService;
     protected String userId="5";
     
     
