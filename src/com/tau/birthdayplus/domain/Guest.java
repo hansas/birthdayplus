@@ -6,37 +6,77 @@ package com.tau.birthdayplus.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.jdo.PersistenceManager;
+//import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+//import javax.jdo.annotations.PrimaryKey;
 
 import com.tau.birthdayplus.dto.client.GuestData;
 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Guest extends GuestData  {
-
-//		@Persistent
-//		List<Guest> friends;
+public class Guest   {
+		@PrimaryKey
 		@Persistent
-		List<Event> events;
+		private String id;
 		@Persistent
-		List<WishlistItem> wishlistItems;
-		
+		private String firstName;
+		@Persistent
+		private String lastName;
+		@Persistent
+		private Date birthday;
 	
+	    @Persistent (defaultFetchGroup="true") 
+		List<Event> events;
+	    @Persistent (defaultFetchGroup="true")
+		List<WishlistItem> wishlistItems;
+
 		
 		public Guest(String googleId, String firstName, String lastName, Date birthday) {
-			super(googleId,firstName,lastName,birthday);
-			//this.events = new ArrayList<Event>();
-			//this.wishlistItems = new ArrayList<WishlistItem>();
+			this.setFirstName(firstName);
+			this.setLastName(lastName);
+			this.setBirthday(birthday);
+			this.id = googleId;
+			this.events = new ArrayList<Event>();
+			this.wishlistItems = new ArrayList<WishlistItem>();
 		}
 		
 		public Guest(GuestData guestData){
 			this(guestData.getId(),guestData.getFirstName(),guestData.getLastName(),guestData.getBirthday());
 		}
 		
+		public String getId(){
+			return this.id;
+		}
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
+		}
+
+		public String getFirstName() {
+			return firstName;
+		}
+
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
+		}
+
+		public String getLastName() {
+			return lastName;
+		}
+
+		public void setBirthday(Date birthday) {
+			this.birthday = birthday;
+		}
+
+		public Date getBirthday() {
+			return birthday;
+		}
+
+		public List<Event> getEvents(){
+			return events;
+		}
 		public void addEvent(Event e){
 			if (this.events == null){
 				this.events = new ArrayList<Event>();

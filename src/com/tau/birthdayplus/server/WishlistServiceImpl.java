@@ -2,9 +2,12 @@ package com.tau.birthdayplus.server;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.WishlistService;
+import com.tau.birthdayplus.domain.Event;
+import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -38,13 +41,18 @@ WishlistService  {
 	 */
 	public void createWishlistItem(WishlistItemData item) {
 		System.out.println("creating new item : "+item);
-		/*
-		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
+		
+		/*GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
 		UserManagement.createProfile(guestData);
 		GuestData savedGuest = UserManagement.loadGuestData("123"); 
 		EventData eventData = new EventData("Test1", "123", new Date(1,1,1), false);
 		EventManagement.createEvent(eventData);
-		*/
+		savedGuest = UserManagement.loadGuestData("123");
+		Guest g = UserManagement.loadGuest(savedGuest.getId());
+		List<Event> events = g.getEvents();
+		for (Event e: events){
+			System.out.print(e.getEventName());
+		}*/
 	}
 	/*
 	 * delete  participator from the list

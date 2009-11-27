@@ -1,26 +1,13 @@
 package com.tau.birthdayplus.dto.client;
 
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.NotPersistent;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ParticipatorData implements IsSerializable{
-	   @PrimaryKey
-	   @Persistent
+
 	   String userId;
-	   @Persistent
-	   private
-	   String userFirstName;
-	   @Persistent
-	   private
-	   String userLastName;
-	   @Persistent
+	   private String userFirstName;
+	   private String userLastName;
 	   Integer money;
 	   
 	   /*
