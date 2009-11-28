@@ -74,8 +74,8 @@ WishlistService  {
 	 * delete the item 
 	 * GUI - user can delete only his wishlist items
 	 */
-	public void deleteWishlistItem(String wishlistItemId) {
-		System.out.println("deleting item : "+wishlistItemId);
+	public void deleteWishlistItem(WishlistItemData item) {
+		System.out.println("deleting item : "+item);
 		
 	}
 	/*
