@@ -40,7 +40,7 @@ public class EventManagement {
 	 //   }
 	}
 
-	public static void updatEvent( EventData eventD){
+	public static void updateEvent( EventData eventD){
 	//    if(KeyFactory.stringToKey(eventD.getEventId()).equals(uId)){
 	    	BusinessObjectDAL.updateEvent(eventD);
 	  //  }else{

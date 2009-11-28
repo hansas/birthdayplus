@@ -48,7 +48,7 @@ EventService {
 	 * Client - give only to owner to update event
 	 */
 	public void updateEvent(EventData eventD) {
-		EventManagement.updatEvent(eventD);
+		EventManagement.updateEvent(eventD);
 		
 	}
 

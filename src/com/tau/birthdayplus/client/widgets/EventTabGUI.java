@@ -81,8 +81,6 @@ public class EventTabGUI {
 		
 		
 		eventList = new ArrayList<EventData>(); 
-
-	
 	}
 	
 	/*
@@ -188,6 +186,7 @@ public class EventTabGUI {
 	 /*
      * show the form
      */
+
     private void loadForm(EventData eventData,Actions action) {
 		eventDialogBox.center();
 		eventDialogBox.setText(action.toString()+ "Event");
