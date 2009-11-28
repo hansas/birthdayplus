@@ -121,16 +121,17 @@ public class BusinessObjectDAL {
 		    tx.begin();
 		    Guest user = pm.getObjectById(Guest.class, userId);
 		    user.addEvent(event);
-		    System.out.print(event.getKey());
+		    System.out.println(event.getKey());
 		    eventD.setEventId(KeyFactory.keyToString(event.getKey()));
-		    System.out.print(eventD.getEventId());
+		    System.out.println(eventD.getEventId());
+		    System.out.println(KeyFactory.stringToKey(eventD.getEventId()));
 		  	pm.makePersistent(user);
 		    pm.makePersistent(event);
 		    tx.commit();
 		}catch (Exception ex) {
 			throw new RuntimeException("error in data base", ex);
 		}finally
-		{
+ 		{
 		    if (tx.isActive()){
 		        tx.rollback();
 		    }
@@ -138,9 +139,8 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static List<Guest> getGuestsById(ArrayList<String> UserIdList) {
+	public static List<Guest> getGuestsById(ArrayList<String> UserIdList, PersistenceManager pm) {
 		List<Guest> guests = new ArrayList<Guest>();
-		PersistenceManager pm = PMF.get().getPersistenceManager(); 
 		try{
 			
 			Query query = pm.newQuery(Guest.class);
@@ -148,9 +148,9 @@ public class BusinessObjectDAL {
 		    guests = (List<Guest>)query.execute(UserIdList);
 		}
 		catch(Exception ex){
+			int i =0;
 			System.out.println(ex.getMessage());
 		}
-		pm.close();
 		return guests;
 	}
 	
