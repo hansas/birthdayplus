@@ -42,10 +42,10 @@ WishlistService  {
 	public void createWishlistItem(WishlistItemData item) {
 		System.out.println("creating new item : "+item);
 		
-		/*GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
+		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
 		UserManagement.createProfile(guestData);
 		GuestData savedGuest = UserManagement.loadGuestData("123"); 
-		EventData eventData = new EventData("Test1", "123", new Date(1,1,1), false);
+		EventData eventData = new EventData("","Test1", "123", new Date(1,1,1), false);
 		EventManagement.createEvent(eventData);
 		savedGuest = UserManagement.loadGuestData("123");
 		Guest g = UserManagement.loadGuest(savedGuest.getId());
@@ -59,7 +59,7 @@ WishlistService  {
 		eventsData = EventManagement.getEvents(users);
 		for (EventData eD: eventsData){
 			System.out.print(eD.getEventName());
-		}*/
+		}
 	}
 	/*
 	 * delete  participator from the list
