@@ -360,6 +360,39 @@ public class MyWishlistTabGUI {
 	}
 	
 	
+	public void wireMyWishlistGUIEvents() {
+		this.wishTable.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+                 Cell cellForEvent = wishTable.getCellForEvent(event);
+                 gui_eventItemGridClicked(cellForEvent);                
+            }});
+        
+		this.addItemButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui_eventAddItemButtonClicked();
+            }});
+
+		this.updateButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui_eventUpdateButtonClicked();
+            }});
+        
+		this.addButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui_eventAddButtonClicked();
+                
+            }});
+        
+		this.cancelButton.addClickHandler(new ClickHandler(){
+        	public void onClick(ClickEvent event){
+        	    gui_eventCancelButtonClicked();
+        	}
+        });
+  
+	}
+	
+	
+	
 	
 	
 
