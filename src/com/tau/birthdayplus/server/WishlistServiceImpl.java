@@ -60,6 +60,11 @@ WishlistService  {
 		for (EventData eD: eventsData){
 			System.out.println(eD.getEventName());
 			System.out.println(eD.getUserId());
+			EventManagement.deleteEvent(eD);
+		}
+		eventsData = EventManagement.getEvents(users);
+		if (eventsData.isEmpty()){
+			System.out.println("there is no events");
 		}
 	}
 	/*
