@@ -43,7 +43,7 @@ public class Birthdayplus implements EntryPoint {
 	/*
 	 * user id and HashMap of <friend id, friend name> from open social
 	 */
-	public String userId="555";
+	public String userId="987654321";
 	public HashMap<String,String> userFriends= new HashMap<String,String>();
 	
 	/*
@@ -110,9 +110,9 @@ public class Birthdayplus implements EntryPoint {
 	        
 			tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
 			
-			profileService.getProfile(userId, new AsyncCallback<GuestData>(){
+		//	profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
-				public void onFailure(Throwable caught) {
+		//		public void onFailure(Throwable caught) {
 					GuestData user= new GuestData(userId,"olga","vingurt",new Date());
 					profileService.createProfile(user, new AsyncCallback<Void>(){
 			    	public void onFailure(Throwable caught){
@@ -124,9 +124,9 @@ public class Birthdayplus implements EntryPoint {
 							temp.add(userId);
 							eventDelegate.getEvents(temp);
 							//listen to the events in the tabs
-			    			wireEventGUIEvents();
-			    			wireMyWishlistGUIEvents();
-			    			wireIBuyGUIEvents();
+							eventGui.wireEventGUIEvents();
+			    			myWishlistGUI.wireMyWishlistGUIEvents();
+			    			iBuyGUI.wireIBuyGUIEvents();
 							
 						}
 						
@@ -134,20 +134,20 @@ public class Birthdayplus implements EntryPoint {
 			    	);//end of method call)
 					
 					
-				}
+			//	}
 
-				public void onSuccess(GuestData result) {
-					ArrayList<String> temp=new ArrayList<String>();
-					temp.add(userId);
-					eventDelegate.getEvents(temp);
+			//	public void onSuccess(GuestData result) {
+			//		ArrayList<String> temp=new ArrayList<String>();
+			//		temp.add(userId);
+			//		eventDelegate.getEvents(temp);
 					//listen to the events in the tabs
-	    			wireEventGUIEvents();
-	    			wireMyWishlistGUIEvents();
-	    			wireIBuyGUIEvents();
-					
-				}
+			//		eventGui.wireEventGUIEvents();
+	    	//		myWishlistGUI.wireMyWishlistGUIEvents();
+	    	//		iBuyGUI.wireIBuyGUIEvents();
+			//		
+			//	}
 				
-			});
+		//	});
 			
 			tab.selectTab(0);
 		
@@ -180,80 +180,7 @@ public class Birthdayplus implements EntryPoint {
 	  
 	  
 
-		/*
-		 * listen to the widgets of MyWishlist tab
-		 */
-		private void wireMyWishlistGUIEvents() {
-			myWishlistGUI.wishTable.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	                 Cell cellForEvent = myWishlistGUI.wishTable.getCellForEvent(event);
-	                 myWishlistGUI.gui_eventItemGridClicked(cellForEvent);                
-	            }});
-	        
-			myWishlistGUI.addItemButton.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	            	myWishlistGUI.gui_eventAddItemButtonClicked();
-	            }});
-
-			myWishlistGUI.updateButton.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	            	myWishlistGUI.gui_eventUpdateButtonClicked();
-	            }});
-	        
-			myWishlistGUI.addButton.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	            	myWishlistGUI.gui_eventAddButtonClicked();
-	                
-	            }});
-	        
-			myWishlistGUI.cancelButton.addClickHandler(new ClickHandler(){
-	        	public void onClick(ClickEvent event){
-	        		myWishlistGUI.gui_eventCancelButtonClicked();
-	        	}
-	        });
-	  
-		}
 		
-		/*
-		 * listen to the widgets of I've booked this items tab
-		 */
-		private void wireIBuyGUIEvents(){
-			iBuyGUI.wishTable.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event){
-					Cell cellForEvent=iBuyGUI.wishTable.getCellForEvent(event);
-					iBuyGUI.gui_eventItemGridClicked(cellForEvent);
-				}
-			});
-		}
 		
-		private void wireEventGUIEvents(){
-			eventGui.eventTable.addClickHandler(new ClickHandler(){
-				public void onClick(ClickEvent event){
-					Cell cellForEvent = eventGui.eventTable.getCellForEvent(event);
-					eventGui.gui_eventEventGridClicked(cellForEvent);
-				}
-			});
-			eventGui.btnAddEvent.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	            	eventGui.gui_eventAddEventButtonClicked();
-	            }});
-
-			eventGui.updateButton.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	            	eventGui.gui_eventUpdateButtonClicked();
-	            }});
-	        
-			eventGui.addButton.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	            	eventGui.gui_eventAddButtonClicked();
-	                
-	            }});
-	        
-			eventGui.cancelButton.addClickHandler(new ClickHandler(){
-	        	public void onClick(ClickEvent event){
-	        		eventGui.gui_eventCancelButtonClicked();
-	        	}
-	        });
-		}
 	  
 }
