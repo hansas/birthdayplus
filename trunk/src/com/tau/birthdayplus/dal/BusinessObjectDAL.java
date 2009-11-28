@@ -121,7 +121,9 @@ public class BusinessObjectDAL {
 		    tx.begin();
 		    Guest user = pm.getObjectById(Guest.class, userId);
 		    user.addEvent(event);
+		    System.out.print(event.getKey());
 		    eventD.setEventId(KeyFactory.keyToString(event.getKey()));
+		    System.out.print(eventD.getEventId());
 		  	pm.makePersistent(user);
 		    pm.makePersistent(event);
 		    tx.commit();
