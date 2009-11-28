@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
@@ -35,7 +36,7 @@ public class IBuyTabGUI {
 	ArrayList<WishlistItemData> itemsToBuy;
 	WishlistItemData currentItem;
 	public IBuyDelegate wishlistService;
-	String userId="5";
+	public Birthdayplus entryPoint;
 	
 
 	
@@ -52,7 +53,7 @@ public class IBuyTabGUI {
 		    
 		 ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
 		    for(int i=0;i<5;i++){
-		    	data.add(new WishlistItemData(userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
+		    	data.add(new WishlistItemData(entryPoint.userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 		    }
 		    
 		service_getBookedWishlistSuccesfull(data);
@@ -66,7 +67,7 @@ public class IBuyTabGUI {
 	private void buildWishlistTable(){
 		//create table for whishlistitems
 	    wishTable=new TableWithHeader();
-	    wishTable.setStyleName("cw-TableWithHeader");
+	    wishTable.setStyleName(constants.cwTableStyle());
 	    
 	    //header
 	    wishTable.setHeader(0,"For whom");
@@ -117,7 +118,7 @@ public class IBuyTabGUI {
 		
 		public void service_setActiveWishlistitemSuccessful() {
 	//		showMessage("Item was successfully canceled");
-	        this.wishlistService.getBookedWishlist(userId);
+	        this.wishlistService.getBookedWishlist(entryPoint.userId);
 
 			
 		}

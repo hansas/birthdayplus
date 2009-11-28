@@ -21,6 +21,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 
+import com.tau.birthdayplus.client.Actions;
+import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
@@ -72,7 +74,7 @@ public class MyWishlistTabGUI {
 	private ArrayList<WishlistItemData> items;
     private WishlistItemData currentItem;
     public MyWishlistDelegate wishlistService;
-    protected String userId="5";
+    public Birthdayplus entryPoint;
     
     
 
@@ -91,13 +93,12 @@ public class MyWishlistTabGUI {
 		wishlistVerticalPanel.add(wishTable);
 		wishlistVerticalPanel.add(addItemButton);
 		    
-		 // Associate the Main panel with the HTML host page.
-		  //  RootPanel.get("eventList").add(wishlistVerticalPanel);
+		
 		    
 		   
 		    ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
 		    for(int i=0;i<5;i++){
-		    	data.add(new WishlistItemData(userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
+		    	data.add(new WishlistItemData(entryPoint.userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 		    	
 		    	
 		    }
@@ -113,7 +114,7 @@ public class MyWishlistTabGUI {
     private void buildForm() {
         formTable = new FlexTable();
         
-        formTable.setStyleName("cw-FlexTable");
+        formTable.setStyleName(constants.cwTableStyle());
    
         formTable.setText(0, 0, "Item name");
         formTable.setWidget(0, 1, itemField);
@@ -139,33 +140,33 @@ public class MyWishlistTabGUI {
 	private void buildAddItemBox(){
 	    	addItemBox=new DialogBox();
 	        addItemBox.setText("Add new item ");
-	        addItemBox.addStyleName("cw-DialogBox");
+	        addItemBox.addStyleName(constants.cwDialogBoxStyle());
 	        
 	        itemField=new TextBox();
-	        itemField.setStyleName("cw-TextBox");
+	        itemField.setStyleName(constants.cwTextBoxStyle());
 	        
 	    	priorityField=new ListBox(false);
 	        String[] listTypes = constants.cwListBoxCategories();
 	        for (int i = 0; i < listTypes.length; i++) {
 	          priorityField.addItem(listTypes[i]);
 	        }
-;           priorityField.setStyleName("cw-ListBox");
+;           priorityField.setStyleName(constants.cwListBoxStyle());
 
 	        linkField=new TextBox();
-	        linkField.setStyleName("cw-TextBox");
+	        linkField.setStyleName(constants.cwTextBoxStyle());
 	        
 	        priceField=new TextBox();
-	        priceField.setStyleName("cw-TextBox");
+	        priceField.setStyleName(constants.cwTextBoxStyle());
 	        
 	        updateButton=new Button("Update item");
-	        updateButton.setStyleName("cw-Button");
+	        updateButton.setStyleName(constants.cwButtonStyle());
 	        
 	        addButton=new Button("Add item");
-	        addButton.setStyleName("cw-Button");
+	        addButton.setStyleName(constants.cwButtonStyle());
 	        
 		    cancelButton = new Button(constants.cwDialogBoxCancel());
 		       
-		    cancelButton.setStyleName("cw-Button");
+		    cancelButton.setStyleName(constants.cwButtonStyle());
 
 		    buildForm();
 		    
@@ -182,14 +183,8 @@ public class MyWishlistTabGUI {
 	private void buildWishlistTable(){
 		//create table for whishlistitems
 	    wishTable=new TableWithHeader();
-	    wishTable.setStyleName("cw-TableWithHeader");
-	    
-	    FlexCellFormatter cellFormatter =  wishTable.getFlexCellFormatter();
-	 //   wishTable.setWidth("16em");
-	    wishTable.setCellSpacing(5);
-	//    wishTable.setCellPadding(3);
-	    
-	    
+	    wishTable.setStyleName(constants.cwTableStyle());
+	
 	    wishTable.setHeader(0,"Item");
 	    wishTable.setHeader(1,"Priority");
 	    wishTable.setHeader(2,"Price");
@@ -197,19 +192,6 @@ public class MyWishlistTabGUI {
 	    
 	}
 	
-	  /**
-	   * Fill row in friend's wishlist table,by given wishlistItemData
-	   *
-	  private void fillRowFriendWishTable(String item) {
-	    int numRows = wishTable.getRowCount();
-	    wishTable.setWidget(numRows, 0,new Hyperlink("Item"+numRows,"Items"+numRows));
-	    wishTable.setWidget(numRows,1,new Label("Priority"));
-	    wishTable.setWidget(numRows, 2,new Label("price") );
-	    wishTable.setWidget(numRows, 3, new Hyperlink("update", null));
-	    wishTable.setWidget(numRows,4,new Hyperlink("delete", null));
-	  }
-	  
-	*/
 	
 	/*
 	 * on click in the table
@@ -225,9 +207,9 @@ public class MyWishlistTabGUI {
              this.addButton.setVisible(false);
              this.updateButton.setVisible(true);
              this.addItemButton.setVisible(false);
-             loadForm(item);
+             loadForm(item,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
-             this.wishlistService.deleteWishlistItem(item.getWishlistItemId());
+             this.wishlistService.deleteWishlistItem(item);
          }else if(col==LINK){
         	 if(item.getLink()!=null)
         		 Window.open(item.getLink(), "_blank", null);
@@ -239,8 +221,9 @@ public class MyWishlistTabGUI {
 	 /*
 	  * show the popup box with filled fields
 	  */
-	 private void loadForm(WishlistItemData item) {
+	 private void loadForm(WishlistItemData item,Actions action) {
 		    addItemBox.center();
+		    addItemBox.setText(action.name()+" item");
    	        addItemBox.show();
 	        currentItem = item;
 	        this.itemField.setText(item.getItemName());
@@ -258,6 +241,7 @@ public class MyWishlistTabGUI {
         copyFieldDateToItem();
         }catch(NumberFormatException ex){
      //   	showMessage("The price should be a number");
+        	valid=false;
         }
         if(valid){
             addItemButton.setVisible(true);
@@ -308,7 +292,7 @@ public class MyWishlistTabGUI {
         this.addItemButton.setVisible(false);
         this.updateButton.setVisible(false);
         this.addButton.setVisible(true);
-        loadForm(new WishlistItemData(userId));
+        loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
     }
     
     /*
@@ -326,7 +310,7 @@ public class MyWishlistTabGUI {
 	        this.items = result;
 	        this.wishTable.clear();
 	        
-	        int row = wishTable.getRowCount();
+	        int row = 0;
 	        for (WishlistItemData item : result) {
 	        	if (item.getLink()== null)
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));

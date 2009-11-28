@@ -52,8 +52,8 @@ public class MyWishlistDelegate {
 	    	);//end of method call
 	    }
 
-	   void deleteWishlistItem(final String wishlistItemId){
-		   wishlistService.deleteWishlistItem(wishlistItemId, new AsyncCallback<Void>(){
+	   void deleteWishlistItem(final WishlistItemData item){
+		   wishlistService.deleteWishlistItem(item, new AsyncCallback<Void>(){
 			   public void onFailure(Throwable caught){
 				   gui.service_deleteWishlistItemFailed(caught);
 			   }
