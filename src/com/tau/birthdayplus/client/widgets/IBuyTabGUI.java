@@ -4,6 +4,8 @@ package com.tau.birthdayplus.client.widgets;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -135,6 +137,16 @@ public class IBuyTabGUI {
 			//status.setText("Unable to get booked item list");
 
 			
+		}
+		
+		
+		public void wireIBuyGUIEvents(){
+			this.wishTable.addClickHandler(new ClickHandler(){
+				public void onClick(ClickEvent event){
+					Cell cellForEvent=wishTable.getCellForEvent(event);
+					gui_eventItemGridClicked(cellForEvent);
+				}
+			});
 		}
 
 	  
