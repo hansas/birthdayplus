@@ -15,13 +15,13 @@ public class EventTabDelegate {
 	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class);
 	public EventTabGUI eventGui;
 	public WishListFriendsGUI wishlistFriendGUI;
-	void getEvents(final ArrayList<String> uIdlist) {
+	public void getEvents(final ArrayList<String> uIdlist) {
 		eventService.getEvents(uIdlist, new AsyncCallback<ArrayList<EventData>>(){
 			public void onFailure(Throwable caught){
 				eventGui.service_eventGetEventsFailed(caught);
 			}
 			public void onSuccess(ArrayList<EventData> result){
-				eventGui.service_eventGetEventsSuccess(result);
+				eventGui.service_eventGetEventsSuccessful(result);
 			}
 		}//end of inner class
 	);//end of method call
@@ -34,7 +34,7 @@ public class EventTabDelegate {
 			}
 		
 			public void onSuccess(Void result){
-				eventGui.service_eventCreateEventSuccess();
+				eventGui.service_eventCreateEventSuccessful();
 			}
 		}//end of inner class
 	);//end of method call
@@ -47,7 +47,7 @@ public class EventTabDelegate {
 			}
 			
 			public void onSuccess(Void result){
-				eventGui.service_eventUpdateEventSuccess();
+				eventGui.service_eventUpdateEventSuccessful();
 			}
 	}//end of inner class
 	);//end of method call
@@ -60,7 +60,7 @@ public class EventTabDelegate {
 			}
 			   
 			public void onSuccess(Void result){
-				eventGui.service_eventDeleteEventSuccess();
+				eventGui.service_eventDeleteEventSuccessful();
 			}
 	}//end of inner class
 	);//end of method call
@@ -74,7 +74,7 @@ public class EventTabDelegate {
 			}
 
 			public void onSuccess(ArrayList<WishlistItemData> result) {
-				eventGui.service_eventGetWishlistSuccess();	
+				eventGui.service_eventGetWishlistSuccessful();	
 			}
 			
 		}//end of inner class
