@@ -45,7 +45,7 @@ WishlistService  {
 		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
 		UserManagement.createProfile(guestData);
 		GuestData savedGuest = UserManagement.loadGuestData("123"); 
-		EventData eventData = new EventData("","Test1", "123", new Date(1,1,1), false);
+		EventData eventData = new EventData("","123","Test1",new Date(1,1,1), false);
 		EventManagement.createEvent(eventData);
 		savedGuest = UserManagement.loadGuestData("123");
 		Guest g = UserManagement.loadGuest(savedGuest.getId());
@@ -58,7 +58,8 @@ WishlistService  {
 		ArrayList<EventData> eventsData = new ArrayList<EventData>();
 		eventsData = EventManagement.getEvents(users);
 		for (EventData eD: eventsData){
-			System.out.print(eD.getEventName());
+			System.out.println(eD.getEventName());
+			System.out.println(eD.getUserId());
 		}
 	}
 	/*
