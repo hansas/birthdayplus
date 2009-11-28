@@ -5,17 +5,7 @@
 
 <web-app>
   
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.tau.birthdayplus.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/birthdayplus/greet</url-pattern>
-  </servlet-mapping>
-  
+  <!-- Servlets -->  
   <servlet>
     <servlet-name>eventServlet</servlet-name>
     <servlet-class>com.tau.birthdayplus.server.EventServiceImpl</servlet-class>
