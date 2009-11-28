@@ -13,7 +13,7 @@ public interface ProfileServiceAsync {
 	 */
 	void printHello(AsyncCallback<Void> callback);
 
-	void createProfile(GuestData guset, AsyncCallback<Void> callback);
+	void createProfile(GuestData guest, AsyncCallback<Void> callback);
 
 	void updateProfile(GuestData profile, AsyncCallback<Void> callback);
 
