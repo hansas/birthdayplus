@@ -45,6 +45,24 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cw-TableWithHeader")
     String cwTableStyle();
     
+    @DefaultStringValue("cw-DialogBox")
+    String cwDialogBoxStyle();
+    
+    @DefaultStringValue("cw-TextBox")
+    String cwTextBoxStyle();
+    
+    @DefaultStringValue("cw-Button")
+    String cwButtonStyle();
+    
+    @DefaultStringValue("cw-ListBox")
+    String cwListBoxStyle();
+    
+    @DefaultStringValue("cw-DateBox")
+    String cwDateBoxStyle();
+    
+    @DefaultStringValue("cw-CheckBox")
+    String cwCheckBoxStyle();
+    
     @DefaultStringArrayValue({"5","4","3","2","1"})
     String[] cwListBoxCategories();
 
