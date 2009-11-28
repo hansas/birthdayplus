@@ -28,10 +28,10 @@ public class EventData  implements IsSerializable{
 		   this.recurrence = recurrence;
 	   }
 	   /*
-	    * constructor for client side-don't have event id
+	    * constructor for client side , knows only user id
 	    */
-	   public EventData(String eventName,String userId,Date eventDate,Boolean recurrence){
-		   this("",userId,eventName,eventDate,recurrence);
+	   public EventData(String userId){
+		   this(null,userId,null,null,false);
 		   
 	   }
 	   
