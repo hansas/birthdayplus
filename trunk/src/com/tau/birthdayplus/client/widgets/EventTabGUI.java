@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -60,11 +62,14 @@ public class EventTabGUI {
     //cancel button
     public Button cancelButton;
     
+    private WishListFriendsGUI wishlistFriendGUI;
+    private WishListFriendsDelegate wishlistFriendService;
+    
     //Data Model\\
 	public EventTabDelegate eventService;
 //	private WishListFriendsGUI wishlistFriendGui;
 	private ArrayList<EventData> eventList;
-	private EventData currentEvent;
+	protected EventData currentEvent;
 	public Birthdayplus entryPoint;
 	
 	
@@ -72,15 +77,28 @@ public class EventTabGUI {
 
 	
 	public void init(){
+		eventList = new ArrayList<EventData>(); 
+		
+		//create DialogBox for user's friend wishlist
+		wishlistFriendGUI = new WishListFriendsGUI();
+	    wishlistFriendService = new WishListFriendsDelegate();
+	    
+	    wishlistFriendGUI.wishlistService = wishlistFriendService;
+	    wishlistFriendService.gui = wishlistFriendGUI;
+	    
+	    wishlistFriendGUI.parent = this;
+	    wishlistFriendGUI.init();
+	    
 		vPanel = new VerticalPanel();
 		buildEventTable();
 		buildEventDialogBox();
+	
 		
 		btnAddEvent = new Button("Add Event");
 		placeWidgets();
 		
+		wishlistFriendGUI.wireWishlistFriendGUIEvents();
 		
-		eventList = new ArrayList<EventData>(); 
 	}
 	
 	/*
@@ -223,19 +241,19 @@ public class EventTabGUI {
          int row = cellClicked.getRowIndex();
          int col = cellClicked.getCellIndex();
         
-        EventData item = this.eventList.get(row);
+        EventData event = this.eventList.get(row);
          
        
          if (col==UPDATE_LINK) {
              this.addButton.setVisible(false);
              this.updateButton.setVisible(true);
              this.btnAddEvent.setVisible(false);
-             loadForm(item,Actions.UPDATE);
+             loadForm(event,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
         //	 item.setUserId(entryPoint.userId);
-             this.eventService.deleteEvent(item);
+             this.eventService.deleteEvent(event);
          }else if(col==EVENT_LINK){
-        	 //OPEN FRIENDS WISHLIST
+        	 this.wishlistFriendService.getWishlist(event.getUserId());
          }
     }
 	 
@@ -311,7 +329,7 @@ public class EventTabGUI {
 				eventTable.setWidget(row, 0, new Label("My"));
 			else
 			    eventTable.setWidget(row, 0, new Label(entryPoint.userFriends.get(event.getUserId())));
-			eventTable.setWidget(row, 1, new Label(event.getEventName()));
+			eventTable.setWidget(row, 1, new Hyperlink(event.getEventName(),null));
 			due = String.valueOf(daysBetween(new Date(), event.getEventDate()));
 			Label lblEventDate = new Label(due);
 			if(event.getEventDate()!= null)
@@ -378,6 +396,36 @@ public class EventTabGUI {
 	public void service_eventGetWishlistFailed(Throwable caught) {
 		 System.out.println("Unable to get  your frind's wishlist");	
 		
+	}
+	
+	public void wireEventGUIEvents(){
+		this.eventTable.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				Cell cellForEvent = eventTable.getCellForEvent(event);
+				gui_eventEventGridClicked(cellForEvent);
+			}
+		});
+		this.btnAddEvent.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui_eventAddEventButtonClicked();
+            }});
+
+		this.updateButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui_eventUpdateButtonClicked();
+            }});
+        
+		this.addButton.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+            	gui_eventAddButtonClicked();
+                
+            }});
+        
+		this.cancelButton.addClickHandler(new ClickHandler(){
+        	public void onClick(ClickEvent event){
+        		gui_eventCancelButtonClicked();
+        	}
+        });
 	}
 
 	
