@@ -13,12 +13,16 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 //import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.dto.client.GuestData;
 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Guest   {
 		@PrimaryKey
+		@Persistent
+		private Key idKey;
 		@Persistent
 		private String id;
 		@Persistent
@@ -39,6 +43,7 @@ public class Guest   {
 			this.setLastName(lastName);
 			this.setBirthday(birthday);
 			this.id = googleId;
+			this.idKey = KeyFactory.createKey(Guest.class.getSimpleName(), googleId);
 			this.events = new ArrayList<Event>();
 			this.wishlistItems = new ArrayList<WishlistItem>();
 		}
@@ -85,7 +90,9 @@ public class Guest   {
 		}
 		
 		public void removeEvent(Event e){
-			events.remove(e);
+			if ((events!=null) && (events.contains(e))){
+				events.remove(e);
+			}
 		}
 		
 		public void addWishlistItem(WishlistItem item){
