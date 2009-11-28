@@ -110,14 +110,33 @@ public class Birthdayplus implements EntryPoint {
 	        
 			tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
 			
-			
-			//GuestData user= new GuestData(userId,"olga","vingurt",new Date());
-		//	profileService.createProfile(user, new AsyncCallback<Void>(){
-	    	//	public void onFailure(Throwable caught){
-	    //			System.out.println(caught);
-	    //		}
-	    //		
-		//		public void onSuccess(Void result) {
+			profileService.getProfile(userId, new AsyncCallback<GuestData>(){
+
+				public void onFailure(Throwable caught) {
+					GuestData user= new GuestData(userId,"olga","vingurt",new Date());
+					profileService.createProfile(user, new AsyncCallback<Void>(){
+			    	public void onFailure(Throwable caught){
+			    			System.out.println(caught);
+			    		}
+			    		
+						public void onSuccess(Void result) {
+							ArrayList<String> temp=new ArrayList<String>();
+							temp.add(userId);
+							eventDelegate.getEvents(temp);
+							//listen to the events in the tabs
+			    			wireEventGUIEvents();
+			    			wireMyWishlistGUIEvents();
+			    			wireIBuyGUIEvents();
+							
+						}
+						
+			    	}//end of inner class
+			    	);//end of method call)
+					
+					
+				}
+
+				public void onSuccess(GuestData result) {
 					ArrayList<String> temp=new ArrayList<String>();
 					temp.add(userId);
 					eventDelegate.getEvents(temp);
@@ -126,10 +145,9 @@ public class Birthdayplus implements EntryPoint {
 	    			wireMyWishlistGUIEvents();
 	    			wireIBuyGUIEvents();
 					
-			//	}
+				}
 				
-	  //  	}//end of inner class
-	   // 	);//end of method call)
+			});
 			
 			tab.selectTab(0);
 		

@@ -233,7 +233,7 @@ public class EventTabGUI {
              this.btnAddEvent.setVisible(false);
              loadForm(item,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
-        	// item.setUserId(entryPoint.userId);
+        //	 item.setUserId(entryPoint.userId);
              this.eventService.deleteEvent(item);
          }else if(col==EVENT_LINK){
         	 //OPEN FRIENDS WISHLIST
@@ -308,20 +308,20 @@ public class EventTabGUI {
 		int row = 0;
 	
 		for (EventData event : eventList) {
-		//	if(event.getUserId().equals(entryPoint.userId))
+			if(event.getUserId().equals(entryPoint.userId))
 				eventTable.setWidget(row, 0, new Label("My"));
-		//	else
-		//	    eventTable.setWidget(row, 0, new Label(entryPoint.userFriends.get(event.getUserId())));
+			else
+			    eventTable.setWidget(row, 0, new Label(entryPoint.userFriends.get(event.getUserId())));
 			eventTable.setWidget(row, 1, new Label(event.getEventName()));
 			due = String.valueOf(daysBetween(new Date(), event.getEventDate()));
 			Label lblEventDate = new Label(due);
 			if(event.getEventDate()!= null)
     			lblEventDate.setTitle(event.getEventDate().toString());
 			eventTable.setWidget(row, 2, lblEventDate);
-		//	if(event.getUserId().equals( entryPoint.userId)){
+			if(event.getUserId().equals( entryPoint.userId)){
 				eventTable.setWidget(row, 3, new Hyperlink("update", null));
 	    	    eventTable.setWidget(row,4,new Hyperlink("delete", null)); 
-		//	}
+			}
 			row++;
 		}	
 	}
