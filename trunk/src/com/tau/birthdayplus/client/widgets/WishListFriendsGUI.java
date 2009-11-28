@@ -3,10 +3,12 @@ package com.tau.birthdayplus.client.widgets;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 
 
@@ -27,6 +29,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.tau.birthdayplus.client.Actions;
+import com.tau.birthdayplus.client.Birthdayplus;
+import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
@@ -36,9 +42,10 @@ public class WishListFriendsGUI  {
 	/*
 	 * constants
 	 */
-	
-	private static final int BUY_LINK = 4;
-    private static final int GROUP_BUY_LINK = 5;
+	CwConstants constants = GWT.create(CwConstants.class);
+	private static final int LINK = 0;
+	private static final int BUY_LINK = 3;
+    private static final int GROUP_BUY_LINK = 4;
 
 	/*GUI Widgets*/
 	
@@ -51,7 +58,19 @@ public class WishListFriendsGUI  {
 	//close button for closing wishlist box
 	protected Button closeFriendWishlistBox;
 	
-	//dialog ox with participators
+	
+	
+	/*  
+	 * Data Model
+	 */
+	private ArrayList<WishlistItemData> items;
+    private WishlistItemData currentItem;
+    protected WishListFriendsDelegate wishlistService;
+    protected EventTabGUI parent;
+ 
+	
+	/*
+	//dialog Box with participators
 	protected DialogBox participatorsBox;
 	//horizontal panel for the content of participatorx box
 	protected HorizontalPanel participatorsBoxHorizontalPanel;
@@ -70,43 +89,43 @@ public class WishListFriendsGUI  {
 	protected Button updateParticipatorButton;
 
 	
-	/*  
-	 * Data Model
-	 */
-	
-	  ArrayList<WishlistItemData> wishlist;
-	 
-	 WishlistItemData currentItem;
-	 ArrayList<ParticipatorData> participators;
 	 
 
 
-	
+	 /**
+		 * This is the entry point method.
+		 */
+		public void init() {
+			 buildFriendWishlistBox();
+			 
+			 items = new ArrayList<WishlistItemData>();
+			
+			
+			 ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
+			    for(int i=0;i<5;i++){
+			    	data.add(new WishlistItemData("555","name"+i,i,"http://techblog.maydu.eu/?p=7",500));
+			    	
+			    }
+			    
+			//    service_eventGetWishlistSuccesfull(data);
+			    
+			    
+		}
 	
 	private void buildFriendWishlistBox(){
 	    	friendWishlistBox=new DialogBox();
-	    	friendWishlistBox.setText("Friend's Wishlist");
-
-		    // Add a close button at the bottom of the dialog
-		    Button closeFriendWishlistBox = new Button("close",
-		        new ClickHandler() {
-		          public void onClick(ClickEvent event) {
-		        	  friendWishlistBox.hide();
-		          }
-		        });
+	    	friendWishlistBox.setStyleName(constants.cwDialogBoxStyle());
+            
 		    
+		    closeFriendWishlistBox = new Button("Close");
 		    closeFriendWishlistBox.setStyleName("cw-Button");
 		    
 		   // create panel to layout the content
 		    wishlistBoxVerticalPanel = new VerticalPanel();
-		    wishlistBoxVerticalPanel.setSpacing(4);
+		    
 		    
 		    buildFriendWishlistTable();
-	//	    wishlistScroll=new ScrollPanel(friendWishTable);
 		    
-		//    wishlistBoxVerticalPanel.add(headerFriendWishTable);
-	     	
-		  //  wishlistBoxVerticalPanel.add(wishlistScroll);
 		    wishlistBoxVerticalPanel.add(friendWishTable);
 		    wishlistBoxVerticalPanel.setCellHorizontalAlignment(friendWishTable,
 	     	        HasHorizontalAlignment.ALIGN_CENTER);
@@ -118,12 +137,110 @@ public class WishListFriendsGUI  {
 		          HasHorizontalAlignment.ALIGN_RIGHT);
 		    
 		    friendWishlistBox.add(wishlistBoxVerticalPanel);
-		    
-		    
-		    
+
+	}
+	
+	/*
+	 * create flex table for friend's wishlist items
+	 */
+	private void buildFriendWishlistTable(){
+	    friendWishTable=new TableWithHeader();
+	    friendWishTable.addStyleName(constants.cwTableStyle());    
+	    
+	    friendWishTable.setHeader(0,"Item");
+	    friendWishTable.setHeader(1,"Priority");
+	    friendWishTable.setHeader(2,"Price");
+       
+	}
+	
+	/*
+	 * on click in the table
+	 */
+	 public void gui_eventItemGridClicked(Cell cellClicked) {
+         int row = cellClicked.getRowIndex();
+         int col = cellClicked.getCellIndex();
+        
+        WishlistItemData item = this.items.get(row);
+         
+       
+         if (col== LINK) {
+        	 if(item.getLink()!=null)
+        		 Window.open(item.getLink(), "_blank", null);
+         } else if (col==BUY_LINK) {
+             wishlistService.setInactiveWishlistitem(parent.entryPoint.userId, item.getWishlistItemId());
+         }else if(col==GROUP_BUY_LINK){
+        	 
+         }
+    }
+	
+	/*
+	 * friend's wishlist
+	 */
+	public void service_eventGetWishlistSuccesfull(
+			ArrayList<WishlistItemData> result) {
+	//	friendWishlistBox.setText(parent.entryPoint.userFriends.get(parent.currentEvent.getUserId()));
+		friendWishlistBox.center();
+		friendWishlistBox.show();
+		this.items = result;
+        this.friendWishTable.clear();
+        
+        int row = 0;
+        for (WishlistItemData item : result) {
+        	if (item.getLink()== null)
+        		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
+        	else
+        		friendWishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
+        	friendWishTable.setWidget(row,1,new Label(item.getPriority().toString()));
+        	friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
+        	friendWishTable.setWidget(row, 3, new Hyperlink("I'm buing", null));
+    	    friendWishTable.setWidget(row ,4,new Hyperlink("Join the group", null));
+            row ++;
+        }
 		
 	}
 	
+	public void service_setInactiveWishlistitemSuccessful() {
+		//showMessage("the item was successfully booked");
+		this.wishlistService.getWishlist(parent.currentEvent.getUserId());
+		
+	}
+	
+	public void service_setInactiveWishlistitemFailed(Throwable caught) {
+       //showMessage("Unable to get  wishlist");
+		
+	}
+
+	
+
+	public void service_eventGetWishlistFailed(Throwable caught) {
+		// showMessage("Unable to get  wishlist");
+		
+	}
+	
+	public void gui_eventCloseButtonClicked() {
+		friendWishlistBox.hide();
+        
+    }
+	
+	public void wireWishlistFriendGUIEvents() {
+		this. closeFriendWishlistBox.addClickHandler(new ClickHandler(){
+        	public void onClick(ClickEvent event){
+        	    gui_eventCloseButtonClicked();
+        	}
+        });
+		
+		this.friendWishTable.addClickHandler(new ClickHandler(){
+            public void onClick(ClickEvent event) {
+                 Cell cellForEvent = friendWishTable.getCellForEvent(event);
+                 gui_eventItemGridClicked(cellForEvent);                
+            }});
+	}
+
+
+	
+	
+	
+	/*
 	private void buildParticipationBox(){
 		participatorsBox=new DialogBox();
 		participatorsBox.setText("Participators");
@@ -178,38 +295,9 @@ public class WishListFriendsGUI  {
 		participatorsBox.add(participatorsBoxHorizontalPanel);
 		
 	}
+	*/
 	
-	/*
-	 * create flex table for friend's wishlist items
-	 */
-	private void buildFriendWishlistTable(){
-		//create table for whishlistitems
-	    friendWishTable=new TableWithHeader();
-	    FlexCellFormatter cellFormatter =  friendWishTable.getFlexCellFormatter();
-	    friendWishTable.addStyleName("cw-FlexTable");
-	    friendWishTable.setWidth("32em");
-	    friendWishTable.setCellSpacing(5);
-	    friendWishTable.setCellPadding(3);
-	    
-	    
-	    friendWishTable.setHeader(0,"Item");
-	    friendWishTable.setHeader(1,"Priority");
-	    friendWishTable.setHeader(2,"Price");
-        /*
-	    friendWishTable.setText(0, 0, "Item");
-	    friendWishTable.setText(0, 1, "Priority");
-	    friendWishTable.setText(0, 2, "Price");
-	    
-	    */
-	    
-	    friendWishTable.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent event) {
-                Cell cellForEvent = friendWishTable.getCellForEvent(event);
-                participatorsBox.center();
-                participatorsBox.show();
-            }
-	    });
-	}
+	
 	
 	  /**
 	   * Fill row in friend's wishlist table,by given wishlistItemData
@@ -222,8 +310,11 @@ public class WishListFriendsGUI  {
 	    friendWishTable.setWidget(numRows, 3, new Hyperlink("I'm buing", null));
 	    friendWishTable.setWidget(numRows,4,new Hyperlink("Join the group", null));
 	  }
+
+	
 	  
 	  
+	  /*
 	  private void buildParticipatorsTable(){
 		  participatorsTable=new TableWithHeader();
 		  FlexCellFormatter cellFormatter = participatorsTable.getFlexCellFormatter();
@@ -236,6 +327,7 @@ public class WishListFriendsGUI  {
 		  participatorsTable.setWidget(0, 1, new Label("Sum"));	
 	
 	  }
+	  */
 	  
 	 /* 
 	  private void LoadParticipatorTable(){
@@ -248,57 +340,22 @@ public class WishListFriendsGUI  {
 		  
 	  }
 	  
-	  */
 	  
-	  /*
+	  
+	  
 	   * filling the row in participator table
 	   * Participator - ParticipatorData
 	   * 
-	   */
+	   
 	  private void fillRowParticipatorsTable(String participator){
 		  int numRows = participatorsTable.getRowCount();
 		  participatorsTable.setWidget(numRows,0,new Label("name "+numRows));
 		  participatorsTable.setWidget(numRows, 1, new Label("sum "+numRows));
 		  
 	  }
-	  
+	  */
 	
-	/**
-	 * This is the entry point method.
-	 */
-	public void init() {
-		 buildParticipationBox();
-		 buildFriendWishlistBox();
-		   
-		    /* Create a button to show the dialog Box
-		    Button openButton = new Button("openFriendsWishlist",
-		        new ClickHandler() {
-		          public void onClick(ClickEvent sender) {
-		        	  friendWishlistBox.center();
-		        	  friendWishlistBox.show();
-		          }
-		        });
-		    
-		 // Associate the Main panel with the HTML host page.
-		//    RootPanel.get("eventList").add(openButton);
-		    */
-		    for (int i=0;i<5;i++){
-		    	fillRowFriendWishTable("dummy");
-		    	
-		    }
-		    
-		//   friendWishTable.clear();
-		    
-
-		   
-
-		  
-		
-
-		
-		
-		
-	}
+	
 	
 	/*
 	 * 
