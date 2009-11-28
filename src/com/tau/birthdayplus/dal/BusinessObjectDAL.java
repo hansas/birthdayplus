@@ -136,33 +136,20 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
-		ArrayList<EventData> events = new ArrayList<EventData>();
-		List<Guest> guests = null;
+	public static List<Guest> getGuestsById(ArrayList<String> UserIdList) {
+		List<Guest> guests = new ArrayList<Guest>();
 		PersistenceManager pm = PMF.get().getPersistenceManager(); 
 		try{
 			
 			Query query = pm.newQuery(Guest.class);
-			//query.declareImports("import com.google.appengine.api.datastore.KeyFactory; import com.google.appengine.api.datastore.Key;");
-		    //query.setFilter("KeyFactory.keyToString(this.getKey().getParent()) == :keyList");
-		    //query.setFilter("parent.id == :keyList");
 		    query.setFilter("id == :keyList");
 		    guests = (List<Guest>)query.execute(UserIdList);
 		}
 		catch(Exception ex){
 			System.out.println(ex.getMessage());
 		}
-		for (Guest guest: guests){
-			List<Event> guestEvents = guest.getEvents();
-			if ((guest!=null) && (!guestEvents.isEmpty())){
-				for (Event event: guestEvents){
-					events.add(EventManagement.eventToEventData(event));
-				}
-			}
-		}
 		pm.close();
-		Collections.sort(events, EventManagement.EVENT_DATA_ORDER);
-		return events;
+		return guests;
 	}
 	
 
