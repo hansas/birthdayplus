@@ -1,14 +1,18 @@
 package com.tau.birthdayplus.logic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
+import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dto.client.EventData;
 
 public class EventManagement {
+	
 	public static final Comparator<EventData> EVENT_DATA_ORDER =
         new Comparator<EventData>() {
 			public int compare(EventData e1, EventData e2) {
@@ -48,7 +52,21 @@ public class EventManagement {
 	}
 	
 	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
-		return BusinessObjectDAL.getEvents(UserIdList);
+		return getEventsByGuests(BusinessObjectDAL.getGuestsById(UserIdList));
+	}
+	
+	public static ArrayList<EventData> getEventsByGuests(List<Guest> guests){
+		ArrayList<EventData> events = new ArrayList<EventData>();
+		for (Guest guest: guests){
+			List<Event> guestEvents = guest.getEvents();
+			if ((guest!=null) && (!guestEvents.isEmpty())){
+				for (Event event: guestEvents){
+					events.add(EventManagement.eventToEventData(event));
+				}
+			}
+		}
+		Collections.sort(events, EventManagement.EVENT_DATA_ORDER);
+		return events;
 	}
 
 }
