@@ -9,6 +9,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
+import com.tau.birthdayplus.dal.DALWrapper;
 import com.tau.birthdayplus.dto.client.EventData;
 
 public class EventManagement {
@@ -47,21 +48,28 @@ public class EventManagement {
 	   // }
 	}
 	
-	public static EventData eventToEventData(Event event){
-		return new EventData(KeyFactory.keyToString(event.getKey()),KeyFactory.keyToString(event.getKey().getParent()),event.getEventName(),event.getEventDate(),event.getRecurrence());
+	public static EventData eventToEventData(Event event,DALWrapper wrapper){
+		Guest guest = wrapper.getGuestByKey(event.getKey().getParent());
+		return new EventData(KeyFactory.keyToString(event.getKey()),guest.getId(),event.getEventName(),event.getEventDate(),event.getRecurrence());
 	}
 	
 	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
-		return getEventsByGuests(BusinessObjectDAL.getGuestsById(UserIdList));
+		DALWrapper wrapper = new DALWrapper();
+		try{
+		return getEventsByGuests(wrapper.getGuestsById(UserIdList),wrapper);
+		}
+		finally{
+			wrapper.close();
+		}
 	}
 	
-	public static ArrayList<EventData> getEventsByGuests(List<Guest> guests){
+	public static ArrayList<EventData> getEventsByGuests(List<Guest> guests,DALWrapper wrapper){
 		ArrayList<EventData> events = new ArrayList<EventData>();
 		for (Guest guest: guests){
 			List<Event> guestEvents = guest.getEvents();
 			if ((guest!=null) && (!guestEvents.isEmpty())){
 				for (Event event: guestEvents){
-					events.add(EventManagement.eventToEventData(event));
+					events.add(EventManagement.eventToEventData(event,wrapper));
 				}
 			}
 		}
