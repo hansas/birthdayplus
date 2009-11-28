@@ -32,7 +32,7 @@ public interface WishlistService extends RemoteService{
 	 * delete the item 
 	 * GUI - user can delete only his wishlist items
 	 */
-	void deleteWishlistItem(String wishlistItemId);
+	void deleteWishlistItem(WishlistItemData item);
 	/*
 	 * user wants to buy this item
 	 * Server - check that item is active
