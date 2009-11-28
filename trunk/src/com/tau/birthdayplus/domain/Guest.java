@@ -52,6 +52,12 @@ public class Guest   {
 			this(guestData.getId(),guestData.getFirstName(),guestData.getLastName(),guestData.getBirthday());
 		}
 		
+		public void copyFromGuestData(GuestData guestData){
+			this.setBirthday(guestData.getBirthday());
+			this.setFirstName(guestData.getFirstName());
+			this.setLastName(guestData.getLastName());
+		}
+		
 		public String getId(){
 			return this.id;
 		}

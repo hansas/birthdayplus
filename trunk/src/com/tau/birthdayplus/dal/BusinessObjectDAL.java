@@ -18,6 +18,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.GuestData;
 //import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.logic.EventManagement;
 
@@ -52,6 +53,20 @@ public class BusinessObjectDAL {
 	
 	public static void createProfile(Guest guest) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+           	pm.makePersistent(guest);
+        } catch (Exception ex){
+        	System.out.println(ex.getMessage());
+        }
+		finally {
+        	pm.close();
+        }
+	}
+	
+	public static void updateGuest(GuestData guestData) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Guest guest = loadGuest(guestData.getId(), pm);
+		guest.copyFromGuestData(guestData);
 		try {
            	pm.makePersistent(guest);
         } catch (Exception ex){

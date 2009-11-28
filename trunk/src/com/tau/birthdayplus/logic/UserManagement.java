@@ -25,4 +25,8 @@ public class UserManagement {
 		return BusinessObjectDAL.loadGuest(guestId);
 	}
 	
+	public static void updateProfile(GuestData profile) {
+		BusinessObjectDAL.updateGuest(profile);
+	}
+	
 }
