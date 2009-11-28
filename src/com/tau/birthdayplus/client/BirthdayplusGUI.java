@@ -6,7 +6,8 @@ import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class BirthdayplusGUI {
-	BirthdayplusServiceDelegate BplusService ;
+	
+//	BirthdayplusServiceDelegate BplusService ;
 	
 	/* Constants. */
 
@@ -15,13 +16,13 @@ public class BirthdayplusGUI {
 
 	
 	 /* Data model */
-     private ArrayList<EventData> events;
-     private EventData currentEvent;
-     private WishlistItemData currentWishlistItem;
+   //  private ArrayList<EventData> events;
+   //  private EventData currentEvent;
+   //  private WishlistItemData currentWishlistItem;
 	
 	
 	///////////////////////////////////////Events\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+/*
 	public void service_eventListContactsFailed(Throwable caught) {
 		
 		
@@ -29,7 +30,7 @@ public class BirthdayplusGUI {
 
 	public void service_eventListRetrievedFromService(
 			ArrayList<EventData> result) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -196,4 +197,6 @@ public class BirthdayplusGUI {
 	}
 	
 	////////////////////////Wishlist\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	 * 
+	 */
 }

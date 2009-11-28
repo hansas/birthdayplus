@@ -11,6 +11,7 @@ import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class BirthdayplusServiceDelegate {
+	/*
 	// Create a remote service proxy to talk to the server-side Event service.
 	private final EventServiceAsync eventService = GWT.create(EventService.class); 
 	// Create a remote service proxy to talk to the server-side Profile service.
@@ -250,5 +251,5 @@ public class BirthdayplusServiceDelegate {
 	    	}
 
 ////////////////////////////////////////EndWishlist////////////////////////////////////
-
+*/
 }
