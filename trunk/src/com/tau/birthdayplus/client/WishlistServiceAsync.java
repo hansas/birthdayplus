@@ -30,7 +30,7 @@ public interface WishlistServiceAsync {
 	 * delete the item 
 	 * user can delete only his items
 	 */
-	void deleteWishlistItem( String wishlistItemId,
+	void deleteWishlistItem(WishlistItemData item,
 			AsyncCallback<Void> callback);
 	/*
 	 * return user's wishlist
