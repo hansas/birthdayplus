@@ -26,7 +26,8 @@ public class BusinessObjectDAL {
 	public static Guest loadGuest(String guestId, PersistenceManager pm){
 		Guest guest = null;
 		try{
-			guest = pm.getObjectById(Guest.class, guestId);
+			Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
+			guest = pm.getObjectById(Guest.class, key);
 		}
 		catch (Exception ex){
 			System.out.print(ex.getMessage());
@@ -92,7 +93,8 @@ public class BusinessObjectDAL {
 		try
 		{
 		    tx.begin();
-		    Guest parent = pm.getObjectById(Guest.class, eventD.getUserId());
+		    int i =1;
+		    Guest parent = BusinessObjectDAL.loadGuest(eventD.getUserId(), pm);
    		    Event event = pm.getObjectById(Event.class, eventD.getEventId());
 		    parent.removeEvent(event);
 		    pm.makePersistent(parent);
@@ -119,7 +121,7 @@ public class BusinessObjectDAL {
 		try
 		{
 		    tx.begin();
-		    Guest user = pm.getObjectById(Guest.class, userId);
+		    Guest user = BusinessObjectDAL.loadGuest(userId, pm);//pm.getObjectById(Guest.class, userId);
 		    user.addEvent(event);
 		    System.out.println(event.getKey());
 		    eventD.setEventId(KeyFactory.keyToString(event.getKey()));
@@ -141,11 +143,16 @@ public class BusinessObjectDAL {
 	
 	public static List<Guest> getGuestsById(ArrayList<String> UserIdList, PersistenceManager pm) {
 		List<Guest> guests = new ArrayList<Guest>();
+		List<Key> keys = new ArrayList<Key>();
+		for(String userId: UserIdList){
+			Key k = KeyFactory.createKey(Guest.class.getSimpleName(), userId);
+			keys.add(k);
+		}
 		try{
 			
 			Query query = pm.newQuery(Guest.class);
-		    query.setFilter("id == :keyList");
-		    guests = (List<Guest>)query.execute(UserIdList);
+		    query.setFilter("idKey == :keyList");
+		    guests = (List<Guest>)query.execute(keys);
 		}
 		catch(Exception ex){
 			int i =0;
