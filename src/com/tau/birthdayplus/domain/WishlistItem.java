@@ -23,11 +23,6 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   @PrimaryKey
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	   private Key key;
-
-	   //item id
-	   //@Persistent
-	   //private String wishlistItemId;
-
 	   @Persistent
 	   private String itemName;
 	   @Persistent
@@ -56,17 +51,18 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		this.giverId=giverId;
 	}
 	
-	/*
-	static WishlistItem getItemByKey(Key key){
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		WishlistItem item = pm.getObjectById(WishlistItem.class, key);
-		return item;
-	}  
-	*/
+	public WishlistItem(WishlistItemData itemData){
+		this(itemData.getUserId(),itemData.getItemName(),itemData.getPriority(),itemData.getLink(),itemData.getPrice(),itemData.getGiverId());
+	}
 	
-//	public void setKey(Key key) {
-//		this.key = key;
-//	}
+	public void copyFromWishlistItemData(WishlistItemData itemData){
+		setItemName(itemData.getItemName());
+		setLink(itemData.getLink());
+		setPriority(itemData.getPriority());
+		setPrice(itemData.getPrice());
+		setGiverId(itemData.getGiverId());
+	}
+	
 	public Key getKey() {
 		return key;
 	}
@@ -115,11 +111,11 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		return this.participators;
 	}
 	
-	private void setGiverId(String giverId) {
+	public void setGiverId(String giverId) {
 		this.giverId = giverId;
 	}
 
-	private String getGiverId() {
+	public String getGiverId() {
 		return giverId;
 	}
 	
