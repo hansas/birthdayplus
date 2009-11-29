@@ -50,6 +50,7 @@ public class WishlistItemData implements  IsSerializable{
 		this("",userId,name,priority,link,price,"");
 	}
 	
+	//without userId?
 	public WishlistItemData(String name,Integer priority,String link,Integer price){
 		this("","",name,priority,link,price,"");
 	}
@@ -62,6 +63,10 @@ public class WishlistItemData implements  IsSerializable{
 	
 	public String getWishlistItemId(){
 		return this.wishlistItemId;
+	}
+	
+	public void setWishlistItemId(String itemId){
+		this.wishlistItemId = itemId;
 	}
 	
 	public void setItemName(String itemName) {
@@ -108,11 +113,11 @@ public class WishlistItemData implements  IsSerializable{
 		return this.participators;
 	}
 	
-	private void setGiverId(String giverId) {
+	public void setGiverId(String giverId) {
 		this.giverId = giverId;
 	}
 
-	private String getGiverId() {
+	public String getGiverId() {
 		return giverId;
 	}
 	
