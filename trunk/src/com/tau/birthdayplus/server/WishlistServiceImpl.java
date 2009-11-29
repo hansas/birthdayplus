@@ -14,6 +14,7 @@ import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.UserManagement;
+import com.tau.birthdayplus.logic.WishlistManagement;
 
 
 /**
@@ -28,56 +29,48 @@ WishlistService  {
 		
 	}
 	/*
-	 * add participator
-	 * Server - check if the item is active and the user isn't already participate
-	 */
-	public void createParticipator(String wishlistItemId,
-			ParticipatorData participator) {
-		// TODO Auto-generated method stub
-		
-	}
-	/*
 	 * creates new item for the user
 	 */
 	public void createWishlistItem(WishlistItemData item) {
-		System.out.println("creating new item : "+item);
+		WishlistManagement.createWishlistItem(item);
 		
-		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
-		UserManagement.createProfile(guestData);
-		GuestData savedGuest = UserManagement.loadGuestData("123"); 
-		EventData eventData = new EventData("","123","Test1",new Date(1,1,1), false);
-		EventManagement.createEvent(eventData);
-		eventData = new EventData(eventData.getEventId(),"123","Test2", new Date(1,2,3),false);
-		EventManagement.updateEvent(eventData);
-		savedGuest = new GuestData("123", "Ira", "Letuchaya", new Date(17,9,85));
-		UserManagement.updateProfile(savedGuest);
-		Guest g = UserManagement.loadGuest(savedGuest.getId());
-		System.out.println(g.getLastName());
-		List<Event> events = g.getEvents();
-		for (Event e: events){
-			System.out.print(e.getEventName());
-		}
-		ArrayList<String> users = new ArrayList<String>();
-		users.add("123");
-		ArrayList<EventData> eventsData = new ArrayList<EventData>();
-		eventsData = EventManagement.getEvents(users);
-		for (EventData eD: eventsData){
-			System.out.println(eD.getEventName());
-			System.out.println(eD.getUserId());
-		}
-		eventsData = EventManagement.getEvents(users);
-		if (eventsData.isEmpty()){
-			System.out.println("there is no events");
-		}
+//		System.out.println("creating new item : "+item);
+//		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
+//		UserManagement.createProfile(guestData);
+//		GuestData savedGuest = UserManagement.loadGuestData("123"); 
+//		EventData eventData = new EventData("","123","Test1",new Date(1,1,1), false);
+//		EventManagement.createEvent(eventData);
+//		eventData = new EventData(eventData.getEventId(),"123","Test2", new Date(1,2,3),false);
+//		EventManagement.updateEvent(eventData);
+//		savedGuest = new GuestData("123", "Ira", "Letuchaya", new Date(17,9,85));
+//		UserManagement.updateProfile(savedGuest);
+//		Guest g = UserManagement.loadGuest(savedGuest.getId());
+//		System.out.println(g.getLastName());
+//		List<Event> events = g.getEvents();
+//		for (Event e: events){
+//			System.out.print(e.getEventName());
+//		}
+//		ArrayList<String> users = new ArrayList<String>();
+//		users.add("123");
+//		ArrayList<EventData> eventsData = new ArrayList<EventData>();
+//		eventsData = EventManagement.getEvents(users);
+//		for (EventData eD: eventsData){
+//			System.out.println(eD.getEventName());
+//			System.out.println(eD.getUserId());
+//		}
+//		eventsData = EventManagement.getEvents(users);
+//		if (eventsData.isEmpty()){
+//			System.out.println("there is no events");
+//		}
 	}
+	
 	/*
-	 * delete  participator from the list
-	 * 
+	 * update the item, don't update isActive
+	 * GUI-user can update only his wishlist
 	 */
-	public void deleteParticipator(String wishlistItemId,
-			ParticipatorData participator) {
-		// TODO Auto-generated method stub
-		
+	public void updateWishlistItem(WishlistItemData item) {
+		System.out.println("updating item : "+item);
+		WishlistManagement.updateWishlistItem(item);
 	}
 	/*
 	 * delete the item 
@@ -85,21 +78,13 @@ WishlistService  {
 	 */
 	public void deleteWishlistItem(WishlistItemData item) {
 		System.out.println("deleting item : "+item);
-		
-	}
-	/*
-	 * return all the items this user booked
-	 */
-	public ArrayList<WishlistItemData> getBookedWishlistItems(String usetId) {
-		// TODO Auto-generated method stub
-		return null;
+		WishlistManagement.deleteWishlistItem(item);
 	}
 	/*
 	 * return user's wishlist
 	 */
-	public ArrayList<WishlistItemData> getWishlist(String uId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<WishlistItemData> getWishlist(String userId) {
+		return WishlistManagement.getWishlist(userId);
 	}
 	/*
 	 * user don't want to buy it 
@@ -113,11 +98,21 @@ WishlistService  {
 	 * user wants to buy this item
 	 * Server - check that item is active
 	 */
-
 	public void setInactive(String userId, String wishlistItemId) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/*
+	 * add participator
+	 * Server - check if the item is active and the user isn't already participate
+	 */
+	public void createParticipator(String wishlistItemId,
+			ParticipatorData participator) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/*
 	 * update participator (update money only)
 	 * Server - check if exists
@@ -127,15 +122,23 @@ WishlistService  {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	/*
-	 * update the item, don't update isActive
-	 * GUI-user can update only his wishlist
+	 * delete  participator from the list
+	 * 
 	 */
-	public void updateWishlistItem(WishlistItemData item) {
-		System.out.println("updating item : "+item);
+	public void deleteParticipator(String wishlistItemId,
+			ParticipatorData participator) {
+		// TODO Auto-generated method stub
 		
 	}
-
 	
+	/*
+	 * return all the items this user booked
+	 */
+	public ArrayList<WishlistItemData> getBookedWishlistItems(String usetId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
