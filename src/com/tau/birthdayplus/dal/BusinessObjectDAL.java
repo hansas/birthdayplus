@@ -11,6 +11,8 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+import org.datanucleus.store.Extent;
+
 import sun.misc.Sort;
 
 import com.google.appengine.api.datastore.Key;
@@ -139,10 +141,7 @@ public class BusinessObjectDAL {
 		    tx.begin();
 		    Guest user = BusinessObjectDAL.loadGuest(userId, pm);//pm.getObjectById(Guest.class, userId);
 		    user.addEvent(event);
-		    System.out.println(event.getKey());
 		    eventD.setEventId(KeyFactory.keyToString(event.getKey()));
-		    System.out.println(eventD.getEventId());
-		    System.out.println(KeyFactory.stringToKey(eventD.getEventId()));
 		  	pm.makePersistent(user);
 		    pm.makePersistent(event);
 		    tx.commit();
@@ -188,7 +187,38 @@ public class BusinessObjectDAL {
 		    user.addWishlistItem(item);
 			itemData.setWishlistItemId(KeyFactory.keyToString(item.getKey()));
 		  	pm.makePersistent(user);
+		  	Key k = KeyFactory.createKey(Guest.class.getSimpleName(), "123");
+		  	if (item.getKey().getParent().equals(k)){
+		  		System.out.println("equals");
+		  	}
+		  	if (item.getKey().getParent().toString().equals(k.toString())){
+		  		System.out.println("equals - toString");
+		  	}
+		  	else{
+		  		System.out.println(item.getKey().getParent().toString());
+		  		System.out.println(item.getKey().getParent());
+		  		System.out.println(k);
+		  	}
 		    pm.makePersistent(item);
+		  	k = KeyFactory.createKey(Guest.class.getSimpleName(), "123");
+		  	if (item.getKey().getParent().equals(k)){
+		  		System.out.println("equals");
+		  	}
+		  	if (item.getKey().getParent().toString().equals(k.toString())){
+		  		System.out.println("equals - toString");
+		  	}
+		  	if (k==item.getKey().getParent()){
+		  		System.out.println("ok");
+		  	}
+		  	if (item.getKey().getParent().toString()==k.toString()){
+		  		System.out.println("ok toString");
+		  	}
+		  	else{
+		  		System.out.println(item.getKey());
+		  		System.out.println(item.getKey().getParent().toString());
+		  		System.out.println(item.getKey().getParent());
+		  		System.out.println(k);
+		  	}
 		    tx.commit();
 		}catch (Exception ex) {
 			throw new RuntimeException("error in data base: createWishlistItem", ex);
@@ -251,14 +281,9 @@ public class BusinessObjectDAL {
 	
 	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) {
 		List<WishlistItem> itemList = new ArrayList<WishlistItem>();
-		Key k = KeyFactory.createKey(Guest.class.getSimpleName(), userId);
+		Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 		try{
-			
-			Query query = pm.newQuery(WishlistItem.class);
-			query.declareImports("import com.google.appengine.api.datastore.Key;");
-			query.declareParameters("Key k");
-		    query.setFilter("this.getKey().getParent() == k");
-		    itemList = (List<WishlistItem>)query.execute();
+			itemList = user.getWishlistItems();
 		}
 		catch(Exception ex){
 			System.out.println(ex.getMessage());
