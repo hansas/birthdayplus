@@ -53,6 +53,7 @@ public class BirthdayplusServiceDelegate {
 	    );//end of method call
 	    }
 	    
+
 	    void updateEvent( final EventData event){
 	    	eventService.updateEvent( event, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){

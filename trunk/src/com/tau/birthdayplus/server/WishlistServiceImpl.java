@@ -33,6 +33,28 @@ WishlistService  {
 	 */
 	public void createWishlistItem(WishlistItemData item) {
 		WishlistManagement.createWishlistItem(item);
+//		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
+//		UserManagement.createProfile(guestData);
+//		GuestData savedGuest = UserManagement.loadGuestData("123"); 
+//		WishlistItemData itemData = new WishlistItemData("123","Car",4,"No link",500000);
+//		WishlistManagement.createWishlistItem(itemData);
+//		List<WishlistItemData> itemDataList = WishlistManagement.getWishlist("123");
+//		for (WishlistItemData itemD : itemDataList){
+//			System.out.println(itemD.getItemName());
+//			System.out.println(itemD.getWishlistItemId());
+//		}
+//		itemData.setItemName("Iphone");
+//		WishlistManagement.updateWishlistItem(itemData);
+//		itemDataList = WishlistManagement.getWishlist("123");
+//		for (WishlistItemData itemD : itemDataList){
+//			System.out.println(itemD.getItemName());
+//			System.out.println(itemD.getWishlistItemId());
+//			WishlistManagement.deleteWishlistItem(itemD);
+//		}
+//		itemDataList = WishlistManagement.getWishlist("123");
+//		if (itemDataList.isEmpty()){
+//			System.out.println("there is no events");
+//		}
 		
 //		System.out.println("creating new item : "+item);
 //		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));

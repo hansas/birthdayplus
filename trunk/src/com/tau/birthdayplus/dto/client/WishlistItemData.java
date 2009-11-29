@@ -33,6 +33,7 @@ public class WishlistItemData implements  IsSerializable{
 	 */
 	public WishlistItemData(String wishlistItemId,String userId,String name, Integer priority, String link, Integer price, String giverId){
 		this.wishlistItemId=wishlistItemId;
+		this.userId = userId;
 		this.itemName = name;
 		this.priority = priority;
 		this.link = link;

@@ -112,6 +112,10 @@ public class Guest   {
 			wishlistItems.remove(item);
 		}
 		
+		public List<WishlistItem> getWishlistItems(){
+			return this.wishlistItems;
+		}
+		
 		/*
 		static Guest loadGuest(User googleAccount){
 			Key k = KeyFactory.createKey(Guest.class.getSimpleName(), googleAccount.getUserId());
