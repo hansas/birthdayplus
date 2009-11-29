@@ -7,6 +7,7 @@ import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.datastore.Key;
 import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.WishlistItem;
 
 public class DALWrapper {
 	
@@ -27,6 +28,10 @@ public class DALWrapper {
 	
 	public Guest getGuestByKey(Key parentKey){
 		return pm.getObjectById(Guest.class, parentKey);
+	}
+	
+	public List<WishlistItem> getWishlist(String userId){
+		return BusinessObjectDAL.getWishlist(userId, this.pm);
 	}
 	
 }
