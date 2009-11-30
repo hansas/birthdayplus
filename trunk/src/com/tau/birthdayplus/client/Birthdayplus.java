@@ -11,6 +11,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
@@ -19,6 +21,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SourcesTabEvents;
+import com.google.gwt.user.client.ui.TabListener;
 import com.google.gwt.user.client.ui.TabPanel;
 
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
@@ -45,6 +49,8 @@ public class Birthdayplus implements EntryPoint {
 	 */
 	public String userId="987654321";
 	public HashMap<String,String> userFriends= new HashMap<String,String>();
+	
+	private TabPanel tab;
 	
 	/*
 	 *  Event tab
@@ -73,7 +79,7 @@ public class Birthdayplus implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		    TabPanel tab = new TabPanel();
+		    tab = new TabPanel();
 		
 			tab.getElement().setId("tab");
 			tab.setAnimationEnabled(true);
@@ -110,9 +116,9 @@ public class Birthdayplus implements EntryPoint {
 	        
 			tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
 			
-		//	profileService.getProfile(userId, new AsyncCallback<GuestData>(){
+			profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
-		//		public void onFailure(Throwable caught) {
+				public void onFailure(Throwable caught) {
 					GuestData user= new GuestData(userId,"olga","vingurt",new Date());
 					profileService.createProfile(user, new AsyncCallback<Void>(){
 			    	public void onFailure(Throwable caught){
@@ -134,22 +140,28 @@ public class Birthdayplus implements EntryPoint {
 			    	);//end of method call)
 					
 					
-			//	}
+				}
 
-			//	public void onSuccess(GuestData result) {
-			//		ArrayList<String> temp=new ArrayList<String>();
-			//		temp.add(userId);
-			//		eventDelegate.getEvents(temp);
-					//listen to the events in the tabs
-			//		eventGui.wireEventGUIEvents();
-	    	//		myWishlistGUI.wireMyWishlistGUIEvents();
-	    	//		iBuyGUI.wireIBuyGUIEvents();
-			//		
-			//	}
+				public void onSuccess(GuestData result) {
+				//	ArrayList<String> temp=new ArrayList<String>();
+				//	temp.add(userId);
+				//	eventDelegate.getEvents(temp);
+					
+			    	eventGui.wireEventGUIEvents();
+			    	
+	    			myWishlistGUI.wireMyWishlistGUIEvents();
+	    			iBuyGUI.wireIBuyGUIEvents();
+	    			wireTabGUIEvents();
+	    			
+	    			tab.selectTab(0);
+					
+				}
 				
-		//	});
+			});
 			
-			tab.selectTab(0);
+			
+			
+		//	wireTabGUIEvents();
 		
 		
 		
@@ -178,6 +190,25 @@ public class Birthdayplus implements EntryPoint {
 	    return hPanel.getElement().getString();
 	  }
 	  
+	  private void wireTabGUIEvents(){
+		  tab.addSelectionHandler(new SelectionHandler<Integer>(){
+
+			public void onSelection(SelectionEvent<Integer> event) {
+				if(event.getSelectedItem()== 0){
+					ArrayList<String> temp=new ArrayList<String>();
+					temp.add(userId);
+					eventDelegate.getEvents(temp);
+				};
+				if(event.getSelectedItem()== 1)
+					myWishlistDelegate.getWishlist(userId);
+				
+					
+					
+				
+			}});
+		  
+	  
+	  }
 	  
 
 		
