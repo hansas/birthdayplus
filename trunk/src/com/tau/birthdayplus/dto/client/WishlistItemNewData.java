@@ -16,7 +16,7 @@ public class WishlistItemNewData extends WishlistItemBaseData implements  IsSeri
 	   ArrayList<ParticipatorData> participators;
     
 	   //person who will buy this present
-	   private Buyer buyer;
+	   private BuyerData buyer;
 	
 	/*
 	 * constructor for isSerializable
@@ -70,11 +70,11 @@ public class WishlistItemNewData extends WishlistItemBaseData implements  IsSeri
 		return this.participators;
 	}
 	
-	public void setBuyer(Buyer buyer){
+	public void setBuyer(BuyerData buyer){
 		this.buyer = buyer;
 	}
 	
-	public Buyer getBuyer(){
+	public BuyerData getBuyer(){
 		return this.buyer;
 	}
 	
