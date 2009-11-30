@@ -11,7 +11,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 public class MyWishlistDelegate {
 	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class); 
 	public MyWishlistTabGUI gui;
-	 void getWishlist(final String uIdlist) {
+	 public void getWishlist(final String uIdlist) {
 	    	wishlistService.getWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemData>>(){
 
 	    		public void onFailure(Throwable caught){

@@ -96,14 +96,14 @@ public class MyWishlistTabGUI {
 		
 		    
 		   
-		    ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
-		    for(int i=0;i<5;i++){
-		    	data.add(new WishlistItemData(entryPoint.userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
+		 //   ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
+		//    for(int i=0;i<5;i++){
+		 //   	data.add(new WishlistItemData(entryPoint.userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 		    	
 		    	
-		    }
+		 //   }
 		    
-		    service_eventGetWishlistSuccesfull(data);
+		 //   service_eventGetWishlistSuccesfull(data);
 		
 	}
 
@@ -211,7 +211,7 @@ public class MyWishlistTabGUI {
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item);
          }else if(col==LINK){
-        	 if(item.getLink()!=null)
+        	 if(!item.getLink().equals(""))
         		 Window.open(item.getLink(), "_blank", null);
          }
     }
@@ -312,7 +312,7 @@ public class MyWishlistTabGUI {
 	        
 	        int row = 0;
 	        for (WishlistItemData item : result) {
-	        	if (item.getLink()== null)
+	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
 	        	else
 	        		wishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
@@ -326,20 +326,20 @@ public class MyWishlistTabGUI {
 	
 	public void service_eventCreateWishlistItemSuccessful(){
 	//	showMessage("Item was successfully created");
-      //  this.wishlistService.getWishlist(userId);
+        this.wishlistService.getWishlist(entryPoint.userId);
 
 		
 	}
 	
 	public void service_eventUpdateWishlistItemSuccessful(){
 		//showMessage("Item was successfully updated");
-     //   this.wishlistService.getWishlist(userId);
+        this.wishlistService.getWishlist(entryPoint.userId);
 		
 	}
 	
 	public void service_deleteWishlistItemSuccessful(){
 	//	showMessage("Item was successfully deleteded");
-    //    this.wishlistService.getWishlist(userId);
+       this.wishlistService.getWishlist(entryPoint.userId);
 	}
 	
 	public void service_eventGetWishlistFailed(Throwable caught){
