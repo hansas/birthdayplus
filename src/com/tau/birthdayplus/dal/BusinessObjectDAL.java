@@ -2,19 +2,16 @@ package com.tau.birthdayplus.dal;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
-
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
-
 import org.datanucleus.store.Extent;
-
 import sun.misc.Sort;
-
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
@@ -58,7 +55,18 @@ public class BusinessObjectDAL {
 	public static void createProfile(Guest guest) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
+			
+			Calendar cal = Calendar.getInstance();
+			Date birthday = new Date(cal.get(Calendar.DAY_OF_YEAR),guest.getBirthday().getMonth(),guest.getBirthday().getDate());
+			int currentDom = cal.get(Calendar.DAY_OF_MONTH);
+			int currentMonth = cal.get(Calendar.MONTH) + 1;
+			if ((currentMonth>guest.getBirthday().getMonth())||((currentMonth==guest.getBirthday().getMonth())&&(currentDom>guest.getBirthday().getDate()))){
+				birthday.setYear(cal.get(Calendar.DAY_OF_YEAR)+1);
+			}
+			Event e = new Event("Birthday", guest.getId(), birthday, true);
+			guest.addEvent(e);
            	pm.makePersistent(guest);
+           	pm.makePersistent(e);
         } catch (Exception ex){
         	System.out.println(ex.getMessage());
         }
