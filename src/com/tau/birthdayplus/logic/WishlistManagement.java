@@ -3,6 +3,8 @@ package com.tau.birthdayplus.logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.mbeans.UserMBean;
+
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
@@ -47,7 +49,7 @@ public class WishlistManagement {
 	}
 	
 	public static WishlistItemData itemToItemData(WishlistItem item,String userId){
-		return new WishlistItemData(KeyFactory.keyToString(item.getKey()),userId,item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getGiverId());
+		return new WishlistItemData(KeyFactory.keyToString(item.getKey()),userId,item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
 	}
 	
 	public static ArrayList<WishlistItemData> getWishlist(String userId) {
@@ -59,6 +61,11 @@ public class WishlistManagement {
 		finally{
 			wrapper.close();
 		}
+	}
+	
+	public static ArrayList<WishlistItemData> getParicipationWishlist(String userId){
+		Guest g = UserManagement.loadGuest(userId);
+		return null;
 	}
 
 }

@@ -8,10 +8,11 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.Participator;
+import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
-import com.tau.birthdayplus.dto.client.WishlistItemBaseData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.UserManagement;
@@ -24,68 +25,46 @@ import com.tau.birthdayplus.logic.WishlistManagement;
 @SuppressWarnings("serial")
 public class WishlistServiceImpl extends RemoteServiceServlet implements
 WishlistService  {
-    
-////////////////for managing my events\\\\\\\\\\\\\\\\\\\\\\
-	/*
-	 * creates new item for the user
-	 */
-	public void createWishlistItem(WishlistItemBaseData item) {
-		// TODO Auto-generated method stub
-		
-	}
-	/*
-	 * update the item, don't update isActive
-	 * GUI-user can update only his wishlist
-	 */
-	public void updateWishlistItem(WishlistItemBaseData item) {
-		// TODO Auto-generated method stub
-		
-	}
-	/*
-	 * delete the item 
-	 * GUI - user can delete only his wishlist items
-	 */
-	public void deleteWishlistItem(WishlistItemBaseData item) {
-		// TODO Auto-generated method stub
-		
-	}
+   
 	/*
 	 * return user's wishlist
 	 */
-	public ArrayList<WishlistItemBaseData> getMyWishlist(String userId) {
+	public ArrayList<WishlistItemData> getMyWishlist(String userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
 	/*
 	 * creates new item for the user
 	 */
 	public void createWishlistItem(WishlistItemData item) {
 		WishlistManagement.createWishlistItem(item);
-//		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
-//		UserManagement.createProfile(guestData);
-//		GuestData savedGuest = UserManagement.loadGuestData("123"); 
-//		WishlistItemData itemData = new WishlistItemData("123","Car",4,"No link",500000);
-//		WishlistManagement.createWishlistItem(itemData);
-//		List<WishlistItemData> itemDataList = WishlistManagement.getWishlist("123");
-//		for (WishlistItemData itemD : itemDataList){
-//			System.out.println(itemD.getItemName());
-//			System.out.println(itemD.getWishlistItemId());
-//		}
-//		itemData.setItemName("Iphone");
-//		WishlistManagement.updateWishlistItem(itemData);
-//		itemDataList = WishlistManagement.getWishlist("123");
-//		for (WishlistItemData itemD : itemDataList){
-//			System.out.println(itemD.getItemName());
-//			System.out.println(itemD.getWishlistItemId());
-//			WishlistManagement.deleteWishlistItem(itemD);
-//		}
-//		itemDataList = WishlistManagement.getWishlist("123");
-//		if (itemDataList.isEmpty()){
-//			System.out.println("there is no events");
-//		}
+		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
+		UserManagement.createProfile(guestData);
+		GuestData savedGuest = UserManagement.loadGuestData("123"); 
+		WishlistItemData itemData = new WishlistItemData("","123","Car",4,"No link",500000,true);
+		WishlistManagement.createWishlistItem(itemData);
+		List<WishlistItemData> itemDataList = WishlistManagement.getWishlist("123");
+		for (WishlistItemData itemD : itemDataList){
+			System.out.println(itemD.getItemName());
+			System.out.println(itemD.getWishlistItemId());
+		}
+		Guest g = UserManagement.loadGuest("123");
+		List<WishlistItem> items = g.getWishlistItems();
+		Participator p = new Participator(g,300);
+		items.get(0).addParticipator(p);
+		
+		itemData.setItemName("Iphone");
+		WishlistManagement.updateWishlistItem(itemData);
+		itemDataList = WishlistManagement.getWishlist("123");
+		for (WishlistItemData itemD : itemDataList){
+			System.out.println(itemD.getItemName());
+			System.out.println(itemD.getWishlistItemId());
+			WishlistManagement.deleteWishlistItem(itemD);
+		}
+		itemDataList = WishlistManagement.getWishlist("123");
+		if (itemDataList.isEmpty()){
+			System.out.println("there is no events");
+		}
 		
 //		System.out.println("creating new item : "+item);
 //		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
