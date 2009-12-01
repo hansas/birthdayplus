@@ -29,7 +29,7 @@ public class WishlistItemNewData extends WishlistItemBaseData implements  IsSeri
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemNewData(String wishlistItemId,String userId,String userName,String itemName,String eventId,String eventName,String name, Integer priority, String link, Integer price){
+	public WishlistItemNewData(String wishlistItemId,String userId,String userName,String eventId,String eventName,String name, Integer priority, String link, Integer price){
 		super(wishlistItemId,userId,name,priority,link,price);
 		this.userName = userName;
 		this.eventId = eventId;
