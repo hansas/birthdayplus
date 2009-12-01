@@ -20,11 +20,13 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 
 import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
-import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemBaseData;
+
 
 
 
@@ -71,8 +73,8 @@ public class MyWishlistTabGUI {
 	/*  
 	 * Data Model
 	 */
-	private ArrayList<WishlistItemData> items;
-    private WishlistItemData currentItem;
+	private ArrayList<WishlistItemBaseData> items;
+    private WishlistItemBaseData currentItem;
     public MyWishlistDelegate wishlistService;
     public Birthdayplus entryPoint;
     
@@ -200,7 +202,7 @@ public class MyWishlistTabGUI {
          int row = cellClicked.getRowIndex();
          int col = cellClicked.getCellIndex();
         
-        WishlistItemData item = this.items.get(row);
+        WishlistItemBaseData item = this.items.get(row);
          
        
          if (col==UPDATE_LINK) {
@@ -221,7 +223,7 @@ public class MyWishlistTabGUI {
 	 /*
 	  * show the popup box with filled fields
 	  */
-	 private void loadForm(WishlistItemData item,Actions action) {
+	 private void loadForm(WishlistItemBaseData item,Actions action) {
 		    addItemBox.center();
 		    addItemBox.setText(action.name()+" item");
    	        addItemBox.show();
@@ -292,7 +294,7 @@ public class MyWishlistTabGUI {
         this.addItemButton.setVisible(false);
         this.updateButton.setVisible(false);
         this.addButton.setVisible(true);
-        loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
+        loadForm(new WishlistItemBaseData(entryPoint.userId),Actions.CREATE);
     }
     
     /*
@@ -306,12 +308,14 @@ public class MyWishlistTabGUI {
 	/*
 	 * wishlist returned from the server
 	 */
-	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemData> result) {
+	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemBaseData> result) {
 	        this.items = result;
 	        this.wishTable.clear();
 	        
+	        RowFormatter rf = wishTable.getRowFormatter();
+	        
 	        int row = 0;
-	        for (WishlistItemData item : result) {
+	        for (WishlistItemBaseData item : result) {
 	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
 	        	else
@@ -320,26 +324,30 @@ public class MyWishlistTabGUI {
 	    	    wishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
 	    	    wishTable.setWidget(row, 3, new Hyperlink("update", null));
 	    	    wishTable.setWidget(row,4,new Hyperlink("delete", null)); 
+	    	    if(item.getIsActive())
+	    	    	rf.addStyleName(row,constants.cwActiveRowStyle());
+	    	    else
+	    	    	rf.addStyleName(row, constants.cwInactiveRowStyle());
 	            row ++;
 	        }
 	    }
 	
 	public void service_eventCreateWishlistItemSuccessful(){
 	//	showMessage("Item was successfully created");
-        this.wishlistService.getWishlist(entryPoint.userId);
+        this.wishlistService.getMyWishlist(entryPoint.userId);
 
 		
 	}
 	
 	public void service_eventUpdateWishlistItemSuccessful(){
 		//showMessage("Item was successfully updated");
-        this.wishlistService.getWishlist(entryPoint.userId);
+        this.wishlistService.getMyWishlist(entryPoint.userId);
 		
 	}
 	
 	public void service_deleteWishlistItemSuccessful(){
 	//	showMessage("Item was successfully deleteded");
-       this.wishlistService.getWishlist(entryPoint.userId);
+       this.wishlistService.getMyWishlist(entryPoint.userId);
 	}
 	
 	public void service_eventGetWishlistFailed(Throwable caught){

@@ -14,18 +14,46 @@ public class IBuyDelegate {
 	public IBuyTabGUI gui;
 	
 	
-	 void setActiveWishlistitem(final String wishlistItemId){
-		   wishlistService.setActive(wishlistItemId, new AsyncCallback<Void>(){
-			   public void onFailure(Throwable caught){
-				   gui.service_setActiveWishlistitemFailed(caught);
-			   }
-			   
-			   public void onSuccess(Void result){
-				   gui.service_setActiveWishlistitemSuccessful();
-			   }
-		   }//end of inner class
-		   );//end of method call
-	   }              
+	void cancelBookItemForUser(String wishlistItemId, String userId){
+		wishlistService.cancelBookItemForUser(wishlistItemId, userId,new AsyncCallback<Void>(){
+
+			public void onFailure(Throwable caught) {
+				gui.sevice_eventCancelBookItemForUserFailed(caught);				
+			}
+
+			public void onSuccess(Void result) {
+				gui.service_eventCancelBookItemForUserSuccesfull();	
+			}
+		});		
+	}
+	
+	void deleteParticipator(String wishlistItemId, String userId){
+		wishlistService.deleteParticipator(wishlistItemId, userId, new AsyncCallback<Void>(){
+
+			public void onFailure(Throwable caught) {
+				gui.service_eventDeleteParticipatorFailed(caught);
+			}
+
+			public void onSuccess(Void result) {
+				gui.service_eventDeleteParticipatorSuccesfull();
+			}
+			
+		});
+	}
+	
+	void deleteItemFromTab(String userId,String wishlistItemId){
+		wishlistService.deleteBookedWishlistItem(userId, wishlistItemId,new AsyncCallback<Void>(){
+
+			public void onFailure(Throwable caught) {
+				gui.service_eventDeleteItemFromTabFailed(caught);
+			}
+
+			public void onSuccess(Void result) {
+				gui.service_eventDeleteItemFromTabSuccesfull();				
+			}
+		});
+	}
+	
 	 
 	 
 	 void getBookedWishlist(final String userId) {

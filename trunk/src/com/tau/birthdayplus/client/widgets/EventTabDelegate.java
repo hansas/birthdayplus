@@ -12,7 +12,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class EventTabDelegate {
 	private final EventServiceAsync eventService = GWT.create(EventService.class); 
-	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class);
+	
 	public EventTabGUI eventGui;
 	public WishListFriendsGUI wishlistFriendGUI;
 	public void getEvents(final ArrayList<String> uIdlist) {
@@ -66,18 +66,5 @@ public class EventTabDelegate {
 	);//end of method call
 	}
 	
-	void getWishlist(String uId){
-		wishlistService.getWishlist(uId, new AsyncCallback<ArrayList<WishlistItemData>>(){
-			public void onFailure(Throwable caught) {
-				eventGui.service_eventGetWishlistFailed(caught);
-				
-			}
 
-			public void onSuccess(ArrayList<WishlistItemData> result) {
-				eventGui.service_eventGetWishlistSuccessful();	
-			}
-			
-		}//end of inner class
-	);//end of method call
-	}
 }

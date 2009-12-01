@@ -6,27 +6,29 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.client.WishlistServiceAsync;
-import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemBaseData;
+
 
 public class MyWishlistDelegate {
 	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class); 
 	public MyWishlistTabGUI gui;
-	 public void getWishlist(final String uIdlist) {
-	    	wishlistService.getWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemData>>(){
+	 public void getMyWishlist(final String uIdlist) {
+	    	wishlistService.getMyWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemBaseData>>(){
 
 	    		public void onFailure(Throwable caught){
 	    			gui.service_eventGetWishlistFailed(caught);
 	    		}
-	    		public void onSuccess(ArrayList<WishlistItemData> result){
-	    			gui.service_eventGetWishlistSuccesfull(result);
-	    		}
+				public void onSuccess(ArrayList<WishlistItemBaseData> result) {
+					gui.service_eventGetWishlistSuccesfull(result);
+					
+				}
 	    	}//end of inner class
 	    	);//end of method call
 	    	}
 	       
 	    
 	    
-	    void createWishlistItem(final WishlistItemData item){
+	    void createWishlistItem(final WishlistItemBaseData item){
 	    	wishlistService.createWishlistItem(item, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){
 	    			gui.service_eventCreateWishlistItemFailed(caught);
@@ -39,7 +41,7 @@ public class MyWishlistDelegate {
 	    );//end of method call
 	    }
 	    
-	    void updateWishlistItem(final WishlistItemData item){
+	    void updateWishlistItem(final WishlistItemBaseData item){
 	    	wishlistService.updateWishlistItem(item, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){
 	    			gui.service_eventUpdateWishlistItemFailed(caught);
@@ -53,7 +55,7 @@ public class MyWishlistDelegate {
 	    }
 
 
-	   void deleteWishlistItem(final WishlistItemData item){
+	   void deleteWishlistItem(final WishlistItemBaseData item){
 		   wishlistService.deleteWishlistItem(item, new AsyncCallback<Void>(){
 			   public void onFailure(Throwable caught){
 				   gui.service_deleteWishlistItemFailed(caught);
