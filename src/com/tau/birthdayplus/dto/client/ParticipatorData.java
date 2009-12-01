@@ -23,23 +23,23 @@ public class ParticipatorData implements IsSerializable{
 		   this.setMoney(money);
 	   }
 	        	
-	   String getUserId() {
+	   public String getUserId() {
 		   return userId;
 	   }
 
-	   void setMoney(Integer money) {
+	   public void setMoney(Integer money) {
 		    this.money = money;
     	}
 
-	   Integer getMoney() {
+	   public Integer getMoney() {
 		    return money;
     	}
 
-		String getUserFirstName() {
+		public String getUserFirstName() {
 			return userFirstName;
 		}
 
-		String getUserLastName() {
+		public String getUserLastName() {
 			return userLastName;
 		}
 
