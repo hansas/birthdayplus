@@ -23,6 +23,7 @@ import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
 
@@ -72,8 +73,8 @@ public class IBuyTabGUI {
 	
 	
 	//////////////////Model///////////////////////////////
-	ArrayList<WishlistItemData> itemsToBuy;
-	WishlistItemData currentItem;
+	ArrayList<WishlistItemNewData> itemsToBuy;
+	WishlistItemNewData currentItem;
 	public IBuyDelegate wishlistService;
 	public Birthdayplus entryPoint;
 	
@@ -93,9 +94,9 @@ public class IBuyTabGUI {
 		
 		buildMoneyDialogBox();
 		    
-		 ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
+		 ArrayList<WishlistItemNewData> data=new ArrayList<WishlistItemNewData>();
 		    for(int i=0;i<5;i++){
-		    	data.add(new WishlistItemData("","","Drug","","prazdnik"+i,"podarok"+i, i, "", 500,false));
+		    	data.add(new WishlistItemNewData("","","Drug","","prazdnik"+i,"podarok"+i, i, "", 500,false));
 		    }
 		    
 		service_getBookedWishlistSuccesfull(data);
@@ -130,7 +131,7 @@ public class IBuyTabGUI {
 		
 	}
 	
-	private void loadMoneyDialog(WishlistItemData item){
+	private void loadMoneyDialog(WishlistItemNewData item){
 		moneyDialogBox.center();
 		currentItem = item;
 		
@@ -252,7 +253,7 @@ public class IBuyTabGUI {
 	         int row = cellClicked.getRowIndex();
 	         int col = cellClicked.getCellIndex();
 	        
-	         WishlistItemData item = this.itemsToBuy.get(row);
+	         WishlistItemNewData item = this.itemsToBuy.get(row);
 	         
 	        
 	        switch(col){
@@ -275,7 +276,7 @@ public class IBuyTabGUI {
 
       
 		public void service_getBookedWishlistSuccesfull(
-				ArrayList<WishlistItemData> result) {
+				ArrayList<WishlistItemNewData> result) {
 			this.itemsToBuy = result;
 	        this.wishTable.clear();
 	        
@@ -283,7 +284,7 @@ public class IBuyTabGUI {
 	        
 	        int row = 0;
 	        
-	        for (WishlistItemData item : result) {
+	        for (WishlistItemNewData item : result) {
 	        	wishTable.setWidget(row,0,new Label(item.getUserName()+"'s "+item.getEventName()));
 	        	if (item.getLink()== null)
 	        		wishTable.setWidget(row, 1,new Label(item.getItemName()));

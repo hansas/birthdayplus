@@ -65,6 +65,7 @@ public class WishlistManagement {
 	
 	public static ArrayList<WishlistItemData> getParicipationWishlist(String userId){
 		Guest g = UserManagement.loadGuest(userId);
+		List<WishlistItem> itemList = BusinessObjectDAL.getParticipationWishlist(g);
 		return null;
 	}
 

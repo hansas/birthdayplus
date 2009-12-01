@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
 
@@ -74,7 +75,7 @@ public class WishListFriendsGUI  {
 	 * Data Model
 	 */
 	//list of friends items for the event
-	private ArrayList<WishlistItemData> items;
+	private ArrayList<WishlistItemNewData> items;
     private WishlistItemData currentItem;
     protected WishListFriendsDelegate wishlistService;
     protected EventTabGUI parent;
@@ -94,7 +95,7 @@ public class WishListFriendsGUI  {
 			 buildParticipatorsPopupPanel();
 			 
 			 
-			 items = new ArrayList<WishlistItemData>();
+			 items = new ArrayList<WishlistItemNewData>();
 			
 			
 			 ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
@@ -155,7 +156,7 @@ public class WishListFriendsGUI  {
  	   participatorsPanel.add(participatorsTable);
 	}
 	
-	private void showParticipatorsPanel(WishlistItemData item,Widget widgetClicked){
+	private void showParticipatorsPanel(WishlistItemNewData item,Widget widgetClicked){
 		currentItem = item;
 	    
         int left =  widgetClicked.getAbsoluteLeft() + 10;
@@ -229,7 +230,7 @@ public class WishListFriendsGUI  {
          int row = cellClicked.getRowIndex();
          int col = cellClicked.getCellIndex();
         
-        WishlistItemData item = this.items.get(row);
+        WishlistItemNewData item = this.items.get(row);
          
        switch(col){
        case LINK :          if(item.getLink()!=null)
@@ -320,13 +321,13 @@ public class WishListFriendsGUI  {
 	 * friend's wishlist
 	 */
 	public void service_eventGetWishlistSuccesfull(
-			ArrayList<WishlistItemData> result) {
+			ArrayList<WishlistItemNewData> result) {
 	//	
 		this.items = result;
         this.friendWishTable.clear();
         
         int row = 0;
-        for (WishlistItemData item : result) {
+        for (WishlistItemNewData item : result) {
         	if (item.getLink().equals(""))
         		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
         	else

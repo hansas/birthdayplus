@@ -14,6 +14,7 @@ import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.UserManagement;
 import com.tau.birthdayplus.logic.WishlistManagement;
@@ -52,6 +53,7 @@ WishlistService  {
 		List<WishlistItem> items = g.getWishlistItems();
 		Participator p = new Participator(g,300);
 		items.get(0).addParticipator(p);
+		List<WishlistItemData> items2 = WishlistManagement.getParicipationWishlist("123");
 		
 		itemData.setItemName("Iphone");
 		WishlistManagement.updateWishlistItem(itemData);
@@ -154,7 +156,7 @@ WishlistService  {
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
 	 *  eventId == null ) and isActive == true
 	 */
-	public ArrayList<WishlistItemData> getWishlistForEvent(String id,
+	public ArrayList<WishlistItemNewData> getWishlistForEvent(String id,
 			String eventId) {
 		// TODO Auto-generated method stub
 		return null;
@@ -163,7 +165,7 @@ WishlistService  {
 	/*
 	 * return all the items this user has booked
 	 */
-	public ArrayList<WishlistItemData> getBookedWishlistItems(String usetId) {
+	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String usetId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

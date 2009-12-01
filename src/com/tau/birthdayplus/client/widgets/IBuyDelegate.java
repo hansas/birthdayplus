@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.client.WishlistServiceAsync;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 public class IBuyDelegate {
 	 // Create a remote service proxy to talk to the server-side Profile service.
@@ -57,12 +58,12 @@ public class IBuyDelegate {
 	 
 	 
 	 void getBookedWishlist(final String userId) {
-	    	wishlistService.getBookedWishlistItems(userId, new AsyncCallback<ArrayList<WishlistItemData>>(){
+	    	wishlistService.getBookedWishlistItems(userId, new AsyncCallback<ArrayList<WishlistItemNewData>>(){
 
 	    		public void onFailure(Throwable caught){
 	    			gui.service_getBookedWishlistFailed(caught);
 	    		}
-	    		public void onSuccess(ArrayList<WishlistItemData> result){
+	    		public void onSuccess(ArrayList<WishlistItemNewData> result){
 	    			gui.service_getBookedWishlistSuccesfull(result);
 	    		}
 	    	}//end of inner class
