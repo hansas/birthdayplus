@@ -35,26 +35,27 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   private Integer price;
 	   //people that want to buy this together
 	   @Persistent
-	   ArrayList<ParticipatorData> participators;
+	   ArrayList<Participator> participators;
        //if booked or not
 	   @Persistent
 	   private Boolean isActive;
-	   //id of the person that booked this item
+	   //key of the person that buys this item
 	   @Persistent
-	   private String giverId;
+	   private Key guestKey;
 	
-	public WishlistItem(String userId, String name, Integer priority, String link, Integer price,String giverId){
+	public WishlistItem(String userId, String name, Integer priority, String link, Integer price){
 		this.itemName = name;
 		this.priority = priority;
 		this.link = link;
 		this.price = price;
-		this.participators = new ArrayList<ParticipatorData>();
+		this.participators = new ArrayList<Participator>();
 		this.setIsActive(true);
-		this.giverId=giverId;
+		this.guestKey=null;
+		this.eventKey=null;
 	}
 	
 	public WishlistItem(WishlistItemData itemData){
-		this(itemData.getUserId(),itemData.getItemName(),itemData.getPriority(),itemData.getLink(),itemData.getPrice(),itemData.getGiverId());
+		this(itemData.getUserId(),itemData.getItemName(),itemData.getPriority(),itemData.getLink(),itemData.getPrice());
 	}
 	
 	public void copyFromWishlistItemData(WishlistItemData itemData){
@@ -62,7 +63,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		setLink(itemData.getLink());
 		setPriority(itemData.getPriority());
 		setPrice(itemData.getPrice());
-		setGiverId(itemData.getGiverId());
+		//setBuyerKey(itemData.getBuyerKey());
 	}
 	
 	public Key getKey() {
@@ -94,12 +95,17 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		return price;
 	}
 	
-	public void addParticipator(ParticipatorData p){
+	public void addParticipator(Participator p){
+		if (this.participators == null){
+			this.participators = new ArrayList<Participator>();
+		}
 		this.participators.add(p);
 	}
 	
-	public void removeParticipator(ParticipatorData p){
-		this.participators.remove(p);
+	public void removeParticipator(Participator p){
+		if ((participators!=null) && (participators.contains(p))){
+			this.participators.remove(p);
+		}
 	}
 	
 	public void setIsActive(Boolean isActive) {
@@ -109,16 +115,16 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		return isActive;
 	}
 	
-	public ArrayList<ParticipatorData> getParticipators(){
+	public ArrayList<Participator> getParticipators(){
 		return this.participators;
 	}
 	
-	public void setGiverId(String giverId) {
-		this.giverId = giverId;
+	public void setBuyerKey(Key guestKey) {
+		this.guestKey = guestKey;
 	}
 
-	public String getGiverId() {
-		return giverId;
+	public Key getBuyerKey() {
+		return this.guestKey;
 	}
 	
 	public String toString(){

@@ -1,23 +1,25 @@
 package com.tau.birthdayplus.dto.client;
 
-import java.util.ArrayList;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-public class WishlistItemData extends WishlistItemBaseData implements  IsSerializable{
-	   //owner name , for "I buy" tab, to see who you buy for
-	   private String userName;
-	   //book this item for the event
-	   private String eventId;
-	   //event name, for "I buy" tab, to see for what event is this present
-	   private String eventName;
-	   
-	   //people that want to buy this together
-	   ArrayList<ParticipatorData> participators;
- 
-	   //person who will buy this present
-	   private BuyerData buyer;
+
+public class WishlistItemData implements IsSerializable{
+	 //item id
+	   private String wishlistItemId;
+	   //owner of this item 
+	   private String userId;
+	   //the item name 
+	   private String itemName;
+	   //priority
+	   private Integer priority;
+	   //link
+	   private String link;
+	   //price
+	   private Integer price;
+
+	   private Boolean isActive;
+
 	
 	/*
 	 * constructor for isSerializable
@@ -30,54 +32,68 @@ public class WishlistItemData extends WishlistItemBaseData implements  IsSeriali
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemData(String wishlistItemId,String userId,String userName,String eventId,String eventName,String name, Integer priority, String link, Integer price,Boolean isActive){
-		super(wishlistItemId,userId,name,priority,link,price,isActive);
-		this.userName = userName;
-		this.eventId = eventId;
-		this.eventName = eventName;
-		this.participators = new ArrayList<ParticipatorData>();
-		this.buyer = null;
+	public WishlistItemData(String wishlistItemId,String userId,String name, Integer priority, String link, Integer price,Boolean isActive){
+		this.wishlistItemId=wishlistItemId;
+		this.userId = userId;
+		this.itemName = name;
+		this.priority = priority;
+		this.link = link;
+		this.price = price;
+		this.isActive = isActive;
+	}
+	
+
+	/*
+	 * constructor for client side - create new item 
+	 */
+	public WishlistItemData(String userId){
+		this(null,userId,null,5,null,0,false);
+	}
+	
+	public String getWishlistItemId(){
+		return this.wishlistItemId;
+	}
+	
+	public void setWishlistItemId(String itemId){
+		this.wishlistItemId = itemId;
+	}
+	
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+	public String getItemName() {
+		return itemName;
+	}
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
+	public Integer getPriority() {
+		return priority;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public String getLink() {
+		return link;
+	}
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+	public Integer getPrice() {
+		return price;
 	}
 	
 
 	
-	public String getUserName(){
-		return this.userName;
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	public Boolean getIsActive() {
+		return isActive;
 	}
 	
-	public void setEventId(String eventId){
-		this.eventId=eventId;
+	public String getUserId() {
+		return userId;
 	}
-	
-	public String getEventId(){
-		return this.eventId;
-	}
-	
-	public String getEventName(){
-		return this.eventName;
-	}
-	
-	public void addParticipator(ParticipatorData p){
-		this.participators.add(p);
-	}
-	
-	public void removeParticipator(ParticipatorData p){
-		this.participators.remove(p);
-	}
-	
 
-	
-	public ArrayList<ParticipatorData> getParticipators(){
-		return this.participators;
-	}
-	
-	public void setBuyer(BuyerData buyer){
-		this.buyer = buyer;
-	}
-	
-	public BuyerData getBuyer(){
-		return this.buyer;
-	}
-	
-	
 }

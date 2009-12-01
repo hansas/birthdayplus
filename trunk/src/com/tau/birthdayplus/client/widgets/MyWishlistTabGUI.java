@@ -25,10 +25,7 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
-import com.tau.birthdayplus.dto.client.WishlistItemBaseData;
-
-
-
+import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class MyWishlistTabGUI {
     /*
@@ -73,8 +70,8 @@ public class MyWishlistTabGUI {
 	/*  
 	 * Data Model
 	 */
-	private ArrayList<WishlistItemBaseData> items;
-    private WishlistItemBaseData currentItem;
+	private ArrayList<WishlistItemData> items;
+    private WishlistItemData currentItem;
     public MyWishlistDelegate wishlistService;
     public Birthdayplus entryPoint;
     
@@ -202,7 +199,7 @@ public class MyWishlistTabGUI {
          int row = cellClicked.getRowIndex();
          int col = cellClicked.getCellIndex();
         
-        WishlistItemBaseData item = this.items.get(row);
+        WishlistItemData item = this.items.get(row);
          
        
          if (col==UPDATE_LINK) {
@@ -223,7 +220,7 @@ public class MyWishlistTabGUI {
 	 /*
 	  * show the popup box with filled fields
 	  */
-	 private void loadForm(WishlistItemBaseData item,Actions action) {
+	 private void loadForm(WishlistItemData item,Actions action) {
 		    addItemBox.center();
 		    addItemBox.setText(action.name()+" item");
    	        addItemBox.show();
@@ -294,7 +291,7 @@ public class MyWishlistTabGUI {
         this.addItemButton.setVisible(false);
         this.updateButton.setVisible(false);
         this.addButton.setVisible(true);
-        loadForm(new WishlistItemBaseData(entryPoint.userId),Actions.CREATE);
+        loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
     }
     
     /*
@@ -308,14 +305,14 @@ public class MyWishlistTabGUI {
 	/*
 	 * wishlist returned from the server
 	 */
-	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemBaseData> result) {
+	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemData> result) {
 	        this.items = result;
 	        this.wishTable.clear();
 	        
 	        RowFormatter rf = wishTable.getRowFormatter();
 	        
 	        int row = 0;
-	        for (WishlistItemBaseData item : result) {
+	        for (WishlistItemData item : result) {
 	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
 	        	else

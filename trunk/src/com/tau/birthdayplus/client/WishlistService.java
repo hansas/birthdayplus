@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
-import com.tau.birthdayplus.dto.client.WishlistItemBaseData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 
@@ -20,26 +19,22 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * creates new item for the user
 	 */
-	void createWishlistItem(WishlistItemBaseData item);
+	void createWishlistItem(WishlistItemData item);
 	/*
 	 * update the item, don't update isActive
 	 * GUI-user can update only his wishlist
 	 */
-	void updateWishlistItem(WishlistItemBaseData item);
+	void updateWishlistItem(WishlistItemData item);
 	/*
 	 * delete the item 
 	 * GUI - user can delete only his wishlist items
 	 */
-	void deleteWishlistItem(WishlistItemBaseData item);
+	void deleteWishlistItem(WishlistItemData item);
 	/*
 	 * return user's wishlist
 	 */
-	ArrayList<WishlistItemBaseData> getMyWishlist(String userId);
+	ArrayList<WishlistItemData> getMyWishlist(String userId);
 	/////////////////////////////////////////////////////////////////
-	
-	
-	
-	
 	/*
 	 * user will buy this item
 	 * Server - check that item in db doesn't have eventId(==null) (open group or someone booked it)
