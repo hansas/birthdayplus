@@ -24,6 +24,8 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	   private Key key;
 	   @Persistent
+	   private Key eventKey;
+	   @Persistent
 	   private String itemName;
 	   @Persistent
 	   private Integer priority;
