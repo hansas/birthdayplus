@@ -36,6 +36,8 @@ public class Guest   {
 		List<Event> events;
 	    @Persistent (defaultFetchGroup="true")
 		List<WishlistItem> wishlistItems;
+	    @Persistent (defaultFetchGroup="true")
+		List<WishlistItem> boughtWishlistItems;
 
 		
 		public Guest(String googleId, String firstName, String lastName, Date birthday) {
