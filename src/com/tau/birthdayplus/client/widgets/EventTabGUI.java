@@ -62,7 +62,7 @@ public class EventTabGUI {
     //cancel button
     public Button cancelButton;
     
-    private WishListFriendsGUI wishlistFriendGUI;
+   public  WishListFriendsGUI wishlistFriendGUI;
     private WishListFriendsDelegate wishlistFriendService;
     
     //Data Model\\
@@ -111,6 +111,7 @@ public class EventTabGUI {
 		eventTable.setHeader(0, "Name" );
 		eventTable.setHeader(1, "Event");
 		eventTable.setHeader(2, "Due");   
+		
 	}
 	
 	private void placeWidgets() {
@@ -176,16 +177,7 @@ public class EventTabGUI {
 	    
 	    
 		
-		/* Wrap the contents in a DecoratorPanel
-		DecoratorPanel decPanel = new DecoratorPanel();
-		decPanel.setWidget(layout);
-		VerticalPanel vPanel = new VerticalPanel();
-		vPanel.add(decPanel);
-		vPanel.add(buttonHPanel);
-		eventDialogBox.add(vPanel);
 		
-		return eventDialogBox;
-		*/
 	}
 	
 	/*
@@ -245,15 +237,24 @@ public class EventTabGUI {
          
        
          if (col==UPDATE_LINK) {
-             this.addButton.setVisible(false);
-             this.updateButton.setVisible(true);
-             this.btnAddEvent.setVisible(false);
-             loadForm(event,Actions.UPDATE);
+        	 if(event.getUserId().equals(entryPoint.userId)){
+                this.addButton.setVisible(false);
+                this.updateButton.setVisible(true);
+                this.btnAddEvent.setVisible(false);
+                loadForm(event,Actions.UPDATE);
+        	 }
          } else if (col==DELETE_LINK) {
-        //	 item.setUserId(entryPoint.userId);
-             this.eventService.deleteEvent(event);
+             if(event.getUserId().equals(entryPoint.userId))
+                this.eventService.deleteEvent(event);
          }else if(col==EVENT_LINK){
-        	 this.wishlistFriendService.getWishlist(event.getUserId());
+        	 if(! event.getUserId().equals(entryPoint.userId)){
+        	      currentEvent = event;
+        	      wishlistFriendGUI.friendWishlistBox.setText("wishlist for " + entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
+        	      wishlistFriendGUI.friendWishlistBox.center();
+        	  
+        	      wishlistFriendGUI.friendWishlistBox.show();
+        	      this.wishlistFriendService.getWishlist(event.getUserId() , event.getEventId());
+        	 }
          }
     }
 	 
@@ -325,11 +326,17 @@ public class EventTabGUI {
 		int row = 0;
 	
 		for (EventData event : eventList) {
-			if(event.getUserId().equals(entryPoint.userId))
+			if(event.getUserId().equals(entryPoint.userId)){
 				eventTable.setWidget(row, 0, new Label("My"));
-			else
+				 eventTable.setWidget(row, 1, new Label(event.getEventName()));
+				
+			}
+			else{
 			    eventTable.setWidget(row, 0, new Label(entryPoint.userFriends.get(event.getUserId())));
-			eventTable.setWidget(row, 1, new Hyperlink(event.getEventName(),null));
+			    eventTable.setWidget(row, 1, new Hyperlink(event.getEventName(),null));
+			   
+			}
+			
 			due = String.valueOf(daysBetween(new Date(), event.getEventDate()));
 			Label lblEventDate = new Label(due);
 			if(event.getEventDate()!= null)
@@ -365,10 +372,7 @@ public class EventTabGUI {
 		
 	}
 
-	public void service_eventGetWishlistSuccessful() {
-		
-		
-	}
+
 	
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
@@ -393,16 +397,14 @@ public class EventTabGUI {
 	
 
 
-	public void service_eventGetWishlistFailed(Throwable caught) {
-		 System.out.println("Unable to get  your frind's wishlist");	
-		
-	}
+
 	
 	public void wireEventGUIEvents(){
 		this.eventTable.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
 				Cell cellForEvent = eventTable.getCellForEvent(event);
-				gui_eventEventGridClicked(cellForEvent);
+				if(cellForEvent!=null)
+				   gui_eventEventGridClicked(cellForEvent);
 			}
 		});
 		this.btnAddEvent.addClickHandler(new ClickHandler(){

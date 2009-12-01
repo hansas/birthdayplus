@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
+import com.tau.birthdayplus.dto.client.WishlistItemBaseData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 
@@ -12,54 +13,60 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
  */
 
 public interface WishlistServiceAsync {
-	/*
-	 * function that checks that client can call to the remote service
-	 */
-	void printHello(AsyncCallback<Void> callback);
-	/*
-	 * creates new item for the user
-	 */
-	void createWishlistItem(WishlistItemData item, AsyncCallback<Void> callback);
-	/*
-	 * update the item
-	 * user can update only his wishlist items
-	 */
-	void updateWishlistItem( WishlistItemData item,
+
+    //functions for myWishlsitTab\\\\\\\\\\\\\\\\\\\\
+	void createWishlistItem(WishlistItemBaseData item, AsyncCallback<Void> callback);
+
+	void updateWishlistItem( WishlistItemBaseData item,
 			AsyncCallback<Void> callback);
-	/*
-	 * delete the item 
-	 * user can delete only his items
-	 */
-	void deleteWishlistItem(WishlistItemData item,
-			AsyncCallback<Void> callback);
-	/*
-	 * return user's wishlist
-	 */
-	void getWishlist(String uId,
-			AsyncCallback<ArrayList<WishlistItemData>> callback);
-	/*
-	 * delete the participator
-	 * check if the user is a participator
-	 */
-	void deleteParticipator(String wishlistItem, ParticipatorData participator,
-			AsyncCallback<Void> callback);
-	/*
-	 * update participator (update money only)
-	 * check that the user is a participator
-	 */
-	void updateParticipator(String wishlistItemId, ParticipatorData participator,
-			AsyncCallback<Void> callback);
-	/*
-	 * add participator
-	 */
-	void createParticipator(String wishlistItemId,ParticipatorData participator,
+
+	void deleteWishlistItem(WishlistItemBaseData item,
 			AsyncCallback<Void> callback);
 	
-	void setInactive(String userId, String wishlistItemId,
+	void getMyWishlist(String userId,
+			AsyncCallback<ArrayList<WishlistItemBaseData>> callback);
+   
+	
+	/////////////////friend's wishlist\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	void getWishlistForEvent(String uId, String eventId,
+			AsyncCallback<ArrayList<WishlistItemData>> callback);
+	
+	
+
+	
+	
+	
+	//group managment
+	void addParticipator(String wishlistItemId,String eventId, ParticipatorData participator,
 			AsyncCallback<Void> callback);
-	void setActive( String wishlistItemId,
+	
+	
+
+	void updateParticipator(String wishlistItemId, ParticipatorData participator,
 			AsyncCallback<Void> callback);
+	
+//	void bookItemForGroup(WishlistItemData item, AsyncCallback<Void> callback);
+
+	
 	void getBookedWishlistItems(String usetId,
 			AsyncCallback<ArrayList<WishlistItemData>> callback);
+
+	void deleteBookedWishlistItem(String userId, String wishlistItemId,
+			AsyncCallback<Void> callback);
+
+	void bookItemForUser(String wishlistItemId, String EventId, String userId,
+			AsyncCallback<Void> callback);
+
+	void cancelBookItemForUser(String wishlistItemId, String userId,
+			AsyncCallback<Void> callback);
+
+	void deleteParticipator(String wishlistItemId, String userId,
+			AsyncCallback<Void> callback);
+	
+
+	
+
+	
+	
 
 }

@@ -18,21 +18,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
-
-import com.google.gwt.user.client.ui.RootPanel;
-
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
-import com.tau.birthdayplus.client.Actions;
-import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
-import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
@@ -44,49 +38,48 @@ public class WishListFriendsGUI  {
 	 */
 	CwConstants constants = GWT.create(CwConstants.class);
 	private static final int LINK = 0;
+	private static final int PRICE_LINK =2;
 	private static final int BUY_LINK = 3;
     private static final int GROUP_BUY_LINK = 4;
 
 	/*GUI Widgets*/
 	
 	//Dialog Bog with friend's wishlist
-	protected DialogBox friendWishlistBox;
+	public DialogBox friendWishlistBox;
 	//VerticalPanel for the content of wishlist box
 	protected VerticalPanel wishlistBoxVerticalPanel;
 	//friend's wishlist table
 	protected TableWithHeader friendWishTable;
 	//close button for closing wishlist box
-	protected Button closeFriendWishlistBox;
+	protected Button closeFriendWishlistBoxButton;
+	//popup panel for participators
+	protected PopupPanel participatorsPanel;
+	//table for participators
+	protected TableWithHeader participatorsTable;
+	
+	private DialogBox moneyDialogBox;
+	private VerticalPanel moneyVerticalPanel;
+	private TextBox   enterSumTextBox;
+	private HorizontalPanel moneyHorizontalPanel;
+	private Button    okMoneyButton;
+	private Button    cancelMoneyButton;
+	
+	
+	
+	
 	
 	
 	
 	/*  
 	 * Data Model
 	 */
+	//list of friends items for the event
 	private ArrayList<WishlistItemData> items;
     private WishlistItemData currentItem;
     protected WishListFriendsDelegate wishlistService;
     protected EventTabGUI parent;
  
 	
-	/*
-	//dialog Box with participators
-	protected DialogBox participatorsBox;
-	//horizontal panel for the content of participatorx box
-	protected HorizontalPanel participatorsBoxHorizontalPanel;
-	//vertical panel for the buttons and sum in participators box
-	protected VerticalPanel participatorsBoxVerticalPanel;
-
-	//participators table
-	protected TableWithHeader participatorsTable;
-	//the text ox for entering you sum in participators box
-	protected TextBox sumBox;
-	//close button for closing partisipators box
-	protected Button closeParticipatorsBoxButton;
-	//button for adding new participator
-	protected Button addParticipatorButton;
-	//button for adding your proposal
-	protected Button updateParticipatorButton;
 
 	
 	 
@@ -97,28 +90,102 @@ public class WishListFriendsGUI  {
 		 */
 		public void init() {
 			 buildFriendWishlistBox();
+			 buildMoneyDialogBox();
+			 buildParticipatorsPopupPanel();
+			 
 			 
 			 items = new ArrayList<WishlistItemData>();
 			
 			
 			 ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
 			    for(int i=0;i<5;i++){
-			    	data.add(new WishlistItemData("555","name"+i,i,"http://techblog.maydu.eu/?p=7",500));
+			    //	data.add(new WishlistItemData("555","name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 			    	
 			    }
 			    
 			//    service_eventGetWishlistSuccesfull(data);
 			    
-			    
+			   
 		}
+		
+	private void buildMoneyDialogBox(){
+		moneyDialogBox = new DialogBox();
+		moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
+		
+		moneyVerticalPanel  = new VerticalPanel();
+		enterSumTextBox = new TextBox();
+		enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
+		enterSumTextBox.setText("Enter the sum :");
+		
+		moneyHorizontalPanel = new HorizontalPanel();
+		okMoneyButton = new Button();
+		okMoneyButton.setStyleName(constants.cwButtonStyle());
+		okMoneyButton.setText("ok");
+		
+		cancelMoneyButton = new Button();
+		cancelMoneyButton.setStyleName(constants.cwButtonStyle());
+		cancelMoneyButton.setText("cancel");
+		
+		moneyHorizontalPanel.add(okMoneyButton);
+		moneyHorizontalPanel.add(cancelMoneyButton);
+		
+		moneyVerticalPanel.add(enterSumTextBox);
+		moneyVerticalPanel.add(moneyHorizontalPanel);
+		
+		moneyDialogBox.add(moneyVerticalPanel);
+		
+	}
+	
+	private void loadMoneyDialog(WishlistItemData item){
+		moneyDialogBox.center();
+		currentItem = item;
+		
+	    moneyDialogBox.show();
+	}
+		
+	private void buildParticipatorsPopupPanel(){	
+	   participatorsPanel = new PopupPanel(true);
+	   participatorsPanel.setStyleName(constants.cwPopupPanelStyle());
+	   
+ 	   participatorsTable = new TableWithHeader();
+ 	   participatorsTable.setStyleName(constants.cwTableStyle());
+ 	   
+ 	   participatorsTable.setHeader(0, "Name");
+ 	   participatorsTable.setHeader(1, "sum");
+ 	   participatorsPanel.add(participatorsTable);
+	}
+	
+	private void showParticipatorsPanel(WishlistItemData item,Widget widgetClicked){
+		currentItem = item;
+	    
+        int left =  widgetClicked.getAbsoluteLeft() + 10;
+        int top = widgetClicked.getAbsoluteTop() + 10;
+        participatorsPanel.setPopupPosition(left, top);
+        
+        participatorsTable.clear();
+
+        // Show the popup
+        participatorsPanel.show();
+        
+        int row = 0;
+        for(ParticipatorData participator : item.getParticipators()){
+        	participatorsTable.setWidget(row, 0, new Label(participator.getUserFirstName()+ " " +participator.getUserLastName()) );
+        	participatorsTable.setWidget(row, 1, new Label(participator.getMoney().toString()));
+        	row++;
+        }
+
+		
+	}
+	
+	
 	
 	private void buildFriendWishlistBox(){
 	    	friendWishlistBox=new DialogBox();
 	    	friendWishlistBox.setStyleName(constants.cwDialogBoxStyle());
             
 		    
-		    closeFriendWishlistBox = new Button("Close");
-		    closeFriendWishlistBox.setStyleName("cw-Button");
+		    closeFriendWishlistBoxButton = new Button("Close");
+		    closeFriendWishlistBoxButton.setStyleName("cw-Button");
 		    
 		   // create panel to layout the content
 		    wishlistBoxVerticalPanel = new VerticalPanel();
@@ -131,9 +198,9 @@ public class WishListFriendsGUI  {
 	     	        HasHorizontalAlignment.ALIGN_CENTER);
 
 
-		    wishlistBoxVerticalPanel.add(closeFriendWishlistBox);
+		    wishlistBoxVerticalPanel.add(closeFriendWishlistBoxButton);
 		  
-		    wishlistBoxVerticalPanel.setCellHorizontalAlignment(closeFriendWishlistBox,
+		    wishlistBoxVerticalPanel.setCellHorizontalAlignment(closeFriendWishlistBoxButton,
 		          HasHorizontalAlignment.ALIGN_RIGHT);
 		    
 		    friendWishlistBox.add(wishlistBoxVerticalPanel);
@@ -153,77 +220,69 @@ public class WishListFriendsGUI  {
        
 	}
 	
+
+	
 	/*
 	 * on click in the table
 	 */
-	 public void gui_eventItemGridClicked(Cell cellClicked) {
+	 public void gui_eventItemGridClicked(Cell cellClicked,Widget widgetClicked) {
          int row = cellClicked.getRowIndex();
          int col = cellClicked.getCellIndex();
         
         WishlistItemData item = this.items.get(row);
          
+       switch(col){
+       case LINK :          if(item.getLink()!=null)
+      		                   Window.open(item.getLink(), "_blank", null);
+    	                    break;
+    	                  
+       case PRICE_LINK :    if(!item.getParticipators().isEmpty())
+  		                        showParticipatorsPanel(item , widgetClicked);
+                            break;
+                          
+       case BUY_LINK :      wishlistService.bookItemForUser(item.getWishlistItemId(), parent.currentEvent.getEventId(),parent.entryPoint.userId);
+                            break;
+                          
+       case GROUP_BUY_LINK :loadMoneyDialog(item);
+                            break;
+       }      
        
-         if (col== LINK) {
-        	 if(item.getLink()!=null)
-        		 Window.open(item.getLink(), "_blank", null);
-         } else if (col==BUY_LINK) {
-             wishlistService.setInactiveWishlistitem(parent.entryPoint.userId, item.getWishlistItemId());
-         }else if(col==GROUP_BUY_LINK){
-        	 
-         }
-    }
+ 
+	 }
 	
-	/*
-	 * friend's wishlist
-	 */
-	public void service_eventGetWishlistSuccesfull(
-			ArrayList<WishlistItemData> result) {
-	//	friendWishlistBox.setText(parent.entryPoint.userFriends.get(parent.currentEvent.getUserId()));
-		friendWishlistBox.center();
-		friendWishlistBox.show();
-		this.items = result;
-        this.friendWishTable.clear();
-        
-        int row = 0;
-        for (WishlistItemData item : result) {
-        	if (item.getLink()== null)
-        		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
-        	else
-        		friendWishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
-        	friendWishTable.setWidget(row,1,new Label(item.getPriority().toString()));
-        	friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
-        	friendWishTable.setWidget(row, 3, new Hyperlink("I'm buing", null));
-    	    friendWishTable.setWidget(row ,4,new Hyperlink("Join the group", null));
-            row ++;
-        }
-		
-	}
 	
-	public void service_setInactiveWishlistitemSuccessful() {
-		//showMessage("the item was successfully booked");
-		this.wishlistService.getWishlist(parent.currentEvent.getUserId());
-		
-	}
-	
-	public void service_setInactiveWishlistitemFailed(Throwable caught) {
-       //showMessage("Unable to get  wishlist");
-		
-	}
-
-	
-
-	public void service_eventGetWishlistFailed(Throwable caught) {
-		// showMessage("Unable to get  wishlist");
-		
-	}
 	
 	public void gui_eventCloseButtonClicked() {
 		friendWishlistBox.hide();
         
     }
 	
+	public void gui_eventParticipatorsTableClicked(){
+		participatorsPanel.hide();
+	}
+	
+
+	
+	public void gui_eventOkMoneyButtonClicked(){
+		moneyDialogBox.hide();
+		Integer sum = null;
+		try{
+		   sum = Integer.parseInt(enterSumTextBox.getText());
+		}catch(NumberFormatException ex){
+			   
+		}
+		if (sum != null){
+		    ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
+            this.wishlistService.addParticipator(currentItem.getWishlistItemId(), parent.currentEvent.getEventId(), data);
+		}
+	}
+	
+	public void gui_eventCancelMoneyButtonClicked(){
+		moneyDialogBox.hide();
+	}
+	
 	public void wireWishlistFriendGUIEvents() {
-		this. closeFriendWishlistBox.addClickHandler(new ClickHandler(){
+		this. closeFriendWishlistBoxButton.addClickHandler(new ClickHandler(){
         	public void onClick(ClickEvent event){
         	    gui_eventCloseButtonClicked();
         	}
@@ -231,173 +290,101 @@ public class WishListFriendsGUI  {
 		
 		this.friendWishTable.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
+            	 Widget widgetClicked= (Widget)event.getSource();
                  Cell cellForEvent = friendWishTable.getCellForEvent(event);
-                 gui_eventItemGridClicked(cellForEvent);                
+                 if(cellForEvent!=null)
+                    gui_eventItemGridClicked(cellForEvent,widgetClicked);                
             }});
+		
+		this.participatorsTable.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				gui_eventParticipatorsTableClicked();
+				
+			}
+		});
+		
+		this.okMoneyButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				gui_eventOkMoneyButtonClicked();
+			}
+		});
+		
+		this.cancelMoneyButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				gui_eventCancelMoneyButtonClicked();
+			}
+		});
 	}
-
-
-	
-	
 	
 	/*
-	private void buildParticipationBox(){
-		participatorsBox=new DialogBox();
-		participatorsBox.setText("Participators");
-		//main panel
-		participatorsBoxHorizontalPanel=new HorizontalPanel();
-		participatorsBoxHorizontalPanel.setSpacing(4);
-		//panel for the text box and buttons
-		participatorsBoxVerticalPanel=new VerticalPanel();
-		participatorsBoxVerticalPanel.setSpacing(4);
-		//text box for the sum
-		sumBox=new TextBox();
-		//close button
-		closeParticipatorsBoxButton=new Button("close",
-		        new ClickHandler() {
-	          public void onClick(ClickEvent event) {
-	            participatorsBox.hide();
-	          }
-	        });
-		//add and update buttons
-		addParticipatorButton=new Button("add");
-		updateParticipatorButton=new Button("update");
-		
-		//build scrollable table for participators
-		buildParticipatorsTable();
-		
-		
-		//prepare vertical panel with text box and buttons
-		participatorsBoxVerticalPanel.add(sumBox);
-		participatorsBoxVerticalPanel.setCellHorizontalAlignment(sumBox, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		participatorsBoxVerticalPanel.add(addParticipatorButton);
-		participatorsBoxVerticalPanel.setCellHorizontalAlignment(addParticipatorButton, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		participatorsBoxVerticalPanel.add(updateParticipatorButton);
-		participatorsBoxVerticalPanel.setCellHorizontalAlignment(updateParticipatorButton,HasHorizontalAlignment.ALIGN_CENTER);
-		
-		
-		participatorsBoxVerticalPanel.add(closeParticipatorsBoxButton);
-		participatorsBoxVerticalPanel.setCellHorizontalAlignment(closeParticipatorsBoxButton, HasHorizontalAlignment.ALIGN_RIGHT);
-
-		
-	    //prepare horizontal panel with scroll and vertical panel
-		
-		participatorsBoxHorizontalPanel.add(participatorsTable);
-		participatorsBoxHorizontalPanel.setCellVerticalAlignment(participatorsTable,
-     	        HasVerticalAlignment.ALIGN_TOP);
-		
-		participatorsBoxHorizontalPanel.add(participatorsBoxVerticalPanel);
-		participatorsBoxHorizontalPanel.setCellVerticalAlignment(participatorsBoxVerticalPanel,
-     	        HasVerticalAlignment.ALIGN_MIDDLE);
-		
-		participatorsBox.add(participatorsBoxHorizontalPanel);
-		
-	}
-	*/
-	
-	
-	
-	  /**
-	   * Fill row in friend's wishlist table,by given wishlistItemData
-	   */
-	  private void fillRowFriendWishTable(String item) {
-	    int numRows = friendWishTable.getRowCount();
-	    friendWishTable.setWidget(numRows, 0,new Hyperlink("Item"+numRows,"Items"+numRows));
-	    friendWishTable.setWidget(numRows,1,new Label("Priority"));
-	    friendWishTable.setWidget(numRows, 2,new Label("price") );
-	    friendWishTable.setWidget(numRows, 3, new Hyperlink("I'm buing", null));
-	    friendWishTable.setWidget(numRows,4,new Hyperlink("Join the group", null));
-	  }
-
-	
-	  
-	  
-	  /*
-	  private void buildParticipatorsTable(){
-		  participatorsTable=new TableWithHeader();
-		  FlexCellFormatter cellFormatter = participatorsTable.getFlexCellFormatter();
-		  participatorsTable.addStyleName("cw-FlexTable");
-		  participatorsTable.setWidth("32em");
-		  participatorsTable.setCellSpacing(5);
-		  participatorsTable.setCellPadding(3);
-		    
-		  participatorsTable.setWidget(0,0,new Label("Name"));
-		  participatorsTable.setWidget(0, 1, new Label("Sum"));	
-	
-	  }
-	  */
-	  
-	 /* 
-	  private void LoadParticipatorTable(){
-		  participatorsBox.center();
-		  participatorsBox.show();
-		  participators=currentItem.getParticipators();
-		  
-		  
-		  
-		  
-	  }
-	  
-	  
-	  
-	  
-	   * filling the row in participator table
-	   * Participator - ParticipatorData
-	   * 
-	   
-	  private void fillRowParticipatorsTable(String participator){
-		  int numRows = participatorsTable.getRowCount();
-		  participatorsTable.setWidget(numRows,0,new Label("name "+numRows));
-		  participatorsTable.setWidget(numRows, 1, new Label("sum "+numRows));
-		  
-	  }
-	  */
-	
-	
-	
-	/*
-	 * 
-	 
-	 private void wireGUIEvents() {
-		 friendWishTable.addClickHandler(new ClickHandler(){
-	            public void onClick(ClickEvent event) {
-	                 Cell cellForEvent = friendWishTable.getCellForEvent(event);
-	                 gui_eventFriendWishTableClicked(cellForEvent);                
-	            }});
-
-	
-	
-	 }
-	 
-	 public void gui_eventFriendWishTableClicked(Cell cellClicked) {
-         int row = cellClicked.getRowIndex();
-         int col = cellClicked.getCellIndex();
+	 * friend's wishlist
+	 */
+	public void service_eventGetWishlistSuccesfull(
+			ArrayList<WishlistItemData> result) {
+	//	
+		this.items = result;
+        this.friendWishTable.clear();
         
-         currentItem = wishlist.get(row);
-         
-        
-         if (col==BUY_LINK) {
-        	 bplusService.setInactive(userId,item.getWishlistItemId());
-             
-         } else if (col==BUY_GROUP) {
-        	 
+        int row = 0;
+        for (WishlistItemData item : result) {
+        	if (item.getLink().equals(""))
+        		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
+        	else
+        		friendWishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
+        	friendWishTable.setWidget(row,1,new Label(item.getPriority().toString()));
         	
-         }
-    }
-   ...
-    private void loadForm(Contact contact) {
-        this.formGrid.setVisible(true);
-        currentContact = contact;
-        this.emailField.setText(contact.getEmail());
-        this.phoneField.setText(contact.getPhone());
-        this.nameField.setText(contact.getName());
-    }
+        	if(item.getParticipators().isEmpty()){
+        	   friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
+        	   friendWishTable.setWidget(row, 3, new Hyperlink("I'm buing", null));
+    	       friendWishTable.setWidget(row ,4,new Hyperlink("Start a group", null));
+        	}else{
+        	   Integer sum = 0;
+        	   Boolean userInGroup = false;
+        	   for (ParticipatorData data : item.getParticipators()){
+        		   if(parent.entryPoint.userId.equals(data.getUserId()))
+        			   userInGroup = true;
+        		   sum += data.getMoney(); 
+        	   }
+        	   friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );
+        	   if(!userInGroup)
+        	      friendWishTable.setWidget(row, 4, new Hyperlink("Join the group", null));
+        	}
+            row ++;
+        }
+		
+	}
 
+	public void service_eventGetWishlistFailed(Throwable caught) {
+		// showMessage("Unable to get  wishlist");
+		
+	}
+	public void service_eventBookItemForUserFailed(Throwable caught) {
+		//show Message("You can't book this item");
+		
+	}
 
+	public void service_eventBookItemForUserSuccesfull() {
+		//showMessage("Now you can see this item in "I buy " tab");
+		this.wishlistService.getWishlist(parent.currentEvent.getUserId(), parent.currentEvent.getEventId());
+		
+	}
 
-	*/
+	public void service_eventAddParticipatorFailed(Throwable caught) {
+		//showMessage("You can't participate in this item");
+		
+	}
+
+	public void service_eventAddParticipatorSuccesfull() {
+		this.wishlistService.getWishlist(parent.currentEvent.getEventId(), parent.currentEvent.getEventId());
+		
+	}
+
+	
+
+	
+	  
+	  
+
 
 	
 	

@@ -9,29 +9,28 @@ import java.util.HashMap;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SourcesTabEvents;
-import com.google.gwt.user.client.ui.TabListener;
+
 import com.google.gwt.user.client.ui.TabPanel;
 
-import com.google.gwt.user.client.ui.HTMLTable.Cell;
+
 
 import com.tau.birthdayplus.client.widgets.EventTabDelegate;
 import com.tau.birthdayplus.client.widgets.EventTabGUI;
 import com.tau.birthdayplus.client.widgets.MyWishlistDelegate;
 import com.tau.birthdayplus.client.widgets.MyWishlistTabGUI;
-import com.tau.birthdayplus.dto.client.EventData;
+
 import com.tau.birthdayplus.dto.client.GuestData;
 
 
@@ -47,8 +46,9 @@ public class Birthdayplus implements EntryPoint {
 	/*
 	 * user id and HashMap of <friend id, friend name> from open social
 	 */
-	public String userId="987654321";
+	public String userId="123456789";
 	public HashMap<String,String> userFriends= new HashMap<String,String>();
+	public GuestData user;
 	
 	private TabPanel tab;
 	
@@ -94,7 +94,7 @@ public class Birthdayplus implements EntryPoint {
 		    eventGui.entryPoint=this;
 		    eventGui.init();
 		    tab.add(eventGui.vPanel, "Events");
-			
+		   
 			
 		    //initiate My wIwishlist tab
 		    myWishlistGUI = new MyWishlistTabGUI();
@@ -116,23 +116,27 @@ public class Birthdayplus implements EntryPoint {
 	        
 			tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
 			
+			userFriends.put("987654321", "olga vingurt");
+			
 			profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
 				public void onFailure(Throwable caught) {
-					GuestData user= new GuestData(userId,"olga","vingurt",new Date());
+					GuestData user= new GuestData(userId,"misha","dezl",new Date());
 					profileService.createProfile(user, new AsyncCallback<Void>(){
 			    	public void onFailure(Throwable caught){
 			    			System.out.println(caught);
 			    		}
 			    		
 						public void onSuccess(Void result) {
-							ArrayList<String> temp=new ArrayList<String>();
-							temp.add(userId);
-							eventDelegate.getEvents(temp);
+							
 							//listen to the events in the tabs
 							eventGui.wireEventGUIEvents();
 			    			myWishlistGUI.wireMyWishlistGUIEvents();
 			    			iBuyGUI.wireIBuyGUIEvents();
+			    			wireTabGUIEvents();
+			    			
+			    			tab.selectTab(0);
+							
 							
 						}
 						
@@ -143,10 +147,8 @@ public class Birthdayplus implements EntryPoint {
 				}
 
 				public void onSuccess(GuestData result) {
-				//	ArrayList<String> temp=new ArrayList<String>();
-				//	temp.add(userId);
-				//	eventDelegate.getEvents(temp);
-					
+				    
+					user = result;
 			    	eventGui.wireEventGUIEvents();
 			    	
 	    			myWishlistGUI.wireMyWishlistGUIEvents();
@@ -197,10 +199,11 @@ public class Birthdayplus implements EntryPoint {
 				if(event.getSelectedItem()== 0){
 					ArrayList<String> temp=new ArrayList<String>();
 					temp.add(userId);
+					temp.add("987654321");
 					eventDelegate.getEvents(temp);
 				};
 				if(event.getSelectedItem()== 1)
-					myWishlistDelegate.getWishlist(userId);
+					myWishlistDelegate.getMyWishlist(userId);
 				
 					
 					
