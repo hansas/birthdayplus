@@ -63,6 +63,15 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cw-CheckBox")
     String cwCheckBoxStyle();
     
+    @DefaultStringValue("cw-TableWithHeader - active row")
+    String cwActiveRowStyle();
+    
+    @DefaultStringValue("cw-TableWishHeader - inactive row ")
+    String cwInactiveRowStyle();
+    
+    @DefaultStringValue("cw-TextArea")
+    String cwTextAreaStyle();
+    
     @DefaultStringArrayValue({"5","4","3","2","1"})
     String[] cwListBoxCategories();
 
