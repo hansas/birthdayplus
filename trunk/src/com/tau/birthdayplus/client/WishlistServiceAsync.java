@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
 /**
@@ -28,7 +29,7 @@ public interface WishlistServiceAsync {
 	
 	/////////////////friend's wishlist\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	void getWishlistForEvent(String uId, String eventId,
-			AsyncCallback<ArrayList<WishlistItemData>> callback);
+			AsyncCallback<ArrayList<WishlistItemNewData>> callback);
 	
 	
 
@@ -48,7 +49,7 @@ public interface WishlistServiceAsync {
 
 	
 	void getBookedWishlistItems(String usetId,
-			AsyncCallback<ArrayList<WishlistItemData>> callback);
+			AsyncCallback<ArrayList<WishlistItemNewData>> callback);
 
 	void deleteBookedWishlistItem(String userId, String wishlistItemId,
 			AsyncCallback<Void> callback);

@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
 
@@ -55,7 +56,7 @@ public interface WishlistService extends RemoteService{
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
 	 *  eventId == null ) and isActive == true
 	 */
-	ArrayList<WishlistItemData> getWishlistForEvent(String uId,String eventId);
+	ArrayList<WishlistItemNewData> getWishlistForEvent(String uId,String eventId);
 
 	/*
 	 * add participator
@@ -81,7 +82,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * return all the items this user has booked
 	 */
-	ArrayList<WishlistItemData> getBookedWishlistItems(String usetId);
+	ArrayList<WishlistItemNewData> getBookedWishlistItems(String usetId);
 	/*
 	 * remove this item from this user's "I buy " list , check if item isActive == false
 	 * (won't remove item with open group)
