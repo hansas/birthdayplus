@@ -1,8 +1,10 @@
 package com.tau.birthdayplus.dto.client;
 
-import java.util.ArrayList;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class WishlistItemBaseData {
+
+
+public class WishlistItemBaseData implements IsSerializable{
 	 //item id
 	   private String wishlistItemId;
 	   //owner of this item 
@@ -30,14 +32,14 @@ public class WishlistItemBaseData {
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemBaseData(String wishlistItemId,String userId,String name, Integer priority, String link, Integer price){
+	public WishlistItemBaseData(String wishlistItemId,String userId,String name, Integer priority, String link, Integer price,Boolean isActive){
 		this.wishlistItemId=wishlistItemId;
 		this.userId = userId;
 		this.itemName = name;
 		this.priority = priority;
 		this.link = link;
 		this.price = price;
-		this.setIsActive(true);
+		this.isActive = isActive;
 	}
 	
 
@@ -45,7 +47,7 @@ public class WishlistItemBaseData {
 	 * constructor for client side - create new item 
 	 */
 	public WishlistItemBaseData(String userId){
-		this(null,userId,null,5,null,0);
+		this(null,userId,null,5,null,0,false);
 	}
 	
 	public String getWishlistItemId(){
