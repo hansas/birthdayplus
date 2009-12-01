@@ -11,6 +11,7 @@ import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
+import com.tau.birthdayplus.dto.client.WishlistItemBaseData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.UserManagement;
@@ -23,11 +24,41 @@ import com.tau.birthdayplus.logic.WishlistManagement;
 @SuppressWarnings("serial")
 public class WishlistServiceImpl extends RemoteServiceServlet implements
 WishlistService  {
-
-	public void printHello() {
-		System.out.println("Hello from the WishlistService");
+    
+////////////////for managing my events\\\\\\\\\\\\\\\\\\\\\\
+	/*
+	 * creates new item for the user
+	 */
+	public void createWishlistItem(WishlistItemBaseData item) {
+		// TODO Auto-generated method stub
 		
 	}
+	/*
+	 * update the item, don't update isActive
+	 * GUI-user can update only his wishlist
+	 */
+	public void updateWishlistItem(WishlistItemBaseData item) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	 * delete the item 
+	 * GUI - user can delete only his wishlist items
+	 */
+	public void deleteWishlistItem(WishlistItemBaseData item) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	 * return user's wishlist
+	 */
+	public ArrayList<WishlistItemBaseData> getMyWishlist(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
 	/*
 	 * creates new item for the user
 	 */
@@ -108,59 +139,106 @@ WishlistService  {
 	public ArrayList<WishlistItemData> getWishlist(String userId) {
 		return WishlistManagement.getWishlist(userId);
 	}
+	
+	
+	
+	
+	
+	
+	
 	/*
-	 * user don't want to buy it 
-	 * GUI - user can cancel only from "i'm buying " tab
+	 * user will buy this item
+	 * Server - check that item in db doesn't have eventId(==null) (open group or someone booked it)
+	 * set isActive == false
+	 * add this item to guest "I buy" list (you can get userId from Buyer)
 	 */
-	public void setActive(String wishlistItemId) {
-		// TODO Auto-generated method stub
-		
-	}
-	/*
-	 * user wants to buy this item
-	 * Server - check that item is active
-	 */
-	public void setInactive(String userId, String wishlistItemId) {
+	public void bookItemForUser(String wishlistItemId, String EventId,
+			String userId) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	/*
-	 * add participator
-	 * Server - check if the item is active and the user isn't already participate
+	 * user doesn't want to buy this item
+	 * GUI - user can cancel only from "i'm buying " tab
+	 * Server - change item status to active,Buyer = null, eventid =null and remove this item from user's 
+	 * "I buy" list 
+	 * check that in db "buyer" for this item has userId == userId(?)
 	 */
-	public void createParticipator(String wishlistItemId,
+	public void cancelBookItemForUser(String wishlistItemId, String userId) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
+	 *  return wishlist for this user , for the event
+	 *  server - all the items that belong to the user and their (eventId == eventId, or
+	 *  eventId == null ) and isActive == true
+	 */
+	public ArrayList<WishlistItemData> getWishlistForEvent(String id,
+			String eventId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*
+	 * return all the items this user has booked
+	 */
+	public ArrayList<WishlistItemData> getBookedWishlistItems(String usetId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	/*
+	 * add participator
+	 * Server - check if the item in db has the same eventId or eventId==null 
+	 * (two people can join to the new group from different events)
+	 * check that item is Active 
+	 * check that user doesn't participate already in this group
+	 * add this item to user's "I buy " items
+	 */
+	public void addParticipator(String wishlistItemId, String eventId,
 			ParticipatorData participator) {
 		// TODO Auto-generated method stub
 		
 	}
+	/*
+	 * delete participator from the group
+	 * check if the item isActive (won't remove participator after the group has closed)
+	 * if this participator is the only one - free this item(eventId == null)
+	 * remove this item from user's "I buy " list
+	 */
+	public void deleteParticipator(String wishlistItemId, String userId) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	 * remove this item from this user's "I buy " list , check if item isActive == false
+	 * (won't remove item with open group)
+	 */
+	public void deleteBookedWishlistItem(String userId, String wishlistItemId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+	
+	
+
 	
 	/*
 	 * update participator (update money only)
-	 * Server - check if exists
+	 * Server - check if the item is active (group is not closed yet) 
 	 */
 	public void updateParticipator(String wishlistItemId,
 			ParticipatorData participator) {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
-	/*
-	 * delete  participator from the list
-	 * 
-	 */
-	public void deleteParticipator(String wishlistItemId,
-			ParticipatorData participator) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	/*
-	 * return all the items this user booked
-	 */
-	public ArrayList<WishlistItemData> getBookedWishlistItems(String usetId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }
