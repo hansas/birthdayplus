@@ -55,12 +55,13 @@ public class BusinessObjectDAL {
 	public static void createProfile(Guest guest) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			
+			int guestDom = guest.getBirthday().getDate();
+			int guestMonth = guest.getBirthday().getMonth();
 			Calendar cal = Calendar.getInstance();
-			Date birthday = new Date(cal.get(Calendar.DAY_OF_YEAR),guest.getBirthday().getMonth(),guest.getBirthday().getDate());
+			Date birthday = new Date(cal.get(Calendar.DAY_OF_YEAR),guestMonth,guestDom);
 			int currentDom = cal.get(Calendar.DAY_OF_MONTH);
 			int currentMonth = cal.get(Calendar.MONTH) + 1;
-			if ((currentMonth>guest.getBirthday().getMonth())||((currentMonth==guest.getBirthday().getMonth())&&(currentDom>guest.getBirthday().getDate()))){
+			if ((currentMonth > guestMonth)||((currentMonth == guestMonth)&&(currentDom > guestDom))){
 				birthday.setYear(cal.get(Calendar.DAY_OF_YEAR)+1);
 			}
 			Event e = new Event("Birthday", guest.getId(), birthday, true);
