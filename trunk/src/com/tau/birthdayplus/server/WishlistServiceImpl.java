@@ -37,7 +37,7 @@ WishlistService  {
 	 * creates new item for the user
 	 */
 	public void createWishlistItem(WishlistItemData item) {
-		//WishlistManagement.createWishlistItem(item);
+		WishlistManagement.createWishlistItem(item);
 		
 //		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
 //		GuestData friendData = new GuestData("345","Moshe","Levi",new Date(12,01,85));
