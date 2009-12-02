@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
-import com.tau.birthdayplus.dto.client.WishlistItemData;
+
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
@@ -34,6 +34,7 @@ public class IBuyTabGUI {
 	private static final int DELETE_LINK = 6;
 	private static final int CANCEL_LINK = 5;
 	private static final int UPDATE_LINK = 4;
+	private static final int PRICE_LINK  = 3;
 	private static final int NAME_LINK   =1;
 	
 
@@ -132,6 +133,7 @@ public class IBuyTabGUI {
 	}
 	
 	private void loadMoneyDialog(WishlistItemNewData item){
+		currentItem = item;
 		moneyDialogBox.center();
 		currentItem = item;
 		
@@ -239,6 +241,14 @@ public class IBuyTabGUI {
 
 		
 	}
+	
+	private void loadParticipatorsBox(WishlistItemNewData item){
+		if(!item.getParticipators().isEmpty()){
+	    	currentItem = item;
+		    participatorsBox.show();
+		    fillParticipatorsTable();
+		}
+	}
 		
 	
 		
@@ -259,6 +269,8 @@ public class IBuyTabGUI {
 	        switch(col){
 	        case NAME_LINK    : if(!item.getLink().equals(""))
        		                       Window.open(item.getLink(), "_blank", null);
+	                            break;
+	        case PRICE_LINK   : loadParticipatorsBox(item);
 	                            break;
 	        case UPDATE_LINK  : loadMoneyDialog(item);    
 	                            break;

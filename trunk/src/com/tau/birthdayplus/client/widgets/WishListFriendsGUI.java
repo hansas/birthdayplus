@@ -28,7 +28,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
-import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
@@ -76,7 +75,7 @@ public class WishListFriendsGUI  {
 	 */
 	//list of friends items for the event
 	private ArrayList<WishlistItemNewData> items;
-    private WishlistItemData currentItem;
+    private WishlistItemNewData currentItem;
     protected WishListFriendsDelegate wishlistService;
     protected EventTabGUI parent;
  
@@ -98,7 +97,7 @@ public class WishListFriendsGUI  {
 			 items = new ArrayList<WishlistItemNewData>();
 			
 			
-			 ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
+			 ArrayList<WishlistItemNewData> data=new ArrayList<WishlistItemNewData>();
 			    for(int i=0;i<5;i++){
 			    //	data.add(new WishlistItemData("555","name"+i,i,"http://techblog.maydu.eu/?p=7",500));
 			    	
@@ -137,7 +136,8 @@ public class WishListFriendsGUI  {
 		
 	}
 	
-	private void loadMoneyDialog(WishlistItemData item){
+	private void loadMoneyDialog(WishlistItemNewData item){
+		currentItem = item;
 		moneyDialogBox.center();
 		currentItem = item;
 		
