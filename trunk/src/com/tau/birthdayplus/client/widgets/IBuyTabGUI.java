@@ -95,12 +95,6 @@ public class IBuyTabGUI {
 		
 		buildMoneyDialogBox();
 		    
-		 ArrayList<WishlistItemNewData> data=new ArrayList<WishlistItemNewData>();
-		    for(int i=0;i<5;i++){
-		    	data.add(new WishlistItemNewData("","","Drug","","prazdnik"+i,"podarok"+i, i, "", 500,false));
-		    }
-		    
-		service_getBookedWishlistSuccesfull(data);
 	}
 	
 	
