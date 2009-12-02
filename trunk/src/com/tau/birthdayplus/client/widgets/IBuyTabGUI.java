@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -39,13 +40,14 @@ public class IBuyTabGUI {
 	
 
 	//////////////////GUI Widgets////////////////////////
+	public AbsolutePanel iBuyPanel;
 	//VerticalPanel for the content of wishlist
-	public VerticalPanel wishlistVerticalPanel;
+//	public VerticalPanel wishlistVerticalPanel;
 	// wishlist table
 	public TableWithHeader wishTable;
 	
 	//dialog for participators
-	private DialogBox participatorsBox;
+//	private DialogBox participatorsBox;
 	//vertical panel that holds everything
 	private VerticalPanel participatorsBoxVerticalPanel;
 	//participators table
@@ -87,13 +89,16 @@ public class IBuyTabGUI {
 	 * build the Tab
 	 */
 	public void init() {
-		wishlistVerticalPanel=new VerticalPanel();
-		wishlistVerticalPanel.setTitle("Booked Items ");
+		iBuyPanel = new AbsolutePanel();
+	//	wishlistVerticalPanel=new VerticalPanel();
+	//	wishlistVerticalPanel.setTitle("Booked Items ");
 		buildWishlistTable();
 		buildParticipatorsBox();
-		wishlistVerticalPanel.add(wishTable);
-		
 		buildMoneyDialogBox();
+	//	wishlistVerticalPanel.add(wishTable);
+		iBuyPanel.add(wishTable);
+		iBuyPanel.add(participatorsBoxVerticalPanel);
+		
 		    
 	}
 	
@@ -211,12 +216,13 @@ public class IBuyTabGUI {
 	
 	
 	private void buildParticipatorsBox(){
-		participatorsBox = new DialogBox();
-		participatorsBox.addStyleName(constants.cwDialogBoxStyle());
+	//	participatorsBox = new DialogBox();
+	//	participatorsBox.addStyleName(constants.cwDialogBoxStyle());
 		
 		participatorsBoxVerticalPanel = new VerticalPanel();
+		participatorsBoxVerticalPanel.setVisible(false);
 		
-		closePartisipatorsBoxButton = new Button("close");
+		closePartisipatorsBoxButton = new Button("return");
 		closePartisipatorsBoxButton.setStyleName(constants.cwButtonStyle());
 		
 		buildParticipatorsTable();
@@ -231,7 +237,7 @@ public class IBuyTabGUI {
 		participatorsBoxVerticalPanel.add(closePartisipatorsBoxButton);
 		participatorsBoxVerticalPanel.setCellHorizontalAlignment(closePartisipatorsBoxButton , HasHorizontalAlignment.ALIGN_RIGHT);
 		
-		participatorsBox.add(participatorsBoxVerticalPanel);
+	//	participatorsBox.add(participatorsBoxVerticalPanel);
 
 		
 	}
@@ -239,8 +245,12 @@ public class IBuyTabGUI {
 	private void loadParticipatorsBox(WishlistItemNewData item){
 		if(!item.getParticipators().isEmpty()){
 	    	currentItem = item;
-		    participatorsBox.show();
+	//	    participatorsBox.show();
+	    	wishTable.setVisible(false);
+	    	participatorsBoxVerticalPanel.setVisible(true);
+	    	
 		    fillParticipatorsTable();
+		   // fillChatMessages();
 		}
 	}
 		
@@ -324,6 +334,31 @@ public class IBuyTabGUI {
 			    
 		}
 		
+		
+		public void gui_eventOkMoneyButtonClicked(){
+			Integer sum = null;
+			try{
+			   sum = Integer.parseInt(enterSumTextBox.getText());
+			}catch(NumberFormatException ex){
+				   
+			}
+			if (sum != null){
+				moneyDialogBox.hide();
+			    ParticipatorData data = new ParticipatorData(entryPoint.userId,entryPoint.user.getFirstName(),entryPoint.user.getLastName(),sum);
+			    this.wishlistService.updateParticipator(currentItem.getWishlistItemId(), data);
+			}
+		}
+		
+		public void gui_eventCancelMoneyButtonClicked(){
+			moneyDialogBox.hide();
+		}
+		
+		public void gui_eventClosePartisipatorsBoxButtonClicked(){
+	    	participatorsBoxVerticalPanel.setVisible(false);
+	    	wishTable.setVisible(true);
+			
+		}
+		
 		public void service_setActiveWishlistitemSuccessful() {
 	//		showMessage("Item was successfully canceled");
 	        this.wishlistService.getBookedWishlist(entryPoint.userId);
@@ -351,6 +386,27 @@ public class IBuyTabGUI {
 				public void onClick(ClickEvent event){
 					Cell cellForEvent=wishTable.getCellForEvent(event);
 					gui_eventItemGridClicked(cellForEvent);
+				}
+			});
+			
+			this.okMoneyButton.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					gui_eventOkMoneyButtonClicked();
+				}
+			});
+			
+			this.cancelMoneyButton.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					 gui_eventCancelMoneyButtonClicked();
+				}
+			});
+			
+			this.closePartisipatorsBoxButton.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					gui_eventClosePartisipatorsBoxButtonClicked();
 				}
 			});
 		}
@@ -387,6 +443,18 @@ public class IBuyTabGUI {
 
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		public void service_eventUpdateParticipatorFailed(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		public void service_eventUpdateParticipatorSuccesfull() {
 			// TODO Auto-generated method stub
 			
 		}
