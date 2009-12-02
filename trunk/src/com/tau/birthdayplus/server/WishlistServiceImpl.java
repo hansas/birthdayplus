@@ -27,13 +27,7 @@ import com.tau.birthdayplus.logic.WishlistManagement;
 public class WishlistServiceImpl extends RemoteServiceServlet implements
 WishlistService  {
    
-	/*
-	 * return user's wishlist
-	 */
-	public ArrayList<WishlistItemData> getMyWishlist(String userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	/*
 	 * creates new item for the user
 	 */
@@ -117,7 +111,7 @@ WishlistService  {
 	/*
 	 * return user's wishlist
 	 */
-	public ArrayList<WishlistItemData> getWishlist(String userId) {
+	public ArrayList<WishlistItemData> getMyWishlist(String userId) {
 		return WishlistManagement.getWishlist(userId);
 	}
 	
