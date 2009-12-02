@@ -265,7 +265,6 @@ public class WishListFriendsGUI  {
 
 	
 	public void gui_eventOkMoneyButtonClicked(){
-		moneyDialogBox.hide();
 		Integer sum = null;
 		try{
 		   sum = Integer.parseInt(enterSumTextBox.getText());
@@ -273,6 +272,7 @@ public class WishListFriendsGUI  {
 			   
 		}
 		if (sum != null){
+			moneyDialogBox.hide();
 		    ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
             this.wishlistService.addParticipator(currentItem.getWishlistItemId(), parent.currentEvent.getEventId(), data);
 		}
