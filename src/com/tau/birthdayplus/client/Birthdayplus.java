@@ -6,6 +6,7 @@ package com.tau.birthdayplus.client;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -46,7 +47,7 @@ public class Birthdayplus implements EntryPoint {
 	/*
 	 * user id and HashMap of <friend id, friend name> from open social
 	 */
-	public String userId="123456789";
+	public String userId="765";
 	public HashMap<String,String> userFriends= new HashMap<String,String>();
 	public GuestData user;
 	
@@ -71,7 +72,18 @@ public class Birthdayplus implements EntryPoint {
 	private com.tau.birthdayplus.client.widgets.IBuyDelegate iBuyDelegate;
 	
 	
-	
+	/*
+	 * list of user and his friends id's
+	 */
+	public ArrayList<String> getUserAndFriendsIds(){
+		Set<String> set = userFriends.keySet();
+		ArrayList<String> temp=new ArrayList<String>();
+		temp.add(userId);
+		for(String key : set){
+			temp.add(key);
+		}
+		return temp;
+	}
 	
 	
 	
@@ -116,12 +128,13 @@ public class Birthdayplus implements EntryPoint {
 	        
 			tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
 			
+			userFriends.put("123456789", "misha dezl");
 			userFriends.put("987654321", "olga vingurt");
 			
 			profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
 				public void onFailure(Throwable caught) {
-					GuestData user= new GuestData(userId,"misha","dezl",new Date());
+					GuestData user= new GuestData(userId,"ya","yaya",new Date(4,6,85));
 					profileService.createProfile(user, new AsyncCallback<Void>(){
 			    	public void onFailure(Throwable caught){
 			    			System.out.println(caught);
@@ -147,8 +160,8 @@ public class Birthdayplus implements EntryPoint {
 				}
 
 				public void onSuccess(GuestData result) {
-				    
-					user = result;
+			    
+				user = result;
 			    	eventGui.wireEventGUIEvents();
 			    	
 	    			myWishlistGUI.wireMyWishlistGUIEvents();
@@ -198,8 +211,7 @@ public class Birthdayplus implements EntryPoint {
 			public void onSelection(SelectionEvent<Integer> event) {
 				if(event.getSelectedItem()== 0){
 					ArrayList<String> temp=new ArrayList<String>();
-					temp.add(userId);
-					temp.add("987654321");
+					temp = getUserAndFriendsIds();
 					eventDelegate.getEvents(temp);
 				};
 				if(event.getSelectedItem()== 1)
