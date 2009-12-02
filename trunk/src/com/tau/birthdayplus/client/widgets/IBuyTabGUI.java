@@ -97,7 +97,7 @@ public class IBuyTabGUI {
 		buildMoneyDialogBox();
 	//	wishlistVerticalPanel.add(wishTable);
 		iBuyPanel.add(wishTable);
-		iBuyPanel.add(participatorsBoxVerticalPanel);
+	//	iBuyPanel.add(participatorsBoxVerticalPanel);
 		
 		    
 	}
@@ -128,6 +128,7 @@ public class IBuyTabGUI {
 		moneyVerticalPanel.add(moneyHorizontalPanel);
 		
 		moneyDialogBox.add(moneyVerticalPanel);
+		
 		
 	}
 	
@@ -302,7 +303,7 @@ public class IBuyTabGUI {
 	        
 	        for (WishlistItemNewData item : result) {
 	        	wishTable.setWidget(row,0,new Label(item.getUserName()+"'s "+item.getEventName()));
-	        	if (item.getLink()== null)
+	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 1,new Label(item.getItemName()));
 	        	else
 	        		wishTable.setWidget(row, 1,new Hyperlink(item.getItemName(),null));
@@ -359,26 +360,10 @@ public class IBuyTabGUI {
 			
 		}
 		
-		public void service_setActiveWishlistitemSuccessful() {
-	//		showMessage("Item was successfully canceled");
-	        this.wishlistService.getBookedWishlist(entryPoint.userId);
-
-			
-		}
-	  
-	  public void service_setActiveWishlistitemFailed(Throwable caught) {
-			//showMessage("Unable to cancel this item");
-
-			
-		}
+		
+	
 
 		
-		
-		public void service_getBookedWishlistFailed(Throwable caught) {
-			//status.setText("Unable to get booked item list");
-
-			
-		}
 		
 		
 		public void wireIBuyGUIEvents(){
@@ -413,25 +398,25 @@ public class IBuyTabGUI {
 
 
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
-			// TODO Auto-generated method stub
+			System.out.println(caught);
 			
 		}
 
 
 		public void service_eventCancelBookItemForUserSuccesfull() {
-			// TODO Auto-generated method stub
+			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
-			// TODO Auto-generated method stub
+			System.out.println(caught);
 			
 		}
 
 
 		public void service_eventDeleteParticipatorSuccesfull() {
-			// TODO Auto-generated method stub
+			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
@@ -455,6 +440,12 @@ public class IBuyTabGUI {
 
 
 		public void service_eventUpdateParticipatorSuccesfull() {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		public void service_getBookedWishlistFailed(Throwable caught) {
 			// TODO Auto-generated method stub
 			
 		}
