@@ -2,7 +2,9 @@ package com.tau.birthdayplus.dto.client;
 
 import java.util.ArrayList;
 
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.tau.birthdayplus.domain.WishlistItem;
 
 
 public class WishlistItemNewData extends WishlistItemData implements  IsSerializable{
@@ -39,8 +41,6 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 		this.buyer = null;
 	}
 	
-
-	
 	public String getUserName(){
 		return this.userName;
 	}
@@ -64,8 +64,10 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	public void removeParticipator(ParticipatorData p){
 		this.participators.remove(p);
 	}
-	
 
+	public void setParticipators(ArrayList<ParticipatorData> p){
+		this.participators = p;
+	}
 	
 	public ArrayList<ParticipatorData> getParticipators(){
 		return this.participators;

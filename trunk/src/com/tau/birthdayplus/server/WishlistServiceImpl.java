@@ -123,12 +123,6 @@ WishlistService  {
 		return WishlistManagement.getWishlist(userId);
 	}
 	
-	
-	
-	
-	
-	
-	
 	/*
 	 * user will buy this item
 	 * Server - check that item in db doesn't have eventId(==null) (open group or someone booked it)
@@ -158,15 +152,13 @@ WishlistService  {
 	 */
 	public ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) {
 		return WishlistManagement.getWishlistForEvent(userId,eventId);
-		
 	}
 	
 	/*
 	 * return all the items this user has booked
 	 */
-	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String usetId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) {
+		return WishlistManagement.getBookedWishlistItems(userId);
 	}
 	
 

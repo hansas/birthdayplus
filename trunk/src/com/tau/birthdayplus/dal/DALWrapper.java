@@ -44,8 +44,8 @@ public class DALWrapper {
 		return BusinessObjectDAL.loadGuest(userId, pm);
 	}
 	
-	public Event getEventById(String eventId){
-		return BusinessObjectDAL.loadEvent(eventId, pm);
+	public Event getEventByKey(Key eventKey){
+		return pm.getObjectById(Event.class, eventKey);
 	}
 	
 	

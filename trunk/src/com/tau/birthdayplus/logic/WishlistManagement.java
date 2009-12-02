@@ -68,18 +68,27 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<WishlistItemNewData> getWishlistItemNewData(List<WishlistItem> itemList,
-			Guest guest,Event event){
+			Guest guest,DALWrapper wrapper){
 		ArrayList<WishlistItemNewData> itemDataList = new ArrayList<WishlistItemNewData>();
 		for (WishlistItem item : itemList){
-			itemDataList.add(itemToItemNewData(item,guest,event));
+			itemDataList.add(itemToItemNewData(item,guest,wrapper));
 		}
 		return itemDataList;
 	}
 	
-	public static WishlistItemNewData itemToItemNewData(WishlistItem item,Guest guest,Event event){
-		return new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
-				guest.getFirstName(),KeyFactory.keyToString(event.getKey()),event.getEventName(),
+	public static WishlistItemNewData itemToItemNewData(WishlistItem item,Guest guest,DALWrapper wrapper){
+		if (item.getEventKey()==null){
+			return new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
+			guest.getFirstName(),"","",
 			item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
+		}
+		else{
+			Event event = wrapper.getEventByKey(item.getEventKey());
+			WishlistItemNewData newItemData = new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
+					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
+			newItemData.setParticipators(getParticipatorDataList(item.getParticipators(),wrapper));
+			return newItemData;
+		}
 	}
 	
 	public static ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId){
@@ -87,8 +96,19 @@ public class WishlistManagement {
 		try{
 			List<WishlistItem> itemList = wrapper.getWishlistForEvent(userId,eventId);
 			Guest guest = wrapper.getGuestById(userId);
-			Event event = wrapper.getEventById(eventId); 
-			return getWishlistItemNewData(itemList,guest,event);
+			return getWishlistItemNewData(itemList,guest,wrapper);
+		}
+		finally{
+			wrapper.close();
+		}
+	}
+	
+	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId){
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			Guest guest = wrapper.getGuestById(userId);
+			List<WishlistItem> bookedItemList = guest.getIBuyItems();
+			return getWishlistItemNewData(bookedItemList,guest,wrapper);
 		}
 		finally{
 			wrapper.close();
@@ -97,6 +117,20 @@ public class WishlistManagement {
 	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) {
 		BusinessObjectDAL.bookItemForUser(wishlistItemId,eventId,userId);
+	}
+	
+	public static ArrayList<ParticipatorData> getParticipatorDataList(ArrayList<Participator> participators,
+			DALWrapper wrapper){
+		ArrayList<ParticipatorData> participatorsD = new ArrayList<ParticipatorData>();
+		for (Participator p: participators){
+			participatorsD.add(participatorToParticipatorData(p,wrapper));
+		}
+		return participatorsD;
+	}
+	
+	public static ParticipatorData participatorToParticipatorData(Participator participator,DALWrapper wrapper){
+		Guest guest = wrapper.getGuestById(participator.getUserId());
+		return new ParticipatorData(participator.getUserId(),guest.getFirstName(),guest.getLastName(),participator.getMoney());
 	}
 	
 	public static void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) {

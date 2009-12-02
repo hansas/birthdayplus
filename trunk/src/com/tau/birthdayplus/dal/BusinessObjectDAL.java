@@ -325,7 +325,8 @@ public class BusinessObjectDAL {
 		List<WishlistItem> items = guest.getWishlistItems();
 		List<WishlistItem> itemsForEvent = new ArrayList<WishlistItem>();
 		for(WishlistItem item: items){
-			if (item.getEventKey().equals(eventKey)){
+			if (((item.getEventKey()==null)||item.getEventKey().equals(eventKey))
+					&&(item.getIsActive()==true)){
 				itemsForEvent.add(item);
 			}
 		}
