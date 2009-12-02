@@ -126,7 +126,8 @@ public class Birthdayplus implements EntryPoint {
 		    iBuyGUI.entryPoint=this;
 		    iBuyGUI.init();
 	        
-			tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
+			//tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
+		    tab.add(iBuyGUI.iBuyPanel, "I buy");
 			
 			userFriends.put("123456789", "misha dezl");
 			userFriends.put("987654321", "olga vingurt");
