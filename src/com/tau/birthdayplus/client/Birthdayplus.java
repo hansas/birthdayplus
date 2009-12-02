@@ -213,10 +213,13 @@ public class Birthdayplus implements EntryPoint {
 					ArrayList<String> temp=new ArrayList<String>();
 					temp = getUserAndFriendsIds();
 					eventDelegate.getEvents(temp);
-				};
-				if(event.getSelectedItem()== 1)
-					myWishlistDelegate.getMyWishlist(userId);
+				}else{
+				     if(event.getSelectedItem()== 1)
+				    	myWishlistDelegate.getMyWishlist(userId);
+				     else
+				    	 iBuyDelegate.getBookedWishlist(userId);
 				
+				}
 					
 					
 				
