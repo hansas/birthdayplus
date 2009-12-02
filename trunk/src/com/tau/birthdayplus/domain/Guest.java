@@ -38,7 +38,7 @@ public class Guest   {
 		List<WishlistItem> wishlistItems;
 	    
 	    @Persistent (defaultFetchGroup="true")
-		List<WishlistItem> iBuyItems;
+		List<Key> iBuyItems;
 
 		
 		public Guest(String googleId, String firstName, String lastName, Date birthday) {
@@ -49,7 +49,7 @@ public class Guest   {
 			this.idKey = KeyFactory.createKey(Guest.class.getSimpleName(), googleId);
 			this.events = new ArrayList<Event>();
 			this.wishlistItems = new ArrayList<WishlistItem>();
-			this.iBuyItems = new ArrayList<WishlistItem>();
+			this.iBuyItems = new ArrayList<Key>();
 		}
 		
 		public Guest(GuestData guestData){
@@ -123,14 +123,14 @@ public class Guest   {
 			return this.wishlistItems;
 		}
 		
-		public List<WishlistItem> getIBuyItems(){
+		public List<Key> getIBuyItems(){
 			return this.iBuyItems;
 		}
 		public void addIBuyItem(WishlistItem item){
 			if (this.iBuyItems == null){
-				this.iBuyItems = new ArrayList<WishlistItem>();
+				this.iBuyItems = new ArrayList<Key>();
 			}
-			this.iBuyItems.add(item);
+			this.iBuyItems.add(item.getKey());
 		}
 		
 		public void removeIBuyItem(WishlistItem item){

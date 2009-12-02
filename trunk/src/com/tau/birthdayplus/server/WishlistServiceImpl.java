@@ -39,36 +39,58 @@ WishlistService  {
 	public void createWishlistItem(WishlistItemData item) {
 		//WishlistManagement.createWishlistItem(item);
 		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
+		GuestData friendData = new GuestData("345","Moshe","Levi",new Date(12,01,85));
 		UserManagement.createProfile(guestData);
-		GuestData savedGuest = UserManagement.loadGuestData("123"); 
+		UserManagement.createProfile(friendData);
+		EventData eventData = new EventData("","123","New Year",new Date(31,12,9), false);
+		EventManagement.createEvent(eventData);
+		EventData friendEventData = new EventData("","345","Hanuka",new Date(20,12,9), false);
+		EventManagement.createEvent(friendEventData);
 		WishlistItemData itemData = new WishlistItemData("","123","Car",4,"No link",500000,true);
+		WishlistItemData friendItemData = new WishlistItemData("","345","TV",5,"No link",4000,true);
 		WishlistManagement.createWishlistItem(itemData);
+		WishlistManagement.createWishlistItem(friendItemData);
 		List<WishlistItemData> itemDataList = WishlistManagement.getWishlist("123");
 		for (WishlistItemData itemD : itemDataList){
 			System.out.println(itemD.getItemName());
 			System.out.println(itemD.getWishlistItemId());
 		}
 		Guest g = UserManagement.loadGuest("123");
+		ArrayList<WishlistItemNewData> newItems = WishlistManagement.getWishlistForEvent("123", eventData.getEventId());
+		for (WishlistItemNewData itemD : newItems){
+			System.out.println(itemD.getUserName());
+		}
 		List<WishlistItem> items = g.getWishlistItems();
-		ParticipatorData p = new ParticipatorData("123","Ira","Let",300);
+		ParticipatorData p = new ParticipatorData("345","Moshe","Levi",30000);
 		WishlistItem i = items.get(0);
-		WishlistManagement.addParticipator(KeyFactory.keyToString(i.getKey()),"", p);
-		List<WishlistItemData> items2 = WishlistManagement.getParicipationWishlist("123");
-		
-		
-		itemData.setItemName("Iphone");
-		WishlistManagement.updateWishlistItem(itemData);
-		itemDataList = WishlistManagement.getWishlist("123");
-		
-		for (WishlistItemData itemD : itemDataList){
-			System.out.println(itemD.getItemName());
-			System.out.println(itemD.getWishlistItemId());
-			WishlistManagement.deleteWishlistItem(itemD);
+		WishlistManagement.addParticipator(KeyFactory.keyToString(i.getKey()),eventData.getEventId(), p);
+		newItems = WishlistManagement.getWishlistForEvent("123", eventData.getEventId());
+		for (WishlistItemNewData itemD : newItems){
+			if (!itemD.getParticipators().isEmpty()){
+				System.out.println(itemD.getParticipators().get(0).getUserFirstName());
+			}
 		}
-		itemDataList = WishlistManagement.getWishlist("123");
-		if (itemDataList.isEmpty()){
-			System.out.println("there is no events");
+		WishlistManagement.bookItemForUser(friendItemData.getWishlistItemId(), friendEventData.getEventId(), "123");
+		newItems = WishlistManagement.getBookedWishlistItems("123");
+		for (WishlistItemNewData itemD : newItems){
+			System.out.println(itemD.getEventName());
 		}
+		//List<WishlistItemData> items2 = WishlistManagement.getParicipationWishlist("123");
+//		
+//		
+//		itemData.setItemName("Iphone");
+//		WishlistManagement.updateWishlistItem(itemData);
+//		itemDataList = WishlistManagement.getWishlist("123");
+//		
+//		for (WishlistItemData itemD : itemDataList){
+//			System.out.println(itemD.getItemName());
+//			System.out.println(itemD.getWishlistItemId());
+//			WishlistManagement.deleteWishlistItem(itemD);
+//		}
+//		itemDataList = WishlistManagement.getWishlist("123");
+//		if (itemDataList.isEmpty()){
+//			System.out.println("there is no events");
+//		}
 		
 //		System.out.println("creating new item : "+item);
 //		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));

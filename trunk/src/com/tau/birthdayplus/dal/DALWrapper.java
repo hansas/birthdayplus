@@ -48,5 +48,9 @@ public class DALWrapper {
 		return pm.getObjectById(Event.class, eventKey);
 	}
 	
+	public List<WishlistItem> getWishlistItemById(List<Key> keys){
+		return  BusinessObjectDAL.getWishlistItemById(keys, pm);
+	}
+	
 	
 }

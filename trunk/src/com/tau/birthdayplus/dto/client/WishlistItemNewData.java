@@ -1,8 +1,5 @@
 package com.tau.birthdayplus.dto.client;
-
 import java.util.ArrayList;
-
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.tau.birthdayplus.domain.WishlistItem;
 
