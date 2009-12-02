@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.catalina.mbeans.UserMBean;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
@@ -107,8 +108,9 @@ public class WishlistManagement {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			Guest guest = wrapper.getGuestById(userId);
-			List<WishlistItem> bookedItemList = guest.getIBuyItems();
-			return getWishlistItemNewData(bookedItemList,guest,wrapper);
+			List<Key> bookedItemList = guest.getIBuyItems();
+			List<WishlistItem> items = wrapper.getWishlistItemById(bookedItemList);
+			return getWishlistItemNewData(items,guest,wrapper);
 		}
 		finally{
 			wrapper.close();
@@ -137,19 +139,19 @@ public class WishlistManagement {
 		BusinessObjectDAL.addParticipator(wishlistItemId,eventId,participator);
 	}
 	
-	public static ArrayList<WishlistItemData> getParicipationWishlist(String userId){
-		Guest g = UserManagement.loadGuest(userId);
-		List<WishlistItem> itemList = BusinessObjectDAL.getParticipationWishlist(g);
-		for (WishlistItem wi: itemList){
-			System.out.println(wi.getItemName());
-		}
-		for (WishlistItem wi: g.getWishlistItems()){
-			System.out.println(wi.getItemName());
-			for (Participator p: wi.getParticipators()){
-				System.out.print("P1");
-			}
-		}
-		return null;
-	}
+//	public static ArrayList<WishlistItemData> getParicipationWishlist(String userId){
+//		Guest g = UserManagement.loadGuest(userId);
+//		List<WishlistItem> itemList = BusinessObjectDAL.getParticipationWishlist(g);
+//		for (WishlistItem wi: itemList){
+//			System.out.println(wi.getItemName());
+//		}
+//		for (WishlistItem wi: g.getWishlistItems()){
+//			System.out.println(wi.getItemName());
+//			for (Participator p: wi.getParticipators()){
+//				System.out.print("P1");
+//			}
+//		}
+//		return null;
+//	}
 
 }
