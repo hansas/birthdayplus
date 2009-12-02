@@ -16,11 +16,15 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
+import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData; //import com.tau.birthdayplus.dto.client.GuestData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 import com.tau.birthdayplus.logic.EventManagement;
+import com.tau.birthdayplus.logic.WishlistManagement;
 
 public class BusinessObjectDAL {
 
@@ -137,8 +141,7 @@ public class BusinessObjectDAL {
 		Event event = new Event(eventD);
 		try {
 			tx.begin();
-			Guest user = BusinessObjectDAL.loadGuest(userId, pm);// pm.getObjectById(Guest.class,
-																	// userId);
+			Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 			user.addEvent(event);
 			eventD.setEventId(KeyFactory.keyToString(event.getKey()));
 			pm.makePersistent(user);
@@ -153,9 +156,27 @@ public class BusinessObjectDAL {
 			pm.close();
 		}
 	}
+	
+	public static Event loadEvent(String eventId, PersistenceManager pm) {
+		Event event = null;
+		try {
+			Key key = KeyFactory.stringToKey(eventId);
+			event = pm.getObjectById(Event.class, key);
+		} catch (Exception ex) {
+			System.out.print(ex.getMessage());
+		}
+		return event;
+	}
 
-	public static List<Guest> getGuestsById(ArrayList<String> UserIdList,
-			PersistenceManager pm) {
+	// Automatically open and close PMF
+	public static Event loadEvent(String eventId) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Event event = loadEvent(eventId, pm);
+		pm.close();
+		return event;
+	}
+
+	public static List<Guest> getGuestsById(ArrayList<String> UserIdList,PersistenceManager pm) {
 		List<Guest> guests = new ArrayList<Guest>();
 		List<Key> keys = new ArrayList<Key>();
 		for (String userId : UserIdList) {
@@ -184,36 +205,7 @@ public class BusinessObjectDAL {
 			user.addWishlistItem(item);
 			itemData.setWishlistItemId(KeyFactory.keyToString(item.getKey()));
 			pm.makePersistent(user);
-			Key k = KeyFactory.createKey(Guest.class.getSimpleName(), "123");
-			if (item.getKey().getParent().equals(k)) {
-				System.out.println("equals");
-			}
-			if (item.getKey().getParent().toString().equals(k.toString())) {
-				System.out.println("equals - toString");
-			} else {
-				System.out.println(item.getKey().getParent().toString());
-				System.out.println(item.getKey().getParent());
-				System.out.println(k);
-			}
 			pm.makePersistent(item);
-			k = KeyFactory.createKey(Guest.class.getSimpleName(), "123");
-			if (item.getKey().getParent().equals(k)) {
-				System.out.println("equals");
-			}
-			if (item.getKey().getParent().toString().equals(k.toString())) {
-				System.out.println("equals - toString");
-			}
-			if (k == item.getKey().getParent()) {
-				System.out.println("ok");
-			}
-			if (item.getKey().getParent().toString() == k.toString()) {
-				System.out.println("ok toString");
-			} else {
-				System.out.println(item.getKey());
-				System.out.println(item.getKey().getParent().toString());
-				System.out.println(item.getKey().getParent());
-				System.out.println(k);
-			}
 			tx.commit();
 		} catch (Exception ex) {
 			throw new RuntimeException(
@@ -225,6 +217,25 @@ public class BusinessObjectDAL {
 			pm.close();
 		}
 	}
+	
+	public static WishlistItem loadWishlistItem(String wishlistItemId, PersistenceManager pm) {
+		WishlistItem item = null;
+		try {
+			Key key = KeyFactory.stringToKey(wishlistItemId);
+			item = pm.getObjectById(WishlistItem.class, key);
+		} catch (Exception ex) {
+			System.out.print(ex.getMessage());
+		}
+		return item;
+	}
+
+	// Automatically open and close PMF
+	public static WishlistItem loadWishlistItem(String wishlistItemId) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+		pm.close();
+		return item;
+	}	
 
 	public static void updateWishlistItem(WishlistItemData itemD) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -269,8 +280,7 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static List<WishlistItem> getWishlist(String userId,
-			PersistenceManager pm) {
+	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) {
 		List<WishlistItem> itemList = new ArrayList<WishlistItem>();
 		Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 		try {
@@ -280,15 +290,94 @@ public class BusinessObjectDAL {
 		}
 		return itemList;
 	}
+	
+	public static void bookItemForUser(String wishlistItemId, String eventId,String userId){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+		if (item.getEventKey()==null){
+			Key eventKey = KeyFactory.stringToKey(eventId);
+			Guest guest = loadGuest(userId, pm);
+			item.setEventKey(eventKey);
+			item.setBuyerKey(guest.getIdKey());
+			item.setIsActive(false);
+			Transaction tx = (Transaction) pm.currentTransaction();
+			try {
+				tx.begin();
+				guest.addIBuyItem(item);
+				pm.makePersistent(guest);
+				pm.makePersistent(item);
+				tx.commit();
+			} catch (Exception ex) {
+				throw new RuntimeException("error in data base: bookItemForUser");
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+	}
+	
+	public static List<WishlistItem> getWishlistForEvent(String userId,String eventId,
+			PersistenceManager pm){
+		Guest guest = loadGuest(userId, pm);
+		Key eventKey = KeyFactory.stringToKey(eventId);
+		List<WishlistItem> items = guest.getWishlistItems();
+		List<WishlistItem> itemsForEvent = new ArrayList<WishlistItem>();
+		for(WishlistItem item: items){
+			if (item.getEventKey().equals(eventKey)){
+				itemsForEvent.add(item);
+			}
+		}
+		return itemsForEvent;
+	}
+	
+	public static void addParticipator(String wishlistItemId, String eventId,
+			ParticipatorData participatorD) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+		List<Participator> partisipators = item.getParticipators();
+		Boolean contains = false;
+		for(Participator p: partisipators){
+			if (p.getUserId().equals(participatorD.getUserId())){
+				contains=true;
+			}
+		}
+		if (((item.getEventKey()==null)||item.getEventKey().equals(KeyFactory.stringToKey(eventId)))
+				&&(item.getIsActive()==true)&&(!contains)){
+			Participator participator = new Participator(participatorD.getUserId(),participatorD.getMoney());
+			Transaction tx = (Transaction) pm.currentTransaction();
+			try {
+				tx.begin();
+				item.addParticipator(participator);
+				pm.makePersistent(item);
+				pm.makePersistent(participator);
+				tx.commit();
+			} catch (Exception ex) {
+				throw new RuntimeException("error in data base: addParticipator", ex);
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+		
+	}
 
 	public static List<WishlistItem> getParticipationWishlist(Guest g) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
+		List<Participator> p = new ArrayList<Participator>();
 		try {
 
-			Query query = pm.newQuery(WishlistItem.class);
-			query.setFilter("this.participators.userId == :userId");
-			wishlistItems = (List<WishlistItem>) query.execute(g.getId());
+			Query query = pm.newQuery(Participator.class);
+			query.setFilter("userId == id");
+			query.declareParameters("String id");
+			p = (List<Participator>) query.execute(g.getId());
+			for (Participator par: p){
+				System.out.println(par.getMoney());
+			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}

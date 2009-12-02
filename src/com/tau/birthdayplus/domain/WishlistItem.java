@@ -41,7 +41,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   private Boolean isActive;
 	   //key of the person that buys this item
 	   @Persistent
-	   private Key guestKey;
+	   private Key buyerKey;
 	
 	public WishlistItem(String userId, String name, Integer priority, String link, Integer price){
 		this.itemName = name;
@@ -50,8 +50,8 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		this.price = price;
 		this.participators = new ArrayList<Participator>();
 		this.setIsActive(true);
-		this.guestKey=null;
-		this.eventKey=null;
+		this.buyerKey=null;
+		this.setEventKey(null);
 	}
 	
 	public WishlistItem(WishlistItemData itemData){
@@ -119,16 +119,24 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		return this.participators;
 	}
 	
-	public void setBuyerKey(Key guestKey) {
-		this.guestKey = guestKey;
+	public void setBuyerKey(Key buyerKey) {
+		this.buyerKey = buyerKey;
 	}
 
 	public Key getBuyerKey() {
-		return this.guestKey;
+		return this.buyerKey;
 	}
 	
 	public String toString(){
 		return "name is: "+ itemName +" "+"priority is: "+priority+" "+"link is :" +link+"price is : "+ price;
+	}
+
+	public void setEventKey(Key eventKey) {
+		this.eventKey = eventKey;
+	}
+
+	public Key getEventKey() {
+		return eventKey;
 	}
 	
 }

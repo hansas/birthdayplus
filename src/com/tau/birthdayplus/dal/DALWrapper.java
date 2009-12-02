@@ -6,8 +6,10 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.datastore.Key;
+import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.WishlistItem;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 public class DALWrapper {
 	
@@ -33,5 +35,18 @@ public class DALWrapper {
 	public List<WishlistItem> getWishlist(String userId){
 		return BusinessObjectDAL.getWishlist(userId, this.pm);
 	}
+	
+	public List<WishlistItem> getWishlistForEvent(String userId,String eventId){
+		return BusinessObjectDAL.getWishlistForEvent(userId,eventId,this.pm);
+	}
+	
+	public Guest getGuestById(String userId){
+		return BusinessObjectDAL.loadGuest(userId, pm);
+	}
+	
+	public Event getEventById(String eventId){
+		return BusinessObjectDAL.loadEvent(eventId, pm);
+	}
+	
 	
 }

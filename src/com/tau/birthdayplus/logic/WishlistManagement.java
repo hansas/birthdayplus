@@ -11,9 +11,12 @@ import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.DALWrapper;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 public class WishlistManagement {
 	
@@ -25,6 +28,7 @@ public class WishlistManagement {
 		}
 	}
 	
+		
 	public static void updateWishlistItem(WishlistItemData item) {
 		try{
 			BusinessObjectDAL.updateWishlistItem(item);
@@ -63,9 +67,54 @@ public class WishlistManagement {
 		}
 	}
 	
+	public static ArrayList<WishlistItemNewData> getWishlistItemNewData(List<WishlistItem> itemList,
+			Guest guest,Event event){
+		ArrayList<WishlistItemNewData> itemDataList = new ArrayList<WishlistItemNewData>();
+		for (WishlistItem item : itemList){
+			itemDataList.add(itemToItemNewData(item,guest,event));
+		}
+		return itemDataList;
+	}
+	
+	public static WishlistItemNewData itemToItemNewData(WishlistItem item,Guest guest,Event event){
+		return new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
+				guest.getFirstName(),KeyFactory.keyToString(event.getKey()),event.getEventName(),
+			item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
+	}
+	
+	public static ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId){
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			List<WishlistItem> itemList = wrapper.getWishlistForEvent(userId,eventId);
+			Guest guest = wrapper.getGuestById(userId);
+			Event event = wrapper.getEventById(eventId); 
+			return getWishlistItemNewData(itemList,guest,event);
+		}
+		finally{
+			wrapper.close();
+		}
+	}
+	
+	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) {
+		BusinessObjectDAL.bookItemForUser(wishlistItemId,eventId,userId);
+	}
+	
+	public static void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) {
+		BusinessObjectDAL.addParticipator(wishlistItemId,eventId,participator);
+	}
+	
 	public static ArrayList<WishlistItemData> getParicipationWishlist(String userId){
 		Guest g = UserManagement.loadGuest(userId);
 		List<WishlistItem> itemList = BusinessObjectDAL.getParticipationWishlist(g);
+		for (WishlistItem wi: itemList){
+			System.out.println(wi.getItemName());
+		}
+		for (WishlistItem wi: g.getWishlistItems()){
+			System.out.println(wi.getItemName());
+			for (Participator p: wi.getParticipators()){
+				System.out.print("P1");
+			}
+		}
 		return null;
 	}
 
