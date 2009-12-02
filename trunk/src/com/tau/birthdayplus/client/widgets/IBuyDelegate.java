@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.client.WishlistServiceAsync;
+import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
@@ -42,6 +43,21 @@ public class IBuyDelegate {
 		});
 	}
 	
+	void updateParticipator(String wishlistItemId,ParticipatorData participator){
+		wishlistService.updateParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
+
+			public void onFailure(Throwable caught) {
+				gui.service_eventUpdateParticipatorFailed(caught);
+				
+			}
+
+			public void onSuccess(Void result) {
+				gui.service_eventUpdateParticipatorSuccesfull();
+				
+			}	
+		});
+	}
+	
 	void deleteItemFromTab(String userId,String wishlistItemId){
 		wishlistService.deleteBookedWishlistItem(userId, wishlistItemId,new AsyncCallback<Void>(){
 
@@ -69,6 +85,8 @@ public class IBuyDelegate {
 	    	}//end of inner class
 	    	);//end of method call
 	    	}
+	
+	
 
 
 }
