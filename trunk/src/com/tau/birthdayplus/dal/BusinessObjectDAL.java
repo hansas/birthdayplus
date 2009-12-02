@@ -363,13 +363,13 @@ public class BusinessObjectDAL {
 			Participator participator = new Participator(participatorD.getUserId(),participatorD.getMoney());
 			Transaction tx = (Transaction) pm.currentTransaction();
 			Key guestKey = KeyFactory.stringToKey(wishlistItemId).getParent();
-			//Guest g = pm.getObjectById(Guest.class, guestKey);
+			Guest g = pm.getObjectById(Guest.class, guestKey);
 			try {
 				tx.begin();
 				item.addParticipator(participator);
 				item.setEventKey(KeyFactory.stringToKey(eventId));
-				//g.addIBuyItem(item);
-				//pm.makePersistent(g);
+				g.addIBuyItem(item);
+				pm.makePersistent(g);
 				pm.makePersistent(item);
 				pm.makePersistent(participator);
 				tx.commit();
@@ -385,23 +385,58 @@ public class BusinessObjectDAL {
 		
 	}
 
-//	public static List<WishlistItem> getParticipationWishlist(Guest g) {
-//		PersistenceManager pm = PMF.get().getPersistenceManager();
-//		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
-//		List<Participator> p = new ArrayList<Participator>();
-//		try {
-//
-//			Query query = pm.newQuery(Participator.class);
-//			query.setFilter("userId == id");
-//			query.declareParameters("String id");
-//			p = (List<Participator>) query.execute(g.getId());
-//			for (Participator par: p){
-//				System.out.println(par.getMoney());
-//			}
-//		} catch (Exception ex) {
-//			System.out.println(ex.getMessage());
-//		}
-//		return wishlistItems;
-//	}
+	/*public static void checkAllPossibleParticipators(){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			Query query = pm.newQuery(Guest.class);
+			List<Guest> guests = (List<Guest>) query.execute();//query.execute(gid);
+			for (Guest p: guests){
+				System.out.print(p.getId()+":" + p.getFirstName()+" - ");
+				List<WishlistItem> items = p.getWishlistItems();
+				for (WishlistItem wi: items){
+					System.out.print(wi.getItemName()+" {");
+					List<Participator> pars = wi.getParticipators();
+					
+					for (Participator pr: pars){
+						System.out.print(pr.getUserId() + " $" + pr.getMoney()+". ");
+					}
+					System.out.print("},");
+				}
+				System.out.println();
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		finally{
+			pm.close();
+		}
+	}
+	public static List<WishlistItem> getParticipationWishlist(Guest g) {
+		checkAllPossibleParticipators();
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
+		List<Participator> p = new ArrayList<Participator>();
+		try {
+
+			Query query = pm.newQuery(Participator.class);
+			String gid = g.getId();
+			query.setFilter("userId == :keyList");
+			//guests = (List<Guest>) query.execute(keys);
+			//query.setFilter("userId == \"123\"");
+			//query.declareParameters("String gid");
+			ArrayList<String> keys = new ArrayList<String>();
+			keys.add("123");
+			p = (List<Participator>) query.execute(keys);//query.execute(gid);
+			for (Participator pr: p){
+				System.out.print(pr.getUserId() + " $" + pr.getMoney()+". ");
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		finally{
+			pm.close();
+		}
+		return wishlistItems;
+	}*/
 
 }
