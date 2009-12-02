@@ -7,7 +7,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.client.WishlistServiceAsync;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
-import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 public class WishListFriendsDelegate {

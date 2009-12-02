@@ -183,15 +183,15 @@ public class EventTabGUI {
 	/*
 	 * list of user and his friends id's
 	 */
-	private ArrayList<String> getUserAndFriendsIds(){
-		Set<String> set = entryPoint.userFriends.keySet();
-		ArrayList<String> temp=new ArrayList<String>();
-		temp.add(entryPoint.userId);
-		for(String key : set){
-			temp.add(key);
-		}
-		return temp;
-	}
+	//private ArrayList<String> getUserAndFriendsIds(){
+//		Set<String> set = entryPoint.userFriends.keySet();
+	//	ArrayList<String> temp=new ArrayList<String>();
+	///	temp.add(entryPoint.userId);
+	//	for(String key : set){
+	//		temp.add(key);
+	//	}
+	///	return temp;
+	//}
 	
 	 /*
      * show the form
@@ -353,21 +353,21 @@ public class EventTabGUI {
 	
 	public void service_eventCreateEventSuccessful() {
           // showMessage("Event was successfully created");
-	        this.eventService.getEvents(this.getUserAndFriendsIds());
+	        this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
 		
 		
 	}
 
 	public void service_eventUpdateEventSuccessful() {
 		//showMessage("Event was successfully updated");
-		 this.eventService.getEvents(this.getUserAndFriendsIds());
+		 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
 		
 		
 	}
 
 	public void service_eventDeleteEventSuccessful() {
 //		showMessage("Event was successfully deleteded");
-	 this.eventService.getEvents(this.getUserAndFriendsIds());
+	 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
 		
 		
 	}
