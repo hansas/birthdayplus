@@ -20,8 +20,17 @@ public class EventManagement {
 					if ((e1.getEventDate() == null) || (e2.getEventDate()==null)){
 						return 0;
 					}
-					return e2.getEventDate().compareTo(e1.getEventDate());
-			}
+					int result = e2.getEventDate().compareTo(e1.getEventDate());
+					if(result==-1){
+						return 1;
+					}
+					else if (result==1){
+						return -1;
+					}
+					else{
+						return 0;
+					}
+				}
 		};
 
 	public static void createEvent(EventData event){

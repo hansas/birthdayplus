@@ -15,46 +15,46 @@ public class Participator
 	   @PrimaryKey
 	   @Persistent
 	   String userId;
-	   @Persistent
-	   private
-	   String userFirstName;
-	   @Persistent
-	   private
-	   String userLastName;
+//	   @Persistent
+//	   private
+//	   String userFirstName;
+//	   @Persistent
+//	   private
+//	   String userLastName;
 	   @Persistent
 	   Integer money; 
 	  
 	   
 
-	   public Participator(String userId,String userFirstName,String userLastName,Integer money) {
+	   public Participator(String userId,Integer money) {
 		   this.userId = userId;
-		   this.userFirstName = userFirstName;
-		   this.userLastName = userLastName;
+//		   this.userFirstName = userFirstName;
+//		   this.userLastName = userLastName;
 		   this.money =  money;
 	   }
 	   
 	   public Participator(Guest guest, Integer money) {
-		   this(guest.getId(),guest.getFirstName(),guest.getLastName(),money);
+		   this(guest.getId(),money);
 	   }
 	   
-	   String getUserId() {
+	   public String getUserId() {
 		   return userId;
 	   }
 
-	   void setMoney(Integer money) {
+	   public void setMoney(Integer money) {
 		    this.money = money;
     	}
 
-	   Integer getMoney() {
+	   public Integer getMoney() {
 		    return money;
     	}
 
-		String getUserFirstName() {
-			return userFirstName;
-		}
-
-		String getUserLastName() {
-			return userLastName;
-		}
+//		String getUserFirstName() {
+//			return userFirstName;
+//		}
+//
+//		String getUserLastName() {
+//			return userLastName;
+//		}
 
 }

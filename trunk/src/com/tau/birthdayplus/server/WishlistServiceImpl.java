@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.jdo.PersistenceManager;
+
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.WishlistService;
+import com.tau.birthdayplus.dal.BusinessObjectDAL;
+import com.tau.birthdayplus.dal.PMF;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
@@ -32,7 +37,7 @@ WishlistService  {
 	 * creates new item for the user
 	 */
 	public void createWishlistItem(WishlistItemData item) {
-		WishlistManagement.createWishlistItem(item);
+		//WishlistManagement.createWishlistItem(item);
 		GuestData guestData = new GuestData("123","Ira","Let",new Date(17,9,85));
 		UserManagement.createProfile(guestData);
 		GuestData savedGuest = UserManagement.loadGuestData("123"); 
@@ -45,13 +50,16 @@ WishlistService  {
 		}
 		Guest g = UserManagement.loadGuest("123");
 		List<WishlistItem> items = g.getWishlistItems();
-		Participator p = new Participator(g,300);
-		items.get(0).addParticipator(p);
+		ParticipatorData p = new ParticipatorData("123","Ira","Let",300);
+		WishlistItem i = items.get(0);
+		WishlistManagement.addParticipator(KeyFactory.keyToString(i.getKey()),"", p);
 		List<WishlistItemData> items2 = WishlistManagement.getParicipationWishlist("123");
+		
 		
 		itemData.setItemName("Iphone");
 		WishlistManagement.updateWishlistItem(itemData);
 		itemDataList = WishlistManagement.getWishlist("123");
+		
 		for (WishlistItemData itemD : itemDataList){
 			System.out.println(itemD.getItemName());
 			System.out.println(itemD.getWishlistItemId());
@@ -127,10 +135,8 @@ WishlistService  {
 	 * set isActive == false
 	 * add this item to guest "I buy" list (you can get userId from Buyer)
 	 */
-	public void bookItemForUser(String wishlistItemId, String EventId,
-			String userId) {
-		// TODO Auto-generated method stub
-		
+	public void bookItemForUser(String wishlistItemId, String eventId,String userId) {
+		WishlistManagement.bookItemForUser(wishlistItemId,eventId,userId);
 	}
 	
 	/*
@@ -150,10 +156,9 @@ WishlistService  {
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
 	 *  eventId == null ) and isActive == true
 	 */
-	public ArrayList<WishlistItemNewData> getWishlistForEvent(String id,
-			String eventId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) {
+		return WishlistManagement.getWishlistForEvent(userId,eventId);
+		
 	}
 	
 	/*
@@ -173,9 +178,8 @@ WishlistService  {
 	 * check that user doesn't participate already in this group
 	 * add this item to user's "I buy " items
 	 */
-	public void addParticipator(String wishlistItemId, String eventId,
-			ParticipatorData participator) {
-		// TODO Auto-generated method stub
+	public void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) {
+		WishlistManagement.addParticipator(wishlistItemId,eventId,participator);
 		
 	}
 	/*
@@ -197,12 +201,6 @@ WishlistService  {
 		
 	}
 
-	
-
-	
-	
-
-	
 	/*
 	 * update participator (update money only)
 	 * Server - check if the item is active (group is not closed yet) 
