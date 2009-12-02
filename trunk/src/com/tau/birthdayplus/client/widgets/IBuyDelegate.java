@@ -57,7 +57,7 @@ public class IBuyDelegate {
 	
 	 
 	 
-	 void getBookedWishlist(final String userId) {
+	public void getBookedWishlist(final String userId) {
 	    	wishlistService.getBookedWishlistItems(userId, new AsyncCallback<ArrayList<WishlistItemNewData>>(){
 
 	    		public void onFailure(Throwable caught){
