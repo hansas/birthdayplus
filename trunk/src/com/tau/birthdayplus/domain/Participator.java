@@ -7,14 +7,19 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+
 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Participator
 {
-	   @PrimaryKey
-	   @Persistent
-	   String userId;
+		@PrimaryKey
+		@Persistent
+		private Key idKey;
+		@Persistent
+		private String id;
 //	   @Persistent
 //	   private
 //	   String userFirstName;
@@ -27,7 +32,8 @@ public class Participator
 	   
 
 	   public Participator(String userId,Integer money) {
-		   this.userId = userId;
+		   this.id = userId;
+		   this.idKey = KeyFactory.createKey(Participator.class.getSimpleName(), userId);
 //		   this.userFirstName = userFirstName;
 //		   this.userLastName = userLastName;
 		   this.money =  money;
@@ -37,8 +43,12 @@ public class Participator
 		   this(guest.getId(),money);
 	   }
 	   
-	   public String getUserId() {
-		   return userId;
+	   public String getId() {
+		   return id;
+	   }
+	   
+	   public Key getIdKey() {
+		   return idKey;
 	   }
 
 	   public void setMoney(Integer money) {

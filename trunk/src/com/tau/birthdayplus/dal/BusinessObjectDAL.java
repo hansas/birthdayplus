@@ -31,8 +31,7 @@ public class BusinessObjectDAL {
 	public static Guest loadGuest(String guestId, PersistenceManager pm) {
 		Guest guest = null;
 		try {
-			Key key = KeyFactory
-					.createKey(Guest.class.getSimpleName(), guestId);
+			Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
 			guest = pm.getObjectById(Guest.class, key);
 		} catch (Exception ex) {
 			System.out.print(ex.getMessage());
@@ -374,12 +373,13 @@ public class BusinessObjectDAL {
 	
 	public static void addParticipator(String wishlistItemId, String eventId,
 			ParticipatorData participatorD) {
+		int i=0;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();
 		Boolean contains = false;
 		for(Participator p: partisipators){
-			if (p.getUserId().equals(participatorD.getUserId())){
+			if (p.getId().equals(participatorD.getUserId())){
 				contains=true;
 				break;
 			}
@@ -389,7 +389,7 @@ public class BusinessObjectDAL {
 			Participator participator = new Participator(participatorD.getUserId(),participatorD.getMoney());
 			Transaction tx = (Transaction) pm.currentTransaction();
 			//Key guestKey = KeyFactory.stringToKey(wishlistItemId).getParent();
-			Guest g = loadGuest(participator.getUserId(), pm);
+			Guest g = loadGuest(participator.getId(), pm);
 			try {
 				tx.begin();
 				item.addParticipator(participator);
@@ -427,10 +427,10 @@ public class BusinessObjectDAL {
 			Transaction tx = (Transaction) pm.currentTransaction();
 			Guest user = loadGuest(userId, pm);
 			try {
-				int i = 3;
 				tx.begin();
+				int i=1;
 				for(Participator p: partisipators){
-					if (p.getUserId().equals(userId)){
+					if (p.getId().equals(userId)){
 						item.removeParticipator(p);
 						break;
 					}

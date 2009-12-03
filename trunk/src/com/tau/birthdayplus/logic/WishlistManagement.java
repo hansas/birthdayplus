@@ -146,8 +146,8 @@ public class WishlistManagement {
 	}
 	
 	public static ParticipatorData participatorToParticipatorData(Participator participator,DALWrapper wrapper){
-		Guest guest = wrapper.getGuestById(participator.getUserId());
-		return new ParticipatorData(participator.getUserId(),guest.getFirstName(),guest.getLastName(),participator.getMoney());
+		Guest guest = wrapper.getGuestById(participator.getId());
+		return new ParticipatorData(participator.getId(),guest.getFirstName(),guest.getLastName(),participator.getMoney());
 	}
 	
 	public static void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) {
