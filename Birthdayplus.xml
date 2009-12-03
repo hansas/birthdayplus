@@ -5,7 +5,7 @@
    </ModulePrefs>
    <Content type="html">
      <![CDATA[
-       <script src="http://birthdayplus.appspot.com/birthdayplus/birthdayplus.nocache.js" type="text/javascript"></script>
+       <script src="http://www.example.com/gadgets/clock/clock.js" type="text/javascript"></script>
        
      ]]>
    </Content>
