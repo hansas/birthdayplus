@@ -9,8 +9,12 @@
 </ModulePrefs>
 <Content type="html">
      <![CDATA[
+      <script type="text/javascript">
+     
        <script src="http://birthdayplus.appspot.com/birthdayplus/birthdayplus.nocache.js">
        </script>
+       </script>
+       
      ]]>
    </Content>
 </Module>
