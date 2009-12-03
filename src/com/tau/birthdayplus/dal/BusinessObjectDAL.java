@@ -331,6 +331,32 @@ public class BusinessObjectDAL {
 		}
 	}
 	
+	public static void cancelBookItemForUser(String wishlistItemId, String userId) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+		Guest guest = pm.getObjectById(Guest.class, item.getBuyerKey());
+		if (guest.getId().equals(userId)){
+			Transaction tx = (Transaction) pm.currentTransaction();
+			try {
+				tx.begin();
+				guest.removeIBuyItem(item);
+				pm.makePersistent(guest);
+				item.setBuyerKey(null);
+				item.setEventKey(null);
+				item.setIsActive(true);
+				pm.makePersistent(item);
+				tx.commit();
+			} catch (Exception ex) {
+				throw new RuntimeException("error in data base: cancelBookItemForUser");
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+	}
+	
 	public static List<WishlistItem> getWishlistForEvent(String userId,String eventId,
 			PersistenceManager pm){
 		Guest guest = loadGuest(userId, pm);
@@ -362,8 +388,8 @@ public class BusinessObjectDAL {
 				&&(item.getIsActive()==true)&&(!contains)){
 			Participator participator = new Participator(participatorD.getUserId(),participatorD.getMoney());
 			Transaction tx = (Transaction) pm.currentTransaction();
-			Key guestKey = KeyFactory.stringToKey(wishlistItemId).getParent();
-			Guest g = pm.getObjectById(Guest.class, guestKey);
+			//Key guestKey = KeyFactory.stringToKey(wishlistItemId).getParent();
+			Guest g = loadGuest(participator.getUserId(), pm);
 			try {
 				tx.begin();
 				item.addParticipator(participator);
@@ -383,6 +409,48 @@ public class BusinessObjectDAL {
 			}
 		}
 		
+	}
+	
+	/*
+	 * delete participator from the group
+	 * check if the item isActive (won't remove participator after the group has closed)
+	 * if this participator is the only one - free this item(eventId == null)
+	 * remove this item from user's "I buy " list
+	 */
+	public static void deleteParticipator(String wishlistItemId, String userId) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+		List<Participator> partisipators = item.getParticipators();
+		int size = partisipators.size();
+		
+		if (item.getIsActive()==true){
+			Transaction tx = (Transaction) pm.currentTransaction();
+			Guest user = loadGuest(userId, pm);
+			try {
+				int i = 3;
+				tx.begin();
+				for(Participator p: partisipators){
+					if (p.getUserId().equals(userId)){
+						item.removeParticipator(p);
+						break;
+					}
+				}
+				if(size==1){
+					item.setEventKey(null);
+				}
+				user.removeIBuyItem(item);
+				pm.makePersistent(user);
+				pm.makePersistent(item);
+				tx.commit();
+			} catch (Exception ex) {
+				throw new RuntimeException("error in data base: addParticipator", ex);
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
 	}
 
 	/*public static void checkAllPossibleParticipators(){
