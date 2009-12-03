@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
- <Module>
-   <ModulePrefs title="Birthday+">
-     <Require feature="opensocial-0.8" />
-   </ModulePrefs>
-   <Content type="html">
-   <![CDATA[
-   <script type="text/javascript" language="javascript" src="http://birthdayplus.appspot.com/birthdayplus/birthdayplus.nocache.js"></script>
-   ]]></Content>
-  
- </Module>
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="Birthday+" description="Birthday reminder with wishlist." 
+  author="Eugene Rozenberg, Olga Vingurt, Irena Letuchaya, Jenia Zilber"
+  author_email="princeeugene@gmail.com"
+  height="350" width="300">
+  <Require feature="dynamic-height"/>
+  <Require feature="opensocial-0.9"/>
+</ModulePrefs>
+ <Content type="url" href="http://1.latest.birthdayplus.appspot.com/" /> 
+</Module> 
