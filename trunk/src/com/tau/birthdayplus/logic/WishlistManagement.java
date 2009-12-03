@@ -68,8 +68,18 @@ public class WishlistManagement {
 		}
 	}
 	
-	public static ArrayList<WishlistItemNewData> getWishlistItemNewData(List<WishlistItem> itemList,
-			Guest guest,DALWrapper wrapper){
+	public static ArrayList<WishlistItemNewData> getBookedWishlistItemNewData(List<WishlistItem> itemList,
+			DALWrapper wrapper){
+		ArrayList<WishlistItemNewData> itemDataList = new ArrayList<WishlistItemNewData>();
+		for (WishlistItem item : itemList){
+			Guest guest = wrapper.getGuestByKey(item.getKey().getParent());
+			itemDataList.add(itemToItemNewData(item,guest,wrapper));
+		}
+		return itemDataList;
+	}
+	
+	public static ArrayList<WishlistItemNewData> getWishlistItemNewDataForEvent(List<WishlistItem> itemList,Guest guest,
+			DALWrapper wrapper){
 		ArrayList<WishlistItemNewData> itemDataList = new ArrayList<WishlistItemNewData>();
 		for (WishlistItem item : itemList){
 			itemDataList.add(itemToItemNewData(item,guest,wrapper));
@@ -97,7 +107,7 @@ public class WishlistManagement {
 		try{
 			List<WishlistItem> itemList = wrapper.getWishlistForEvent(userId,eventId);
 			Guest guest = wrapper.getGuestById(userId);
-			return getWishlistItemNewData(itemList,guest,wrapper);
+			return getWishlistItemNewDataForEvent(itemList,guest,wrapper);
 		}
 		finally{
 			wrapper.close();
@@ -110,7 +120,7 @@ public class WishlistManagement {
 			Guest guest = wrapper.getGuestById(userId);
 			List<Key> bookedItemList = guest.getIBuyItems();
 			List<WishlistItem> items = wrapper.getWishlistItemById(bookedItemList);
-			return getWishlistItemNewData(items,guest,wrapper);
+			return getBookedWishlistItemNewData(items,wrapper);
 		}
 		finally{
 			wrapper.close();
