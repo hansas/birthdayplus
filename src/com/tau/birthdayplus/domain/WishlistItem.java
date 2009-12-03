@@ -34,7 +34,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   @Persistent
 	   private Integer price;
 	   //people that want to buy this together
-	   @Persistent
+	   @Persistent (defaultFetchGroup="true")
 	   ArrayList<Participator> participators;
        //if booked or not
 	   @Persistent
