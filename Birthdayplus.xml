@@ -3,6 +3,9 @@
    <ModulePrefs title="Hello World!">
      <Require feature="opensocial-0.8" />
    </ModulePrefs>
-   <Content type="url" href="http://1.latest.birthdayplus.appspot.com" />
+   <Content type="html">
+   <![CDATA[
+   <script type="text/javascript" language="javascript" src="http://birthdayplus.appspot.com/birthdayplus/birthdayplus.nocache.js"></script>
+   ]]></Content>
   
  </Module>
