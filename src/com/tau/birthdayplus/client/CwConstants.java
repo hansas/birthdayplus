@@ -63,6 +63,9 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cw-DateBox")
     String cwDateBoxStyle();
     
+    @DefaultStringValue("cw-VerticalPanel")
+    String cwVerticalPanelStyle();
+    
     @DefaultStringValue("cw-CheckBox")
     String cwCheckBoxStyle();
     
