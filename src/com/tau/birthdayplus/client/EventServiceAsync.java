@@ -2,6 +2,7 @@ package com.tau.birthdayplus.client;
 
 import java.util.ArrayList;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.dto.client.EventData;
 
@@ -24,20 +25,20 @@ public interface EventServiceAsync {
 	 * update the event
 	 * 
 	 */
-	void updateEvent(  EventData event, AsyncCallback<Void> callback);
+	RequestBuilder updateEvent(  EventData event, AsyncCallback<Void> callback);
 	/*
 	 * delete the event 
 	 * 
 	 */
-	void deleteEvent( EventData event, AsyncCallback<Void> callback);
+	RequestBuilder deleteEvent( EventData event, AsyncCallback<Void> callback);
 	/*
 	 * get events by user id
 	 */
 	
-	void getEvents(ArrayList<String> uIdlist,
+	RequestBuilder getEvents(ArrayList<String> uIdlist,
 			AsyncCallback<ArrayList<EventData>> callback);
 	
-	void createEvent(EventData event, AsyncCallback<Void> callback);
+	RequestBuilder createEvent(EventData event, AsyncCallback<Void> callback);
 
 
 }
