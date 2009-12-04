@@ -1,0 +1,15 @@
+<!-- Indices written at Thu, 3 Dec 2009 16:48:28 UTC -->
+
+<datastore-indexes>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Event" ancestor="true" source="auto">
+        <property name="events_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="WishlistItem" ancestor="true" source="auto">
+        <property name="wishlistItems_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>
