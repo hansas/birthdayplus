@@ -42,8 +42,8 @@ import com.tau.birthdayplus.dto.client.GuestData;
 
 
 @com.google.gwt.gadgets.client.Gadget.ModulePrefs(
-		title = "Birthdayplus", 
-		author = "", 
+		title = "Birthday+", 
+		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
 		author_email = "yalo_niv@yahoo.com"
 )
 public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial {
