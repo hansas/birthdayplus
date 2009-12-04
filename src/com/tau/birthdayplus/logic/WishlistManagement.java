@@ -7,7 +7,6 @@ import org.apache.catalina.mbeans.UserMBean;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.DALWrapper;
 import com.tau.birthdayplus.domain.Event;
