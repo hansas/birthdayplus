@@ -306,9 +306,9 @@ static void onSuccessInternal(final GadgetResponse response, RequestCallback cal
 				}
 
 				public void onSuccess(GuestData result) {
-					Window.alert("get profile sucessful");
+		//			Window.alert("get profile sucessful");
 				    user = result;
-				    Window.alert(user.toString());
+			//	    Window.alert(user.toString());
 			    	eventGui.wireEventGUIEvents();
 			    	
 	    			myWishlistGUI.wireMyWishlistGUIEvents();
