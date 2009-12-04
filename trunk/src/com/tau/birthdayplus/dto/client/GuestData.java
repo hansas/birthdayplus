@@ -52,5 +52,10 @@ public class GuestData implements IsSerializable{
 	public Date getBirthday() {
 		return birthday;
 	}
+	
+	public String toString(){
+		return firstName+" "+lastName+" "+birthday;
+		
+	}
 
 }
