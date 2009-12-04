@@ -1,5 +1,6 @@
 package com.tau.birthdayplus.client;
 
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.dto.client.GuestData;
 
@@ -13,10 +14,10 @@ public interface ProfileServiceAsync {
 	 */
 	void printHello(AsyncCallback<Void> callback);
 
-	void createProfile(GuestData guest, AsyncCallback<Void> callback);
+	RequestBuilder createProfile(GuestData guest, AsyncCallback<Void> callback);
 
-	void updateProfile(GuestData profile, AsyncCallback<Void> callback);
+	RequestBuilder updateProfile(GuestData profile, AsyncCallback<Void> callback);
 
-	void getProfile(String userId,AsyncCallback<GuestData> callback);
+	RequestBuilder getProfile(String userId,AsyncCallback<GuestData> callback);
 
 }
