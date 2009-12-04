@@ -133,6 +133,7 @@ static void onSuccessInternal(final GadgetResponse response, RequestCallback cal
 	 */
  private void buildTab(){
 		    tab = new TabPanel();
+		    tab.setStyleName(constants.cwTabStyle());
 		
 			tab.getElement().setId("tab");
 			tab.setAnimationEnabled(true);
@@ -276,7 +277,7 @@ static void onSuccessInternal(final GadgetResponse response, RequestCallback cal
 			RequestBuilder requestBuilder=profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
 				public void onFailure(Throwable caught) {
-					Window.alert("creating new profile" +caught);
+			//		Window.alert("creating new profile" +caught);
 					GuestData user= new GuestData(userId,firstName,lastName,new Date());
 					RequestBuilder requestBuilder1=profileService.createProfile(user, new AsyncCallback<Void>(){
 			    	public void onFailure(Throwable caught){
