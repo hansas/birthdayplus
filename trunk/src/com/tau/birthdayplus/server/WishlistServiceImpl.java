@@ -222,7 +222,7 @@ WishlistService  {
 	 * (won't remove item with open group)
 	 */
 	public void deleteBookedWishlistItem(String userId, String wishlistItemId) {
-		// TODO Auto-generated method stub
+		WishlistManagement.deleteBookedWishlistItem(userId, wishlistItemId);
 		
 	}
 
@@ -230,9 +230,8 @@ WishlistService  {
 	 * update participator (update money only)
 	 * Server - check if the item is active (group is not closed yet) 
 	 */
-	public void updateParticipator(String wishlistItemId,
-			ParticipatorData participator) {
-		// TODO Auto-generated method stub
+	public void updateParticipator(String wishlistItemId,ParticipatorData participator) {
+		WishlistManagement.updateParticipator(wishlistItemId,participator);
 		
 	}
 
