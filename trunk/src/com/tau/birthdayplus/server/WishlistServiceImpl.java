@@ -1,12 +1,16 @@
 package com.tau.birthdayplus.server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
@@ -234,6 +238,11 @@ WishlistService  {
 		WishlistManagement.updateParticipator(wishlistItemId,participator);
 		
 	}
+	
+	protected String readContent(HttpServletRequest request)
+	throws ServletException, IOException {
+return RPCServletUtils.readContentAsUtf8(request, false);
+}
 
 	
 
