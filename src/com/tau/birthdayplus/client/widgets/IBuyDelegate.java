@@ -3,7 +3,9 @@ package com.tau.birthdayplus.client.widgets;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.tau.birthdayplus.client.RequestProxy;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.client.WishlistServiceAsync;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -17,7 +19,7 @@ public class IBuyDelegate {
 	
 	
 	void cancelBookItemForUser(String wishlistItemId, String userId){
-		wishlistService.cancelBookItemForUser(wishlistItemId, userId,new AsyncCallback<Void>(){
+		RequestBuilder requestBuilder=wishlistService.cancelBookItemForUser(wishlistItemId, userId,new AsyncCallback<Void>(){
 
 			public void onFailure(Throwable caught) {
 				gui.sevice_eventCancelBookItemForUserFailed(caught);				
@@ -27,10 +29,12 @@ public class IBuyDelegate {
 				gui.service_eventCancelBookItemForUserSuccesfull();	
 			}
 		});		
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	}
 	
 	void deleteParticipator(String wishlistItemId, String userId){
-		wishlistService.deleteParticipator(wishlistItemId, userId, new AsyncCallback<Void>(){
+		RequestBuilder requestBuilder=wishlistService.deleteParticipator(wishlistItemId, userId, new AsyncCallback<Void>(){
 
 			public void onFailure(Throwable caught) {
 				gui.service_eventDeleteParticipatorFailed(caught);
@@ -41,10 +45,12 @@ public class IBuyDelegate {
 			}
 			
 		});
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	}
 	
 	void updateParticipator(String wishlistItemId,ParticipatorData participator){
-		wishlistService.updateParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
+		RequestBuilder requestBuilder=wishlistService.updateParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
 
 			public void onFailure(Throwable caught) {
 				gui.service_eventUpdateParticipatorFailed(caught);
@@ -56,10 +62,12 @@ public class IBuyDelegate {
 				
 			}	
 		});
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	}
 	
 	void deleteItemFromTab(String userId,String wishlistItemId){
-		wishlistService.deleteBookedWishlistItem(userId, wishlistItemId,new AsyncCallback<Void>(){
+		RequestBuilder requestBuilder=wishlistService.deleteBookedWishlistItem(userId, wishlistItemId,new AsyncCallback<Void>(){
 
 			public void onFailure(Throwable caught) {
 				gui.service_eventDeleteItemFromTabFailed(caught);
@@ -69,12 +77,14 @@ public class IBuyDelegate {
 				gui.service_eventDeleteItemFromTabSuccesfull();				
 			}
 		});
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	}
 	
 	 
 	 
 	public void getBookedWishlist(final String userId) {
-	    	wishlistService.getBookedWishlistItems(userId, new AsyncCallback<ArrayList<WishlistItemNewData>>(){
+		RequestBuilder requestBuilder=wishlistService.getBookedWishlistItems(userId, new AsyncCallback<ArrayList<WishlistItemNewData>>(){
 
 	    		public void onFailure(Throwable caught){
 	    			gui.service_getBookedWishlistFailed(caught);
@@ -84,6 +94,8 @@ public class IBuyDelegate {
 	    		}
 	    	}//end of inner class
 	    	);//end of method call
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	    	}
 	
 	
