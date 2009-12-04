@@ -1,5 +1,11 @@
 package com.tau.birthdayplus.server;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
+import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.tau.birthdayplus.client.ProfileService;
@@ -34,6 +40,11 @@ ProfileService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	protected String readContent(HttpServletRequest request)
+	throws ServletException, IOException {
+return RPCServletUtils.readContentAsUtf8(request, false);
+}
 
 
 }
