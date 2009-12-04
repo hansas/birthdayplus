@@ -355,6 +355,28 @@ public class BusinessObjectDAL {
 			}
 		}
 	}
+
+	public static void deleteBookedWishlistItem(String userId, String wishlistItemId){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+		Guest guest = loadGuest(userId, pm);
+		if (item.getIsActive()==false){
+			Transaction tx = (Transaction) pm.currentTransaction();
+			try {
+				tx.begin();
+				guest.removeIBuyItem(item);
+				pm.makePersistent(guest);
+				tx.commit();
+			} catch (Exception ex) {
+				throw new RuntimeException("error in data base: deleteBookedWishlistItem");
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+	}
 	
 	public static List<WishlistItem> getWishlistForEvent(String userId,String eventId,
 			PersistenceManager pm){
@@ -408,15 +430,36 @@ public class BusinessObjectDAL {
 				pm.close();
 			}
 		}
-		
 	}
 	
-	/*
-	 * delete participator from the group
-	 * check if the item isActive (won't remove participator after the group has closed)
-	 * if this participator is the only one - free this item(eventId == null)
-	 * remove this item from user's "I buy " list
-	 */
+	public static void updateParticipator(String wishlistItemId,ParticipatorData participator){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+		List<Participator> partisipators = item.getParticipators();
+		if (item.getIsActive()==true){
+			Transaction tx = (Transaction) pm.currentTransaction();
+			try {
+				tx.begin();
+				for(Participator p: partisipators){
+					if (p.getId().equals(participator.getUserId())){
+						p.setMoney(participator.getMoney());
+						pm.makePersistent(p);
+						break;
+					}
+				}
+				pm.makePersistent(item);
+				tx.commit();
+			} catch (Exception ex) {
+				throw new RuntimeException("error in data base: updateParticipator", ex);
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+	}
+	
 	public static void deleteParticipator(String wishlistItemId, String userId) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);

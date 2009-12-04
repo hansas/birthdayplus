@@ -128,7 +128,6 @@ public class WishlistManagement {
 	}
 	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) {
-		int i=0;
 		BusinessObjectDAL.bookItemForUser(wishlistItemId,eventId,userId);
 	}
 	
@@ -145,6 +144,10 @@ public class WishlistManagement {
 		BusinessObjectDAL.cancelBookItemForUser(wishlistItemId, userId);
 	}
 	
+	public static void deleteBookedWishlistItem(String userId, String wishlistItemId){
+		BusinessObjectDAL.deleteBookedWishlistItem(userId,wishlistItemId);
+	}
+	
 	public static ParticipatorData participatorToParticipatorData(Participator participator,DALWrapper wrapper){
 		Guest guest = wrapper.getGuestById(participator.getId());
 		return new ParticipatorData(participator.getId(),guest.getFirstName(),guest.getLastName(),participator.getMoney());
@@ -152,6 +155,10 @@ public class WishlistManagement {
 	
 	public static void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) {
 		BusinessObjectDAL.addParticipator(wishlistItemId,eventId,participator);
+	}
+	
+	public static void updateParticipator(String wishlistItemId,ParticipatorData participator){
+		BusinessObjectDAL.updateParticipator(wishlistItemId,participator);
 	}
 	
 	public static void deleteParticipator(String wishlistItemId, String userId) {
