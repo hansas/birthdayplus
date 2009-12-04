@@ -16,20 +16,30 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.gadgets.client.Gadget;
 import com.google.gwt.gadgets.client.UserPreferences;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.i18n.client.DateTimeFormat;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 
 
@@ -62,6 +72,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	public GuestData user;
 	
 	private TabPanel tab;
+	
 	
 	/*
 	 *  Event tab
@@ -100,26 +111,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		}
 		return temp;
 	}
-	/*
-	private native void makePostRequest(String url, String postdata, RequestCallback callback) /*-{
-	var params = {};
-		params[$wnd.gadgets.io.RequestParameters.METHOD] = $wnd.gadgets.io.MethodType.POST;
-		params[$wnd.gadgets.io.RequestParameters.POST_DATA]= postdata;
-		$wnd.gadgets.io.makeRequest(url, response, params); 
 
-	function response(obj) {
-			@com.tau.birthdayplus.client.Birthdayplus::onSuccessInternal(Lcom/tau/birthdayplus/client/GadgetResponse;Lcom/google/gwt/http/client/RequestCallback;)(obj, callback);
-	};
-}-*/;
-/*
-static void onSuccessInternal(final GadgetResponse response, RequestCallback callback) {
-	try {
-		callback.onResponseReceived(null, new FakeResponse(response));
-	} catch (Exception e) {
-		callback.onError(null, e);
-	}		
-}
-	*/
 /**
  * This is the entry point method.
  */
@@ -278,31 +270,58 @@ static void onSuccessInternal(final GadgetResponse response, RequestCallback cal
 
 				public void onFailure(Throwable caught) {
 			//		Window.alert("creating new profile" +caught);
-					GuestData user= new GuestData(userId,firstName,lastName,new Date());
-					RequestBuilder requestBuilder1=profileService.createProfile(user, new AsyncCallback<Void>(){
-			    	public void onFailure(Throwable caught){
-			    			Window.alert("failed to create profile " +caught);
-			    		}
+					
+					final DialogBox dateDialogBox = new DialogBox();
+					dateDialogBox.setStyleName(constants.cwDialogBoxStyle());
+					dateDialogBox.setText("Enter your birthday :");
+					
+					final VerticalPanel vPanel =new VerticalPanel();
+					vPanel.setStyleName(constants.cwVerticalPanelStyle());
+					
+					final DateBox dateBox = new DateBox();
+					dateBox.setStyleName(constants.cwDialogBoxStyle());
+					DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
+					dateBox.setFormat(new DateBox.DefaultFormat(fmt));
+
+					final Button okButton = new Button();
+					okButton.setStyleName(constants.cwButtonStyle());
+					okButton.setText("ok");
+					
+					vPanel.add(dateBox);
+					vPanel.add(okButton);
+					
+					vPanel.setCellHorizontalAlignment(okButton,HasHorizontalAlignment.ALIGN_CENTER);
+					
+					dateDialogBox.add(vPanel);
+					
+					
+					dateDialogBox.center();
+					dateDialogBox.show();
+					
+					
+					okButton.addClickHandler(new ClickHandler(){
+				        public void onClick(ClickEvent event) {
+				        	dateDialogBox.hide();
+					        GuestData user= new GuestData(userId,firstName,lastName,dateBox.getValue());
+					        RequestBuilder requestBuilder1=profileService.createProfile(user, new AsyncCallback<Void>(){
+			                	public void onFailure(Throwable caught){
+			    		    	Window.alert("failed to create profile " +caught);
+			    	     	}
 			    		
-						public void onSuccess(Void result) {
-							Window.alert("create profile sucessful");
-							//listen to the events in the tabs
-							eventGui.wireEventGUIEvents();
-			    			myWishlistGUI.wireMyWishlistGUIEvents();
-			    			iBuyGUI.wireIBuyGUIEvents();
-			    			wireTabGUIEvents();
+					        	public void onSuccess(Void result) {
+					    		Window.alert("create profile sucessful");
+					    		//listen to the events in the tabs
+						    	eventGui.wireEventGUIEvents();
+			    		    	myWishlistGUI.wireMyWishlistGUIEvents();
+			    	    		iBuyGUI.wireIBuyGUIEvents();
+			    		    	wireTabGUIEvents();
 			    			
-			    			tab.selectTab(0);
-							
-							
-						}
-						
-			    	}//end of inner class
-			    	);//end of method call)
+			    	    		tab.selectTab(0);	
+					        	}
+					        });
+					        RequestProxy.makePostRequest(requestBuilder1.getUrl(), requestBuilder1.getRequestData(), requestBuilder1.getCallback());
 					
-					RequestProxy.makePostRequest(requestBuilder1.getUrl(), requestBuilder1.getRequestData(), requestBuilder1.getCallback());
-					
-					
+				        }});
 				}
 
 				public void onSuccess(GuestData result) {
