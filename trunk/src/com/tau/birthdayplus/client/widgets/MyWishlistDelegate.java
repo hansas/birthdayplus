@@ -3,7 +3,9 @@ package com.tau.birthdayplus.client.widgets;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.tau.birthdayplus.client.RequestProxy;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.client.WishlistServiceAsync;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
@@ -13,7 +15,7 @@ public class MyWishlistDelegate {
 	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class); 
 	public MyWishlistTabGUI gui;
 	 public void getMyWishlist(final String uIdlist) {
-	    	wishlistService.getMyWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemData>>(){
+		 RequestBuilder requestBuilder=wishlistService.getMyWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemData>>(){
 
 	    		public void onFailure(Throwable caught){
 	    			gui.service_eventGetWishlistFailed(caught);
@@ -24,12 +26,14 @@ public class MyWishlistDelegate {
 				}
 	    	}//end of inner class
 	    	);//end of method call
+			RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	    	}
 	       
 	    
 	    
 	    void createWishlistItem(final WishlistItemData item){
-	    	wishlistService.createWishlistItem(item, new AsyncCallback<Void>(){
+	    	RequestBuilder requestBuilder=wishlistService.createWishlistItem(item, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){
 	    			gui.service_eventCreateWishlistItemFailed(caught);
 	    		}
@@ -39,10 +43,12 @@ public class MyWishlistDelegate {
 	    		}
 	    	}//end of inner class
 	    );//end of method call
+			RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	    }
 	    
 	    void updateWishlistItem(final WishlistItemData item){
-	    	wishlistService.updateWishlistItem(item, new AsyncCallback<Void>(){
+	    	RequestBuilder requestBuilder=wishlistService.updateWishlistItem(item, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){
 	    			gui.service_eventUpdateWishlistItemFailed(caught);
 	    		}
@@ -52,11 +58,13 @@ public class MyWishlistDelegate {
 	    		}
 	    	}//end of inner class
 	    	);//end of method call
+			RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	    }
 
 
 	   void deleteWishlistItem(final WishlistItemData item){
-		   wishlistService.deleteWishlistItem(item, new AsyncCallback<Void>(){
+		   RequestBuilder requestBuilder=wishlistService.deleteWishlistItem(item, new AsyncCallback<Void>(){
 			   public void onFailure(Throwable caught){
 				   gui.service_deleteWishlistItemFailed(caught);
 			   }
@@ -66,6 +74,8 @@ public class MyWishlistDelegate {
 			   }
 		   }//end of inner class
 		   );//end of method call
+			RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
 	   }    
 
 }
