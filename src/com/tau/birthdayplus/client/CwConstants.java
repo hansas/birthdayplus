@@ -3,6 +3,9 @@ package com.tau.birthdayplus.client;
 import com.google.gwt.i18n.client.Constants;
 
 public interface CwConstants extends Constants {
+	@DefaultStringValue("cw-Tab")
+	String cwTabStyle();
+	
 	@DefaultStringValue("cwDisclosurePanelDescription")
 	String cwDisclosurePanelDescription();
 	
