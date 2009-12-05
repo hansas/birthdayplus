@@ -105,20 +105,20 @@ public class IBuyTabGUI {
 	
 	private void buildMoneyDialogBox(){
 		moneyDialogBox = new DialogBox();
-		moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
+	//	moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
 		
 		moneyVerticalPanel  = new VerticalPanel();
 		enterSumTextBox = new TextBox();
-		enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
+//		enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
 		enterSumTextBox.setText("Enter the sum :");
 		
 		moneyHorizontalPanel = new HorizontalPanel();
 		okMoneyButton = new Button();
-		okMoneyButton.setStyleName(constants.cwButtonStyle());
+	//	okMoneyButton.setStyleName(constants.cwButtonStyle());
 		okMoneyButton.setText("ok");
 		
 		cancelMoneyButton = new Button();
-		cancelMoneyButton.setStyleName(constants.cwButtonStyle());
+	//	cancelMoneyButton.setStyleName(constants.cwButtonStyle());
 		cancelMoneyButton.setText("cancel");
 		
 		moneyHorizontalPanel.add(okMoneyButton);
@@ -192,12 +192,12 @@ public class IBuyTabGUI {
         chatVerticalPanel = new VerticalPanel();
 		
 		chatTextArea = new TextArea();
-		chatTextArea.setStyleName(constants.cwTextAreaStyle());
+	//	chatTextArea.setStyleName(constants.cwTextAreaStyle());
 		
 		chatTextArea.setVisibleLines(3);
 		
 		addMessageButton = new Button("send message");
-		addMessageButton.setStyleName(constants.cwButtonStyle());
+	//	addMessageButton.setStyleName(constants.cwButtonStyle());
 		
 		
 		buildChatTable();
@@ -224,7 +224,7 @@ public class IBuyTabGUI {
 		participatorsBoxVerticalPanel.setVisible(false);
 		
 		closePartisipatorsBoxButton = new Button("return");
-		closePartisipatorsBoxButton.setStyleName(constants.cwButtonStyle());
+	//	closePartisipatorsBoxButton.setStyleName(constants.cwButtonStyle());
 		
 		buildParticipatorsTable();
 		buildChat();

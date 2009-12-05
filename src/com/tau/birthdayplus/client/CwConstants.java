@@ -48,26 +48,26 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cw-TableWithHeader")
     String cwTableStyle();
     
-    @DefaultStringValue("cw-DialogBox")
-    String cwDialogBoxStyle();
+   // @DefaultStringValue("cw-DialogBox")
+   // String cwDialogBoxStyle();
     
-    @DefaultStringValue("cw-TextBox")
-    String cwTextBoxStyle();
+  //  @DefaultStringValue("cw-TextBox")
+  //  String cwTextBoxStyle();
     
-    @DefaultStringValue("cw-Button")
-    String cwButtonStyle();
+  //  @DefaultStringValue("cw-Button")
+  //  String cwButtonStyle();
     
-    @DefaultStringValue("cw-ListBox")
-    String cwListBoxStyle();
+  //  @DefaultStringValue("cw-ListBox")
+   // String cwListBoxStyle();
     
-    @DefaultStringValue("cw-DateBox")
-    String cwDateBoxStyle();
+  //  @DefaultStringValue("cw-DateBox")
+  //  String cwDateBoxStyle();
     
-    @DefaultStringValue("cw-VerticalPanel")
-    String cwVerticalPanelStyle();
+   // @DefaultStringValue("cw-VerticalPanel")
+  //  String cwVerticalPanelStyle();
     
-    @DefaultStringValue("cw-CheckBox")
-    String cwCheckBoxStyle();
+ //   @DefaultStringValue("cw-CheckBox")
+  //  String cwCheckBoxStyle();
     
     @DefaultStringValue("cw-TableWithHeader - active row")
     String cwActiveRowStyle();
@@ -75,12 +75,12 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cw-TableWishHeader - inactive row ")
     String cwInactiveRowStyle();
     
-    @DefaultStringValue("cw-TextArea")
-    String cwTextAreaStyle();
+  //  @DefaultStringValue("cw-TextArea")
+  //  String cwTextAreaStyle();
     
     
-    @DefaultStringValue("cw-PopupPanel")
-    String cwPopupPanelStyle();
+  //  @DefaultStringValue("cw-PopupPanel")
+  //  String cwPopupPanelStyle();
     
     
     @DefaultStringValue("cw-LoadingPopupPanel")
