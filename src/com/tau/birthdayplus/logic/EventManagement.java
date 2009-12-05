@@ -1,8 +1,10 @@
 package com.tau.birthdayplus.logic;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import com.google.appengine.api.datastore.KeyFactory;
@@ -77,8 +79,29 @@ public class EventManagement {
 		for (Guest guest: guests){
 			List<Event> guestEvents = guest.getEvents();
 			if ((guest!=null) && (!guestEvents.isEmpty())){
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.DATE, 7);
+				Calendar eDate = Calendar.getInstance();
 				for (Event event: guestEvents){
-					events.add(EventManagement.eventToEventData(event,wrapper));
+					int eMonth = event.getEventDate().getMonth();
+					int eDay = event.getEventDate().getDate();
+					eDate.clear();
+					eDate.set(Calendar.YEAR, event.getEventDate().getYear());
+					eDate.set(Calendar.MONTH, eMonth);
+					eDate.set(Calendar.DATE, eDay);
+					if (eDate.after(cal)){
+						events.add(EventManagement.eventToEventData(event,wrapper));
+					}
+					else if(event.getRecurrence()==true){
+						Date newEDate = new Date(cal.get(Calendar.DAY_OF_YEAR),eMonth,eDay);
+						int currentDom = cal.get(Calendar.DAY_OF_MONTH);
+						int currentMonth = cal.get(Calendar.MONTH) + 1;
+						if ((eMonth<currentMonth)||((eMonth==currentMonth)&&(eDay<currentDom))){
+							newEDate.setYear(cal.get(Calendar.DAY_OF_YEAR)+1);
+						}
+						event.setEventDate(newEDate);
+						events.add(EventManagement.eventToEventData(event,wrapper));
+					}
 				}
 			}
 		}

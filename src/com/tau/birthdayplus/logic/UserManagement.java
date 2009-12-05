@@ -1,7 +1,11 @@
 package com.tau.birthdayplus.logic;
 
 
+import java.util.Calendar;
+import java.util.Date;
+
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
+import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.GuestData;
 
@@ -18,7 +22,18 @@ public class UserManagement {
 	
 	public static void createProfile(GuestData guestData) {
 		Guest guest = new Guest(guestData);
-		BusinessObjectDAL.createProfile(guest);
+		int guestDom = guest.getBirthday().getDate();
+		int guestMonth = guest.getBirthday().getMonth();
+		Calendar cal = Calendar.getInstance();
+		Date birthday = new Date(cal.get(Calendar.DAY_OF_YEAR), guestMonth, guestDom);
+		int currentDom = cal.get(Calendar.DAY_OF_MONTH);
+		int currentMonth = cal.get(Calendar.MONTH) + 1;
+		if ((currentMonth > guestMonth)
+				|| ((currentMonth == guestMonth) && (currentDom > guestDom))) {
+			birthday.setYear(cal.get(Calendar.DAY_OF_YEAR) + 1);
+		}
+		Event e = new Event("Birthday", guest.getId(), birthday, true);
+		BusinessObjectDAL.createProfile(guest,e);
 	}
 	
 	public static Guest loadGuest(String guestId){
