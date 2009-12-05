@@ -110,20 +110,20 @@ public class WishListFriendsGUI  {
 		
 	private void buildMoneyDialogBox(){
 		moneyDialogBox = new DialogBox();
-		moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
+	//	moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
 		
 		moneyVerticalPanel  = new VerticalPanel();
 		enterSumTextBox = new TextBox();
-		enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
+	//	enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
 		enterSumTextBox.setText("Enter the sum :");
 		
 		moneyHorizontalPanel = new HorizontalPanel();
 		okMoneyButton = new Button();
-		okMoneyButton.setStyleName(constants.cwButtonStyle());
+	//	okMoneyButton.setStyleName(constants.cwButtonStyle());
 		okMoneyButton.setText("ok");
 		
 		cancelMoneyButton = new Button();
-		cancelMoneyButton.setStyleName(constants.cwButtonStyle());
+	//	cancelMoneyButton.setStyleName(constants.cwButtonStyle());
 		cancelMoneyButton.setText("cancel");
 		
 		moneyHorizontalPanel.add(okMoneyButton);
@@ -146,7 +146,7 @@ public class WishListFriendsGUI  {
 		
 	private void buildParticipatorsPopupPanel(){	
 	   participatorsPanel = new PopupPanel(true);
-	   participatorsPanel.setStyleName(constants.cwPopupPanelStyle());
+	//   participatorsPanel.setStyleName(constants.cwPopupPanelStyle());
 	   
  	   participatorsTable = new TableWithHeader();
  	   participatorsTable.setStyleName(constants.cwTableStyle());
@@ -182,7 +182,7 @@ public class WishListFriendsGUI  {
 	
 	private void buildFriendWishlistBox(){
 	    	friendWishlistBox=new DialogBox();
-	    	friendWishlistBox.setStyleName(constants.cwDialogBoxStyle());
+	  //  	friendWishlistBox.setStyleName(constants.cwDialogBoxStyle());
             
 		    
 		    closeFriendWishlistBoxButton = new Button("Close");

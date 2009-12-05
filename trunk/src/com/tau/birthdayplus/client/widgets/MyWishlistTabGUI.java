@@ -139,33 +139,33 @@ public class MyWishlistTabGUI {
 	private void buildAddItemBox(){
 	    	addItemBox=new DialogBox();
 	        addItemBox.setText("Add new item ");
-	        addItemBox.addStyleName(constants.cwDialogBoxStyle());
+	  //      addItemBox.addStyleName(constants.cwDialogBoxStyle());
 	        
 	        itemField=new TextBox();
-	        itemField.setStyleName(constants.cwTextBoxStyle());
+	    //    itemField.setStyleName(constants.cwTextBoxStyle());
 	        
 	    	priorityField=new ListBox(false);
 	        String[] listTypes = constants.cwListBoxCategories();
 	        for (int i = 0; i < listTypes.length; i++) {
 	          priorityField.addItem(listTypes[i]);
 	        }
-;           priorityField.setStyleName(constants.cwListBoxStyle());
+//          priorityField.setStyleName(constants.cwListBoxStyle());
 
 	        linkField=new TextBox();
-	        linkField.setStyleName(constants.cwTextBoxStyle());
+	  //      linkField.setStyleName(constants.cwTextBoxStyle());
 	        
 	        priceField=new TextBox();
-	        priceField.setStyleName(constants.cwTextBoxStyle());
+	    //    priceField.setStyleName(constants.cwTextBoxStyle());
 	        
 	        updateButton=new Button("Update item");
-	        updateButton.setStyleName(constants.cwButtonStyle());
+	   //     updateButton.setStyleName(constants.cwButtonStyle());
 	        
 	        addButton=new Button("Add item");
-	        addButton.setStyleName(constants.cwButtonStyle());
+	   //     addButton.setStyleName(constants.cwButtonStyle());
 	        
 		    cancelButton = new Button(constants.cwDialogBoxCancel());
 		       
-		    cancelButton.setStyleName(constants.cwButtonStyle());
+		//    cancelButton.setStyleName(constants.cwButtonStyle());
 
 		    buildForm();
 		    

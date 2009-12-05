@@ -95,6 +95,7 @@ public class EventTabGUI {
 	
 		
 		btnAddEvent = new Button("Add Event");
+	
 		placeWidgets();
 		
 		wishlistFriendGUI.wireWishlistFriendGUIEvents();
@@ -127,27 +128,27 @@ public class EventTabGUI {
 	*/
 	private void buildEventDialogBox() {
 		eventDialogBox = new DialogBox();
-		eventDialogBox.setStyleName(constants.cwDialogBoxStyle());
+	//	eventDialogBox.setStyleName(constants.cwDialogBoxStyle());
 		
 		txtName = new TextBox();
-		txtName.setStyleName(constants.cwTextBoxStyle());
+	//	txtName.setStyleName(constants.cwTextBoxStyle());
 		
 		txtDate = new DateBox();
-		txtDate.setStyleName(constants.cwDateBoxStyle());
+	//	txtDate.setStyleName(constants.cwDateBoxStyle());
 		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
 		txtDate.setFormat(new DateBox.DefaultFormat(fmt));
 		
 		chkRecurrence=new CheckBox();
-		chkRecurrence.setStyleName(constants.cwCheckBoxStyle());
+	//	chkRecurrence.setStyleName(constants.cwCheckBoxStyle());
 		
 		updateButton=new Button("Update item");
-        updateButton.setStyleName(constants.cwButtonStyle());
+      //  updateButton.setStyleName(constants.cwButtonStyle());
         
         addButton=new Button("Add item");
-        addButton.setStyleName(constants.cwButtonStyle());
+     //   addButton.setStyleName(constants.cwButtonStyle());
         
 	    cancelButton = new Button(constants.cwDialogBoxCancel()); 
-	    cancelButton.setStyleName(constants.cwButtonStyle());
+	 //   cancelButton.setStyleName(constants.cwButtonStyle());
 
 		buildForm();
 		

@@ -296,19 +296,19 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 			//		Window.alert("creating new profile" +caught);
 					
 					final DialogBox dateDialogBox = new DialogBox();
-					dateDialogBox.setStyleName(constants.cwDialogBoxStyle());
+		//			dateDialogBox.setStyleName(constants.cwDialogBoxStyle());
 					dateDialogBox.setText("Enter your birthday :");
 					
 					final VerticalPanel vPanel =new VerticalPanel();
-					vPanel.setStyleName(constants.cwVerticalPanelStyle());
+		//			vPanel.setStyleName(constants.cwVerticalPanelStyle());
 					
 					final DateBox dateBox = new DateBox();
-					dateBox.setStyleName(constants.cwDialogBoxStyle());
+		//			dateBox.setStyleName(constants.cwDialogBoxStyle());
 					DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
 					dateBox.setFormat(new DateBox.DefaultFormat(fmt));
 
 					final Button okButton = new Button();
-					okButton.setStyleName(constants.cwButtonStyle());
+		//			okButton.setStyleName(constants.cwButtonStyle());
 					okButton.setText("ok");
 					
 					vPanel.add(dateBox);
