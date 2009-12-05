@@ -134,10 +134,10 @@ public class Guest   {
 		}
 		
 		public void removeIBuyItem(WishlistItem item){
-			if ((iBuyItems!=null) && (iBuyItems.contains(item))){
+			if ((iBuyItems!=null) && (iBuyItems.contains(item.getKey()))){
 				iBuyItems.remove(item.getKey());
 			}
-		}
+		}   
 		
 		/*
 		static Guest loadGuest(User googleAccount){

@@ -428,7 +428,7 @@ public class IBuyTabGUI {
 
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
-			// TODO Auto-generated method stub
+			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
@@ -440,7 +440,7 @@ public class IBuyTabGUI {
 
 
 		public void service_eventUpdateParticipatorSuccesfull() {
-			// TODO Auto-generated method stub
+			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
