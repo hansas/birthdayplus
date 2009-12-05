@@ -110,14 +110,19 @@ public class WishListFriendsGUI  {
 		
 	private void buildMoneyDialogBox(){
 		moneyDialogBox = new DialogBox();
+		moneyDialogBox.setText("Enter a sum : ");
 	//	moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
 		
 		moneyVerticalPanel  = new VerticalPanel();
 		enterSumTextBox = new TextBox();
 	//	enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
-		enterSumTextBox.setText("Enter the sum :");
+		
+		
+		
 		
 		moneyHorizontalPanel = new HorizontalPanel();
+		moneyHorizontalPanel.setSpacing(10);
+		
 		okMoneyButton = new Button();
 	//	okMoneyButton.setStyleName(constants.cwButtonStyle());
 		okMoneyButton.setText("ok");
@@ -127,7 +132,10 @@ public class WishListFriendsGUI  {
 		cancelMoneyButton.setText("cancel");
 		
 		moneyHorizontalPanel.add(okMoneyButton);
+	//	moneyHorizontalPanel.setCellHorizontalAlignment(okMoneyButton, HasHorizontalAlignment.ALIGN_LEFT);
+		
 		moneyHorizontalPanel.add(cancelMoneyButton);
+	//	moneyHorizontalPanel.setCellHorizontalAlignment(okMoneyButton, HasHorizontalAlignment.ALIGN_RIGHT);
 		
 		moneyVerticalPanel.add(enterSumTextBox);
 		moneyVerticalPanel.add(moneyHorizontalPanel);
@@ -142,6 +150,7 @@ public class WishListFriendsGUI  {
 		currentItem = item;
 		
 	    moneyDialogBox.show();
+	    enterSumTextBox.setFocus(true);
 	}
 		
 	private void buildParticipatorsPopupPanel(){	
@@ -336,7 +345,7 @@ public class WishListFriendsGUI  {
         	
         	if(item.getParticipators().isEmpty()){
         	   friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
-        	   friendWishTable.setWidget(row, 3, new Hyperlink("I'm buing", null));
+        	   friendWishTable.setWidget(row, 3, new Hyperlink("I'm buying", null));
     	       friendWishTable.setWidget(row ,4,new Hyperlink("Start a group", null));
         	}else{
         	   Integer sum = 0;
@@ -371,7 +380,7 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-		//showMessage("You can't participate in this item");
+		Window.alert("add participator " +caught);
 		
 	}
 

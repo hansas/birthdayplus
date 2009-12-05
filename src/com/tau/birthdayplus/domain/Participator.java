@@ -27,7 +27,7 @@ public class Participator
 //	   private
 //	   String userLastName;
 	   @Persistent
-	   Integer money; 
+	   Integer money;  
 	  
 	   
 

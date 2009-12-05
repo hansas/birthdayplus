@@ -333,7 +333,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 			    	     	}
 			    		
 					        	public void onSuccess(Void result) {
-					    		Window.alert("create profile sucessful");
+					    	//	Window.alert("create profile sucessful");
 					    		//listen to the events in the tabs
 						    	eventGui.wireEventGUIEvents();
 			    		    	myWishlistGUI.wireMyWishlistGUIEvents();
