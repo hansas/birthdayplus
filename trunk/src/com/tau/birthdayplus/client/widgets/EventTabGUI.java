@@ -135,7 +135,7 @@ public class EventTabGUI {
 		
 		txtDate = new DateBox();
 	//	txtDate.setStyleName(constants.cwDateBoxStyle());
-		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
+		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yy");
 		txtDate.setFormat(new DateBox.DefaultFormat(fmt));
 		
 		chkRecurrence=new CheckBox();
