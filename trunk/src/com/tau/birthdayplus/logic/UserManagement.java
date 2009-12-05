@@ -16,6 +16,8 @@ public class UserManagement {
 	
 	public static GuestData loadGuestData(String guestId){
 		Guest guest = BusinessObjectDAL.loadGuest(guestId);
+		if(guest == null)
+			throw new RuntimeException("load guest failed");
 		GuestData guestData = GuestToGuestData(guest);
 		return guestData;
 	}
