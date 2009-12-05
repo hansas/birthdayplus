@@ -53,21 +53,9 @@ public class BusinessObjectDAL {
 	 * pm.getObjectById(Guest.class, guestId); pm.close(); return guest; }
 	 */
 
-	public static void createProfile(Guest guest) {
+	public static void createProfile(Guest guest,Event e) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			int guestDom = guest.getBirthday().getDate();
-			int guestMonth = guest.getBirthday().getMonth();
-			Calendar cal = Calendar.getInstance();
-			Date birthday = new Date(cal.get(Calendar.DAY_OF_YEAR), guestMonth,
-					guestDom);
-			int currentDom = cal.get(Calendar.DAY_OF_MONTH);
-			int currentMonth = cal.get(Calendar.MONTH) + 1;
-			if ((currentMonth > guestMonth)
-					|| ((currentMonth == guestMonth) && (currentDom > guestDom))) {
-				birthday.setYear(cal.get(Calendar.DAY_OF_YEAR) + 1);
-			}
-			Event e = new Event("Birthday", guest.getId(), birthday, true);
 			guest.addEvent(e);
 			pm.makePersistent(guest);
 			pm.makePersistent(e);
