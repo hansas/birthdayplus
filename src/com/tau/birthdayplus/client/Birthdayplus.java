@@ -25,6 +25,7 @@ import com.google.gwt.gadgets.client.UserPreferences;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -34,6 +35,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -71,7 +74,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	public HashMap<String,String> userFriends= new HashMap<String,String>();
 	public GuestData user;
 	
-	private TabPanel tab;
+	private TabPanel tab ;
+	public  PopupPanel loadingImagePopup ;
 	
 	
 	/*
@@ -116,7 +120,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
  * This is the entry point method.
  */
  protected void init(UserPreferences preferences) {
-	 buildTab();
+	 if (tab == null)
+		 buildTab();
 	 getSocialInfo();
      
  }
@@ -162,8 +167,25 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	        
 			//tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
 		    tab.add(iBuyGUI.iBuyPanel, "I buy");
+		    
+		   
+		    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
 			
+	
+			
+		    loadingImagePopup = new PopupPanel(true);
+		    loadingImagePopup.setAnimationEnabled(true);
+		    
+		    loadingImagePopup.setStyleName(constants.cwLoadingPopupPanelStyle());
+		    loadingImagePopup.setWidget(loadingImage);
+		    
+		 // Remove the loading message
+        //    DOM.setInnerHTML(RootPanel.get("Loading-Message").getElement(), "");
 
+		    // Get the Application Container div from the DOM
+		 //    RootPanel.get().add(tab);
+			
+            
 		
 	}
 	
@@ -176,6 +198,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 				if(event.getSelectedItem()== 0){
 					ArrayList<String> temp=new ArrayList<String>();
 					temp = getUserAndFriendsIds();
+					loadingImagePopup.center();
+					loadingImagePopup.show();
 					eventDelegate.getEvents(temp);
 				}else{
 				     if(event.getSelectedItem()== 1)

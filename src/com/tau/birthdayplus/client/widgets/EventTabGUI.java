@@ -134,7 +134,8 @@ public class EventTabGUI {
 		
 		txtDate = new DateBox();
 		txtDate.setStyleName(constants.cwDateBoxStyle());
-		txtDate.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getShortDateFormat()));
+		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
+		txtDate.setFormat(new DateBox.DefaultFormat(fmt));
 		
 		chkRecurrence=new CheckBox();
 		chkRecurrence.setStyleName(constants.cwCheckBoxStyle());
@@ -323,6 +324,8 @@ public class EventTabGUI {
 		this.eventList = result;
 		this.eventTable.clear();
 		
+		entryPoint.loadingImagePopup.hide();
+		
 		int row = 0;
 	
 		for (EventData event : eventList) {
@@ -339,8 +342,10 @@ public class EventTabGUI {
 			
 			due = String.valueOf(daysBetween(new Date(), event.getEventDate()));
 			Label lblEventDate = new Label(due);
-			if(event.getEventDate()!= null)
-    			lblEventDate.setTitle(event.getEventDate().toString());
+			if(event.getEventDate()!= null){
+				DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
+    			lblEventDate.setTitle(dateFormatter.format(event.getEventDate()));
+			}
 			eventTable.setWidget(row, 2, lblEventDate);
 			if(event.getUserId().equals( entryPoint.userId)){
 				eventTable.setWidget(row, 3, new Hyperlink("update", null));
@@ -376,6 +381,7 @@ public class EventTabGUI {
 	
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
+		entryPoint.loadingImagePopup.hide();
 		 System.out.println("Unable to get event list");
 		
 		
