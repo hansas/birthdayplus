@@ -42,8 +42,14 @@ public class BusinessObjectDAL {
 	// Automatically open and close PMF
 	public static Guest loadGuest(String guestId) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Guest g = loadGuest(guestId, pm);
-		pm.close();
+		Guest g = null;
+		try{
+		    g = loadGuest(guestId, pm);
+		}catch(Exception ex){
+			throw new RuntimeException("load guest failed");
+		}finally{
+		   pm.close();
+		}
 		return g;
 	}
 

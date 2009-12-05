@@ -304,7 +304,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 					
 					final DateBox dateBox = new DateBox();
 		//			dateBox.setStyleName(constants.cwDialogBoxStyle());
-					DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yy");
+					DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
 					dateBox.setFormat(new DateBox.DefaultFormat(fmt));
 
 					final Button okButton = new Button();

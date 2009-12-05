@@ -10,6 +10,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 
@@ -135,7 +136,7 @@ public class EventTabGUI {
 		
 		txtDate = new DateBox();
 	//	txtDate.setStyleName(constants.cwDateBoxStyle());
-		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yy");
+		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
 		txtDate.setFormat(new DateBox.DefaultFormat(fmt));
 		
 		chkRecurrence=new CheckBox();
@@ -326,6 +327,7 @@ public class EventTabGUI {
 		this.eventTable.clear();
 		
 		entryPoint.loadingImagePopup.hide();
+//		Window.alert("got from server " +result.size()+ " events");
 		
 		int row = 0;
 	
@@ -383,23 +385,23 @@ public class EventTabGUI {
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
 		entryPoint.loadingImagePopup.hide();
-		 System.out.println("Unable to get event list");
+		Window.alert("Unable to get event list");
 		
 		
 	}
 	
 	public void service_eventCreateEventFailed(Throwable caught) {
-		 System.out.println("Unable to create new event");
+		Window.alert("Unable to create new event");
 		
 	}
 
 	public void service_eventUpdateEventFailed(Throwable caught) {
-		 System.out.println("Unable to update event");
+		Window.alert("Unable to update event");
 		
 	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-		 System.out.println("Unable to delete  event");
+		Window.alert("Unable to delete  event");
 	}
 	
 
