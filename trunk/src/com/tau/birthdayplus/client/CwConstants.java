@@ -82,6 +82,10 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cw-PopupPanel")
     String cwPopupPanelStyle();
     
+    
+    @DefaultStringValue("cw-LoadingPopupPanel")
+    String cwLoadingPopupPanelStyle();
+    
     @DefaultStringArrayValue({"5","4","3","2","1"})
     String[] cwListBoxCategories();
 
