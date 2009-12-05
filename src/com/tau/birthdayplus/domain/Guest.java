@@ -135,7 +135,7 @@ public class Guest   {
 		
 		public void removeIBuyItem(WishlistItem item){
 			if ((iBuyItems!=null) && (iBuyItems.contains(item))){
-				iBuyItems.remove(item);
+				iBuyItems.remove(item.getKey());
 			}
 		}
 		
