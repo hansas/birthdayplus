@@ -93,11 +93,11 @@ public class EventManagement {
 						events.add(EventManagement.eventToEventData(event,wrapper));
 					}
 					else if(event.getRecurrence()==true){
-						Date newEDate = new Date(cal.get(Calendar.DAY_OF_YEAR),eMonth,eDay);
+						Date newEDate = new Date(cal.get(Calendar.YEAR),eMonth,eDay);
 						int currentDom = cal.get(Calendar.DAY_OF_MONTH);
 						int currentMonth = cal.get(Calendar.MONTH) + 1;
 						if ((eMonth<currentMonth)||((eMonth==currentMonth)&&(eDay<currentDom))){
-							newEDate.setYear(cal.get(Calendar.DAY_OF_YEAR)+1);
+							newEDate.setYear(cal.get(Calendar.YEAR)+1);
 						}
 						event.setEventDate(newEDate);
 						events.add(EventManagement.eventToEventData(event,wrapper));
