@@ -130,7 +130,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	 */
  private void buildTab(){
 		    tab = new TabPanel();
-		    tab.setStyleName(constants.cwTabStyle());
+	//	    tab.setStyleName(constants.cwTabStyle());
 		
 			tab.getElement().setId("tab");
 			tab.setAnimationEnabled(true);
@@ -304,7 +304,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 					
 					final DateBox dateBox = new DateBox();
 		//			dateBox.setStyleName(constants.cwDialogBoxStyle());
-					DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
+					DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yy");
 					dateBox.setFormat(new DateBox.DefaultFormat(fmt));
 
 					final Button okButton = new Button();
