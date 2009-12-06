@@ -195,7 +195,7 @@ public class BusinessObjectDAL {
 		try {
 			tx.begin();
 			Guest user = BusinessObjectDAL.loadGuest(userId, pm);
-			user.addWishlistItem(item);
+			user.addWishlistItem(item); 
 			itemData.setWishlistItemId(KeyFactory.keyToString(item.getKey()));
 			pm.makePersistent(user);
 			pm.makePersistent(item);
