@@ -80,7 +80,7 @@ public class EventManagement {
 			List<Event> guestEvents = guest.getEvents();
 			if ((guest!=null) && (!guestEvents.isEmpty())){
 				Calendar cal = Calendar.getInstance();
-				cal.add(Calendar.DATE, 7);
+				//cal.add(Calendar.DATE, 7);
 				Calendar eDate = Calendar.getInstance();
 				for (Event event: guestEvents){
 					int eMonth = event.getEventDate().getMonth();
@@ -100,6 +100,7 @@ public class EventManagement {
 							newEDate.setYear(cal.get(Calendar.YEAR)+1);
 						}
 						event.setEventDate(newEDate);
+						updateEvent(eventToEventData(event, wrapper));
 						events.add(EventManagement.eventToEventData(event,wrapper));
 					}
 				}
