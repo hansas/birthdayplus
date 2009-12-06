@@ -404,7 +404,6 @@ public class BusinessObjectDAL {
 				&&(item.getIsActive()==true)&&(!contains)){
 			Participator participator = new Participator(participatorD.getUserId(),participatorD.getMoney());
 			Transaction tx = (Transaction) pm.currentTransaction();
-			//Key guestKey = KeyFactory.stringToKey(wishlistItemId).getParent();
 			Guest g = loadGuest(participator.getId(), pm);
 			try {
 				tx.begin();
