@@ -2,18 +2,6 @@
 <datastore-indexes
   autoGenerate="true">
   
-    <datastore-index kind="Guest" ancestor="false" >
-        <property name="events" direction="asc"/>
-    </datastore-index>
-
-    <datastore-index kind="Guest" ancestor="false" >
-        <property name="wishlistItems" direction="asc"/>
-    </datastore-index>
-
-    <datastore-index kind="WishlistItem" ancestor="true" >
-        <property name="participators" direction="asc"/>
-    </datastore-index>
-    
   	<datastore-index kind="Guest" ancestor="false">
         <property name="idKey" direction="asc" />
  	 </datastore-index>
