@@ -14,29 +14,29 @@ public class UserManagement {
 		return new GuestData(guest.getId(), guest.getFirstName(), guest.getLastName(), guest.getBirthday());
 	}
 	
-	public static GuestData loadGuestData(String guestId){
-		Guest guest = BusinessObjectDAL.loadGuest(guestId);
-		if(guest == null)
-			throw new RuntimeException("load guest failed");
-		GuestData guestData = GuestToGuestData(guest);
-		return guestData;
-	}
+	 public static GuestData loadGuestData(String guestId){
+         Guest guest = BusinessObjectDAL.loadGuest(guestId);
+         GuestData guestData = GuestToGuestData(guest);
+         return guestData;
+ }
+
 	
-	public static void createProfile(GuestData guestData) {
-		Guest guest = new Guest(guestData);
-		int guestDom = guest.getBirthday().getDate();
-		int guestMonth = guest.getBirthday().getMonth();
-		Calendar cal = Calendar.getInstance();
-		Date birthday = new Date(cal.get(Calendar.YEAR), guestMonth, guestDom);
-		int currentDom = cal.get(Calendar.DAY_OF_MONTH);
-		int currentMonth = cal.get(Calendar.MONTH) + 1;
-		if ((currentMonth > guestMonth)
-				|| ((currentMonth == guestMonth) && (currentDom > guestDom))) {
-			birthday.setYear(cal.get(Calendar.YEAR) + 1);
-		}
-		Event e = new Event("Birthday", guest.getId(), birthday, true);
-		BusinessObjectDAL.createProfile(guest,e);
-	}
+	 public static void createProfile(GuestData guestData) {
+         Guest guest = new Guest(guestData);
+         int guestDom = guest.getBirthday().getDate();
+         int guestMonth = guest.getBirthday().getMonth();
+         Calendar cal = Calendar.getInstance();
+         Date birthday = new Date(cal.get(Calendar.YEAR), guestMonth, guestDom);
+         int currentDom = cal.get(Calendar.DAY_OF_MONTH);
+         int currentMonth = cal.get(Calendar.MONTH) + 1;
+         if ((currentMonth > guestMonth)
+                         || ((currentMonth == guestMonth) && (currentDom > guestDom))) {
+                 birthday.setYear(cal.get(Calendar.YEAR) + 1);
+         }
+         Event e = new Event("Birthday", guest.getId(), birthday, true);
+         BusinessObjectDAL.createProfile(guest,e);
+ }
+
 	
 	public static Guest loadGuest(String guestId){
 		return BusinessObjectDAL.loadGuest(guestId);
