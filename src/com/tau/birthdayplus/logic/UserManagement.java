@@ -20,7 +20,7 @@ public class UserManagement {
          return guestData;
  }
 
-	
+	 @SuppressWarnings("deprecation")
 	 public static void createProfile(GuestData guestData) {
          Guest guest = new Guest(guestData);
          int guestDom = guest.getBirthday().getDate();

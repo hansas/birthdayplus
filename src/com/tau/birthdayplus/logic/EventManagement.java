@@ -74,6 +74,7 @@ public class EventManagement {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static ArrayList<EventData> getEventsByGuests(List<Guest> guests,DALWrapper wrapper){
 		ArrayList<EventData> events = new ArrayList<EventData>();
 		for (Guest guest: guests){
