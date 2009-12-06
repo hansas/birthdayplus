@@ -87,7 +87,7 @@ public class EventManagement {
 					int eMonth = event.getEventDate().getMonth();
 					int eDay = event.getEventDate().getDate();
 					eDate.clear();
-					eDate.set(Calendar.YEAR, event.getEventDate().getYear());
+					eDate.set(Calendar.YEAR, event.getEventDate().getYear()+1900);
 					eDate.set(Calendar.MONTH, eMonth);
 					eDate.set(Calendar.DATE, eDay);
 					if (eDate.after(cal)){
@@ -98,7 +98,7 @@ public class EventManagement {
 						int currentDom = cal.get(Calendar.DAY_OF_MONTH);
 						int currentMonth = cal.get(Calendar.MONTH) + 1;
 						if ((eMonth<currentMonth)||((eMonth==currentMonth)&&(eDay<currentDom))){
-							newEDate.setYear(cal.get(Calendar.YEAR)+1);
+							newEDate.setYear(cal.get(Calendar.YEAR)+1-1900);
 						}
 						event.setEventDate(newEDate);
 						updateEvent(eventToEventData(event, wrapper));
