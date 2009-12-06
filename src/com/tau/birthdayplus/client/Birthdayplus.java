@@ -288,7 +288,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		 * function that is called after retrieving social information about the user
 		 */
 		public void print(){
-		//	Window.alert(firstName);
+		//	Window.alert(firstName); 
 		//	Window.alert(lastName);
 			RequestBuilder requestBuilder=profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
