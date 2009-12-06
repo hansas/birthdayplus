@@ -1,0 +1,12 @@
+.gwt-Button {
+background-color: #3366CC; 
+color: blue; 
+font-weight: bold; 
+border: 1px solid #AACCFF; 
+}
+
+.gwt-FlexTable {
+border: 1px solid #BBBBBB;
+padding: 3px;
+overflow: visible;
+}
