@@ -20,7 +20,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.gadgets.client.DynamicHeightFeature;
 import com.google.gwt.gadgets.client.Gadget;
+import com.google.gwt.gadgets.client.NeedsDynamicHeight;
 import com.google.gwt.gadgets.client.UserPreferences;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -31,6 +33,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -59,8 +62,9 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
 		author_email = "yalo_niv@yahoo.com"
 )
-public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial {
+public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial ,NeedsDynamicHeight  {
 	CwConstants constants = GWT.create(CwConstants.class);
+	public DynamicHeightFeature feature;
 	
 	// Create a remote service proxy to talk to the server-side Profile service.
 	private final ProfileServiceAsync profileService = GWT.create(ProfileService.class); 
@@ -76,6 +80,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	
 	private TabPanel tab ;
 	public  PopupPanel loadingImagePopup ;
+
+	
 	
 	
 	/*
@@ -129,13 +135,18 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	 * This is the entry point method.
 	 */
  private void buildTab(){
+	        
 		    tab = new TabPanel();
+		    
 	//	    tab.setStyleName(constants.cwTabStyle());
 		
 			tab.getElement().setId("tab");
 			tab.setAnimationEnabled(true);
 		//	RootPanel.get("tabBarContainer").add(tab);
-			RootPanel.get().add(tab);
+			
+		//	RootPanel.get().add(tab);
+			
+			
 			
 			//initiate event tab
 		    eventGui = new EventTabGUI(); 
@@ -143,6 +154,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    eventGui.eventService = eventDelegate;
 		    eventDelegate.eventGui = eventGui;
 		    eventGui.entryPoint=this;
+		    eventDelegate.entryPoint=this;
 		    eventGui.init();
 		    tab.add(eventGui.vPanel, "Events");
 		   
@@ -153,6 +165,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	        myWishlistGUI.wishlistService = myWishlistDelegate;
 	        myWishlistDelegate.gui =myWishlistGUI;
 	        myWishlistGUI.entryPoint=this;
+	        myWishlistDelegate.entryPoint=this;
 	        myWishlistGUI.init();
 			tab.add(myWishlistGUI.wishlistVerticalPanel, "Wishlist");
 			
@@ -163,6 +176,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    iBuyGUI.wishlistService =iBuyDelegate;
 		    iBuyDelegate.gui =iBuyGUI;
 		    iBuyGUI.entryPoint=this;
+		    iBuyDelegate.entryPoint=this;
 		    iBuyGUI.init();
 	        
 			//tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
@@ -173,7 +187,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 			
 	
 			
-		    loadingImagePopup = new PopupPanel(true);
+		    loadingImagePopup = new PopupPanel(false,true);
 		    loadingImagePopup.setAnimationEnabled(true);
 		    
 		    loadingImagePopup.setStyleName(constants.cwLoadingPopupPanelStyle());
@@ -184,6 +198,10 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 
 		    // Get the Application Container div from the DOM
 		 //    RootPanel.get().add(tab);
+		    
+		    
+		    feature.getContentDiv().add(tab);
+		    
 			
             
 		
@@ -198,8 +216,6 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 				if(event.getSelectedItem()== 0){
 					ArrayList<String> temp=new ArrayList<String>();
 					temp = getUserAndFriendsIds();
-					loadingImagePopup.center();
-					loadingImagePopup.show();
 					eventDelegate.getEvents(temp);
 				}else{
 				     if(event.getSelectedItem()== 1)
@@ -370,6 +386,11 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 			
 			
 		//	wireTabGUIEvents();
+			
+		}
+		public void initializeFeature(DynamicHeightFeature feature) {
+			this.feature=feature;
+			
 			
 		}
 	  

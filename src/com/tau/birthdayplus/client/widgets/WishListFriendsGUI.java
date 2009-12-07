@@ -175,7 +175,8 @@ public class WishListFriendsGUI  {
         participatorsTable.clear();
 
         // Show the popup
-        participatorsPanel.show();
+     //   participatorsPanel.show();
+        participatorsPanel.showRelativeTo(widgetClicked);
         
         int row = 0;
         for(ParticipatorData participator : item.getParticipators()){
@@ -282,6 +283,7 @@ public class WishListFriendsGUI  {
 		}
 		if (sum != null){
 			moneyDialogBox.hide();
+			enterSumTextBox.setText("");
 		    ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
             this.wishlistService.addParticipator(currentItem.getWishlistItemId(), parent.currentEvent.getEventId(), data);
 		}
@@ -289,6 +291,7 @@ public class WishListFriendsGUI  {
 	
 	public void gui_eventCancelMoneyButtonClicked(){
 		moneyDialogBox.hide();
+		enterSumTextBox.setText("");
 	}
 	
 	public void wireWishlistFriendGUIEvents() {

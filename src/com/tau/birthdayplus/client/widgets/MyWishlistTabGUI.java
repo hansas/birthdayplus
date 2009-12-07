@@ -113,7 +113,7 @@ public class MyWishlistTabGUI {
     private void buildForm() {
         formTable = new FlexTable();
         
-        formTable.setStyleName(constants.cwTableStyle());
+     //   formTable.setStyleName(constants.cwTableStyle());
    
         formTable.setText(0, 0, "Item name");
         formTable.setWidget(0, 1, itemField);
@@ -224,6 +224,7 @@ public class MyWishlistTabGUI {
 		    addItemBox.center();
 		    addItemBox.setText(action.name()+" item");
    	        addItemBox.show();
+   	        itemField.setFocus(true);
 	        currentItem = item;
 	        this.itemField.setText(item.getItemName());
 	        this.linkField.setText(item.getLink());
