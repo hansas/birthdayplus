@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.EventService;
 import com.tau.birthdayplus.client.EventServiceAsync;
 import com.tau.birthdayplus.client.RequestProxy;
@@ -15,14 +16,18 @@ import com.tau.birthdayplus.dto.client.EventData;
 public class EventTabDelegate {
 	private final EventServiceAsync eventService = GWT.create(EventService.class); 
 	public EventTabGUI eventGui;
+	public Birthdayplus entryPoint;
 
 	public void getEvents(final ArrayList<String> uIdlist) {
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.getEvents(uIdlist, new AsyncCallback<ArrayList<EventData>>(){
 			public void onFailure(Throwable caught){
-				Window.alert("get events failded "+caught);
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventGetEventsFailed(caught);
 			}
 			public void onSuccess(ArrayList<EventData> result){
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventGetEventsSuccessful(result);
 			}
 		}//end of inner class
@@ -33,7 +38,6 @@ public class EventTabDelegate {
 	void createEvent(final EventData event){
 		RequestBuilder requestBuilder=eventService.createEvent(event, new AsyncCallback<Void>(){
 			public void onFailure(Throwable caught){
-				Window.alert("create event failded "+caught);
 				eventGui.service_eventCreateEventFailed(caught);
 			}
 		

@@ -97,7 +97,7 @@ public class IBuyTabGUI {
 		buildMoneyDialogBox();
 	//	wishlistVerticalPanel.add(wishTable);
 		iBuyPanel.add(wishTable);
-	//	iBuyPanel.add(participatorsBoxVerticalPanel);
+		iBuyPanel.add(participatorsBoxVerticalPanel);
 		
 		    
 	}

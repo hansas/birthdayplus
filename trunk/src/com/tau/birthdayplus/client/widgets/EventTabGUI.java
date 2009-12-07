@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -75,10 +76,12 @@ public class EventTabGUI {
 	
 	
 	
+	
 
 	
 	public void init(){
 		eventList = new ArrayList<EventData>(); 
+		
 		
 		//create DialogBox for user's friend wishlist
 		wishlistFriendGUI = new WishListFriendsGUI();
@@ -86,6 +89,7 @@ public class EventTabGUI {
 	    
 	    wishlistFriendGUI.wishlistService = wishlistFriendService;
 	    wishlistFriendService.gui = wishlistFriendGUI;
+	    wishlistFriendService.entryPoint = this.entryPoint;
 	    
 	    wishlistFriendGUI.parent = this;
 	    wishlistFriendGUI.init();
@@ -154,6 +158,10 @@ public class EventTabGUI {
 		buildForm();
 		
 		eventDialogBox.add(layout);
+		eventDialogBox.setVisible(false);
+		
+		
+		
 		
 	}
 	
@@ -161,7 +169,7 @@ public class EventTabGUI {
 	
 	private void buildForm(){
 		layout = new FlexTable();
-		layout.setStyleName(constants.cwTableStyle());
+	//	layout.setStyleName(constants.cwTableStyle());
 	//	layout.setCellSpacing(6);
 		
 	    layout.setText(0,0,"Event Name");
@@ -204,10 +212,12 @@ public class EventTabGUI {
 		eventDialogBox.center();
 		eventDialogBox.setText(action.toString()+ "Event");
 		eventDialogBox.show();
+		txtName.setFocus(true);
 		this.currentEvent = eventData;
 		this.txtName.setText(this.currentEvent.getEventName());
 		this.txtDate.setValue(currentEvent.getEventDate());
 		this.chkRecurrence.setValue(this.currentEvent.getRecurrence());
+		entryPoint.feature.adjustHeight();
 	}
     
     /*
@@ -224,7 +234,7 @@ public class EventTabGUI {
     	if(d1== null || d2 == null)
     		return 0;
 		final long ONE_HOUR = 60 * 60 * 1000L;
-	    return ((d2.getTime() - d1.getTime() + ONE_HOUR) / (ONE_HOUR * 24));
+	    return ((d2.getTime() - d1.getTime() + ONE_HOUR) / (ONE_HOUR * 24))+1;
 	    
 	}
 	
@@ -326,8 +336,7 @@ public class EventTabGUI {
 		this.eventList = result;
 		this.eventTable.clear();
 		
-		entryPoint.loadingImagePopup.hide();
-//		Window.alert("got from server " +result.size()+ " events");
+	
 		
 		int row = 0;
 	
@@ -351,11 +360,14 @@ public class EventTabGUI {
 			}
 			eventTable.setWidget(row, 2, lblEventDate);
 			if(event.getUserId().equals( entryPoint.userId)){
-				eventTable.setWidget(row, 3, new Hyperlink("update", null));
-	    	    eventTable.setWidget(row,4,new Hyperlink("delete", null)); 
+			//	eventTable.setWidget(row, 3, new Hyperlink("update", null));
+				eventTable.setWidget(row, 3, new Image( GWT.getModuleBaseURL() + "edit.gif"));
+	    	    eventTable.setWidget(row,4,new Image( GWT.getModuleBaseURL() + "delete.gif")); 
 			}
 			row++;
-		}	
+		}
+		
+		entryPoint.feature.adjustHeight();
 	}
 	
 	
@@ -384,7 +396,6 @@ public class EventTabGUI {
 	
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
-		entryPoint.loadingImagePopup.hide();
 		Window.alert("Unable to get event list");
 		
 		
