@@ -367,7 +367,7 @@ public class EventTabGUI {
 			row++;
 		}
 		
-		entryPoint.feature.adjustHeight();
+	//	entryPoint.feature.adjustHeight();
 	}
 	
 	
