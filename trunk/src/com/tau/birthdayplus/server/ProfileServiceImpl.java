@@ -32,21 +32,7 @@ ProfileService {
 	}
 
 	public void createProfile(GuestData guestData) {
-		UserService userService = UserServiceFactory.getUserService();
-        User user = userService.getCurrentUser();
-
-        if (user != null) {
-        	UserManagement.createProfile(guestData);
-        } else {
-        	HttpServletRequest req = this.getThreadLocalRequest();
-            HttpServletResponse resp = this.getThreadLocalResponse();
-            try {
-				resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+		
 		UserManagement.createProfile(guestData);
 		
 	}
