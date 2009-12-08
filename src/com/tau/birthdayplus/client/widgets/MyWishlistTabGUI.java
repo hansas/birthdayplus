@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
@@ -32,7 +34,7 @@ public class MyWishlistTabGUI {
      * constants
      */
 	CwConstants constants = GWT.create(CwConstants.class);
-	private static final int LINK = 0;
+//	private static final int LINK = 0;
 	private static final int UPDATE_LINK = 3;
     private static final int DELETE_LINK = 4;
 
@@ -66,7 +68,7 @@ public class MyWishlistTabGUI {
 
 
 	
-
+ 
 	/*  
 	 * Data Model
 	 */
@@ -74,6 +76,7 @@ public class MyWishlistTabGUI {
     private WishlistItemData currentItem;
     public MyWishlistDelegate wishlistService;
     public Birthdayplus entryPoint;
+    private String linkText;
     
     
 
@@ -209,10 +212,10 @@ public class MyWishlistTabGUI {
              loadForm(item,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item);
-         }else if(col==LINK){
-        	 if(!item.getLink().equals(""))
-        		 Window.open(item.getLink(), "_blank", null);
-         }
+         }//else if(col==LINK){
+        //	 if(!item.getLink().equals(""))
+        	//	 Window.open(item.getLink(), "_blank", null);
+        // }
     }
 	 
 
@@ -317,7 +320,8 @@ public class MyWishlistTabGUI {
 	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
 	        	else
-	        		wishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
+	        		wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
+	        		//wishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
 	    	    wishTable.setWidget(row,1,new Label(item.getPriority().toString()));
 	    	    wishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
 	    	    wishTable.setWidget(row, 3, new Hyperlink("update", null));
@@ -395,6 +399,26 @@ public class MyWishlistTabGUI {
         	}
         });
   
+	}
+	
+
+	public  native void bringLink(String url) /*-{
+		thisTabGui = this;
+	var params = {};
+	    params[$wnd.gadgets.io.RequestParameters.CONTENT_TYPE] = $wnd.gadgets.io.ContentType.TEXT; 
+		$wnd.gadgets.io.makeRequest(url, response, params); 
+
+	function response(obj) {
+		    var responseText = obj.text; 
+			thisTabGui.@com.tau.birthdayplus.client.widgets.MyWishlistTabGUI::linkText=obj.text;
+			thisTabGui.@com.tau.birthdayplus.client.widgets.MyWishlistTabGUI::parse()();
+	};
+}-*/;
+	
+	
+	
+	private void parse(){
+		
 	}
 	
 	
