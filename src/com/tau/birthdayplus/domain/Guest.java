@@ -38,7 +38,6 @@ public class Guest   {
 		List<Event> events;
 	    @Persistent (defaultFetchGroup="true")
 		List<WishlistItem> wishlistItems;
-	    
 	    @Persistent (defaultFetchGroup="true")
 		List<Key> iBuyItems;
 

@@ -24,7 +24,7 @@ public interface ProfileService extends RemoteService{
 	/*
 	 * update profile
 	 */
-    void updateProfile(GuestData profile);
+    void updateProfile(GuestData profile)throws UserNotFoundException;
     /*
      * get user's profile
      */

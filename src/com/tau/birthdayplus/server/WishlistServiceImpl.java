@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.PMF;
@@ -158,7 +159,7 @@ WishlistService  {
 	/*
 	 * return user's wishlist
 	 */
-	public ArrayList<WishlistItemData> getMyWishlist(String userId) {
+	public ArrayList<WishlistItemData> getMyWishlist(String userId) throws UserNotFoundException {
 		return WishlistManagement.getWishlist(userId);
 	}
 	
@@ -168,7 +169,7 @@ WishlistService  {
 	 * set isActive == false
 	 * add this item to guest "I buy" list (you can get userId from Buyer)
 	 */
-	public void bookItemForUser(String wishlistItemId, String eventId,String userId) {
+	public void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException {
 		WishlistManagement.bookItemForUser(wishlistItemId,eventId,userId);
 	}
 	
@@ -189,14 +190,14 @@ WishlistService  {
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
 	 *  eventId == null ) and isActive == true
 	 */
-	public ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) {
+	public ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException {
 		return WishlistManagement.getWishlistForEvent(userId,eventId);
 	}
 	
 	/*
 	 * return all the items this user has booked
 	 */
-	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) {
+	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException {
 		return WishlistManagement.getBookedWishlistItems(userId);
 	}
 	
@@ -209,7 +210,7 @@ WishlistService  {
 	 * check that user doesn't participate already in this group
 	 * add this item to user's "I buy " items
 	 */
-	public void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) {
+	public void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) throws UserNotFoundException {
 		WishlistManagement.addParticipator(wishlistItemId,eventId,participator);
 		
 	}
@@ -219,7 +220,7 @@ WishlistService  {
 	 * if this participator is the only one - free this item(eventId == null)
 	 * remove this item from user's "I buy " list
 	 */
-	public void deleteParticipator(String wishlistItemId, String userId) {
+	public void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException {
 		WishlistManagement.deleteParticipator(wishlistItemId, userId);
 		
 	}
@@ -227,7 +228,7 @@ WishlistService  {
 	 * remove this item from this user's "I buy " list , check if item isActive == false
 	 * (won't remove item with open group)
 	 */
-	public void deleteBookedWishlistItem(String userId, String wishlistItemId) {
+	public void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException {
 		WishlistManagement.deleteBookedWishlistItem(userId, wishlistItemId);
 		
 	}
