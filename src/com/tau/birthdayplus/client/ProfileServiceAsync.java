@@ -19,5 +19,7 @@ public interface ProfileServiceAsync {
 	RequestBuilder updateProfile(GuestData profile, AsyncCallback<Void> callback);
 
 	RequestBuilder getProfile(String userId,AsyncCallback<GuestData> callback);
+	
+	
 
 }
