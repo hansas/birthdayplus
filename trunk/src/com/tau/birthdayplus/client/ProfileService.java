@@ -1,5 +1,6 @@
 package com.tau.birthdayplus.client;
 
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.tau.birthdayplus.dto.client.GuestData;
@@ -28,4 +29,6 @@ public interface ProfileService extends RemoteService{
      * get user's profile
      */
     GuestData getProfile(String userId) throws UserNotFoundException;
+    
+    
 }
