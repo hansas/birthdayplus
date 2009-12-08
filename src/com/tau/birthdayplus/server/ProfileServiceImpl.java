@@ -4,7 +4,11 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -28,6 +32,21 @@ ProfileService {
 	}
 
 	public void createProfile(GuestData guestData) {
+		UserService userService = UserServiceFactory.getUserService();
+        User user = userService.getCurrentUser();
+
+        if (user != null) {
+        	UserManagement.createProfile(guestData);
+        } else {
+        	HttpServletRequest req = this.getThreadLocalRequest();
+            HttpServletResponse resp = this.getThreadLocalResponse();
+            try {
+				resp.sendRedirect(userService.createLoginURL(req.getRequestURI()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 		UserManagement.createProfile(guestData);
 		
 	}

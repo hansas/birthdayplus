@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.tau.birthdayplus.dto.client.BuyerData;
+import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -63,6 +65,18 @@ public interface WishlistServiceAsync {
 
 	RequestBuilder deleteParticipator(String wishlistItemId, String userId,
 			AsyncCallback<Void> callback);
+
+	RequestBuilder bookItemForGroup(String itemId, BuyerData buyer,
+			AsyncCallback<Void> callback);
+
+	RequestBuilder cancelBookItemForGroup(String itemId, String userId,
+			AsyncCallback<Void> callback);
+
+	RequestBuilder addChatMessageData(String itemId, ChatMessageData message,
+			AsyncCallback<Void> callback);
+
+	RequestBuilder getWishlistItem(String itemId,
+			AsyncCallback<WishlistItemNewData> callback);
 	
 
 	

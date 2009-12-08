@@ -31,6 +31,8 @@ public class Guest   {
 		private String lastName;
 		@Persistent
 		private Date birthday;
+		@Persistent
+		private String email;
 	
 	    @Persistent (defaultFetchGroup="true") 
 		List<Event> events;
@@ -41,7 +43,7 @@ public class Guest   {
 		List<Key> iBuyItems;
 
 		
-		public Guest(String googleId, String firstName, String lastName, Date birthday) {
+		public Guest(String googleId, String firstName, String lastName, Date birthday ,String email) {
 			this.setFirstName(firstName);
 			this.setLastName(lastName);
 			this.setBirthday(birthday);
@@ -50,16 +52,18 @@ public class Guest   {
 			this.events = new ArrayList<Event>();
 			this.wishlistItems = new ArrayList<WishlistItem>();
 			this.iBuyItems = new ArrayList<Key>();
+			this.email = email;
 		}
 		
 		public Guest(GuestData guestData){
-			this(guestData.getId(),guestData.getFirstName(),guestData.getLastName(),guestData.getBirthday());
+			this(guestData.getId(),guestData.getFirstName(),guestData.getLastName(),guestData.getBirthday(),guestData.getEmail());
 		}
 		
 		public void copyFromGuestData(GuestData guestData){
 			this.setBirthday(guestData.getBirthday());
 			this.setFirstName(guestData.getFirstName());
 			this.setLastName(guestData.getLastName());
+			this.setEmail(guestData.getEmail());
 		}
 		
 		public String getId(){
@@ -138,6 +142,14 @@ public class Guest   {
 				iBuyItems.remove(item.getKey());
 			}
 		}   
+		
+		public void setEmail(String email){
+			this.email = email;
+		}
+		
+		public String getEmail(){
+			return this.email;
+		}
 		
 		/*
 		static Guest loadGuest(User googleAccount){

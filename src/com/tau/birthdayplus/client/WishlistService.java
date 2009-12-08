@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.tau.birthdayplus.dto.client.BuyerData;
+import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -74,11 +76,7 @@ public interface WishlistService extends RemoteService{
 	void updateParticipator(String wishlistItemId,ParticipatorData participator);
 	
 	void deleteParticipator(String wishlistItemId ,String userId);
-	/*
-	 * the group will buy this item
-	 * isActive == false
-	 */
-	//void bookItemForGroup(WishlistItemData item);
+	
 	/*
 	 * return all the items this user has booked
 	 */
@@ -88,5 +86,32 @@ public interface WishlistService extends RemoteService{
 	 * (won't remove item with open group)
 	 */
 	void deleteBookedWishlistItem(String userId, String wishlistItemId);
+	
+	/*
+	 * the group will buy this item
+	 * ietmId - id of the item
+	 * buyer - the information about the buyer
+	 * server - check if current buyer == null
+	 * remove buyer from participators list and  update Buyer for this item
+	 * setActive = false
+	 */
+	void bookItemForGroup(String itemId, BuyerData buyer);
+	/*
+	 * only the buyer can cancel the reservation of the item
+	 * check if buyer.userId == userId
+	 * return buyer to participators list
+	 * isActive = true
+	 * buyer = null
+	 */
+	void cancelBookItemForGroup(String itemId, String userId);
+	/*
+	 * add new message to the chat 
+	 */
+	void addChatMessageData(String itemId,ChatMessageData message);
+	/*
+	 * return item by id
+	 */
+	WishlistItemNewData getWishlistItem(String itemId);
+	
 
 }

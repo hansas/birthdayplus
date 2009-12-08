@@ -4,6 +4,9 @@ package com.tau.birthdayplus.logic;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
@@ -11,7 +14,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 
 public class UserManagement {
 	public static GuestData GuestToGuestData(Guest guest){
-		return new GuestData(guest.getId(), guest.getFirstName(), guest.getLastName(), guest.getBirthday());
+		return new GuestData(guest.getId(), guest.getFirstName(), guest.getLastName(), guest.getBirthday(),guest.getEmail());
 	}
 	
 	 public static GuestData loadGuestData(String guestId){
@@ -34,6 +37,7 @@ public class UserManagement {
                  birthday.setYear(cal.get(Calendar.YEAR) + 1-1900);
          }
          Event e = new Event("Birthday", guest.getId(), birthday, true);
+         
          BusinessObjectDAL.createProfile(guest,e);
  }
 

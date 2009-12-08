@@ -19,6 +19,8 @@ import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
+import com.tau.birthdayplus.dto.client.BuyerData;
+import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -239,10 +241,52 @@ WishlistService  {
 		
 	}
 	
+	/*
+	 * add new message to the chat 
+	 */
+	public void addChatMessageData(String itemId, ChatMessageData message) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	 * the group will buy this item
+	 * itemId - id of the item
+	 * buyer - the information about the buyer
+	 * server - check if current buyer == null
+	 * remove buyer from participators list and  update Buyer for this item
+	 * setActive = false
+	 */
+	public void bookItemForGroup(String itemId, BuyerData buyer) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	 * only the buyer can cancel the reservation of the item
+	 * check if buyer.userId == userId
+	 * return buyer to participators list
+	 * isActive = true
+	 * buyer = null
+	 */
+	public void cancelBookItemForGroup(String itemId, String userId) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*
+	 * return item by id
+	 */
+	public WishlistItemNewData getWishlistItem(String itemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 	protected String readContent(HttpServletRequest request)
 	throws ServletException, IOException {
 return RPCServletUtils.readContentAsUtf8(request, false);
 }
+
+	
 
 	
 

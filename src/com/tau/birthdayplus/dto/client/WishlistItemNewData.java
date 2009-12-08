@@ -13,10 +13,12 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	   private String eventName;
 	   
 	   //people that want to buy this together
-	   ArrayList<ParticipatorData> participators;
+	   private ArrayList<ParticipatorData> participators;
  
 	   //person who will buy this present
 	   private BuyerData buyer;
+	   //chat message should be sorted by data
+	   private ArrayList<ChatMessageData> chatMessages;
 	
 	/*
 	 * constructor for isSerializable
@@ -35,6 +37,7 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 		this.eventId = eventId;
 		this.eventName = eventName;
 		this.participators = new ArrayList<ParticipatorData>();
+		this.chatMessages = new ArrayList<ChatMessageData>();
 		this.buyer = null;
 	}
 	
@@ -76,6 +79,18 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	
 	public BuyerData getBuyer(){
 		return this.buyer;
+	}
+	
+	public void addMessage(ChatMessageData message){
+		this.chatMessages.add(message);
+	}
+	
+	public void setChatMessages(ArrayList<ChatMessageData> messages){
+		this.chatMessages = messages;
+	}
+	
+	public ArrayList<ChatMessageData> getChatMessages(){
+		return this.chatMessages;
 	}
 	
 	
