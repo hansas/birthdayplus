@@ -6,6 +6,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.datastore.Key;
+import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.WishlistItem;
@@ -32,15 +33,15 @@ public class DALWrapper {
 		return pm.getObjectById(Guest.class, parentKey);
 	}
 	
-	public List<WishlistItem> getWishlist(String userId){
+	public List<WishlistItem> getWishlist(String userId) throws UserNotFoundException{
 		return BusinessObjectDAL.getWishlist(userId, this.pm);
 	}
 	
-	public List<WishlistItem> getWishlistForEvent(String userId,String eventId){
+	public List<WishlistItem> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException{
 		return BusinessObjectDAL.getWishlistForEvent(userId,eventId,this.pm);
 	}
 	
-	public Guest getGuestById(String userId){
+	public Guest getGuestById(String userId) throws UserNotFoundException{
 		return BusinessObjectDAL.loadGuest(userId, pm);
 	}
 	

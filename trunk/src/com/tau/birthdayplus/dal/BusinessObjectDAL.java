@@ -14,6 +14,7 @@ import org.datanucleus.store.Extent;
 import sun.misc.Sort;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
@@ -28,28 +29,22 @@ import com.tau.birthdayplus.logic.WishlistManagement;
 
 public class BusinessObjectDAL {
 
-	public static Guest loadGuest(String guestId, PersistenceManager pm) {
+	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException {
 		Guest guest = null;
-		try {
-			Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
-			guest = pm.getObjectById(Guest.class, key);
-		} catch (Exception ex) {
-			System.out.print(ex.getMessage());
+		Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
+		guest = pm.getObjectById(Guest.class, key);
+		if (guest==null){
+			throw new UserNotFoundException();
 		}
 		return guest;
 	}
 
 	// Automatically open and close PMF
-	public static Guest loadGuest(String guestId) {
+	public static Guest loadGuest(String guestId) throws UserNotFoundException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Guest g = null;
-		try{
-		    g = loadGuest(guestId, pm);
-		}catch(Exception ex){
-			throw new RuntimeException("load guest failed");
-		}finally{
-		   pm.close();
-		}
+		g = loadGuest(guestId, pm);
+		pm.close();
 		return g;
 	}
 
@@ -72,14 +67,14 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void updateGuest(GuestData guestData) {
+	public static void updateGuest(GuestData guestData) throws UserNotFoundException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Guest guest = loadGuest(guestData.getId(), pm);
 		guest.copyFromGuestData(guestData);
 		try {
 			pm.makePersistent(guest);
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			throw new RuntimeException("error in data base: updateGuest");
 		} finally {
 			pm.close();
 		}
@@ -156,7 +151,7 @@ public class BusinessObjectDAL {
 			Key key = KeyFactory.stringToKey(eventId);
 			event = pm.getObjectById(Event.class, key);
 		} catch (Exception ex) {
-			System.out.print(ex.getMessage());
+			throw new RuntimeException("error in data base: loadEvent", ex);
 		}
 		return event;
 	}
@@ -182,7 +177,7 @@ public class BusinessObjectDAL {
 			query.setFilter("idKey == :keyList");
 			guests = (List<Guest>) query.execute(keys);
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			throw new RuntimeException("error in data base: getGuestsById", ex);
 		}
 		return guests;
 	}
@@ -217,7 +212,7 @@ public class BusinessObjectDAL {
 			Key key = KeyFactory.stringToKey(wishlistItemId);
 			item = pm.getObjectById(WishlistItem.class, key);
 		} catch (Exception ex) {
-			System.out.print(ex.getMessage());
+			throw new RuntimeException("error in data base: loadWishlistItem", ex);
 		}
 		return item;
 	}
@@ -273,13 +268,13 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) {
+	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) throws UserNotFoundException {
 		List<WishlistItem> itemList = new ArrayList<WishlistItem>();
 		Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 		try {
 			itemList = user.getWishlistItems();
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			throw new RuntimeException("error in data base: getWishlist");
 		}
 		return itemList;
 	}
@@ -292,12 +287,12 @@ public class BusinessObjectDAL {
 			query.setFilter("key == :keyList");
 			items = (List<WishlistItem>) query.execute(keys);
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			throw new RuntimeException("error in data base: getWishlistItemById");
 		}
 		return items;
 	}
 	
-	public static void bookItemForUser(String wishlistItemId, String eventId,String userId){
+	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		if (item.getEventKey()==null){
@@ -350,7 +345,7 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void deleteBookedWishlistItem(String userId, String wishlistItemId){
+	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		Guest guest = loadGuest(userId, pm);
@@ -373,7 +368,7 @@ public class BusinessObjectDAL {
 	}
 	
 	public static List<WishlistItem> getWishlistForEvent(String userId,String eventId,
-			PersistenceManager pm){
+			PersistenceManager pm) throws UserNotFoundException{
 		Guest guest = loadGuest(userId, pm);
 		Key eventKey = KeyFactory.stringToKey(eventId);
 		List<WishlistItem> items = guest.getWishlistItems();
@@ -388,7 +383,7 @@ public class BusinessObjectDAL {
 	}
 	
 	public static void addParticipator(String wishlistItemId, String eventId,
-			ParticipatorData participatorD) {
+			ParticipatorData participatorD) throws UserNotFoundException {
 		int i=0;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
@@ -453,7 +448,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void deleteParticipator(String wishlistItemId, String userId) {
+	public static void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();

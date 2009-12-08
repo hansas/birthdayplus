@@ -36,7 +36,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * return user's wishlist
 	 */
-	ArrayList<WishlistItemData> getMyWishlist(String userId);
+	ArrayList<WishlistItemData> getMyWishlist(String userId) throws UserNotFoundException;
 	/////////////////////////////////////////////////////////////////
 	/*
 	 * user will buy this item
@@ -44,7 +44,7 @@ public interface WishlistService extends RemoteService{
 	 * set isActive == false
 	 * add this item to guest "I buy" list (you can get userId from Buyer)
 	 */
-	void bookItemForUser(String wishlistItemId, String EventId, String userId);
+	void bookItemForUser(String wishlistItemId, String EventId, String userId) throws UserNotFoundException;
 	/*
 	 * user doesn't want to buy this item
 	 * GUI - user can cancel only from "i'm buying " tab
@@ -58,7 +58,7 @@ public interface WishlistService extends RemoteService{
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
 	 *  eventId == null ) and isActive == true
 	 */
-	ArrayList<WishlistItemNewData> getWishlistForEvent(String uId,String eventId);
+	ArrayList<WishlistItemNewData> getWishlistForEvent(String uId,String eventId) throws UserNotFoundException;
 
 	/*
 	 * add participator
@@ -68,24 +68,24 @@ public interface WishlistService extends RemoteService{
 	 * check that user doesn't participate already in this group
 	 * add this item to user's "I buy " items
 	 */
-	void addParticipator(String wishlistItemId,String eventId,ParticipatorData participator);
+	void addParticipator(String wishlistItemId,String eventId,ParticipatorData participator) throws UserNotFoundException;
 	/*
 	 * update participator (update money only)
 	 * Server - check if the item is active (group is not closed yet) 
 	 */
 	void updateParticipator(String wishlistItemId,ParticipatorData participator);
 	
-	void deleteParticipator(String wishlistItemId ,String userId);
+	void deleteParticipator(String wishlistItemId ,String userId) throws UserNotFoundException;
 	
 	/*
 	 * return all the items this user has booked
 	 */
-	ArrayList<WishlistItemNewData> getBookedWishlistItems(String usetId);
+	ArrayList<WishlistItemNewData> getBookedWishlistItems(String usetId) throws UserNotFoundException;
 	/*
 	 * remove this item from this user's "I buy " list , check if item isActive == false
 	 * (won't remove item with open group)
 	 */
-	void deleteBookedWishlistItem(String userId, String wishlistItemId);
+	void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException;
 	
 	/*
 	 * the group will buy this item

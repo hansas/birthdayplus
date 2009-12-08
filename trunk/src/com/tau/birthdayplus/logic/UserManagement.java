@@ -3,21 +3,25 @@ package com.tau.birthdayplus.logic;
 
 import java.util.Calendar;
 import java.util.Date;
-
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.GuestData;
 
 public class UserManagement {
+	
 	public static GuestData GuestToGuestData(Guest guest){
 		return new GuestData(guest.getId(), guest.getFirstName(), guest.getLastName(), guest.getBirthday(),guest.getEmail());
 	}
 	
-	 public static GuestData loadGuestData(String guestId){
+	 public static GuestData loadGuestData(String guestId) throws UserNotFoundException{
          Guest guest = BusinessObjectDAL.loadGuest(guestId);
          GuestData guestData = GuestToGuestData(guest);
          return guestData;
@@ -25,6 +29,9 @@ public class UserManagement {
 
 	 @SuppressWarnings("deprecation")
 	 public static void createProfile(GuestData guestData) {
+//		 UserService userService = UserServiceFactory.getUserService();
+//		 User user = userService.getCurrentUser();
+//		 String email = user.getEmail();
          Guest guest = new Guest(guestData);
          int guestDom = guest.getBirthday().getDate();
          int guestMonth = guest.getBirthday().getMonth();
@@ -42,11 +49,11 @@ public class UserManagement {
  }
 
 	
-	public static Guest loadGuest(String guestId){
+	public static Guest loadGuest(String guestId) throws UserNotFoundException{
 		return BusinessObjectDAL.loadGuest(guestId);
 	}
 	
-	public static void updateProfile(GuestData profile) {
+	public static void updateProfile(GuestData profile) throws UserNotFoundException {
 		BusinessObjectDAL.updateGuest(profile);
 	}
 	
