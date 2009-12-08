@@ -10,6 +10,7 @@ public class GuestData implements IsSerializable{
 	private String firstName;
 	private String lastName;
 	private Date birthday;
+	private String email;
 
 	/*
      * constructor for isSerializable
@@ -20,10 +21,15 @@ public class GuestData implements IsSerializable{
 	protected GuestData(){}
 
 	public GuestData(String googleId, String firstName, String lastName, Date birthday) {
+		this(googleId,firstName,lastName,birthday,"");
+	}
+	
+	public GuestData(String googleId, String firstName, String lastName, Date birthday, String email) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setBirthday(birthday);
 		this.id = googleId;
+		this.email = email;
 	}
 	
 	public String getId(){
@@ -56,6 +62,13 @@ public class GuestData implements IsSerializable{
 	public String toString(){
 		return firstName+" "+lastName+" "+birthday;
 		
+	}
+	public String getEmail(){
+		return this.email;
+	}
+	
+	public void setEmail(String email){
+		this.email = email;
 	}
 
 }

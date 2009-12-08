@@ -27,5 +27,5 @@ public interface ProfileService extends RemoteService{
     /*
      * get user's profile
      */
-    GuestData getProfile(String userId);
+    GuestData getProfile(String userId) throws UserNotFoundException;
 }
