@@ -75,6 +75,9 @@ public interface CwConstants extends Constants {
     @DefaultStringValue("cw-TableWishHeader - inactive row ")
     String cwInactiveRowStyle();
     
+    @DefaultStringArrayValue({"Birthday","Party"})
+    String[] cwSuggestBoxEvents();
+    
   //  @DefaultStringValue("cw-TextArea")
   //  String cwTextAreaStyle();
     

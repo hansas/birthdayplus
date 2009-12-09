@@ -14,9 +14,11 @@ import com.google.gwt.user.client.ui.FlexTable;
 
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -55,16 +57,21 @@ public class MyWishlistTabGUI {
 	//name of the item 
 	protected TextBox itemField;
 	//priority of the item
-    protected ListBox priorityField;
+    private HorizontalPanel priorityPanel;
+    private RadioButton highPriorityButton;
+    private RadioButton lowPriorityButton;
+	//   protected ListBox priorityField;
     //link to the item
     protected TextBox linkField;
     //item's price
     protected TextBox priceField;
     //ok button in dialog box
-    public Button updateButton;
-    public Button addButton;
+  //  public Button updateButton;
+    public Button boxButton;
     //cancel button
     public Button cancelButton;
+    
+    private Boolean addItem;
 
 
 	
@@ -123,7 +130,7 @@ public class MyWishlistTabGUI {
         formTable.setWidget(0, 1, itemField);
 
         formTable.setText(1, 0, "priority");
-        formTable.setWidget(1, 1, priorityField);
+        formTable.setWidget(1, 1, priorityPanel);
         
         formTable.setText(2, 0, "link");
         formTable.setWidget(2, 1, linkField);
@@ -131,8 +138,8 @@ public class MyWishlistTabGUI {
         formTable.setText(3, 0, "price");
         formTable.setWidget(3, 1, priceField);
         
-        formTable.setWidget(4, 0, updateButton);
-        formTable.setWidget(4, 1, addButton);
+     //   formTable.setWidget(4, 0, updateButton);
+        formTable.setWidget(4, 1, boxButton);
         formTable.setWidget(4, 2, cancelButton);
         
     }
@@ -148,11 +155,18 @@ public class MyWishlistTabGUI {
 	        itemField=new TextBox();
 	    //    itemField.setStyleName(constants.cwTextBoxStyle());
 	        
-	    	priorityField=new ListBox(false);
-	        String[] listTypes = constants.cwListBoxCategories();
-	        for (int i = 0; i < listTypes.length; i++) {
-	          priorityField.addItem(listTypes[i]);
-	        }
+	    //	priorityField=new ListBox(false);
+	     //   String[] listTypes = constants.cwListBoxCategories();
+	      //  for (int i = 0; i < listTypes.length; i++) {
+	       //   priorityField.addItem(listTypes[i]);
+	      //  }
+	        priorityPanel = new HorizontalPanel();
+	        highPriorityButton = new RadioButton("priority", "High");
+	        priorityPanel.add(highPriorityButton);
+	        lowPriorityButton = new RadioButton("priority", "Low");
+	        priorityPanel.add(lowPriorityButton);
+	        
+
 //          priorityField.setStyleName(constants.cwListBoxStyle());
 
 	        linkField=new TextBox();
@@ -161,10 +175,10 @@ public class MyWishlistTabGUI {
 	        priceField=new TextBox();
 	    //    priceField.setStyleName(constants.cwTextBoxStyle());
 	        
-	        updateButton=new Button("Update item");
+	 //       updateButton=new Button("Update item");
 	   //     updateButton.setStyleName(constants.cwButtonStyle());
 	        
-	        addButton=new Button("Add item");
+	        boxButton=new Button();
 	   //     addButton.setStyleName(constants.cwButtonStyle());
 	        
 		    cancelButton = new Button(constants.cwDialogBoxCancel());
@@ -210,8 +224,9 @@ public class MyWishlistTabGUI {
          
        
          if (col==UPDATE_LINK) {
-             this.addButton.setVisible(false);
-             this.updateButton.setVisible(true);
+        	 this.addItem = false;
+          //   this.addButton.setVisible(false);
+         //    this.updateButton.setVisible(true);
              this.addItemButton.setVisible(false);
              loadForm(item,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
@@ -229,13 +244,15 @@ public class MyWishlistTabGUI {
 	  */
 	 private void loadForm(WishlistItemData item,Actions action) {
 		    addItemBox.center();
-		    addItemBox.setText(action.name()+" item");
+		    addItemBox.setText(action.toString()+" item");
+		    boxButton.setText(action.toString());
    	        addItemBox.show();
    	        itemField.setFocus(true);
 	        currentItem = item;
 	        this.itemField.setText(item.getItemName());
 	        this.linkField.setText(item.getLink());
 	        this.priceField.setText(item.getPrice().toString());
+	        this.highPriorityButton.setValue(true);
 	    }
 
 
@@ -282,7 +299,11 @@ public class MyWishlistTabGUI {
     	//add user id to item
     	currentItem.setItemName(itemField.getText());
         currentItem.setLink(linkField.getText());
-        currentItem.setPriority(Integer.parseInt(constants.cwListBoxCategories()[priorityField.getSelectedIndex()]));
+        if(highPriorityButton.getValue())
+        	currentItem.setPriority(5);
+        else
+        	currentItem.setPriority(1);
+     //   currentItem.setPriority(Integer.parseInt(constants.cwListBoxCategories()[priorityField.getSelectedIndex()]));
         try{
         	price=Integer.parseInt(priceField.getText());
         }catch(NumberFormatException ex){
@@ -297,8 +318,9 @@ public class MyWishlistTabGUI {
      */
     public void gui_eventAddItemButtonClicked() {
         this.addItemButton.setVisible(false);
-        this.updateButton.setVisible(false);
-        this.addButton.setVisible(true);
+      //  this.updateButton.setVisible(false);
+       // this.addButton.setVisible(true);
+        this.addItem = true;
         loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
     }
     
@@ -389,16 +411,15 @@ public class MyWishlistTabGUI {
             	gui_eventAddItemButtonClicked();
             }});
 
-		this.updateButton.addClickHandler(new ClickHandler(){
+		this.boxButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
-            	gui_eventUpdateButtonClicked();
+            	if(addItem)
+            		gui_eventAddButtonClicked();
+            	else
+            	    gui_eventUpdateButtonClicked();
             }});
         
-		this.addButton.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent event) {
-            	gui_eventAddButtonClicked();
-                
-            }});
+	
         
 		this.cancelButton.addClickHandler(new ClickHandler(){
         	public void onClick(ClickEvent event){

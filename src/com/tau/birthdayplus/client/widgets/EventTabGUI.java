@@ -19,6 +19,9 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -52,17 +55,19 @@ public class EventTabGUI {
 	//table for the form
 	private FlexTable layout; 
 	//event name field
-	private TextBox txtName;
+	private  SuggestBox txtName;
 	//event date field
 	private DateBox txtDate;
 	//recurrence field
 	private CheckBox chkRecurrence;
 	//update button
-	public Button updateButton;
+//	public Button updateButton;
 	//add button
-    public Button addButton;
+    public Button boxButton;
     //cancel button
     public Button cancelButton;
+    
+    public Boolean addEvent;
     
    public  WishListFriendsGUI wishlistFriendGUI;
     private WishListFriendsDelegate wishlistFriendService;
@@ -142,7 +147,14 @@ public class EventTabGUI {
 		eventDialogBox = new DialogBox();
 	//	eventDialogBox.setStyleName(constants.cwDialogBoxStyle());
 		
-		txtName = new TextBox();
+		MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+		    String[] words = constants.cwSuggestBoxEvents();
+		    for (int i = 0; i < words.length; ++i) {
+		      oracle.add(words[i]);
+		    }
+
+		
+		txtName =new SuggestBox(oracle);
 	//	txtName.setStyleName(constants.cwTextBoxStyle());
 		
 		txtDate = new DateBox();
@@ -153,10 +165,10 @@ public class EventTabGUI {
 		chkRecurrence=new CheckBox();
 	//	chkRecurrence.setStyleName(constants.cwCheckBoxStyle());
 		
-		updateButton=new Button("Update item");
+	//	updateButton=new Button("Update item");
       //  updateButton.setStyleName(constants.cwButtonStyle());
         
-        addButton=new Button("Add item");
+        boxButton=new Button();
      //   addButton.setStyleName(constants.cwButtonStyle());
         
 	    cancelButton = new Button(constants.cwDialogBoxCancel()); 
@@ -188,8 +200,8 @@ public class EventTabGUI {
 	    layout.setText(2, 0, "Recurrence");
 	    layout.setWidget(2, 1, chkRecurrence);
 	    
-	    layout.setWidget(3, 0, updateButton);
-        layout.setWidget(3, 1, addButton);
+	 //   layout.setWidget(3, 0, updateButton);
+        layout.setWidget(3, 1, boxButton);
         layout.setWidget(3, 2, cancelButton);
 	    
 	    
@@ -217,14 +229,15 @@ public class EventTabGUI {
 
     private void loadForm(EventData eventData,Actions action) {
 		eventDialogBox.center();
-		eventDialogBox.setText(action.toString()+ "Event");
+		eventDialogBox.setText(action.toString()+ " Event");
+		boxButton.setText(action.toString());
 		eventDialogBox.show();
 		txtName.setFocus(true);
 		this.currentEvent = eventData;
 		this.txtName.setText(this.currentEvent.getEventName());
 		this.txtDate.setValue(currentEvent.getEventDate());
 		this.chkRecurrence.setValue(this.currentEvent.getRecurrence());
-		entryPoint.feature.adjustHeight();
+	
 	}
     
     /*
@@ -258,8 +271,9 @@ public class EventTabGUI {
        
          if (col==UPDATE_LINK) {
         	 if(event.getUserId().equals(entryPoint.userId)){
-                this.addButton.setVisible(false);
-                this.updateButton.setVisible(true);
+               // this.addButton.setVisible(false);
+               // this.updateButton.setVisible(true);
+        		this.addEvent = false;
                 this.btnAddEvent.setVisible(false);
                 loadForm(event,Actions.UPDATE);
         	 }
@@ -320,8 +334,9 @@ public class EventTabGUI {
      */
     public void gui_eventAddEventButtonClicked() {
         this.btnAddEvent.setVisible(false);
-        this.updateButton.setVisible(false);
-        this.addButton.setVisible(true);
+      //  this.updateButton.setVisible(false);
+      //  this.addButton.setVisible(true);
+        this.addEvent = true;
         loadForm(new EventData(entryPoint.userId),Actions.CREATE);
     }
     
@@ -369,7 +384,7 @@ public class EventTabGUI {
 			if(event.getUserId().equals( entryPoint.userId)){
 			//	eventTable.setWidget(row, 3, new Hyperlink("update", null));
 				eventTable.setWidget(row, 3, new Image( GWT.getModuleBaseURL() + "edit.gif"));
-	    	    eventTable.setWidget(row,4,new Image( GWT.getModuleBaseURL() + "delete.gif")); 
+	    	    eventTable.setWidget(row,4, new Image( GWT.getModuleBaseURL() + "delete.gif")); 
 			}
 
 			eventTable.getRowFormatter().addStyleName(row, "tablesRows");
@@ -442,16 +457,14 @@ public class EventTabGUI {
             	gui_eventAddEventButtonClicked();
             }});
 
-		this.updateButton.addClickHandler(new ClickHandler(){
+		this.boxButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
-            	gui_eventUpdateButtonClicked();
+            	if(addEvent)
+            		gui_eventAddButtonClicked();
+            	else 
+            	    gui_eventUpdateButtonClicked();
             }});
-        
-		this.addButton.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent event) {
-            	gui_eventAddButtonClicked();
-                
-            }});
+       
         
 		this.cancelButton.addClickHandler(new ClickHandler(){
         	public void onClick(ClickEvent event){
