@@ -60,11 +60,12 @@ import com.tau.birthdayplus.dto.client.GuestData;
 @com.google.gwt.gadgets.client.Gadget.ModulePrefs(
 		title = "Birthday+", 
 		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
-		author_email = "yalo_niv@yahoo.com"
+		author_email = "yalo_niv@yahoo.com",
+		height = 400
 )
-public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial ,NeedsDynamicHeight  {
+public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial  {
 	CwConstants constants = GWT.create(CwConstants.class);
-	public DynamicHeightFeature feature;
+	//public DynamicHeightFeature feature;
 	
 	// Create a remote service proxy to talk to the server-side Profile service.
 	private final ProfileServiceAsync profileService = GWT.create(ProfileService.class); 
@@ -200,8 +201,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    // Get the Application Container div from the DOM
 		 //    RootPanel.get().add(tab);
 		    
-		    
-		    feature.getContentDiv().add(tab);
+		    RootPanel.get().add(tab);
+		 //   feature.getContentDiv().add(tab);
 		    
 			
             
@@ -389,11 +390,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		//	wireTabGUIEvents();
 			
 		}
-		public void initializeFeature(DynamicHeightFeature feature) {
-			this.feature=feature;
-			
-			
-		}
+	
 	  
 
 		
