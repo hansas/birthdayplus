@@ -32,7 +32,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 public class IBuyTabGUI {
 	//////////////////Constants///////////////////////////
 	CwConstants constants = GWT.create(CwConstants.class);
-	private static final int DELETE_LINK = 6;
+	private static final int BUY_LINK = 6;
 	private static final int CANCEL_LINK = 5;
 	private static final int UPDATE_LINK = 4;
 	private static final int PRICE_LINK  = 3;
@@ -91,12 +91,11 @@ public class IBuyTabGUI {
 	public void init() {
 		iBuyPanel = new AbsolutePanel();
 		iBuyPanel.setStyleName("iBuyPanel");
-	//	wishlistVerticalPanel=new VerticalPanel();
-	//	wishlistVerticalPanel.setTitle("Booked Items ");
+	
 		buildWishlistTable();
 		buildParticipatorsBox();
 		buildMoneyDialogBox();
-	//	wishlistVerticalPanel.add(wishTable);
+	
 		iBuyPanel.add(wishTable);
 		iBuyPanel.add(participatorsBoxVerticalPanel);
 		
@@ -106,20 +105,18 @@ public class IBuyTabGUI {
 	
 	private void buildMoneyDialogBox(){
 		moneyDialogBox = new DialogBox();
-	//	moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
+	
 		
 		moneyVerticalPanel  = new VerticalPanel();
+		
 		enterSumTextBox = new TextBox();
-//		enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
 		enterSumTextBox.setText("Enter the sum :");
 		
 		moneyHorizontalPanel = new HorizontalPanel();
 		okMoneyButton = new Button();
-	//	okMoneyButton.setStyleName(constants.cwButtonStyle());
 		okMoneyButton.setText("ok");
 		
 		cancelMoneyButton = new Button();
-	//	cancelMoneyButton.setStyleName(constants.cwButtonStyle());
 		cancelMoneyButton.setText("cancel");
 		
 		moneyHorizontalPanel.add(okMoneyButton);
@@ -155,6 +152,11 @@ public class IBuyTabGUI {
 	    wishTable.setHeader(1,"Item");
 	    wishTable.setHeader(2,"Priority");
 	    wishTable.setHeader(3,"Price");
+	    
+	    wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(3, "tablesColumns");
 	}
 	
 	private void buildParticipatorsTable(){
@@ -174,6 +176,7 @@ public class IBuyTabGUI {
 		for (ParticipatorData user : currentItem.getParticipators()){
 			participatorsTable.setWidget(row, 0, new Label( user.getUserFirstName() + " " + user.getUserLastName()) );
 			participatorsTable.setWidget(row, 1, new Label(user.getMoney().toString()));
+			participatorsTable.getRowFormatter().addStyleName(row, "tablesRows");
 			row++;
 		}
 		
@@ -188,10 +191,7 @@ public class IBuyTabGUI {
 		chatTable.setHeader(1, "Time");
 		chatTable.setHeader(2,"Message");
 		
-		wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
-		wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
-		wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
-		wishTable.getColumnFormatter().addStyleName(3, "tablesColumns");
+		
 		
 		
 	}
@@ -204,7 +204,7 @@ public class IBuyTabGUI {
 		
 		chatTextArea.setVisibleLines(3);
 		
-		addMessageButton = new Button("send message");
+		addMessageButton = new Button("send");
 	//	addMessageButton.setStyleName(constants.cwButtonStyle());
 		
 		
@@ -225,14 +225,10 @@ public class IBuyTabGUI {
 	
 	
 	private void buildParticipatorsBox(){
-	//	participatorsBox = new DialogBox();
-	//	participatorsBox.addStyleName(constants.cwDialogBoxStyle());
-		
 		participatorsBoxVerticalPanel = new VerticalPanel();
 		participatorsBoxVerticalPanel.setVisible(false);
 		
 		closePartisipatorsBoxButton = new Button("return");
-	//	closePartisipatorsBoxButton.setStyleName(constants.cwButtonStyle());
 		
 		buildParticipatorsTable();
 		buildChat();
@@ -292,8 +288,8 @@ public class IBuyTabGUI {
 	                            else
 	                               this.wishlistService.deleteParticipator(item.getWishlistItemId(), entryPoint.userId);
 	                            break;
-//	        case DELETE_LINK  : this.wishlistService.deleteItemFromTab(entryPoint.userId, item.getWishlistItemId());
-//	                            break;
+	        case BUY_LINK     : //ASK ABOUT CONTACTS AND SHORT MESSAGE
+                                break;
 	        }
 	        
 	  }
@@ -305,22 +301,27 @@ public class IBuyTabGUI {
 			this.itemsToBuy = result;
 	        this.wishTable.clear();
 	        
-	        RowFormatter rf = wishTable.getRowFormatter();
+	       
 	        
 	        int row = 0;
 	        
 	        for (WishlistItemNewData item : result) {
 	        	wishTable.setWidget(row,0,new Label(item.getUserName()+"'s "+item.getEventName()));
+	        	//link
 	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 1,new Label(item.getItemName()));
 	        	else
 	        		wishTable.setWidget(row, 1,new Hyperlink(item.getItemName(),null));
-	    	    wishTable.setWidget(row,2,new Label(item.getPriority().toString()));
+	        	//priority
+	        	if(item.getPriority() == 5)
+	        		wishTable.setWidget(row,2,new Label("high"));
+	        	else
+	    	        wishTable.setWidget(row,2,new Label("low"));
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
 	    	    	wishTable.setWidget(row, 3,new Label(item.getPrice().toString()) );
 		    	    wishTable.setWidget(row, 5, new Hyperlink("cancel", null)); 
-		    	    wishTable.setWidget(row, 6, new Hyperlink("delete" , null));
+		
 	    	    }else{
 	    	    	Integer sum = 0;
 	    	    	for(ParticipatorData user : item.getParticipators()){
@@ -330,11 +331,9 @@ public class IBuyTabGUI {
 	    	        if(item.getIsActive()){
 	    	        	wishTable.setWidget(row, 4, new Hyperlink("update", null));
 	    	        	wishTable.setWidget(row, 5, new Hyperlink("leave this group",null));
-	    	        }else{
-	    	        	wishTable.setWidget(row, 6, new Hyperlink("delete",null));
+	    	        	wishTable.setWidget(row, 6, new Hyperlink("we'll buy",null));
 	    	        }
-	    	        wishTable.setWidget(row, 4, new Hyperlink("update", null));
-	    	        wishTable.setWidget(row, 5, new Hyperlink("leave this group",null));
+	    
 	           
 	        }
 	    	    

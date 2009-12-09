@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 
 
 import com.google.gwt.user.client.Window;
@@ -17,6 +20,7 @@ import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -37,7 +41,7 @@ public class WishListFriendsGUI  {
 	 * constants
 	 */
 	CwConstants constants = GWT.create(CwConstants.class);
-	private static final int LINK = 0;
+//	private static final int LINK = 0;
 	private static final int PRICE_LINK =2;
 	private static final int BUY_LINK = 3;
     private static final int GROUP_BUY_LINK = 4;
@@ -158,19 +162,23 @@ public class WishListFriendsGUI  {
 	//   participatorsPanel.setStyleName(constants.cwPopupPanelStyle());
 	   
  	   participatorsTable = new TableWithHeader();
- 	   participatorsTable.setStyleName(constants.cwTableStyle());
+ 	   participatorsTable.setStyleName("tables");
  	   
  	   participatorsTable.setHeader(0, "Name");
  	   participatorsTable.setHeader(1, "sum");
+ 	   
+ 	   participatorsTable.getColumnFormatter().addStyleName(0, "tablesColumns");
+ 	   participatorsTable.getColumnFormatter().addStyleName(1, "tablesColumns");
+ 	  
  	   participatorsPanel.add(participatorsTable);
 	}
 	
 	private void showParticipatorsPanel(WishlistItemNewData item,Widget widgetClicked){
 		currentItem = item;
 	    
-        int left =  widgetClicked.getAbsoluteLeft() + 10;
-        int top = widgetClicked.getAbsoluteTop() + 10;
-        participatorsPanel.setPopupPosition(left, top);
+    //    int left =  widgetClicked.getAbsoluteLeft() + 10;
+   //     int top = widgetClicked.getAbsoluteTop() + 10;
+    //    participatorsPanel.setPopupPosition(left, top);
         
         participatorsTable.clear();
 
@@ -182,6 +190,7 @@ public class WishListFriendsGUI  {
         for(ParticipatorData participator : item.getParticipators()){
         	participatorsTable.setWidget(row, 0, new Label(participator.getUserFirstName()+ " " +participator.getUserLastName()) );
         	participatorsTable.setWidget(row, 1, new Label(participator.getMoney().toString()));
+        	participatorsTable.getRowFormatter().addStyleName(row, "tablesRows");
         	row++;
         }
 
@@ -223,7 +232,8 @@ public class WishListFriendsGUI  {
 	 */
 	private void buildFriendWishlistTable(){
 	    friendWishTable=new TableWithHeader();
-	    friendWishTable.addStyleName(constants.cwTableStyle());    
+	    
+	    friendWishTable.setStyleName("tables");    
 	    
 	    friendWishTable.setHeader(0,"Item");
 	    friendWishTable.setHeader(1,"Priority");
@@ -243,9 +253,6 @@ public class WishListFriendsGUI  {
         WishlistItemNewData item = this.items.get(row);
          
        switch(col){
-       case LINK :          if(item.getLink()!=null)
-      		                   Window.open(item.getLink(), "_blank", null);
-    	                    break;
     	                  
        case PRICE_LINK :    if(!item.getParticipators().isEmpty())
   		                        showParticipatorsPanel(item , widgetClicked);
@@ -327,6 +334,13 @@ public class WishListFriendsGUI  {
 				gui_eventCancelMoneyButtonClicked();
 			}
 		});
+		
+		this.enterSumTextBox.addKeyUpHandler(new KeyUpHandler(){
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
+					gui_eventOkMoneyButtonClicked();
+				}
+		});
 	}
 	
 	/*
@@ -340,12 +354,17 @@ public class WishListFriendsGUI  {
         
         int row = 0;
         for (WishlistItemNewData item : result) {
+        	//link
         	if (item.getLink().equals(""))
         		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
         	else
-        		friendWishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
-        	friendWishTable.setWidget(row,1,new Label(item.getPriority().toString()));
-        	
+        		friendWishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
+        	//priority
+        	if(item.getPriority()== 5)
+        	   friendWishTable.setWidget(row,1,new Label("high"));
+        	else
+        		friendWishTable.setWidget(row,1,new Label("low"));
+        	//the item is free
         	if(item.getParticipators().isEmpty()){
         	   friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
         	   friendWishTable.setWidget(row, 3, new Hyperlink("I'm buying", null));
@@ -362,6 +381,7 @@ public class WishListFriendsGUI  {
         	   if(!userInGroup)
         	      friendWishTable.setWidget(row, 4, new Hyperlink("Join the group", null));
         	}
+        	friendWishTable.getRowFormatter().addStyleName(row, "tablesRows");
             row ++;
         }
 		

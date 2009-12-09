@@ -36,12 +36,16 @@ public class EventTabDelegate {
 	}
 	
 	void createEvent(final EventData event){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.createEvent(event, new AsyncCallback<Void>(){
 			public void onFailure(Throwable caught){
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventCreateEventFailed(caught);
 			}
 		
 			public void onSuccess(Void result){
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventCreateEventSuccessful();
 			}
 		}//end of inner class
@@ -51,12 +55,16 @@ public class EventTabDelegate {
 	}
 	
 	void updateEvent(final EventData event){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.updateEvent(event, new AsyncCallback<Void>(){
 			public void onFailure(Throwable caught){
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventUpdateEventFailed(caught);
 			}
 			
 			public void onSuccess(Void result){
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventUpdateEventSuccessful();
 			}
 	}//end of inner class
@@ -67,12 +75,16 @@ public class EventTabDelegate {
 	}
 	
 	void deleteEvent(final EventData event){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.deleteEvent(event, new AsyncCallback<Void>(){
 			public void onFailure(Throwable caught){
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventDeleteEventFailed(caught);
 			}
 			   
 			public void onSuccess(Void result){
+				entryPoint.loadingImagePopup.hide();
 				eventGui.service_eventDeleteEventSuccessful();
 			}
 	}//end of inner class
