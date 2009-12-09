@@ -312,6 +312,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 
 				public void onFailure(Throwable caught) {
 			//		Window.alert("creating new profile" +caught);
+					if (caught instanceof UserNotFoundException) {
+
 					
 					final DialogBox dateDialogBox = new DialogBox();
 		//			dateDialogBox.setStyleName(constants.cwDialogBoxStyle());
@@ -364,6 +366,9 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 					        RequestProxy.makePostRequest(requestBuilder1.getUrl(), requestBuilder1.getRequestData(), requestBuilder1.getCallback());
 					
 				        }});
+				}else{
+					//do something
+				}
 				}
 
 				public void onSuccess(GuestData result) {
