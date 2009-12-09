@@ -220,7 +220,6 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
-			log.info("item was created");
 			pm.close();
 		}
 	}
@@ -339,7 +338,7 @@ public class BusinessObjectDAL {
 			query.declareParameters("Key gkey");
 			buyers = (List<WishlistItem>) query.execute(g.getIdKey());
 		} catch (Exception ex) {
-			log.severe("Error in getBookedWishlistItems2's second query");
+			log.severe("Error in getBookedWishlistItems2's first query"+ex.getMessage());
 			throw new RuntimeException("error in data base: getBookedWishlistItems2");
 		}
 		log.info("second query was successful");
