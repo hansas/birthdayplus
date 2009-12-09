@@ -53,5 +53,9 @@ public class DALWrapper {
 		return  BusinessObjectDAL.getWishlistItemById(keys, pm);
 	}
 	
+	public List<WishlistItem> getBookedWishlistItems2(String userId) throws UserNotFoundException{
+		return BusinessObjectDAL.getBookedWishlistItems2(userId, pm);
+	}
+	
 	
 }

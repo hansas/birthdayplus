@@ -20,14 +20,8 @@ public class Participator
 		private Key idKey;
 		@Persistent
 		private String id;
-//	   @Persistent
-//	   private
-//	   String userFirstName;
-//	   @Persistent
-//	   private
-//	   String userLastName;
-	   @Persistent
-	   Integer money;  
+	    @Persistent
+	    Integer money;  
 	  
 	   
 
