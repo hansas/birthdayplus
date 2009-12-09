@@ -22,13 +22,17 @@ background-color: #00BFFF;
 
 .tablesRows
 {
-background-color: white; 
+height: 22px;
+background-color: white;
 }
 
-.tabsPanel, .vPanel, .iBuyPanel, wishPanel 
+.lastColumns
 {
-overflow: scroll;
+width: 30px;
 }
+
+.tabsPanel
 {
+height: 300px;
 overflow: scroll;
 }

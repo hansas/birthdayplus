@@ -129,7 +129,8 @@ public class EventTabGUI {
 		eventTable.getColumnFormatter().addStyleName(1, "tablesColumns");
 		eventTable.getColumnFormatter().addStyleName(2, "tablesColumns");
 
-		
+		eventTable.getColumnFormatter().addStyleName(3, "lastColumns");
+		eventTable.getColumnFormatter().addStyleName(4, "lastColumns");
 	}
 	
 	private void placeWidgets() {
