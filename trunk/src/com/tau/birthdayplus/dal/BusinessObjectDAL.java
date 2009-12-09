@@ -109,7 +109,7 @@ public class BusinessObjectDAL {
 			tx.begin();
 			Guest parent = BusinessObjectDAL.loadGuest(eventD.getUserId(), pm);
 			Event event = pm.getObjectById(Event.class, eventD.getEventId());
-			if (mayIDeleteEvent(event)){
+			if (mayIDeleteEvent(event,pm)){
 				parent.removeEvent(event);
 				pm.makePersistent(parent);
 				pm.deletePersistent(event);
@@ -126,8 +126,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static Boolean mayIDeleteEvent(Event event){
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public static Boolean mayIDeleteEvent(Event event,PersistenceManager pm){
 		List<WishlistItem> items = new ArrayList<WishlistItem>();
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
@@ -138,6 +137,9 @@ public class BusinessObjectDAL {
 		} catch (Exception ex) {
 			log.severe("Error in mayIDeleteEvent");
 			throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
+		}
+		if (!items.isEmpty()){
+			log.info("There is items for this event");
 		}
 		return items.isEmpty();
 	}
