@@ -90,6 +90,7 @@ public class IBuyTabGUI {
 	 */
 	public void init() {
 		iBuyPanel = new AbsolutePanel();
+		iBuyPanel.setStyleName("iBuyPanel");
 	//	wishlistVerticalPanel=new VerticalPanel();
 	//	wishlistVerticalPanel.setTitle("Booked Items ");
 		buildWishlistTable();

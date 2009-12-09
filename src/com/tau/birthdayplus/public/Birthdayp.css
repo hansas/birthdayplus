@@ -25,3 +25,10 @@ background-color: #00BFFF;
 background-color: white; 
 }
 
+.tabsPanel, .vPanel, .iBuyPanel, wishPanel 
+{
+overflow: scroll;
+}
+{
+overflow: scroll;
+}
