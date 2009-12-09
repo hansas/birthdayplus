@@ -86,6 +86,7 @@ public class MyWishlistTabGUI {
 	public void init() {
 		//it's the main panel for this tab
 		wishlistVerticalPanel=new VerticalPanel();
+		wishlistVerticalPanel.setStyleName("wishPanel");
 		buildWishlistTable();
 		buildAddItemBox();
 		

@@ -95,6 +95,8 @@ public class EventTabGUI {
 	    wishlistFriendGUI.init();
 	    
 		vPanel = new VerticalPanel();
+		vPanel.addStyleName("vPanel");
+		
 		buildEventTable();
 		buildEventDialogBox();
 	

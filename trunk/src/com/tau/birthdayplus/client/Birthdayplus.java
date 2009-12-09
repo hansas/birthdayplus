@@ -137,6 +137,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
  private void buildTab(){
 	        
 		    tab = new TabPanel();
+		    tab.setStyleName("tabsPanel");
 		    
 	//	    tab.setStyleName(constants.cwTabStyle());
 		
