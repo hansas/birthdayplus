@@ -107,7 +107,6 @@ public class BusinessObjectDAL {
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
 			tx.begin();
-			int i = 1;
 			Guest parent = BusinessObjectDAL.loadGuest(eventD.getUserId(), pm);
 			Event event = pm.getObjectById(Event.class, eventD.getEventId());
 			if (mayIDeleteEvent(event)){
@@ -117,6 +116,7 @@ public class BusinessObjectDAL {
 			}
 			tx.commit();
 		} catch (Exception ex) {
+			log.severe("Error in deleteEvent");
 			throw new RuntimeException("error in data base: deleteEvent");
 		} finally {
 			if (tx.isActive()) {
@@ -136,6 +136,7 @@ public class BusinessObjectDAL {
 			query.declareParameters("Key ekey");
 			items = (List<WishlistItem>) query.execute(event.getKey());
 		} catch (Exception ex) {
+			log.severe("Error in mayIDeleteEvent");
 			throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
 		}
 		return items.isEmpty();
