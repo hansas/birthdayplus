@@ -131,6 +131,7 @@ public class BusinessObjectDAL {
 		List<WishlistItem> items = new ArrayList<WishlistItem>();
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
+			query.declareImports("import com.google.appengine.api.datastore.Key");
 			query.setFilter("eventKey == ekey");
 			query.declareParameters("Key ekey");
 			items = (List<WishlistItem>) query.execute(event.getKey());
@@ -328,20 +329,27 @@ public class BusinessObjectDAL {
 			throw new RuntimeException("error in data base: getBookedWishlistItems2");
 		}
 		log.info("first query was successful");
+		if (partisipators==null){
+			log.info("getBookedWishlistItems2: there is no partisipators");
+		}
 		for (Participator p : partisipators){
 			WishlistItem item = loadWishlistItem(KeyFactory.keyToString(p.getIdKey().getParent()),pm);
 			wishlistItems.add(item);
 		}
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
+			query.declareImports("import com.google.appengine.api.datastore.Key");
 			query.setFilter("buyerKey == gkey");
 			query.declareParameters("Key gkey");
 			buyers = (List<WishlistItem>) query.execute(g.getIdKey());
 		} catch (Exception ex) {
-			log.severe("Error in getBookedWishlistItems2's first query"+ex.getMessage());
+			log.severe("Error in getBookedWishlistItems2's second query"+ex.getMessage());
 			throw new RuntimeException("error in data base: getBookedWishlistItems2");
 		}
 		log.info("second query was successful");
+		if (buyers==null){
+			log.info("getBookedWishlistItems2: there is no buyers");
+		}
 		for (WishlistItem buyer : buyers){
 			if (!wishlistItems.contains(buyer)){
 				wishlistItems.add(buyer);
@@ -404,27 +412,27 @@ public class BusinessObjectDAL {
 	}
 
 	//TODO: delete this function
-	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
-		Guest guest = loadGuest(userId, pm);
-		if (item.getIsActive()==false){
-			Transaction tx = (Transaction) pm.currentTransaction();
-			try {
-				tx.begin();
-				guest.removeIBuyItem(item);
-				pm.makePersistent(guest);
-				tx.commit();
-			} catch (Exception ex) {
-				throw new RuntimeException("error in data base: deleteBookedWishlistItem");
-			} finally {
-				if (tx.isActive()) {
-					tx.rollback();
-				}
-				pm.close();
-			}
-		}
-	}
+//	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
+//		PersistenceManager pm = PMF.get().getPersistenceManager();
+//		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
+//		Guest guest = loadGuest(userId, pm);
+//		if (item.getIsActive()==false){
+//			Transaction tx = (Transaction) pm.currentTransaction();
+//			try {
+//				tx.begin();
+//				guest.removeIBuyItem(item);
+//				pm.makePersistent(guest);
+//				tx.commit();
+//			} catch (Exception ex) {
+//				throw new RuntimeException("error in data base: deleteBookedWishlistItem");
+//			} finally {
+//				if (tx.isActive()) {
+//					tx.rollback();
+//				}
+//				pm.close();
+//			}
+//		}
+//	}
 	
 	public static List<WishlistItem> getWishlistForEvent(String userId,String eventId,
 			PersistenceManager pm) throws UserNotFoundException{

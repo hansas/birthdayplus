@@ -198,7 +198,7 @@ WishlistService  {
 	 * return all the items this user has booked
 	 */
 	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException {
-		return WishlistManagement.getBookedWishlistItems2(userId);
+		return WishlistManagement.getBookedWishlistItems(userId);
 	}
 	
 
@@ -228,10 +228,10 @@ WishlistService  {
 	 * remove this item from this user's "I buy " list , check if item isActive == false
 	 * (won't remove item with open group)
 	 */
-	public void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException {
-		WishlistManagement.deleteBookedWishlistItem(userId, wishlistItemId);
-		
-	}
+//	public void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException {
+//		WishlistManagement.deleteBookedWishlistItem(userId, wishlistItemId);
+//		
+//	}
 
 	/*
 	 * update participator (update money only)

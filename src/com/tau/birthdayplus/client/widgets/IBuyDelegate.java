@@ -80,24 +80,24 @@ public class IBuyDelegate {
 
 	}
 	
-	void deleteItemFromTab(String userId,String wishlistItemId){
-		entryPoint.loadingImagePopup.center();
-		entryPoint.loadingImagePopup.show();
-		RequestBuilder requestBuilder=wishlistService.deleteBookedWishlistItem(userId, wishlistItemId,new AsyncCallback<Void>(){
-
-			public void onFailure(Throwable caught) {
-				entryPoint.loadingImagePopup.hide();
-				gui.service_eventDeleteItemFromTabFailed(caught);
-			}
-
-			public void onSuccess(Void result) {
-				entryPoint.loadingImagePopup.hide();
-				gui.service_eventDeleteItemFromTabSuccesfull();				
-			}
-		});
-		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
-
-	}
+//	void deleteItemFromTab(String userId,String wishlistItemId){
+//		entryPoint.loadingImagePopup.center();
+//		entryPoint.loadingImagePopup.show();
+//		RequestBuilder requestBuilder=wishlistService.deleteBookedWishlistItem(userId, wishlistItemId,new AsyncCallback<Void>(){
+//
+//			public void onFailure(Throwable caught) {
+//				entryPoint.loadingImagePopup.hide();
+//				gui.service_eventDeleteItemFromTabFailed(caught);
+//			}
+//
+//			public void onSuccess(Void result) {
+//				entryPoint.loadingImagePopup.hide();
+//				gui.service_eventDeleteItemFromTabSuccesfull();				
+//			}
+//		});
+//		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+//
+//	}
 	
 	 
 	 
