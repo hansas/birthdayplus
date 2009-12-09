@@ -382,9 +382,12 @@ public class EventTabGUI {
 			}
 			eventTable.setWidget(row, 2, lblEventDate);
 			if(event.getUserId().equals( entryPoint.userId)){
-			//	eventTable.setWidget(row, 3, new Hyperlink("update", null));
-				eventTable.setWidget(row, 3, new Image( GWT.getModuleBaseURL() + "edit.gif"));
-	    	    eventTable.setWidget(row,4, new Image( GWT.getModuleBaseURL() + "delete.gif")); 
+			    Image updateImage = new Image( GWT.getModuleBaseURL() + "edit.gif");
+			    updateImage.setTitle("update event");
+			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "delete.gif");
+			    deleteImage.setTitle("delete event");
+				eventTable.setWidget(row, 3, updateImage);
+	    	    eventTable.setWidget(row,4, deleteImage); 
 			}
 
 			eventTable.getRowFormatter().addStyleName(row, "tablesRows");

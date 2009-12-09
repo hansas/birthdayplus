@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -340,18 +341,28 @@ public class MyWishlistTabGUI {
 	        this.wishTable.clear();
 	        
 	        RowFormatter rf = wishTable.getRowFormatter();
-	        
+           	        
 	        int row = 0;
 	        for (WishlistItemData item : result) {
+	        	//link
 	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
 	        	else
 	        		wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
-	        		//wishTable.setWidget(row, 0,new Hyperlink(item.getItemName(),null));
-	    	    wishTable.setWidget(row,1,new Label(item.getPriority().toString()));
+	        	//priority
+	        	if(item.getPriority()== 5)
+	        		wishTable.setWidget(row,1,new Label("high"));
+	        	else	
+	    	        wishTable.setWidget(row,1,new Label("low"));
+	        	
 	    	    wishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
-	    	    wishTable.setWidget(row, 3, new Hyperlink("update", null));
-	    	    wishTable.setWidget(row,4,new Hyperlink("delete", null)); 
+	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "edit.gif");
+			    updateImage.setTitle("update item");
+			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "delete.gif");
+			    deleteImage.setTitle("delete item");
+			
+	    	    wishTable.setWidget(row, 3, updateImage);
+	    	    wishTable.setWidget(row,4,deleteImage); 
 	    	    if(item.getIsActive())
 	    	    	rf.addStyleName(row,constants.cwActiveRowStyle());
 	    	    else
