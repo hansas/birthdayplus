@@ -26,9 +26,12 @@ import com.tau.birthdayplus.dto.client.WishlistItemData; //import com.tau.birthd
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.WishlistManagement;
+import java.util.logging.Logger;
 
 public class BusinessObjectDAL {
-
+	
+	private static final Logger log = Logger.getLogger(BusinessObjectDAL.class.getName());
+	
 	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException {
 		Guest guest = null;
 		Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
@@ -107,9 +110,11 @@ public class BusinessObjectDAL {
 			int i = 1;
 			Guest parent = BusinessObjectDAL.loadGuest(eventD.getUserId(), pm);
 			Event event = pm.getObjectById(Event.class, eventD.getEventId());
-			parent.removeEvent(event);
-			pm.makePersistent(parent);
-			pm.deletePersistent(event);
+			if (mayIDeleteEvent(event)){
+				parent.removeEvent(event);
+				pm.makePersistent(parent);
+				pm.deletePersistent(event);
+			}
 			tx.commit();
 		} catch (Exception ex) {
 			throw new RuntimeException("error in data base: deleteEvent");
@@ -119,7 +124,20 @@ public class BusinessObjectDAL {
 			}
 			pm.close();
 		}
-
+	}
+	
+	public static Boolean mayIDeleteEvent(Event event){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		List<WishlistItem> items = new ArrayList<WishlistItem>();
+		try {
+			Query query = pm.newQuery(WishlistItem.class);
+			query.setFilter("eventKey == ekey");
+			query.declareParameters("Key ekey");
+			items = (List<WishlistItem>) query.execute(event.getKey());
+		} catch (Exception ex) {
+			throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
+		}
+		return items.isEmpty();
 	}
 
 	public static void createEvent(EventData eventD) {
@@ -250,13 +268,14 @@ public class BusinessObjectDAL {
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
 			tx.begin();
-			int i = 1;
 			Guest parent = BusinessObjectDAL.loadGuest(itemD.getUserId(), pm);
 			WishlistItem item = pm.getObjectById(WishlistItem.class, itemD
 					.getWishlistItemId());
-			parent.removeWishlistItem(item);
-			pm.makePersistent(parent);
-			pm.deletePersistent(item);
+			if (item.getParticipators().isEmpty() && item.getBuyerKey()==null){ //User may delete item iff there is no buyers and no participators
+				parent.removeWishlistItem(item);
+				pm.makePersistent(parent);
+				pm.deletePersistent(item);
+			}
 			tx.commit();
 		} catch (Exception ex) {
 			throw new RuntimeException("error in data base: deleteWishlistItem");
@@ -292,6 +311,43 @@ public class BusinessObjectDAL {
 		return items;
 	}
 	
+	public static List<WishlistItem> getBookedWishlistItems2(String userId,PersistenceManager pm)
+	throws UserNotFoundException{
+		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
+		List<Participator> partisipators = new ArrayList<Participator>();
+		List<WishlistItem> buyers = new ArrayList<WishlistItem>();
+		Guest g = loadGuest(userId, pm);
+		try {
+
+			Query query = pm.newQuery(Participator.class);
+			query.setFilter("id == gid");
+			query.declareParameters("String gid");
+			partisipators = (List<Participator>) query.execute(g.getId());
+		} catch (Exception ex) {
+			log.severe("Error in getBookedWishlistItems2's first query");
+			throw new RuntimeException("error in data base: getBookedWishlistItems2");
+		}
+		for (Participator p : partisipators){
+			WishlistItem item = loadWishlistItem(KeyFactory.keyToString(p.getIdKey().getParent()),pm);
+			wishlistItems.add(item);
+		}
+		try {
+			Query query = pm.newQuery(WishlistItem.class);
+			query.setFilter("buyerKey == gkey");
+			query.declareParameters("Key gkey");
+			buyers = (List<WishlistItem>) query.execute(g.getIdKey());
+		} catch (Exception ex) {
+			log.severe("Error in getBookedWishlistItems2's second query");
+			throw new RuntimeException("error in data base: getBookedWishlistItems2");
+		}
+		for (WishlistItem buyer : buyers){
+			if (!wishlistItems.contains(buyer)){
+				wishlistItems.add(buyer);
+			}
+		}
+		return wishlistItems;
+	}
+	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
@@ -304,8 +360,8 @@ public class BusinessObjectDAL {
 			Transaction tx = (Transaction) pm.currentTransaction();
 			try {
 				tx.begin();
-				guest.addIBuyItem(item);
-				pm.makePersistent(guest);
+				//guest.addIBuyItem(item);
+				//pm.makePersistent(guest);
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
@@ -327,7 +383,7 @@ public class BusinessObjectDAL {
 			Transaction tx = (Transaction) pm.currentTransaction();
 			try {
 				tx.begin();
-				guest.removeIBuyItem(item);
+				//guest.removeIBuyItem(item);
 				pm.makePersistent(guest);
 				item.setBuyerKey(null);
 				item.setEventKey(null);
@@ -345,6 +401,7 @@ public class BusinessObjectDAL {
 		}
 	}
 
+	//TODO: delete this function
 	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
@@ -399,13 +456,13 @@ public class BusinessObjectDAL {
 				&&(item.getIsActive()==true)&&(!contains)){
 			Participator participator = new Participator(participatorD.getUserId(),participatorD.getMoney());
 			Transaction tx = (Transaction) pm.currentTransaction();
-			Guest g = loadGuest(participator.getId(), pm);
+			//Guest g = loadGuest(participator.getId(), pm);
 			try {
 				tx.begin();
 				item.addParticipator(participator);
 				item.setEventKey(KeyFactory.stringToKey(eventId));
-				g.addIBuyItem(item);
-				pm.makePersistent(g);
+				//g.addIBuyItem(item);
+				//pm.makePersistent(g);
 				pm.makePersistent(item);
 				pm.makePersistent(participator);
 				tx.commit();
@@ -456,7 +513,7 @@ public class BusinessObjectDAL {
 		
 		if (item.getIsActive()==true){
 			Transaction tx = (Transaction) pm.currentTransaction();
-			Guest user = loadGuest(userId, pm);
+			//Guest user = loadGuest(userId, pm);
 			try {
 				tx.begin();
 				int i=1;
@@ -469,8 +526,8 @@ public class BusinessObjectDAL {
 				if(size==1){
 					item.setEventKey(null);
 				}
-				user.removeIBuyItem(item);
-				pm.makePersistent(user);
+				//user.removeIBuyItem(item);
+				//pm.makePersistent(user);
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {

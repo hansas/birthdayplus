@@ -127,6 +127,18 @@ public class WishlistManagement {
 		}
 	}
 	
+	public static ArrayList<WishlistItemNewData> getBookedWishlistItems2(String userId)
+	throws UserNotFoundException{
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			List<WishlistItem> items = wrapper.getBookedWishlistItems2(userId);
+			return getBookedWishlistItemNewData(items,wrapper);
+		}
+		finally{
+			wrapper.close();
+		}
+	}
+	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException {
 		BusinessObjectDAL.bookItemForUser(wishlistItemId,eventId,userId);
 	}

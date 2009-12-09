@@ -43,36 +43,36 @@ WishlistService  {
 	/*
 	 * creates new item for the user
 	 */
-	public void createWishlistItem(WishlistItemData item) {
+	public void createWishlistItem(WishlistItemData item) throws UserNotFoundException {
 		WishlistManagement.createWishlistItem(item);
-//		GuestData guestData = new GuestData("irinal1","Ira","Let",new Date(17,9,85));
-//		GuestData friendData = new GuestData("moshel1","Moshe","Levi",new Date(12,01,85));
+//		GuestData guestData = new GuestData("irinal2","Ira","Let",new Date(17,9,85));
+//		GuestData friendData = new GuestData("moshel2","Moshe","Levi",new Date(12,01,85));
 //		UserManagement.createProfile(guestData);
 //		UserManagement.createProfile(friendData);
-//		EventData eventData = new EventData("","irinal1","New Year",new Date(31,12,9), false);
+//		EventData eventData = new EventData("","irinal2","New Year",new Date(31,12,9), false);
 //		EventManagement.createEvent(eventData);
-//		EventData friendEventData = new EventData("","moshel1","Hanuka",new Date(20,12,9), false);
+//		EventData friendEventData = new EventData("","moshel2","Hanuka",new Date(20,12,9), false);
 //		EventManagement.createEvent(friendEventData);
-//		WishlistItemData itemData = new WishlistItemData("","irinal1","Car",4,"No link",500000,true);
-//		WishlistItemData friendItemData = new WishlistItemData("","moshel1","TV",5,"No link",4000,true);
+//		WishlistItemData itemData = new WishlistItemData("","irinal2","Car",4,"No link",500000,true);
+//		WishlistItemData friendItemData = new WishlistItemData("","moshel2","TV",5,"No link",4000,true);
 //		WishlistManagement.createWishlistItem(itemData);
 //		WishlistManagement.createWishlistItem(friendItemData);
-//		List<WishlistItemData> itemDataList = WishlistManagement.getWishlist("irinal1");
+//		List<WishlistItemData> itemDataList = WishlistManagement.getWishlist("irinal2");
 //		for (WishlistItemData itemD : itemDataList){
 //			System.out.println(itemD.getItemName());
 //			System.out.println(itemD.getWishlistItemId());
 //		}
-//		Guest g = UserManagement.loadGuest("irinal1");
-//		ArrayList<WishlistItemNewData> newItems = WishlistManagement.getWishlistForEvent("irinal1", eventData.getEventId());
+//		Guest g = UserManagement.loadGuest("irinal2");
+//		ArrayList<WishlistItemNewData> newItems = WishlistManagement.getWishlistForEvent("irinal2", eventData.getEventId());
 //		for (WishlistItemNewData itemD : newItems){
 //			System.out.println(itemD.getUserName());
 //		}
 //		List<WishlistItem> items = g.getWishlistItems();
 //		int size = items.size();
-//		ParticipatorData p = new ParticipatorData("moshel1","Moshe","Levi",30000);
+//		ParticipatorData p = new ParticipatorData("moshel2","Moshe","Levi",30000);
 //		WishlistItem i = items.get(0);
 //		WishlistManagement.addParticipator(KeyFactory.keyToString(i.getKey()),eventData.getEventId(), p);
-//		newItems = WishlistManagement.getWishlistForEvent("irinal1", eventData.getEventId());
+//		newItems = WishlistManagement.getWishlistForEvent("irinal2", eventData.getEventId());
 //		for (WishlistItemNewData itemD : newItems){
 //			if (!itemD.getParticipators().isEmpty()){
 //				System.out.print("{");
@@ -82,14 +82,14 @@ WishlistService  {
 //				System.out.println("}");
 //			}
 //		}
-//		WishlistManagement.bookItemForUser(friendItemData.getWishlistItemId(), friendEventData.getEventId(), "irinal1");
-//		newItems = WishlistManagement.getBookedWishlistItems("irinal1");
+//		WishlistManagement.bookItemForUser(friendItemData.getWishlistItemId(), friendEventData.getEventId(), "irinal2");
+//		newItems = WishlistManagement.getBookedWishlistItems("irinal2");
 //		for (WishlistItemNewData itemD : newItems){
 //			System.out.println(itemD.getEventName());
 //		}
-//		WishlistManagement.deleteParticipator(KeyFactory.keyToString(i.getKey()),"moshel1");
-//		WishlistManagement.cancelBookItemForUser(friendItemData.getWishlistItemId(), "irinal1");
-//		
+//		WishlistManagement.deleteParticipator(KeyFactory.keyToString(i.getKey()),"moshel2");
+//		WishlistManagement.cancelBookItemForUser(friendItemData.getWishlistItemId(), "irinal2");
+		
 //		List<WishlistItemData> items2 = WishlistManagement.getParicipationWishlist("123");
 //		for (WishlistItemData wi: items2){
 //			System.out.print(wi.getItemName());
@@ -198,7 +198,7 @@ WishlistService  {
 	 * return all the items this user has booked
 	 */
 	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException {
-		return WishlistManagement.getBookedWishlistItems(userId);
+		return WishlistManagement.getBookedWishlistItems2(userId);
 	}
 	
 

@@ -22,7 +22,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * creates new item for the user
 	 */
-	void createWishlistItem(WishlistItemData item);
+	void createWishlistItem(WishlistItemData item) throws UserNotFoundException;
 	/*
 	 * update the item, don't update isActive
 	 * GUI-user can update only his wishlist
