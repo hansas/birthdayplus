@@ -220,6 +220,7 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
+			log.info("item was created");
 			pm.close();
 		}
 	}
@@ -327,6 +328,7 @@ public class BusinessObjectDAL {
 			log.severe("Error in getBookedWishlistItems2's first query");
 			throw new RuntimeException("error in data base: getBookedWishlistItems2");
 		}
+		log.info("first query was successful");
 		for (Participator p : partisipators){
 			WishlistItem item = loadWishlistItem(KeyFactory.keyToString(p.getIdKey().getParent()),pm);
 			wishlistItems.add(item);
@@ -340,6 +342,7 @@ public class BusinessObjectDAL {
 			log.severe("Error in getBookedWishlistItems2's second query");
 			throw new RuntimeException("error in data base: getBookedWishlistItems2");
 		}
+		log.info("second query was successful");
 		for (WishlistItem buyer : buyers){
 			if (!wishlistItems.contains(buyer)){
 				wishlistItems.add(buyer);
