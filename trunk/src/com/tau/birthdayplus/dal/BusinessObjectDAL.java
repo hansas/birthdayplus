@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
+
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
@@ -34,10 +36,13 @@ public class BusinessObjectDAL {
 	
 	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException {
 		Guest guest = null;
+		try{
 		Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
 		guest = pm.getObjectById(Guest.class, key);
-		if (guest==null){
+		}catch(JDOObjectNotFoundException ex){
 			throw new UserNotFoundException();
+		}catch(Exception ex){
+			throw new RuntimeException("can't get your profile");
 		}
 		return guest;
 	}
