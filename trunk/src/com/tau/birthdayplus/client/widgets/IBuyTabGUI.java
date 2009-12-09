@@ -292,8 +292,8 @@ public class IBuyTabGUI {
 	                            else
 	                               this.wishlistService.deleteParticipator(item.getWishlistItemId(), entryPoint.userId);
 	                            break;
-	        case DELETE_LINK  : this.wishlistService.deleteItemFromTab(entryPoint.userId, item.getWishlistItemId());
-	                            break;
+//	        case DELETE_LINK  : this.wishlistService.deleteItemFromTab(entryPoint.userId, item.getWishlistItemId());
+//	                            break;
 	        }
 	        
 	  }

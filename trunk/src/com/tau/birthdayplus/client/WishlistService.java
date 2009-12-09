@@ -85,7 +85,7 @@ public interface WishlistService extends RemoteService{
 	 * remove this item from this user's "I buy " list , check if item isActive == false
 	 * (won't remove item with open group)
 	 */
-	void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException;
+	//void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException;
 	
 	/*
 	 * the group will buy this item

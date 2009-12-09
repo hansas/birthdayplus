@@ -114,20 +114,20 @@ public class WishlistManagement {
 		}
 	}
 	
-	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException{
-		DALWrapper wrapper = new DALWrapper();
-		try{
-			Guest guest = wrapper.getGuestById(userId);
-			List<Key> bookedItemList = guest.getIBuyItems();
-			List<WishlistItem> items = wrapper.getWishlistItemById(bookedItemList);
-			return getBookedWishlistItemNewData(items,wrapper);
-		}
-		finally{
-			wrapper.close();
-		}
-	}
+//	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException{
+//		DALWrapper wrapper = new DALWrapper();
+//		try{
+//			Guest guest = wrapper.getGuestById(userId);
+//			List<Key> bookedItemList = guest.getIBuyItems();
+//			List<WishlistItem> items = wrapper.getWishlistItemById(bookedItemList);
+//			return getBookedWishlistItemNewData(items,wrapper);
+//		}
+//		finally{
+//			wrapper.close();
+//		}
+//	}
 	
-	public static ArrayList<WishlistItemNewData> getBookedWishlistItems2(String userId)
+	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId)
 	throws UserNotFoundException{
 		DALWrapper wrapper = new DALWrapper();
 		try{
@@ -156,9 +156,9 @@ public class WishlistManagement {
 		BusinessObjectDAL.cancelBookItemForUser(wishlistItemId, userId);
 	}
 	
-	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
-		BusinessObjectDAL.deleteBookedWishlistItem(userId,wishlistItemId);
-	}
+//	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
+//		BusinessObjectDAL.deleteBookedWishlistItem(userId,wishlistItemId);
+//	}
 	
 	public static ParticipatorData participatorToParticipatorData(Participator participator,DALWrapper wrapper) throws UserNotFoundException{
 		Guest guest = wrapper.getGuestById(participator.getId());

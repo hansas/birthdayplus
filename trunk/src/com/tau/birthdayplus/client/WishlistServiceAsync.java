@@ -54,8 +54,8 @@ public interface WishlistServiceAsync {
 	RequestBuilder getBookedWishlistItems(String usetId,
 			AsyncCallback<ArrayList<WishlistItemNewData>> callback);
 
-	RequestBuilder deleteBookedWishlistItem(String userId, String wishlistItemId,
-			AsyncCallback<Void> callback);
+//	RequestBuilder deleteBookedWishlistItem(String userId, String wishlistItemId,
+//			AsyncCallback<Void> callback);
 
 	RequestBuilder bookItemForUser(String wishlistItemId, String EventId, String userId,
 			AsyncCallback<Void> callback);

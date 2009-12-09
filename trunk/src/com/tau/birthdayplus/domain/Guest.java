@@ -38,8 +38,8 @@ public class Guest   {
 		List<Event> events;
 	    @Persistent (defaultFetchGroup="true")
 		List<WishlistItem> wishlistItems;
-	    @Persistent (defaultFetchGroup="true")
-		List<Key> iBuyItems;
+	    //@Persistent (defaultFetchGroup="true")
+		//List<Key> iBuyItems;
 
 		
 		public Guest(String googleId, String firstName, String lastName, Date birthday ,String email) {
@@ -50,7 +50,7 @@ public class Guest   {
 			this.idKey = KeyFactory.createKey(Guest.class.getSimpleName(), googleId);
 			this.events = new ArrayList<Event>();
 			this.wishlistItems = new ArrayList<WishlistItem>();
-			this.iBuyItems = new ArrayList<Key>();
+			//this.iBuyItems = new ArrayList<Key>();
 			this.email = email;
 		}
 		
@@ -126,21 +126,21 @@ public class Guest   {
 			return this.wishlistItems;
 		}
 		
-		public List<Key> getIBuyItems(){
-			return this.iBuyItems;
-		}
-		public void addIBuyItem(WishlistItem item){
-			if (this.iBuyItems == null){
-				this.iBuyItems = new ArrayList<Key>();
-			}
-			this.iBuyItems.add(item.getKey());
-		}
-		
-		public void removeIBuyItem(WishlistItem item){
-			if ((iBuyItems!=null) && (iBuyItems.contains(item.getKey()))){
-				iBuyItems.remove(item.getKey());
-			}
-		}   
+//		public List<Key> getIBuyItems(){
+//			return this.iBuyItems;
+//		}
+//		public void addIBuyItem(WishlistItem item){
+//			if (this.iBuyItems == null){
+//				this.iBuyItems = new ArrayList<Key>();
+//			}
+//			this.iBuyItems.add(item.getKey());
+//		}
+//		
+//		public void removeIBuyItem(WishlistItem item){
+//			if ((iBuyItems!=null) && (iBuyItems.contains(item.getKey()))){
+//				iBuyItems.remove(item.getKey());
+//			}
+//		}   
 		
 		public void setEmail(String email){
 			this.email = email;
