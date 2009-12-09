@@ -94,7 +94,7 @@ public class MyWishlistTabGUI {
 	public void init() {
 		//it's the main panel for this tab
 		wishlistVerticalPanel=new VerticalPanel();
-		wishlistVerticalPanel.setStyleName("wishPanel");
+		wishlistVerticalPanel.addStyleName("wishPanel");
 		buildWishlistTable();
 		buildAddItemBox();
 		
@@ -211,6 +211,9 @@ public class MyWishlistTabGUI {
 		wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
 		wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
 	    
+		
+		wishTable.getColumnFormatter().addStyleName(3, "lastColumns");
+		wishTable.getColumnFormatter().addStyleName(4, "lastColumns");
 	}
 	
 	

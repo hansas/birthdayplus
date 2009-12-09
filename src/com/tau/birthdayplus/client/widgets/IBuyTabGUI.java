@@ -157,6 +157,8 @@ public class IBuyTabGUI {
 		wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
 		wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
 		wishTable.getColumnFormatter().addStyleName(3, "tablesColumns");
+		
+		wishTable.getColumnFormatter().addStyleName(4, "lastColumns");
 	}
 	
 	private void buildParticipatorsTable(){
