@@ -185,12 +185,15 @@ public class MyWishlistTabGUI {
 	private void buildWishlistTable(){
 		//create table for whishlistitems
 	    wishTable=new TableWithHeader();
-	    wishTable.setStyleName(constants.cwTableStyle());
+	    wishTable.setStyleName("tables");
 	
 	    wishTable.setHeader(0,"Item");
 	    wishTable.setHeader(1,"Priority");
 	    wishTable.setHeader(2,"Price");
         
+		wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
 	    
 	}
 	
@@ -330,7 +333,10 @@ public class MyWishlistTabGUI {
 	    	    	rf.addStyleName(row,constants.cwActiveRowStyle());
 	    	    else
 	    	    	rf.addStyleName(row, constants.cwInactiveRowStyle());
-	            row ++;
+
+	    	    
+	    	    wishTable.getRowFormatter().addStyleName(row, "tablesRows");	    	    
+	    	    row ++;
 	        }
 	    }
 	

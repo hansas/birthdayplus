@@ -112,11 +112,16 @@ public class EventTabGUI {
 	*/
 	private void buildEventTable(){
 		eventTable=new TableWithHeader();
-		eventTable.setStyleName(constants.cwTableStyle());
+		eventTable.setStyleName("tables");
 		
 		eventTable.setHeader(0, "Name" );
 		eventTable.setHeader(1, "Event");
 		eventTable.setHeader(2, "Due");   
+		
+		eventTable.getColumnFormatter().addStyleName(0, "tablesColumns");
+		eventTable.getColumnFormatter().addStyleName(1, "tablesColumns");
+		eventTable.getColumnFormatter().addStyleName(2, "tablesColumns");
+
 		
 	}
 	
@@ -364,6 +369,9 @@ public class EventTabGUI {
 				eventTable.setWidget(row, 3, new Image( GWT.getModuleBaseURL() + "edit.gif"));
 	    	    eventTable.setWidget(row,4,new Image( GWT.getModuleBaseURL() + "delete.gif")); 
 			}
+
+			eventTable.getRowFormatter().addStyleName(row, "tablesRows");
+			
 			row++;
 		}
 		

@@ -180,12 +180,19 @@ public class IBuyTabGUI {
 	
 	private void buildChatTable(){
 		chatTable = new TableWithHeader();
-		chatTable.setStyleName(constants.cwTableStyle());
+		chatTable.setStyleName("tables");
 		
 		//header
 		chatTable.setHeader(0, "From");
 		chatTable.setHeader(1, "Time");
 		chatTable.setHeader(2,"Message");
+		
+		wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
+		wishTable.getColumnFormatter().addStyleName(3, "tablesColumns");
+		
+		
 	}
 	
 	private void buildChat(){
@@ -329,6 +336,9 @@ public class IBuyTabGUI {
 	    	        wishTable.setWidget(row, 5, new Hyperlink("leave this group",null));
 	           
 	        }
+	    	    
+	    	    wishTable.getRowFormatter().addStyleName(row, "tablesRows");
+
 	    	    
 	    	    row ++;
 	        }
