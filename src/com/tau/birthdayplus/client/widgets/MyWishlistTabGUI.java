@@ -3,9 +3,14 @@ package com.tau.birthdayplus.client.widgets;
 
 import java.util.ArrayList;
 
+import org.gwtwidgets.client.util.regex.Pattern;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -440,13 +445,28 @@ public class MyWishlistTabGUI {
         	    gui_eventCancelButtonClicked();
         	}
         });
+		
+		this.priceField.addKeyUpHandler(new KeyUpHandler(){
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_TAB) 
+					gui_eventGetPriceByLink();
+				}
+		});
   
 	}
 	
-
+	private void gui_eventGetPriceByLink(){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
+		if(linkField.getText().startsWith("http://www.zap.co.il/model.aspx?")){
+			bringLink(linkField.getText());
+		}else
+			entryPoint.loadingImagePopup.hide();
+		
+	}
 	public  native void bringLink(String url) /*-{
 		thisTabGui = this;
-	var params = {};
+	    var params = {};
 	    params[$wnd.gadgets.io.RequestParameters.CONTENT_TYPE] = $wnd.gadgets.io.ContentType.TEXT; 
 		$wnd.gadgets.io.makeRequest(url, response, params); 
 
@@ -460,6 +480,26 @@ public class MyWishlistTabGUI {
 	
 	
 	private void parse(){
+		Integer price = 0;
+		Pattern pattern = new Pattern("[1-9],{0,1}(\\d)* ₪");
+		String[] prices = pattern.match(linkText);
+		if(prices.length != 0){
+			String temp = prices[0].substring(0,prices[0].length()-2);
+	    	try{
+	    	    price = Integer.parseInt(temp);
+	    	 }catch(NumberFormatException ex){
+	    		 String[] splitString= temp.split(",");
+	    		 temp = splitString[0]+splitString[1];
+	    		 try{
+	    			 price = Integer.parseInt(temp);
+	    		 }catch(NumberFormatException exc){ 
+	    			 
+	    		 }
+	    	 }
+		}
+	    this.priceField.setText(price.toString());	 
+	    entryPoint.loadingImagePopup.hide();
+			
 		
 	}
 	
