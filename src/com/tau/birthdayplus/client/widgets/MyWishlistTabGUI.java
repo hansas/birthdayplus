@@ -54,6 +54,7 @@ public class MyWishlistTabGUI {
 	
 	protected DialogBox addItemBox;
 	//table for the add form
+	VerticalPanel itemDialogBoxVerticalPanel;
 	protected FlexTable formTable;
 	//name of the item 
 	protected TextBox itemField;
@@ -68,9 +69,11 @@ public class MyWishlistTabGUI {
     protected TextBox priceField;
     //ok button in dialog box
   //  public Button updateButton;
-    public Button boxButton;
+    private Button boxButton;
     //cancel button
-    public Button cancelButton;
+    private Button cancelButton;
+    
+    private Label errorMsgLabel ;
     
     private Boolean addItem;
 
@@ -150,45 +153,36 @@ public class MyWishlistTabGUI {
      */
 	private void buildAddItemBox(){
 	    	addItemBox=new DialogBox();
-	        addItemBox.setText("Add new item ");
-	  //      addItemBox.addStyleName(constants.cwDialogBoxStyle());
-	        
+	    	
+	    	itemDialogBoxVerticalPanel = new VerticalPanel();
+	    
 	        itemField=new TextBox();
-	    //    itemField.setStyleName(constants.cwTextBoxStyle());
-	        
-	    //	priorityField=new ListBox(false);
-	     //   String[] listTypes = constants.cwListBoxCategories();
-	      //  for (int i = 0; i < listTypes.length; i++) {
-	       //   priorityField.addItem(listTypes[i]);
-	      //  }
+	 
 	        priorityPanel = new HorizontalPanel();
 	        highPriorityButton = new RadioButton("priority", "High");
 	        priorityPanel.add(highPriorityButton);
 	        lowPriorityButton = new RadioButton("priority", "Low");
 	        priorityPanel.add(lowPriorityButton);
 	        
-
-//          priorityField.setStyleName(constants.cwListBoxStyle());
-
 	        linkField=new TextBox();
-	  //      linkField.setStyleName(constants.cwTextBoxStyle());
 	        
 	        priceField=new TextBox();
-	    //    priceField.setStyleName(constants.cwTextBoxStyle());
-	        
-	 //       updateButton=new Button("Update item");
-	   //     updateButton.setStyleName(constants.cwButtonStyle());
 	        
 	        boxButton=new Button();
-	   //     addButton.setStyleName(constants.cwButtonStyle());
-	        
+	   
 		    cancelButton = new Button(constants.cwDialogBoxCancel());
 		       
-		//    cancelButton.setStyleName(constants.cwButtonStyle());
+		    errorMsgLabel = new Label();
+			errorMsgLabel.setStyleName("errorMessage");
+			errorMsgLabel.setVisible(false);
+
+			itemDialogBoxVerticalPanel.add(errorMsgLabel);
 
 		    buildForm();
 		    
-		    addItemBox.add(formTable); 
+		    itemDialogBoxVerticalPanel.add(formTable);
+		    
+		    addItemBox.add(itemDialogBoxVerticalPanel); 
 		    
 		
 	}
@@ -229,16 +223,12 @@ public class MyWishlistTabGUI {
        
          if (col==UPDATE_LINK) {
         	 this.addItem = false;
-          //   this.addButton.setVisible(false);
-         //    this.updateButton.setVisible(true);
              this.addItemButton.setVisible(false);
              loadForm(item,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item);
-         }//else if(col==LINK){
-        //	 if(!item.getLink().equals(""))
-        	//	 Window.open(item.getLink(), "_blank", null);
-        // }
+         }
+      
     }
 	 
 
@@ -264,57 +254,66 @@ public class MyWishlistTabGUI {
      * add new item
      */
     public void gui_eventAddButtonClicked() {
-    	boolean valid=true;
-        try{    
-        copyFieldDateToItem();
-        }catch(NumberFormatException ex){
-     //   	showMessage("The price should be a number");
-        	valid=false;
-        }
+    	boolean valid = copyFieldDateToItem();
         if(valid){
             addItemButton.setVisible(true);
+            errorMsgLabel.setVisible(false);
             addItemBox.hide();
             this.wishlistService.createWishlistItem(currentItem);
-        }
+        }else
+        	errorMsgLabel.setVisible(true);
     }
     
     /*
      * update item
      */
     public void gui_eventUpdateButtonClicked() {
-    	boolean valid=true;
-        try{
-        copyFieldDateToItem();
-        }catch(NumberFormatException ex){
-        	valid=false;
-     //   	showMessage("The price should be a number");
-        }
+    	boolean valid = copyFieldDateToItem();
         if(valid){
             addItemButton.setVisible(true);
+            errorMsgLabel.setVisible(false);
             addItemBox.hide();
             this.wishlistService.updateWishlistItem(currentItem);
-        }
+        }else
+        	errorMsgLabel.setVisible(true);
     }
     /*
      * check if input is valid
      */
-    private void copyFieldDateToItem(){
-    	int price;
-    	//add user id to item
+    private boolean copyFieldDateToItem(){
+        if(itemField.getText().equals("")){
+        	errorMsgLabel.setText("Enter item name ");
+    		itemField.setFocus(true);
+    		return false;
+        }
     	currentItem.setItemName(itemField.getText());
-        currentItem.setLink(linkField.getText());
-        if(highPriorityButton.getValue())
+    	
+    	if(highPriorityButton.getValue())
         	currentItem.setPriority(5);
         else
         	currentItem.setPriority(1);
-     //   currentItem.setPriority(Integer.parseInt(constants.cwListBoxCategories()[priorityField.getSelectedIndex()]));
-        try{
-        	price=Integer.parseInt(priceField.getText());
-        }catch(NumberFormatException ex){
-        	 throw ex;
+    	
+        currentItem.setLink(linkField.getText());
+        
+        if(priceField.getText().equals("")){
+        	errorMsgLabel.setText("Enter item price ");
+    		priceField.setFocus(true);
+    		return false;
         }
-        currentItem.setPrice(price);
-
+        try{
+        	int price=Integer.parseInt(priceField.getText());
+        	if(price < 1){
+        		errorMsgLabel.setText("Enter valid price ");
+        		priceField.setFocus(true);
+        		return false;
+        	}
+        	 currentItem.setPrice(price);
+        }catch(NumberFormatException ex){
+        	errorMsgLabel.setText("Enter valid price ");
+    		priceField.setFocus(true);
+    		return false;
+        }
+        return true;
     }
     
     /*
@@ -322,8 +321,6 @@ public class MyWishlistTabGUI {
      */
     public void gui_eventAddItemButtonClicked() {
         this.addItemButton.setVisible(false);
-      //  this.updateButton.setVisible(false);
-       // this.addButton.setVisible(true);
         this.addItem = true;
         loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
     }
@@ -333,6 +330,7 @@ public class MyWishlistTabGUI {
      */
     public void gui_eventCancelButtonClicked(){
     	addItemButton.setVisible(true);
+    	errorMsgLabel.setVisible(false);
     	 addItemBox.hide();
     }
 
