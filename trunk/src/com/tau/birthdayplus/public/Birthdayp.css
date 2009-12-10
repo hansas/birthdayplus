@@ -1,3 +1,18 @@
+.gwt-Image { 
+cursor: pointer;
+  cursor: hand;
+border: 1px ;
+}
+
+.gwt-Image:hover {
+  border-color: #9cf #69e #69e #7af;
+}
+
+
+.errorMessage {
+  color: Red;
+}
+
 .gwt-Button 
 { 
 background-color: #3366CC; 
@@ -33,6 +48,6 @@ width: 25px;
 
 .tabsPanel
 {
-height: 300px;
+height: 350px;
 overflow: scroll;
 }
