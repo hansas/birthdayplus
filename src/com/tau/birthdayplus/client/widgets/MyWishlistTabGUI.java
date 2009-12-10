@@ -359,10 +359,12 @@ public class MyWishlistTabGUI {
 	    	        wishTable.setWidget(row,1,new Label("low"));
 	        	
 	    	    wishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
-	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "edit.gif");
+	    	    
+	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update item");
-			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "delete.gif");
-			    deleteImage.setTitle("delete item");
+			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
+			    deleteImage.setTitle("delete delete");
+			    
 			
 	    	    wishTable.setWidget(row, 3, updateImage);
 	    	    wishTable.setWidget(row,4,deleteImage); 

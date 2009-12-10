@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -322,7 +323,9 @@ public class IBuyTabGUI {
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
 	    	    	wishTable.setWidget(row, 3,new Label(item.getPrice().toString()) );
-		    	    wishTable.setWidget(row, 5, new Hyperlink("cancel", null)); 
+	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
+				    cancelImage.setTitle("cancel reservation");
+		    	    wishTable.setWidget(row, 5, cancelImage); 
 		
 	    	    }else{
 	    	    	Integer sum = 0;
@@ -331,9 +334,15 @@ public class IBuyTabGUI {
 	    	    	}
 	    	        wishTable.setWidget(row, 3,new Hyperlink(sum+ " / " + item.getPrice().toString(), null) );
 	    	        if(item.getIsActive()){
-	    	        	wishTable.setWidget(row, 4, new Hyperlink("update", null));
-	    	        	wishTable.setWidget(row, 5, new Hyperlink("leave this group",null));
-	    	        	wishTable.setWidget(row, 6, new Hyperlink("we'll buy",null));
+	    	        	Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
+	    			    updateImage.setTitle("update ");
+	    			    Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
+	    			    cancelImage.setTitle("leave this group");
+	    			    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
+	    			    buyImage.setTitle("We''ll buy");
+	    	        	wishTable.setWidget(row, 4, updateImage);
+	    	        	wishTable.setWidget(row, 5, cancelImage);
+	    	        	wishTable.setWidget(row, 6, buyImage);
 	    	        }
 	    
 	           
