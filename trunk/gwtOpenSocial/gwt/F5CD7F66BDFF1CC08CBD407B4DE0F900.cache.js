@@ -5,7 +5,7 @@ var $doc = $wnd.document;
 var $moduleName, $moduleBase;
 var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null;
 $stats && $stats({moduleName:'friends',subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
-var $intern_12 = '', $intern_19 = ', ', $intern_25 = ', Size: ', $intern_16 = ':', $intern_13 = ': ', $intern_22 = '=', $intern_0 = '@', $intern_55 = 'AbstractCollection', $intern_57 = 'AbstractHashMap', $intern_59 = 'AbstractHashMap$EntrySet', $intern_60 = 'AbstractHashMap$EntrySetIterator', $intern_62 = 'AbstractHashMap$MapEntryNull', $intern_63 = 'AbstractHashMap$MapEntryString', $intern_64 = 'AbstractList', $intern_65 = 'AbstractList$IteratorImpl', $intern_56 = 'AbstractMap', $intern_61 = 'AbstractMapEntry', $intern_58 = 'AbstractSet', $intern_17 = 'Add not supported on this collection', $intern_66 = 'ArrayList', $intern_46 = 'ArrayStoreException', $intern_48 = 'Class', $intern_49 = 'ClassCastException', $intern_41 = 'Exception', $intern_37 = 'Friends', $intern_38 = 'FriendsGadgetImpl', $intern_35 = 'Gadget', $intern_67 = 'HashMap', $intern_24 = 'Index: ', $intern_45 = 'IndexOutOfBoundsException', $intern_44 = 'JavaScriptObject$', $intern_68 = 'NoSuchElementException', $intern_33 = 'Object', $intern_53 = 'Object;', $intern_39 = 'OpenSocialFeature', $intern_42 = 'RuntimeException', $intern_50 = 'String', $intern_31 = 'String;', $intern_51 = 'StringBuffer', $intern_40 = 'Throwable', $intern_52 = 'UnsupportedOperationException', $intern_18 = '[', $intern_4 = '[1-9],{0,1}(\\d)* \u20AA', $intern_47 = '[C', $intern_10 = '[JavaScriptObject]', $intern_30 = '[Ljava.lang.', $intern_20 = ']', $intern_15 = 'class ', $intern_36 = 'com.example.friends.client.', $intern_29 = 'com.example.friends.client.Friends', $intern_43 = 'com.google.gwt.core.client.', $intern_34 = 'com.google.gwt.gadgets.client.', $intern_9 = 'continue', $intern_2 = 'error occured', $intern_7 = 'first', $intern_5 = 'g', $intern_8 = 'http://model.aspx?modelid=728162', $intern_14 = 'interface ', $intern_32 = 'java.lang.', $intern_54 = 'java.util.', $intern_27 = 'moduleStartup', $intern_3 = 'no error', $intern_6 = 'no matches', $intern_11 = 'null', $intern_28 = 'onModuleLoadStart', $intern_1 = 'response', $intern_26 = 'startup', $intern_21 = '{', $intern_23 = '}';
+var $intern_6 = '', $intern_16 = ', ', $intern_22 = ', Size: ', $intern_13 = ':', $intern_10 = ': ', $intern_19 = '=', $intern_0 = '@', $intern_55 = 'AbstractCollection', $intern_57 = 'AbstractHashMap', $intern_59 = 'AbstractHashMap$EntrySet', $intern_60 = 'AbstractHashMap$EntrySetIterator', $intern_62 = 'AbstractHashMap$MapEntryNull', $intern_63 = 'AbstractHashMap$MapEntryString', $intern_64 = 'AbstractList', $intern_65 = 'AbstractList$IteratorImpl', $intern_56 = 'AbstractMap', $intern_61 = 'AbstractMapEntry', $intern_58 = 'AbstractSet', $intern_14 = 'Add not supported on this collection', $intern_66 = 'ArrayList', $intern_46 = 'ArrayStoreException', $intern_48 = 'Class', $intern_49 = 'ClassCastException', $intern_41 = 'Exception', $intern_34 = 'Friends', $intern_35 = 'FriendsGadgetImpl', $intern_32 = 'Gadget', $intern_67 = 'HashMap', $intern_21 = 'Index: ', $intern_45 = 'IndexOutOfBoundsException', $intern_44 = 'JavaScriptObject$', $intern_68 = 'NoSuchElementException', $intern_30 = 'Object', $intern_53 = 'Object;', $intern_36 = 'OpenSocialFeature', $intern_42 = 'RuntimeException', $intern_50 = 'String', $intern_28 = 'String;', $intern_51 = 'StringBuffer', $intern_38 = 'StringBufferImpl', $intern_39 = 'StringBufferImplAppend', $intern_40 = 'Throwable', $intern_52 = 'UnsupportedOperationException', $intern_15 = '[', $intern_2 = '[1-9],{0,1}(\\d)* \u20AA', $intern_47 = '[C', $intern_9 = '[JavaScriptObject]', $intern_27 = '[Ljava.lang.', $intern_17 = ']', $intern_12 = 'class ', $intern_33 = 'com.example.friends.client.', $intern_26 = 'com.example.friends.client.Friends', $intern_43 = 'com.google.gwt.core.client.', $intern_37 = 'com.google.gwt.core.client.impl.', $intern_31 = 'com.google.gwt.gadgets.client.', $intern_8 = 'continue', $intern_5 = 'first', $intern_3 = 'g', $intern_7 = 'http://model.aspx?modelid=728162', $intern_11 = 'interface ', $intern_29 = 'java.lang.', $intern_54 = 'java.util.', $intern_24 = 'moduleStartup', $intern_4 = 'no matches', $intern_25 = 'onModuleLoadStart', $intern_1 = 'response', $intern_23 = 'startup', $intern_18 = '{', $intern_20 = '}';
 var _;
 function java_lang_Object_getClass__(){
   return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Object_12_1classLit;
@@ -49,12 +49,6 @@ function com_example_friends_client_Friends_$bringLink__Lcom_example_friends_cli
   $wnd.gadgets.io.makeRequest(url, response, params);
   function response(obj){
     $wnd.document.write($intern_1);
-    if (obj.hadError()) {
-      $wnd.document.write($intern_2);
-      return;
-    }
-     else 
-      $wnd.document.write($intern_3);
     thisTabGui.com_example_friends_client_Friends_linkText = obj.text;
     that.parse__();
   }
@@ -62,7 +56,7 @@ function com_example_friends_client_Friends_$bringLink__Lcom_example_friends_cli
 }
 
 function com_example_friends_client_Friends__1match__Ljava_lang_String_2Ljava_util_List_2(text, matches){
-  var regExp = new RegExp($intern_4, $intern_5);
+  var regExp = new RegExp($intern_2, $intern_3);
   var result = text.match(regExp);
   if (result == null)
     return;
@@ -91,10 +85,10 @@ function com_example_friends_client_Friends_parse__(){
   var output;
   output = com_example_friends_client_Friends_match__Ljava_lang_String_2(this.com_example_friends_client_Friends_linkText);
   if (output.length == 0) {
-    $wnd.alert($intern_6);
+    $wnd.alert($intern_4);
   }
    else {
-    $wnd.alert($intern_7 + output[0]);
+    $wnd.alert($intern_5 + output[0]);
   }
 }
 
@@ -106,12 +100,12 @@ _.getClass__$ = com_example_friends_client_Friends_getClass__;
 _.initializeFeature__Lcom_example_friends_client_OpenSocialFeature_2 = com_example_friends_client_Friends_initializeFeature__Lcom_example_friends_client_OpenSocialFeature_2;
 _.parse__ = com_example_friends_client_Friends_parse__;
 _.java_lang_Object_typeId$ = 0;
-_.com_example_friends_client_Friends_linkText = null;
+_.com_example_friends_client_Friends_linkText = $intern_6;
 function com_example_friends_client_FriendsGadgetImpl_$FriendsGadgetImpl__Lcom_example_friends_client_FriendsGadgetImpl_2(this$static){
   java_util_AbstractHashMap_$clearImpl__Ljava_util_AbstractHashMap_2(new java_util_HashMap());
   this$static.initializeFeature__Lcom_example_friends_client_OpenSocialFeature_2(new com_example_friends_client_OpenSocialFeature());
-  com_example_friends_client_Friends_$bringLink__Lcom_example_friends_client_Friends_2Ljava_lang_String_2(this$static, $intern_8);
-  $wnd.alert($intern_9);
+  com_example_friends_client_Friends_$bringLink__Lcom_example_friends_client_Friends_2Ljava_lang_String_2(this$static, $intern_7);
+  $wnd.alert($intern_8);
   return this$static;
 }
 
@@ -140,21 +134,31 @@ function com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Lja
 }
 
 function com_google_gwt_core_client_JavaScriptObject_toString_1_1devirtual$__Ljava_lang_Object_2(this$static){
-  return this$static.java_lang_Object_typeMarker$ == nullMethod || this$static.java_lang_Object_typeId$ == 2?this$static.toString__$():this$static.toString?this$static.toString():$intern_10;
+  return this$static.java_lang_Object_typeMarker$ == nullMethod || this$static.java_lang_Object_typeId$ == 2?this$static.toString__$():this$static.toString?this$static.toString():$intern_9;
 }
 
 var com_google_gwt_core_client_impl_Impl_sNextHashId = 0;
-function com_google_gwt_core_client_impl_StringBufferImplArrayBase_$append__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2Ljava_lang_String_2(a, x){
-  a[a.explicitLength++] = x == null?$intern_11:x;
+function com_google_gwt_core_client_impl_StringBufferImpl_getClass__(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImpl_12_1classLit;
 }
 
-function com_google_gwt_core_client_impl_StringBufferImplArrayBase_$toString__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2(a){
-  var s, com_google_gwt_core_client_impl_StringBufferImplArrayBase_$takeString__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2_s_0;
-  s = (com_google_gwt_core_client_impl_StringBufferImplArrayBase_$takeString__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2_s_0 = a.join($intern_12) , a.length = a.explicitLength = 0 , com_google_gwt_core_client_impl_StringBufferImplArrayBase_$takeString__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2_s_0);
-  a[a.explicitLength++] = s;
-  return s;
+function com_google_gwt_core_client_impl_StringBufferImpl(){
 }
 
+_ = com_google_gwt_core_client_impl_StringBufferImpl.prototype = new java_lang_Object();
+_.getClass__$ = com_google_gwt_core_client_impl_StringBufferImpl_getClass__;
+_.java_lang_Object_typeId$ = 0;
+function com_google_gwt_core_client_impl_StringBufferImplAppend_getClass__(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImplAppend_12_1classLit;
+}
+
+function com_google_gwt_core_client_impl_StringBufferImplAppend(){
+}
+
+_ = com_google_gwt_core_client_impl_StringBufferImplAppend.prototype = new com_google_gwt_core_client_impl_StringBufferImpl();
+_.getClass__$ = com_google_gwt_core_client_impl_StringBufferImplAppend_getClass__;
+_.java_lang_Object_typeId$ = 0;
+_.com_google_gwt_core_client_impl_StringBufferImplAppend_string = $intern_6;
 function com_google_gwt_lang_Array_createFromSeed__II(seedType, length){
   var array = new Array(length);
   if (seedType > 0) {
@@ -262,7 +266,7 @@ function java_lang_Throwable_toString__(){
   className = this.getClass__$().java_lang_Class_typeName;
   msg = this.getMessage__();
   if (msg != null) {
-    return className + $intern_13 + msg;
+    return className + $intern_10 + msg;
   }
    else {
     return className;
@@ -328,7 +332,7 @@ function java_lang_Class_getClass__(){
 }
 
 function java_lang_Class_toString__(){
-  return ((this.java_lang_Class_modifiers & 2) != 0?$intern_14:(this.java_lang_Class_modifiers & 1) != 0?$intern_12:$intern_15) + this.java_lang_Class_typeName;
+  return ((this.java_lang_Class_modifiers & 2) != 0?$intern_11:(this.java_lang_Class_modifiers & 1) != 0?$intern_6:$intern_12) + this.java_lang_Class_typeName;
 }
 
 function java_lang_Class(){
@@ -437,7 +441,7 @@ function java_lang_String$HashCache_compute__Ljava_lang_String_2(str){
 
 function java_lang_String$HashCache_getHashCode__Ljava_lang_String_2(str){
   java_lang_String$HashCache_$clinit__();
-  var key = $intern_16 + str;
+  var key = $intern_13 + str;
   var result = java_lang_String$HashCache_front[key];
   if (result != null) {
     return result;
@@ -461,13 +465,12 @@ function java_lang_String$HashCache_increment__(){
 
 var java_lang_String$HashCache_back, java_lang_String$HashCache_count = 0, java_lang_String$HashCache_front;
 function java_lang_StringBuffer_$StringBuffer__Ljava_lang_StringBuffer_2(this$static){
-  var java_lang_StringBuffer_$$init__Ljava_lang_StringBuffer_2_com_google_gwt_core_client_impl_StringBufferImplArrayBase_$createData__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2_array_0_0;
-  this$static.java_lang_StringBuffer_data = (java_lang_StringBuffer_$$init__Ljava_lang_StringBuffer_2_com_google_gwt_core_client_impl_StringBufferImplArrayBase_$createData__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2_array_0_0 = [] , java_lang_StringBuffer_$$init__Ljava_lang_StringBuffer_2_com_google_gwt_core_client_impl_StringBufferImplArrayBase_$createData__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2_array_0_0.explicitLength = 0 , java_lang_StringBuffer_$$init__Ljava_lang_StringBuffer_2_com_google_gwt_core_client_impl_StringBufferImplArrayBase_$createData__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2_array_0_0);
+  this$static.java_lang_StringBuffer_impl = new com_google_gwt_core_client_impl_StringBufferImplAppend();
   return this$static;
 }
 
 function java_lang_StringBuffer_$append__Ljava_lang_StringBuffer_2Ljava_lang_String_2(this$static, x){
-  com_google_gwt_core_client_impl_StringBufferImplArrayBase_$append__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2Ljava_lang_String_2(this$static.java_lang_StringBuffer_data, x);
+  this$static.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string += x;
   return this$static;
 }
 
@@ -476,7 +479,7 @@ function java_lang_StringBuffer_getClass__(){
 }
 
 function java_lang_StringBuffer_toString__(){
-  return com_google_gwt_core_client_impl_StringBufferImplArrayBase_$toString__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2(this.java_lang_StringBuffer_data);
+  return this.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string;
 }
 
 function java_lang_StringBuffer(){
@@ -502,7 +505,7 @@ _ = java_lang_UnsupportedOperationException.prototype = new java_lang_RuntimeExc
 _.getClass__$ = java_lang_UnsupportedOperationException_getClass__;
 _.java_lang_Object_typeId$ = 14;
 function java_util_AbstractCollection_add__Ljava_lang_Object_2(o){
-  throw java_lang_UnsupportedOperationException_$UnsupportedOperationException__Ljava_lang_UnsupportedOperationException_2Ljava_lang_String_2(new java_lang_UnsupportedOperationException(), $intern_17);
+  throw java_lang_UnsupportedOperationException_$UnsupportedOperationException__Ljava_lang_UnsupportedOperationException_2Ljava_lang_String_2(new java_lang_UnsupportedOperationException(), $intern_14);
 }
 
 function java_util_AbstractCollection_getClass__(){
@@ -513,19 +516,19 @@ function java_util_AbstractCollection_toString__(){
   var comma, iter, sb;
   sb = java_lang_StringBuffer_$StringBuffer__Ljava_lang_StringBuffer_2(new java_lang_StringBuffer());
   comma = null;
-  com_google_gwt_core_client_impl_StringBufferImplArrayBase_$append__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2Ljava_lang_String_2(sb.java_lang_StringBuffer_data, $intern_18);
+  sb.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string += $intern_15;
   iter = this.iterator__();
   while (iter.hasNext__()) {
     if (comma != null) {
-      com_google_gwt_core_client_impl_StringBufferImplArrayBase_$append__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2Ljava_lang_String_2(sb.java_lang_StringBuffer_data, comma);
+      sb.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string += comma;
     }
      else {
-      comma = $intern_19;
+      comma = $intern_16;
     }
-    java_lang_StringBuffer_$append__Ljava_lang_StringBuffer_2Ljava_lang_String_2(sb, $intern_12 + iter.next__());
+    java_lang_StringBuffer_$append__Ljava_lang_StringBuffer_2Ljava_lang_String_2(sb, $intern_6 + iter.next__());
   }
-  com_google_gwt_core_client_impl_StringBufferImplArrayBase_$append__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2Ljava_lang_String_2(sb.java_lang_StringBuffer_data, $intern_20);
-  return com_google_gwt_core_client_impl_StringBufferImplArrayBase_$toString__Lcom_google_gwt_core_client_impl_StringBufferImplArrayBase_2Ljava_lang_Object_2(sb.java_lang_StringBuffer_data);
+  sb.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string += $intern_17;
+  return sb.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string;
 }
 
 function java_util_AbstractCollection(){
@@ -553,21 +556,21 @@ function java_util_AbstractMap_hashCode__(){
 
 function java_util_AbstractMap_toString__(){
   var comma, entry, iter, s;
-  s = $intern_21;
+  s = $intern_18;
   comma = false;
   for (iter = java_util_AbstractHashMap$EntrySetIterator_$AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap$EntrySetIterator_2(new java_util_AbstractHashMap$EntrySetIterator(), java_util_AbstractHashMap$EntrySet_$AbstractHashMap$EntrySet__Ljava_util_AbstractHashMap$EntrySet_2(new java_util_AbstractHashMap$EntrySet(), com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2I(this, 5)).java_util_AbstractHashMap$EntrySet_this$0); java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2(iter.java_util_AbstractHashMap$EntrySetIterator_iter);) {
     entry = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2I(java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2(iter.java_util_AbstractHashMap$EntrySetIterator_iter), 3);
     if (comma) {
-      s += $intern_19;
+      s += $intern_16;
     }
      else {
       comma = true;
     }
-    s += $intern_12 + entry.getKey__();
-    s += $intern_22;
-    s += $intern_12 + entry.getValue__();
+    s += $intern_6 + entry.getKey__();
+    s += $intern_19;
+    s += $intern_6 + entry.getValue__();
   }
-  return s + $intern_23;
+  return s + $intern_20;
 }
 
 function java_util_AbstractMap(){
@@ -726,7 +729,7 @@ function java_util_AbstractMapEntry_hashCode__(){
 }
 
 function java_util_AbstractMapEntry_toString__(){
-  return this.getKey__() + $intern_22 + this.getValue__();
+  return this.getKey__() + $intern_19 + this.getValue__();
 }
 
 function java_util_AbstractMapEntry(){
@@ -778,7 +781,7 @@ function java_util_AbstractHashMap$MapEntryString_getKey__(){
 }
 
 function java_util_AbstractHashMap$MapEntryString_getValue__(){
-  return this.java_util_AbstractHashMap$MapEntryString_this$0.java_util_AbstractHashMap_stringMap[$intern_16 + this.java_util_AbstractHashMap$MapEntryString_key];
+  return this.java_util_AbstractHashMap$MapEntryString_this$0.java_util_AbstractHashMap_stringMap[$intern_13 + this.java_util_AbstractHashMap$MapEntryString_key];
 }
 
 function java_util_AbstractHashMap$MapEntryString_new__Ljava_util_AbstractHashMap_2Ljava_lang_String_2(this$outer, key){
@@ -823,7 +826,7 @@ function java_util_AbstractList_hashCode__(){
 }
 
 function java_util_AbstractList_indexOutOfBounds__II(index, size){
-  throw java_lang_IndexOutOfBoundsException_$IndexOutOfBoundsException__Ljava_lang_IndexOutOfBoundsException_2Ljava_lang_String_2(new java_lang_IndexOutOfBoundsException(), $intern_24 + index + $intern_25 + size);
+  throw java_lang_IndexOutOfBoundsException_$IndexOutOfBoundsException__Ljava_lang_IndexOutOfBoundsException_2Ljava_lang_String_2(new java_lang_IndexOutOfBoundsException(), $intern_21 + index + $intern_22 + size);
 }
 
 function java_util_AbstractList_iterator__(){
@@ -944,7 +947,7 @@ _ = java_util_NoSuchElementException.prototype = new java_lang_RuntimeException(
 _.getClass__$ = java_util_NoSuchElementException_getClass__;
 _.java_lang_Object_typeId$ = 20;
 function init(){
-  !!$stats && $stats({moduleName:$moduleName, subSystem:$intern_26, evtGroup:$intern_27, millis:(new Date()).getTime(), type:$intern_28, className:$intern_29});
+  !!$stats && $stats({moduleName:$moduleName, subSystem:$intern_23, evtGroup:$intern_24, millis:(new Date()).getTime(), type:$intern_25, className:$intern_26});
   com_example_friends_client_FriendsGadgetImpl_$FriendsGadgetImpl__Lcom_example_friends_client_FriendsGadgetImpl_2(new com_example_friends_client_FriendsGadgetImpl());
 }
 
@@ -966,7 +969,7 @@ function gwtOnLoad(errFn, modName, modBase){
 function nullMethod(){
 }
 
-var com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_30, $intern_31), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_33), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1gadgets_1client_1Gadget_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_34, $intern_35), com_google_gwt_lang_ClassLiteralHolder_Lcom_1example_1friends_1client_1Friends_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_36, $intern_37), com_google_gwt_lang_ClassLiteralHolder_Lcom_1example_1friends_1client_1FriendsGadgetImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_36, $intern_38), com_google_gwt_lang_ClassLiteralHolder_Lcom_1example_1friends_1client_1OpenSocialFeature_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_36, $intern_39), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Throwable_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_40), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Exception_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_41), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1RuntimeException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_42), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1JavaScriptObject_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_43, $intern_44), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IndexOutOfBoundsException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_45), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ArrayStoreException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_46), com_google_gwt_lang_ClassLiteralHolder__13C_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_12, $intern_47), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Class_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_48), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ClassCastException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_49), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1String_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_50), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StringBuffer_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_51), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1UnsupportedOperationException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_32, $intern_52), com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_30, $intern_53), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractCollection_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_55), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_56), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_57), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractSet_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_58), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySet_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_59), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySetIterator_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_60), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMapEntry_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_61), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryNull_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_62), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryString_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_63), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_64), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList$IteratorImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_65), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1ArrayList_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_66), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1HashMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_67), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1NoSuchElementException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_68);
+var com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_27, $intern_28), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_30), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1gadgets_1client_1Gadget_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_31, $intern_32), com_google_gwt_lang_ClassLiteralHolder_Lcom_1example_1friends_1client_1Friends_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_33, $intern_34), com_google_gwt_lang_ClassLiteralHolder_Lcom_1example_1friends_1client_1FriendsGadgetImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_33, $intern_35), com_google_gwt_lang_ClassLiteralHolder_Lcom_1example_1friends_1client_1OpenSocialFeature_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_33, $intern_36), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_37, $intern_38), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImplAppend_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_37, $intern_39), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Throwable_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_40), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Exception_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_41), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1RuntimeException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_42), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1JavaScriptObject_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_43, $intern_44), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IndexOutOfBoundsException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_45), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ArrayStoreException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_46), com_google_gwt_lang_ClassLiteralHolder__13C_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_6, $intern_47), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Class_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_48), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ClassCastException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_49), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1String_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_50), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StringBuffer_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_51), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1UnsupportedOperationException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_29, $intern_52), com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2($intern_27, $intern_53), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractCollection_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_55), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_56), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_57), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractSet_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_58), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySet_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_59), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySetIterator_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_60), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMapEntry_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_61), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryNull_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_62), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryString_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_63), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_64), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList$IteratorImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_65), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1ArrayList_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_66), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1HashMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_67), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1NoSuchElementException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2($intern_54, $intern_68);
 $stats && $stats({moduleName:'friends',subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalEnd'});
 if (friends) friends.onScriptLoad(gwtOnLoad);
 })();
