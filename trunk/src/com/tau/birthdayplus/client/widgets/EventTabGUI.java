@@ -52,6 +52,8 @@ public class EventTabGUI {
 	
 	//add event box
 	public DialogBox eventDialogBox;
+	
+	VerticalPanel eventDialogBoxVerticalPanel;
 	//table for the form
 	private FlexTable layout; 
 	//event name field
@@ -78,6 +80,8 @@ public class EventTabGUI {
 	private ArrayList<EventData> eventList;
 	protected EventData currentEvent;
 	public Birthdayplus entryPoint;
+	
+	private Label errorMsgLabel ;
 	
 	
 	
@@ -107,6 +111,9 @@ public class EventTabGUI {
 	
 		
 		btnAddEvent = new Button("Add Event");
+		
+		
+
 	
 		placeWidgets();
 		
@@ -147,6 +154,7 @@ public class EventTabGUI {
 	private void buildEventDialogBox() {
 		eventDialogBox = new DialogBox();
 	//	eventDialogBox.setStyleName(constants.cwDialogBoxStyle());
+		eventDialogBoxVerticalPanel = new VerticalPanel();
 		
 		MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
 		    String[] words = constants.cwSuggestBoxEvents();
@@ -170,14 +178,21 @@ public class EventTabGUI {
       //  updateButton.setStyleName(constants.cwButtonStyle());
         
         boxButton=new Button();
-     //   addButton.setStyleName(constants.cwButtonStyle());
+
         
 	    cancelButton = new Button(constants.cwDialogBoxCancel()); 
-	 //   cancelButton.setStyleName(constants.cwButtonStyle());
+	    
+	    errorMsgLabel = new Label();
+		errorMsgLabel.setStyleName("errorMessage");
+		errorMsgLabel.setVisible(false);
 
+		eventDialogBoxVerticalPanel.add(errorMsgLabel);
+		
 		buildForm();
 		
-		eventDialogBox.add(layout);
+		eventDialogBoxVerticalPanel.add(layout);  
+		eventDialogBox.add(eventDialogBoxVerticalPanel);
+		
 		eventDialogBox.setVisible(false);
 		
 		
@@ -244,11 +259,23 @@ public class EventTabGUI {
     /*
      * check if input is valid
      */
-    private void copyFieldDateToEvent(){
+    private boolean copyFieldDateToEvent(){
+    	if(txtName.getText().equals("")){
+    		errorMsgLabel.setText("Enter event name ");
+    		txtName.setFocus(true);
+    		return false;
+
+    	}
     	currentEvent.setEventName(txtName.getText());
+    	
+    	if(txtDate.getValue()== null){
+    		errorMsgLabel.setText("Enter event date ");
+    		txtDate.setFocus(true);
+    		return false;
+    	}
         currentEvent.setEventDate(txtDate.getValue());
         currentEvent.setRecurrence(chkRecurrence.getValue());
-
+        return true;
     }
     
     private long daysBetween(Date d1, Date d2) {
@@ -298,17 +325,16 @@ public class EventTabGUI {
 	     * add new event
 	     */
 	    public void gui_eventAddButtonClicked() {
-	    	boolean valid=true;
-	        try{    
-	        copyFieldDateToEvent();
-	        }catch(NumberFormatException ex){
-	     //   	showMessage("The price should be a number");
-	        	valid=false;
-	        }
+	    	boolean valid=copyFieldDateToEvent();
+	      
 	        if(valid){
 	            btnAddEvent.setVisible(true);
+	            errorMsgLabel.setVisible(false);
 	            eventDialogBox.hide();
 	            this.eventService.createEvent(currentEvent);
+	        }else{
+	        	 errorMsgLabel.setVisible(true);
+
 	        }
 	    }
 	    
@@ -316,17 +342,14 @@ public class EventTabGUI {
 	     * update event
 	     */
 	    public void gui_eventUpdateButtonClicked() {
-	    	boolean valid=true;
-	        try{
-	        copyFieldDateToEvent();
-	        }catch(NumberFormatException ex){
-	        	valid=false;
-	     //   	showMessage("The price should be a number");
-	        }
+	    	boolean valid = copyFieldDateToEvent();
 	        if(valid){
 	            btnAddEvent.setVisible(true);
+	            errorMsgLabel.setVisible(false);
 	            eventDialogBox.hide();
 	            this.eventService.updateEvent(currentEvent);
+	        }else{
+	        	errorMsgLabel.setVisible(true);
 	        }
 	    }
 	 
@@ -349,6 +372,7 @@ public class EventTabGUI {
      */
     public void gui_eventCancelButtonClicked(){
     	btnAddEvent.setVisible(true);
+    	errorMsgLabel.setVisible(false);
     	eventDialogBox.hide();
     }
 	
@@ -383,9 +407,9 @@ public class EventTabGUI {
 			}
 			eventTable.setWidget(row, 2, lblEventDate);
 			if(event.getUserId().equals( entryPoint.userId)){
-			    Image updateImage = new Image( GWT.getModuleBaseURL() + "edit.gif");
+			    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update event");
-			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "delete.gif");
+			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
 			    deleteImage.setTitle("delete event");
 				eventTable.setWidget(row, 3, updateImage);
 	    	    eventTable.setWidget(row,4, deleteImage); 
