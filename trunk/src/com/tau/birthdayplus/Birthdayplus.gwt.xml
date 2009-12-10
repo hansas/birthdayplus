@@ -14,6 +14,7 @@
   <!-- Other module inherits                                      -->
   <inherits name="com.google.gwt.i18n.I18N"/>
   <inherits name="com.tau.birthdayplus.dto.dto"/>
+   <inherits name='org.gwtwidgets.WidgetLibrary'/>
   <inherits name="com.google.gwt.gadgets.Gadgets" />
   <define-linker name="gadget1"
     class="com.tau.birthdayplus.linker.GadgetLinkerGWT16" />
