@@ -186,6 +186,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    
 		   
 		    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
+		    loadingImage.setStyleName("loading image");
 			
 	
 			
