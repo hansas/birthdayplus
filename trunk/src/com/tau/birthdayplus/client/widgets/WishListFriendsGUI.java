@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -367,7 +368,12 @@ public class WishListFriendsGUI  {
         	//the item is free
         	if(item.getParticipators().isEmpty()){
         	   friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
-        	   friendWishTable.setWidget(row, 3, new Hyperlink("I'm buying", null));
+        	   Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
+			   buyImage.setTitle("I'll buy");
+        	   friendWishTable.setWidget(row, 3, buyImage);
+        	   Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
+			   groupImage.setTitle("Start a group");
+			   groupImage.setPixelSize(16, 16);
     	       friendWishTable.setWidget(row ,4,new Hyperlink("Start a group", null));
         	}else{
         	   Integer sum = 0;
@@ -378,8 +384,12 @@ public class WishListFriendsGUI  {
         		   sum += data.getMoney(); 
         	   }
         	   friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );
-        	   if(!userInGroup)
-        	      friendWishTable.setWidget(row, 4, new Hyperlink("Join the group", null));
+        	   if(!userInGroup){
+        		   Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
+    			   groupImage.setTitle("Join the group");
+    			   groupImage.setPixelSize(16, 16);
+        	      friendWishTable.setWidget(row, 4, groupImage);
+        	   }
         	}
         	friendWishTable.getRowFormatter().addStyleName(row, "tablesRows");
             row ++;
