@@ -361,7 +361,7 @@ public class MyWishlistTabGUI {
 	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update item");
 			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
-			    deleteImage.setTitle("delete delete");
+			    deleteImage.setTitle("delete item");
 			    
 			
 	    	    wishTable.setWidget(row, 3, updateImage);
