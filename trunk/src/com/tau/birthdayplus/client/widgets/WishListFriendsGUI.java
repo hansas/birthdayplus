@@ -64,6 +64,7 @@ public class WishListFriendsGUI  {
 	
 	private DialogBox moneyDialogBox;
 	private VerticalPanel moneyVerticalPanel;
+	private Label errorMsgLabel ;
 	private TextBox   enterSumTextBox;
 	private HorizontalPanel moneyHorizontalPanel;
 	private Button    okMoneyButton;
@@ -116,25 +117,21 @@ public class WishListFriendsGUI  {
 	private void buildMoneyDialogBox(){
 		moneyDialogBox = new DialogBox();
 		moneyDialogBox.setText("Enter a sum : ");
-	//	moneyDialogBox.setStyleName(constants.cwDialogBoxStyle());
+	
 		
 		moneyVerticalPanel  = new VerticalPanel();
 		enterSumTextBox = new TextBox();
-	//	enterSumTextBox.setStyleName(constants.cwTextBoxStyle());
-		
-		
-		
-		
+			
 		moneyHorizontalPanel = new HorizontalPanel();
 		moneyHorizontalPanel.setSpacing(10);
 		
 		okMoneyButton = new Button();
 	//	okMoneyButton.setStyleName(constants.cwButtonStyle());
-		okMoneyButton.setText("ok");
+		okMoneyButton.setText("Participate");
 		
 		cancelMoneyButton = new Button();
 	//	cancelMoneyButton.setStyleName(constants.cwButtonStyle());
-		cancelMoneyButton.setText("cancel");
+		cancelMoneyButton.setText("Cancel");
 		
 		moneyHorizontalPanel.add(okMoneyButton);
 	//	moneyHorizontalPanel.setCellHorizontalAlignment(okMoneyButton, HasHorizontalAlignment.ALIGN_LEFT);
@@ -142,6 +139,11 @@ public class WishListFriendsGUI  {
 		moneyHorizontalPanel.add(cancelMoneyButton);
 	//	moneyHorizontalPanel.setCellHorizontalAlignment(okMoneyButton, HasHorizontalAlignment.ALIGN_RIGHT);
 		
+		errorMsgLabel = new Label();
+		errorMsgLabel.setStyleName("errorMessage");
+		errorMsgLabel.setVisible(false);
+		
+		moneyVerticalPanel.add(errorMsgLabel);
 		moneyVerticalPanel.add(enterSumTextBox);
 		moneyVerticalPanel.add(moneyHorizontalPanel);
 		
@@ -152,8 +154,6 @@ public class WishListFriendsGUI  {
 	private void loadMoneyDialog(WishlistItemNewData item){
 		currentItem = item;
 		moneyDialogBox.center();
-		currentItem = item;
-		
 	    moneyDialogBox.show();
 	    enterSumTextBox.setFocus(true);
 	}
@@ -176,15 +176,8 @@ public class WishListFriendsGUI  {
 	
 	private void showParticipatorsPanel(WishlistItemNewData item,Widget widgetClicked){
 		currentItem = item;
-	    
-    //    int left =  widgetClicked.getAbsoluteLeft() + 10;
-   //     int top = widgetClicked.getAbsoluteTop() + 10;
-    //    participatorsPanel.setPopupPosition(left, top);
-        
         participatorsTable.clear();
 
-        // Show the popup
-     //   participatorsPanel.show();
         participatorsPanel.showRelativeTo(widgetClicked);
         
         int row = 0;
@@ -283,21 +276,38 @@ public class WishListFriendsGUI  {
 
 	
 	public void gui_eventOkMoneyButtonClicked(){
-		Integer sum = null;
+		//if empty
+		if(enterSumTextBox.equals("")){
+			errorMsgLabel.setText("Enter the sum ");
+    		enterSumTextBox.setFocus(true);
+    		errorMsgLabel.setVisible(true);
+    		return;
+		}
+		//full , try to parse
+		Integer sum = 0;
 		try{
 		   sum = Integer.parseInt(enterSumTextBox.getText());
 		}catch(NumberFormatException ex){
-			   
+			errorMsgLabel.setText("Enter valid sum ");
+    		enterSumTextBox.setFocus(true);
+    		errorMsgLabel.setVisible(true);
+    		return;
 		}
-		if (sum != null){
+		if (sum > 0){
+			errorMsgLabel.setVisible(false);
 			moneyDialogBox.hide();
 			enterSumTextBox.setText("");
 		    ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
             this.wishlistService.addParticipator(currentItem.getWishlistItemId(), parent.currentEvent.getEventId(), data);
+		}else{
+			errorMsgLabel.setText("Enter valid sum ");
+    		enterSumTextBox.setFocus(true);
+    		errorMsgLabel.setVisible(true);
 		}
 	}
 	
 	public void gui_eventCancelMoneyButtonClicked(){
+		errorMsgLabel.setVisible(false);
 		moneyDialogBox.hide();
 		enterSumTextBox.setText("");
 	}
@@ -374,7 +384,7 @@ public class WishListFriendsGUI  {
         	   Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
 			   groupImage.setTitle("Start a group");
 			   groupImage.setPixelSize(16, 16);
-    	       friendWishTable.setWidget(row ,4,new Hyperlink("Start a group", null));
+    	       friendWishTable.setWidget(row ,4, groupImage);
         	}else{
         	   Integer sum = 0;
         	   Boolean userInGroup = false;
