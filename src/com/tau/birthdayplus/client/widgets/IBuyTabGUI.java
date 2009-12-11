@@ -402,6 +402,8 @@ public class IBuyTabGUI {
 		
 		public void gui_eventCancelMoneyButtonClicked(){
 			moneyDialogBox.hide();
+			enterSumTextBox.setText("");
+			errorMsgLabel.setVisible(false);
 		}
 		
 		public void gui_eventClosePartisipatorsBoxButtonClicked(){
