@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -70,6 +73,7 @@ public class IBuyTabGUI {
 	
 	private DialogBox moneyDialogBox;
 	private VerticalPanel moneyVerticalPanel;
+	private Label errorMsgLabel ;
 	private TextBox   enterSumTextBox;
 	private HorizontalPanel moneyHorizontalPanel;
 	private Button    okMoneyButton;
@@ -106,14 +110,18 @@ public class IBuyTabGUI {
 	
 	private void buildMoneyDialogBox(){
 		moneyDialogBox = new DialogBox();
+		moneyDialogBox.setText("Enter a sum ");
+		
 	
 		
 		moneyVerticalPanel  = new VerticalPanel();
 		
 		enterSumTextBox = new TextBox();
-		enterSumTextBox.setText("Enter the sum :");
+		
 		
 		moneyHorizontalPanel = new HorizontalPanel();
+		moneyHorizontalPanel.setSpacing(20);
+		
 		okMoneyButton = new Button();
 		okMoneyButton.setText("ok");
 		
@@ -123,6 +131,11 @@ public class IBuyTabGUI {
 		moneyHorizontalPanel.add(okMoneyButton);
 		moneyHorizontalPanel.add(cancelMoneyButton);
 		
+		errorMsgLabel = new Label();
+		errorMsgLabel.setStyleName("errorMessage");
+		errorMsgLabel.setVisible(false);
+		
+		moneyVerticalPanel.add(errorMsgLabel);
 		moneyVerticalPanel.add(enterSumTextBox);
 		moneyVerticalPanel.add(moneyHorizontalPanel);
 		
@@ -134,8 +147,6 @@ public class IBuyTabGUI {
 	private void loadMoneyDialog(WishlistItemNewData item){
 		currentItem = item;
 		moneyDialogBox.center();
-		currentItem = item;
-		
 	    moneyDialogBox.show();
 	}
 	
@@ -339,7 +350,7 @@ public class IBuyTabGUI {
 	    			    Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
 	    			    cancelImage.setTitle("leave this group");
 	    			    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
-	    			    buyImage.setTitle("We''ll buy");
+	    			    buyImage.setTitle("We'll buy");
 	    	        	wishTable.setWidget(row, 4, updateImage);
 	    	        	wishTable.setWidget(row, 5, cancelImage);
 	    	        	wishTable.setWidget(row, 6, buyImage);
@@ -358,16 +369,34 @@ public class IBuyTabGUI {
 		
 		
 		public void gui_eventOkMoneyButtonClicked(){
-			Integer sum = null;
+			//is empty
+			if(enterSumTextBox.equals("")){
+				errorMsgLabel.setText("Enter the sum ");
+	    		enterSumTextBox.setFocus(true);
+	    		errorMsgLabel.setVisible(true);
+	    		return;
+			}
+			//parse
+			Integer sum = 0;
 			try{
 			   sum = Integer.parseInt(enterSumTextBox.getText());
 			}catch(NumberFormatException ex){
-				   
+				errorMsgLabel.setText("Enter valid sum ");
+		        enterSumTextBox.setFocus(true);
+		        errorMsgLabel.setVisible(true);
+		    	return;
 			}
-			if (sum != null){
+			//valid sum
+			if (sum > 0){
 				moneyDialogBox.hide();
+				enterSumTextBox.setText("");
+				errorMsgLabel.setVisible(false);
 			    ParticipatorData data = new ParticipatorData(entryPoint.userId,entryPoint.user.getFirstName(),entryPoint.user.getLastName(),sum);
 			    this.wishlistService.updateParticipator(currentItem.getWishlistItemId(), data);
+			}else{
+				errorMsgLabel.setText("Enter valid sum ");
+		        enterSumTextBox.setFocus(true);
+		        errorMsgLabel.setVisible(true);
 			}
 		}
 		
@@ -414,6 +443,13 @@ public class IBuyTabGUI {
 				public void onClick(ClickEvent event) {
 					gui_eventClosePartisipatorsBoxButtonClicked();
 				}
+			});
+			
+			this.enterSumTextBox.addKeyUpHandler(new KeyUpHandler(){
+				public void onKeyUp(KeyUpEvent event) {
+					if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
+						gui_eventOkMoneyButtonClicked();
+					}
 			});
 		}
 
