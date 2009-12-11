@@ -9,12 +9,16 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -26,6 +30,7 @@ import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -50,25 +55,25 @@ public class IBuyTabGUI {
 	// wishlist table
 	public TableWithHeader wishTable;
 	
-	//dialog for participators
-//	private DialogBox participatorsBox;
-	//vertical panel that holds everything
-	private VerticalPanel participatorsBoxVerticalPanel;
-	//participators table
-	private TableWithHeader participatorsTable;
+
+	//horizontal panel that holds everything
+	private HorizontalSplitPanel chatBoxHorizontalPanel;
 	
-	//main panel for the chat
+	//left side
 	private VerticalPanel chatVerticalPanel;
 	//chat table
-	private TableWithHeader chatTable;
+	private Grid chatTable;
+	private HorizontalPanel chatHorizontalPanel;
 	// Add a text area
-    TextArea chatTextArea ;
+    TextBox chatTextArea ;
     //add new message to the chat
 	private Button addMessageButton;
 	
-	
-	//close dialog box
-	private Button closePartisipatorsBoxButton;
+	//right side
+	private VerticalPanel participatorsVerticalPanel;
+	private Label participatorsLabel;
+	private TableWithHeader participatorsTable;
+	private Button closeChatButton;
 	
 	
 	private DialogBox moneyDialogBox;
@@ -95,17 +100,20 @@ public class IBuyTabGUI {
 	 */
 	public void init() {
 		iBuyPanel = new AbsolutePanel();
-		iBuyPanel.setStyleName("iBuyPanel");
+		iBuyPanel.addStyleName("iBuyPanel");
 	
 		buildWishlistTable();
-		buildParticipatorsBox();
+	    buildChat();
+		
 		buildMoneyDialogBox();
 	
 		iBuyPanel.add(wishTable);
-		iBuyPanel.add(participatorsBoxVerticalPanel);
+		iBuyPanel.add(chatBoxHorizontalPanel);
 		
 		    
 	}
+	
+	
 	
 	
 	private void buildMoneyDialogBox(){
@@ -151,6 +159,22 @@ public class IBuyTabGUI {
 	}
 	
 	
+	private void buildChat(){
+		chatBoxHorizontalPanel = new HorizontalSplitPanel();
+        chatBoxHorizontalPanel.setSplitPosition("70%");
+
+		chatBoxHorizontalPanel.setVisible(false);
+        buildChatLeftSide();
+    	buildChatRightSide();
+    	
+    	chatBoxHorizontalPanel.setLeftWidget(chatVerticalPanel);
+    	chatBoxHorizontalPanel.setRightWidget(participatorsVerticalPanel);
+		
+	}
+	
+	
+	
+	
 	/*
 	 * create flex table for wishlist items
 	 */
@@ -173,14 +197,69 @@ public class IBuyTabGUI {
 		wishTable.getColumnFormatter().addStyleName(4, "lastColumns");
 	}
 	
+	
+	
+	private void buildChatLeftSide(){
+		    chatVerticalPanel = new VerticalPanel();
+	       
+			
+	        chatTable = new Grid(1,2);
+	        chatTable.addStyleName("chatTable");
+	        
+	        chatTable.getColumnFormatter().addStyleName(0, "chatTableColumnName");
+	        chatTable.getColumnFormatter().addStyleName(1, "chatTableColumnTime");
+	        
+	        
+	        chatHorizontalPanel = new HorizontalPanel();
+	        
+	        
+			chatTextArea = new TextBox();
+			chatTextArea.addStyleName("chatTextBox");
+			
+			addMessageButton = new Button("send");
+			
+			chatHorizontalPanel.add(chatTextArea);
+			chatHorizontalPanel.add(addMessageButton);
+			
+			
+			chatVerticalPanel.add(chatTable);
+			chatVerticalPanel.add(chatHorizontalPanel);
+			chatVerticalPanel.setCellVerticalAlignment(chatHorizontalPanel, HasVerticalAlignment.ALIGN_BOTTOM);
+		
+	}
+	
+	
+	private void buildChatRightSide(){
+		participatorsVerticalPanel = new VerticalPanel();
+		
+		participatorsLabel = new Label("Participators");
+		
+		buildParticipatorsTable();
+		
+		closeChatButton = new Button("return");
+		
+		participatorsVerticalPanel.add(participatorsLabel);
+		participatorsVerticalPanel.setCellHorizontalAlignment(participatorsLabel, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		participatorsVerticalPanel.add(participatorsTable);
+		
+		participatorsVerticalPanel.add(closeChatButton);
+		participatorsVerticalPanel.setCellHorizontalAlignment(closeChatButton,HasHorizontalAlignment.ALIGN_CENTER );
+		participatorsVerticalPanel.setCellVerticalAlignment(closeChatButton, HasVerticalAlignment.ALIGN_BOTTOM);
+	}
+	
+	
+	
 	private void buildParticipatorsTable(){
 		participatorsTable = new TableWithHeader();
-		participatorsTable.setStyleName(constants.cwTableStyle());
+		participatorsTable.addStyleName("participatorsTable");
 		
 		//header
 		participatorsTable.setHeader(0, "Name");
 		participatorsTable.setHeader(1, "Sum");
 	}
+	
+	
 	
 	private void fillParticipatorsTable(){
 		this.participatorsTable.clear();
@@ -196,80 +275,31 @@ public class IBuyTabGUI {
 		
 	}
 	
-	private void buildChatTable(){
-		chatTable = new TableWithHeader();
-		chatTable.setStyleName("tables");
-		
-		//header
-		chatTable.setHeader(0, "From");
-		chatTable.setHeader(1, "Time");
-		chatTable.setHeader(2,"Message");
-		
-		
-		
-		
-	}
-	
-	private void buildChat(){
-        chatVerticalPanel = new VerticalPanel();
-		
-		chatTextArea = new TextArea();
-	//	chatTextArea.setStyleName(constants.cwTextAreaStyle());
-		
-		chatTextArea.setVisibleLines(3);
-		
-		addMessageButton = new Button("send");
-	//	addMessageButton.setStyleName(constants.cwButtonStyle());
-		
-		
-		buildChatTable();
-		
-		chatVerticalPanel.add(chatTable);
-		chatVerticalPanel.setCellHorizontalAlignment(chatTable,HasHorizontalAlignment.ALIGN_CENTER);
-		
-		chatVerticalPanel.add(chatTextArea);
-		chatVerticalPanel.setCellHorizontalAlignment(chatTextArea, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		chatVerticalPanel.add(addMessageButton);
-		chatVerticalPanel.setCellHorizontalAlignment(addMessageButton,HasHorizontalAlignment.ALIGN_RIGHT );
-	}
-		
-	
-		
-	
-	
-	private void buildParticipatorsBox(){
-		participatorsBoxVerticalPanel = new VerticalPanel();
-		participatorsBoxVerticalPanel.setVisible(false);
-		
-		closePartisipatorsBoxButton = new Button("return");
-		
-		buildParticipatorsTable();
-		buildChat();
-		
-		participatorsBoxVerticalPanel.add(participatorsTable);
-		participatorsBoxVerticalPanel.setCellHorizontalAlignment(participatorsTable,  HasHorizontalAlignment.ALIGN_CENTER);
-		
-		participatorsBoxVerticalPanel.add(chatVerticalPanel);
-		participatorsBoxVerticalPanel.setCellHorizontalAlignment(chatVerticalPanel, HasHorizontalAlignment.ALIGN_CENTER );
-		
-		participatorsBoxVerticalPanel.add(closePartisipatorsBoxButton);
-		participatorsBoxVerticalPanel.setCellHorizontalAlignment(closePartisipatorsBoxButton , HasHorizontalAlignment.ALIGN_RIGHT);
-		
-	//	participatorsBox.add(participatorsBoxVerticalPanel);
+	private void fillChatMessages(){
+		this.chatTable.clear();
+		this.chatTable.resizeRows(currentItem.getChatMessages().size()*2);
+        int row = 0;
+        
+        for (ChatMessageData message : currentItem.getChatMessages()) {
+            chatTable.setText(row, 0, message.getUserName()+" "+ "says :");
+            DateTimeFormat dateFormatter = 	DateTimeFormat.getMediumDateTimeFormat();
+            chatTable.setText(row, 1, dateFormatter.format(message.getTimeStamp()));
+            chatTable.setText(row+1, 0, message.getMesssage());
+            row+=2;
+        }
 
-		
 	}
 	
-	private void loadParticipatorsBox(WishlistItemNewData item){
+	
+	private void loadChat(WishlistItemNewData item){
 		if(!item.getParticipators().isEmpty()){
 	    	currentItem = item;
 	//	    participatorsBox.show();
 	    	wishTable.setVisible(false);
-	    	participatorsBoxVerticalPanel.setVisible(true);
+	    	chatBoxHorizontalPanel.setVisible(true);
 	    	
 		    fillParticipatorsTable();
-		   // fillChatMessages();
+		    fillChatMessages();
 		}
 	}
 		
@@ -293,7 +323,7 @@ public class IBuyTabGUI {
 	        case NAME_LINK    : if(!item.getLink().equals(""))
        		                       Window.open(item.getLink(), "_blank", null);
 	                            break;
-	        case PRICE_LINK   : loadParticipatorsBox(item);
+	        case PRICE_LINK   : loadChat(item);
 	                            break;
 	        case UPDATE_LINK  : loadMoneyDialog(item);    
 	                            break;
@@ -406,8 +436,8 @@ public class IBuyTabGUI {
 			errorMsgLabel.setVisible(false);
 		}
 		
-		public void gui_eventClosePartisipatorsBoxButtonClicked(){
-	    	participatorsBoxVerticalPanel.setVisible(false);
+		public void gui_eventCloseChatButtonClicked(){
+			chatBoxHorizontalPanel.setVisible(false);
 	    	wishTable.setVisible(true);
 			
 		}
@@ -440,10 +470,10 @@ public class IBuyTabGUI {
 				}
 			});
 			
-			this.closePartisipatorsBoxButton.addClickHandler(new ClickHandler(){
+			this.closeChatButton.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {
-					gui_eventClosePartisipatorsBoxButtonClicked();
+					gui_eventCloseChatButtonClicked();
 				}
 			});
 			
