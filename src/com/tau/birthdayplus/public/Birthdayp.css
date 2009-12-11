@@ -26,6 +26,40 @@ cursor: pointer;
 }
 
 
+
+.chatTable {
+overflow-y: auto;
+        height: 80%;
+        
+       
+
+}
+
+.participatorsTable {
+overflow-y:auto;
+        height: 80%;
+        t
+}
+
+.chatTextBox{
+        width: 80%;
+        text-align: left;
+
+
+}
+
+.chatTableColumnName{
+ text-align: left;
+ width: 80%;
+
+ 
+}
+
+.chatTableColumnTime{
+text-align: right;
+width: 20%;
+}
+
 .gwt-Button 
 { 
 background-color: #3366CC; 
