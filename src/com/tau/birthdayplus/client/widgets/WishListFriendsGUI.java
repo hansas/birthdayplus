@@ -123,7 +123,7 @@ public class WishListFriendsGUI  {
 		enterSumTextBox = new TextBox();
 			
 		moneyHorizontalPanel = new HorizontalPanel();
-		moneyHorizontalPanel.setSpacing(10);
+		moneyHorizontalPanel.setSpacing(20);
 		
 		okMoneyButton = new Button();
 	//	okMoneyButton.setStyleName(constants.cwButtonStyle());
@@ -151,16 +151,17 @@ public class WishListFriendsGUI  {
 		
 	}
 	
-	private void loadMoneyDialog(WishlistItemNewData item){
+	private void loadMoneyDialog(WishlistItemNewData item,Widget widgetClicked){
 		currentItem = item;
-		moneyDialogBox.center();
-	    moneyDialogBox.show();
+	//	moneyDialogBox.center();
+	   // moneyDialogBox.show();
+		moneyDialogBox.showRelativeTo(widgetClicked);
 	    enterSumTextBox.setFocus(true);
 	}
 		
 	private void buildParticipatorsPopupPanel(){	
 	   participatorsPanel = new PopupPanel(true);
-	//   participatorsPanel.setStyleName(constants.cwPopupPanelStyle());
+	   participatorsPanel.addStyleName("participatorPopupPanel");
 	   
  	   participatorsTable = new TableWithHeader();
  	   participatorsTable.setStyleName("tables");
@@ -178,6 +179,11 @@ public class WishListFriendsGUI  {
 		currentItem = item;
         participatorsTable.clear();
 
+    //    int left =  widgetClicked.getAbsoluteLeft() + 10;
+     //   int top = widgetClicked.getAbsoluteTop() + 10;
+     //   participatorsPanel.setPopupPosition(left, top);
+        
+     //   participatorsPanel.show();
         participatorsPanel.showRelativeTo(widgetClicked);
         
         int row = 0;
@@ -195,7 +201,7 @@ public class WishListFriendsGUI  {
 	
 	private void buildFriendWishlistBox(){
 	    	friendWishlistBox=new DialogBox();
-	  //  	friendWishlistBox.setStyleName(constants.cwDialogBoxStyle());
+	    	friendWishlistBox.addStyleName("friendWishlistBox");
             
 		    
 		    closeFriendWishlistBoxButton = new Button("Close");
@@ -240,11 +246,12 @@ public class WishListFriendsGUI  {
 	/*
 	 * on click in the table
 	 */
-	 public void gui_eventItemGridClicked(Cell cellClicked,Widget widgetClicked) {
+	 public void gui_eventItemGridClicked(Cell cellClicked) {
          int row = cellClicked.getRowIndex();
          int col = cellClicked.getCellIndex();
         
         WishlistItemNewData item = this.items.get(row);
+        Widget widgetClicked = friendWishTable.getWidget(row, col);
          
        switch(col){
     	                  
@@ -255,7 +262,7 @@ public class WishListFriendsGUI  {
        case BUY_LINK :      wishlistService.bookItemForUser(item.getWishlistItemId(), parent.currentEvent.getEventId(),parent.entryPoint.userId);
                             break;
                           
-       case GROUP_BUY_LINK :loadMoneyDialog(item);
+       case GROUP_BUY_LINK :loadMoneyDialog(item , widgetClicked);
                             break;
        }      
        
@@ -266,6 +273,7 @@ public class WishListFriendsGUI  {
 	
 	public void gui_eventCloseButtonClicked() {
 		friendWishlistBox.hide();
+		friendWishTable.clear();
         
     }
 	
@@ -321,10 +329,11 @@ public class WishListFriendsGUI  {
 		
 		this.friendWishTable.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
-            	 Widget widgetClicked= (Widget)event.getSource();
+            	
                  Cell cellForEvent = friendWishTable.getCellForEvent(event);
+            
                  if(cellForEvent!=null)
-                    gui_eventItemGridClicked(cellForEvent,widgetClicked);                
+                    gui_eventItemGridClicked(cellForEvent);                
             }});
 		
 		this.participatorsTable.addClickHandler(new ClickHandler(){
@@ -428,7 +437,7 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
-		this.wishlistService.getWishlist(parent.currentEvent.getEventId(), parent.currentEvent.getEventId());
+		this.wishlistService.getWishlist(parent.currentEvent.getUserId(), parent.currentEvent.getEventId());
 		
 	}
 
