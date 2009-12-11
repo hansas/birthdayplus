@@ -1,18 +1,30 @@
 .gwt-Image { 
 cursor: pointer;
   cursor: hand;
-border: 1px ;
+
 }
 
 .gwt-Image:hover {
-  background-color: 	#D8D8D8; 
-  border-color: #9cf #69e #69e #7af;
+  background-color: 	#D0D0D0; 
+  
 }
 
-
+.participatorPopupPanel{
+  width: 70%;
+}
 .errorMessage {
   color: Red;
 }
+
+.gwt-DialogBox .Caption {
+        background-color: #00517F;
+        color: white;
+        font-weight: bold;
+        padding: 5px 10px 5px 10px;
+        cursor: move;
+        font-size: 14px;
+}
+
 
 .gwt-Button 
 { 
