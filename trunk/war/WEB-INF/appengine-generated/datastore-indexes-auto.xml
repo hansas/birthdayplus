@@ -16,5 +16,11 @@
     <datastore-index kind="Participator" ancestor="true" source="auto">
         <property name="participators_INTEGER_IDX" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="ChatMessage" ancestor="true" source="auto">
+        <property name="messages_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+    
 
 </datastore-indexes>

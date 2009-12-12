@@ -3,9 +3,6 @@
   	<datastore-index kind="WishlistItem" ancestor="true">
         <property name="key" direction="asc" />
   	</datastore-index>
-  	
-  	<datastore-index kind="ChatMessage" ancestor="true">
-        <property name="messages_INTEGER_IDX" direction="asc" />
-  	</datastore-index>
+  
   	
 </datastore-indexes>

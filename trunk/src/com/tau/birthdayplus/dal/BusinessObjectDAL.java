@@ -45,6 +45,7 @@ public class BusinessObjectDAL {
 		}catch(JDOObjectNotFoundException ex){
 			throw new UserNotFoundException();
 		}catch(Exception ex){
+			log.severe(ex.getMessage());
 			throw new RuntimeException("can't get your profile");
 		}
 		return guest;
