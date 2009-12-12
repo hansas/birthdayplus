@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<datastore-indexes
-  autoGenerate="true">
-
+<datastore-indexes autoGenerate="true">
   	<datastore-index kind="WishlistItem" ancestor="true">
         <property name="key" direction="asc" />
   	</datastore-index>
-  
+  	
+  	<datastore-index kind="ChatMessage" ancestor="true">
+        <property name="messages_INTEGER_IDX" direction="asc" />
+  	</datastore-index>
+  	
 </datastore-indexes>
