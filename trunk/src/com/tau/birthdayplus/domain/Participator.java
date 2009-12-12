@@ -28,8 +28,6 @@ public class Participator
 	   public Participator(String userId,Integer money) {
 		   this.id = userId;
 		   this.idKey = KeyFactory.createKey(Participator.class.getSimpleName(), userId);
-//		   this.userFirstName = userFirstName;
-//		   this.userLastName = userLastName;
 		   this.money =  money;
 	   }
 	   
@@ -52,13 +50,5 @@ public class Participator
 	   public Integer getMoney() {
 		    return money;
     	}
-
-//		String getUserFirstName() {
-//			return userFirstName;
-//		}
-//
-//		String getUserLastName() {
-//			return userLastName;
-//		}
 
 }

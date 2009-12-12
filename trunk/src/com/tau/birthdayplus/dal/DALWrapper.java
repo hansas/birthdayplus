@@ -33,6 +33,10 @@ public class DALWrapper {
 		return pm.getObjectById(Guest.class, parentKey);
 	}
 	
+	public WishlistItem getWishlistItem(String itemId){
+		return BusinessObjectDAL.loadWishlistItem(itemId, pm);
+	}
+	
 	public List<WishlistItem> getWishlist(String userId) throws UserNotFoundException{
 		return BusinessObjectDAL.getWishlist(userId, this.pm);
 	}

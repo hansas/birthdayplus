@@ -17,10 +17,13 @@ import sun.misc.Sort;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.client.UserNotFoundException;
+import com.tau.birthdayplus.domain.ChatMessage;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
+import com.tau.birthdayplus.dto.client.BuyerData;
+import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -295,7 +298,7 @@ public class BusinessObjectDAL {
 			pm.close();
 		}
 	}
-
+	
 	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) throws UserNotFoundException {
 		List<WishlistItem> itemList = new ArrayList<WishlistItem>();
 		Guest user = BusinessObjectDAL.loadGuest(userId, pm);
@@ -410,6 +413,60 @@ public class BusinessObjectDAL {
 				tx.commit();
 			} catch (Exception ex) {
 				throw new RuntimeException("error in data base: cancelBookItemForUser");
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+	}
+
+	public static void bookItemForGroup(String itemId, BuyerData buyer) throws UserNotFoundException{
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(itemId, pm);
+		if (item.getBuyerKey()==null){
+			Transaction tx = (Transaction) pm.currentTransaction();
+			try {
+				tx.begin();
+				Guest guest = loadGuest(buyer.getUserId(), pm);
+				item.setBuyerKey(guest.getIdKey());
+				item.setIsActive(false);
+				pm.makePersistent(item);
+				tx.commit();
+			}
+			catch (Exception ex) {
+				throw new RuntimeException("error in data base: bookItemForGroup");
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+	}
+	/*
+	 * only the buyer can cancel the reservation of the item
+	 * check if buyer.userId == userId
+	 * return buyer to participators list
+	 * isActive = true
+	 * buyer = null
+	 */
+	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException{
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(itemId, pm);
+		Guest guest = loadGuest(userId, pm);
+		if (item.getBuyerKey().equals(guest.getIdKey())){
+			Transaction tx = (Transaction) pm.currentTransaction();
+			try {
+				tx.begin();
+				item.setBuyerKey(null);
+				item.setIsActive(true);
+				pm.makePersistent(item);
+				tx.commit();
+			}
+			catch (Exception ex) {
+				throw new RuntimeException("error in data base: cancelBookItemForGroup");
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -556,6 +613,26 @@ public class BusinessObjectDAL {
 				}
 				pm.close();
 			}
+		}
+	}
+	
+	public static void addChatMessageData(String itemId, ChatMessage message){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		WishlistItem item = loadWishlistItem(itemId, pm);
+		Transaction tx = (Transaction) pm.currentTransaction();
+		try{
+			tx.begin();
+			item.addChatMessage(message);
+			pm.makePersistent(message);
+			pm.makePersistent(item);
+			tx.commit();
+		} catch (Exception ex) {
+			throw new RuntimeException("error in data base: addChatMessageData", ex);
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
 		}
 	}
 
