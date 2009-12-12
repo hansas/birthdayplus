@@ -1,7 +1,7 @@
 package com.tau.birthdayplus.dto.client;
 import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.tau.birthdayplus.domain.WishlistItem;
+
 
 
 public class WishlistItemNewData extends WishlistItemData implements  IsSerializable{
@@ -16,7 +16,7 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	   private ArrayList<ParticipatorData> participators;
  
 	   //person who will buy this present
-	   private BuyerData buyer;
+	   private ParticipatorData buyer;
 	   //chat message should be sorted by data
 	   private ArrayList<ChatMessageData> chatMessages;
 	
@@ -73,11 +73,11 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 		return this.participators;
 	}
 	
-	public void setBuyer(BuyerData buyer){
+	public void setBuyer(ParticipatorData buyer){
 		this.buyer = buyer;
 	}
 	
-	public BuyerData getBuyer(){
+	public ParticipatorData getBuyer(){
 		return this.buyer;
 	}
 	
