@@ -179,12 +179,12 @@ public class WishListFriendsGUI  {
 		currentItem = item;
         participatorsTable.clear();
 
-    //    int left =  widgetClicked.getAbsoluteLeft() + 10;
-     //   int top = widgetClicked.getAbsoluteTop() + 10;
-     //   participatorsPanel.setPopupPosition(left, top);
+       // int left =  widgetClicked.getAbsoluteLeft() + 10;
+        int top = widgetClicked.getAbsoluteTop() + 10;
+        participatorsPanel.setPopupPosition(0, top);
         
-     //   participatorsPanel.show();
-        participatorsPanel.showRelativeTo(widgetClicked);
+        participatorsPanel.show();
+     //   participatorsPanel.showRelativeTo(widgetClicked);
         
         int row = 0;
         for(ParticipatorData participator : item.getParticipators()){
