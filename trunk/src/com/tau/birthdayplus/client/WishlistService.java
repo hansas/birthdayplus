@@ -95,7 +95,7 @@ public interface WishlistService extends RemoteService{
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	void bookItemForGroup(String itemId, BuyerData buyer) throws UserNotFoundException;
+	void bookItemForGroup(String itemId, ParticipatorData buyer) throws UserNotFoundException;
 	/*
 	 * only the buyer can cancel the reservation of the item
 	 * check if buyer.userId == userId

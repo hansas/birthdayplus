@@ -423,7 +423,7 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void bookItemForGroup(String itemId, BuyerData buyer) throws UserNotFoundException{
+	public static void bookItemForGroup(String itemId, ParticipatorData buyer) throws UserNotFoundException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		if (item.getBuyerKey()==null){
