@@ -245,9 +245,8 @@ WishlistService  {
 	/*
 	 * add new message to the chat 
 	 */
-	public void addChatMessageData(String itemId, ChatMessageData message) {
-		// TODO Auto-generated method stub
-		
+	public void addChatMessageData(String itemId, ChatMessageData message){
+		WishlistManagement.addChatMessageData(itemId, message);
 	}
 	/*
 	 * the group will buy this item
@@ -257,9 +256,8 @@ WishlistService  {
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	public void bookItemForGroup(String itemId, BuyerData buyer) {
-		// TODO Auto-generated method stub
-		
+	public void bookItemForGroup(String itemId, BuyerData buyer) throws UserNotFoundException {
+		WishlistManagement.bookItemForGroup(itemId, buyer);
 	}
 	/*
 	 * only the buyer can cancel the reservation of the item
@@ -268,16 +266,14 @@ WishlistService  {
 	 * isActive = true
 	 * buyer = null
 	 */
-	public void cancelBookItemForGroup(String itemId, String userId) {
-		// TODO Auto-generated method stub
-		
+	public void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException {
+		WishlistManagement.cancelBookItemForGroup(itemId, userId);
 	}
 	/*
 	 * return item by id
 	 */
-	public WishlistItemNewData getWishlistItem(String itemId) {
-		// TODO Auto-generated method stub
-		return null;
+	public WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException {
+		return WishlistManagement.getWishlistItem(itemId);
 	}
 	
 	

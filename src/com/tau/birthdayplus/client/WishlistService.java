@@ -95,7 +95,7 @@ public interface WishlistService extends RemoteService{
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	void bookItemForGroup(String itemId, BuyerData buyer);
+	void bookItemForGroup(String itemId, BuyerData buyer) throws UserNotFoundException;
 	/*
 	 * only the buyer can cancel the reservation of the item
 	 * check if buyer.userId == userId
@@ -103,7 +103,7 @@ public interface WishlistService extends RemoteService{
 	 * isActive = true
 	 * buyer = null
 	 */
-	void cancelBookItemForGroup(String itemId, String userId);
+	void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException;
 	/*
 	 * add new message to the chat 
 	 */
@@ -111,7 +111,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * return item by id
 	 */
-	WishlistItemNewData getWishlistItem(String itemId);
+	WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException;
 	
 
 }

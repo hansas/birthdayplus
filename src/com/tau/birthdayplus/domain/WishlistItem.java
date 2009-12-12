@@ -42,6 +42,9 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   //key of the person that buys this item
 	   @Persistent 
 	   private Key buyerKey;
+	   @Persistent (defaultFetchGroup="true")
+	   ArrayList<ChatMessage> messages;
+	   
 	
 	public WishlistItem(String userId, String name, Integer priority, String link, Integer price){
 		this.itemName = name;
@@ -49,6 +52,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		this.link = link;
 		this.price = price;
 		this.participators = new ArrayList<Participator>();
+		this.messages = new ArrayList<ChatMessage>();
 		this.setIsActive(true);
 		this.buyerKey=null; 
 		this.setEventKey(null);
@@ -137,6 +141,23 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 	public Key getEventKey() {
 		return eventKey;
+	}
+	
+	public void addChatMessage(ChatMessage m){
+		if (this.messages == null){
+			this.messages = new ArrayList<ChatMessage>();
+		}
+		this.messages.add(m);
+	}
+	
+	public void removeChatMessage(ChatMessage m){
+		if ((messages!=null) && (messages.contains(m))){
+			this.messages.remove(m);
+		}
+	}
+	
+	public ArrayList<ChatMessage> getMessages(){
+		return this.messages;
 	}
 	
 }
