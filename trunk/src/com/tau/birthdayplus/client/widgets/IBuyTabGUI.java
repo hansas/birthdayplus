@@ -346,7 +346,7 @@ public class IBuyTabGUI {
 	        case NAME_LINK    : if(!item.getLink().equals(""))
        		                       Window.open(item.getLink(), "_blank", null);
 	                            break;
-	        case PRICE_LINK   : //loadChat(item);
+	        case PRICE_LINK   : loadChat(item);
 	                            break;
 	        case UPDATE_LINK  : loadMoneyDialog(item);    
 	                            break;
