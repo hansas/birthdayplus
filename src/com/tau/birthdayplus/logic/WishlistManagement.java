@@ -113,12 +113,15 @@ public class WishlistManagement {
 					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
 			ArrayList<Participator> participators = item.getParticipators();
 			newItemData.setParticipators(getParticipatorDataList(participators,wrapper));
-			Guest g = wrapper.getGuestByKey(item.getBuyerKey());
-			ParticipatorData pData=new ParticipatorData(g.getId(), g.getFirstName(), g.getLastName(), 0);
-			for (Participator p:participators){
-				if (p.getId().equals(KeyFactory.keyToString(item.getBuyerKey()))){
-					pData = participatorToParticipatorData(p,wrapper);
-					break;
+			ParticipatorData pData=null;
+			if (item.getBuyerKey()!=null){
+				Guest g = wrapper.getGuestByKey(item.getBuyerKey());
+				pData = new ParticipatorData(g.getId(), g.getFirstName(), g.getLastName(), 0);
+				for (Participator p:participators){
+					if (p.getId().equals(KeyFactory.keyToString(item.getBuyerKey()))){
+						pData = participatorToParticipatorData(p,wrapper);
+						break;
+					}
 				}
 			}
 			newItemData.setBuyer(pData);
