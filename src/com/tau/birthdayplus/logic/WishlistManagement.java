@@ -111,9 +111,17 @@ public class WishlistManagement {
 			Event event = wrapper.getEventByKey(item.getEventKey());
 			WishlistItemNewData newItemData = new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
 					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
-			newItemData.setParticipators(getParticipatorDataList(item.getParticipators(),wrapper));
-			ParticipatorData buyer = participatorToParticipatorData(wrapper.getParticipatorByKey(item.getBuyerKey()), wrapper);
-			newItemData.setBuyer(buyer);
+			ArrayList<Participator> participators = item.getParticipators();
+			newItemData.setParticipators(getParticipatorDataList(participators,wrapper));
+			Guest g = wrapper.getGuestByKey(item.getBuyerKey());
+			ParticipatorData pData=new ParticipatorData(g.getId(), g.getFirstName(), g.getLastName(), 0);
+			for (Participator p:participators){
+				if (p.getId().equals(KeyFactory.keyToString(item.getBuyerKey()))){
+					pData = participatorToParticipatorData(p,wrapper);
+					break;
+				}
+			}
+			newItemData.setBuyer(pData);
 			return newItemData;
 		}
 	}
