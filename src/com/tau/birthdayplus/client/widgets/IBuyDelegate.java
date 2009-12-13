@@ -9,6 +9,7 @@ import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.RequestProxy;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.client.WishlistServiceAsync;
+import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -119,6 +120,97 @@ public class IBuyDelegate {
 		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
 
 	    	}
+	
+	public void addChatMessage(String itemId,ChatMessageData message){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
+		RequestBuilder requestBuilder = wishlistService.addChatMessageData(itemId, message, new AsyncCallback<Void>(){
+
+			public void onFailure(Throwable caught) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_addChatMessageFailed(caught);
+			}
+
+			public void onSuccess(Void result) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_addChatMessageSuccesfull();
+				
+			}
+			
+		});
+		
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
+		
+	}
+	
+	public void getWishlistItem(String itemId){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
+		RequestBuilder requestBuilder = wishlistService.getWishlistItem(itemId, new AsyncCallback<WishlistItemNewData>(){
+
+			public void onFailure(Throwable caught) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_getWishlistItemFailed(caught);
+				
+			}
+
+			public void onSuccess(WishlistItemNewData result) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_getWishlistItemSuccesfull(result);
+				
+			}
+			
+		});
+		
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+		
+	}
+	
+	public void cancelBookItemForGroup(String itemId,String userId){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
+		RequestBuilder requestBuilder = wishlistService.cancelBookItemForGroup(itemId, userId, new AsyncCallback<Void>(){
+
+			public void onFailure(Throwable caught) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_cancelBookItemForGroupFailed(caught);
+				
+			}
+
+			public void onSuccess(Void result) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_cancelBookItemForGroupSuccesfull();
+				
+			}
+		
+		});
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
+		
+	}
+	
+	public void bookItemForGroup(String itemId,ParticipatorData buyer){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
+		RequestBuilder requestBuilder = wishlistService.bookItemForGroup(itemId, buyer, new AsyncCallback<Void>(){
+
+			public void onFailure(Throwable caught) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_bookItemForGroupFailed(caught);
+				
+			}
+
+			public void onSuccess(Void result) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_bookItemForGroupSuccesfull();
+			}
+		});
+		
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
+		
+	}
 	
 	
 
