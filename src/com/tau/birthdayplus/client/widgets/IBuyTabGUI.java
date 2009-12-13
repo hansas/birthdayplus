@@ -14,6 +14,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
@@ -57,12 +59,12 @@ public class IBuyTabGUI {
 	
 
 	//horizontal panel that holds everything
-	private HorizontalSplitPanel chatBoxHorizontalPanel;
+	private HorizontalPanel chatBoxHorizontalPanel;
 	
 	//left side
 	private VerticalPanel chatVerticalPanel;
 	//chat table
-	private Grid chatTable;
+	private FlexTable chatTable;
 	private HorizontalPanel chatHorizontalPanel;
 	// Add a text area
     TextBox chatTextArea ;
@@ -160,15 +162,15 @@ public class IBuyTabGUI {
 	
 	
 	private void buildChat(){
-		chatBoxHorizontalPanel = new HorizontalSplitPanel();
-        chatBoxHorizontalPanel.setSplitPosition("70%");
+		chatBoxHorizontalPanel = new HorizontalPanel();
+        chatBoxHorizontalPanel.setSpacing(0);
 
 		chatBoxHorizontalPanel.setVisible(false);
         buildChatLeftSide();
     	buildChatRightSide();
     	
-    	chatBoxHorizontalPanel.setLeftWidget(chatVerticalPanel);
-    	chatBoxHorizontalPanel.setRightWidget(participatorsVerticalPanel);
+    	chatBoxHorizontalPanel.add(chatVerticalPanel);
+    	chatBoxHorizontalPanel.add(participatorsVerticalPanel);
 		
 	}
 	
@@ -201,10 +203,11 @@ public class IBuyTabGUI {
 	
 	private void buildChatLeftSide(){
 		    chatVerticalPanel = new VerticalPanel();
-	       
-			
-	        chatTable = new Grid(1,2);
+	        chatVerticalPanel.setWidth("60%");
+		    
+	        chatTable = new FlexTable();
 	        chatTable.addStyleName("chatTable");
+	        
 	        
 	        chatTable.getColumnFormatter().addStyleName(0, "chatTableColumnName");
 	        chatTable.getColumnFormatter().addStyleName(1, "chatTableColumnTime");
@@ -231,6 +234,7 @@ public class IBuyTabGUI {
 	
 	private void buildChatRightSide(){
 		participatorsVerticalPanel = new VerticalPanel();
+		participatorsVerticalPanel.setWidth("40%");
 		
 		participatorsLabel = new Label("Participators");
 		
@@ -242,6 +246,7 @@ public class IBuyTabGUI {
 		participatorsVerticalPanel.setCellHorizontalAlignment(participatorsLabel, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		participatorsVerticalPanel.add(participatorsTable);
+		participatorsTable.setWidth("100%");
 		
 		participatorsVerticalPanel.add(closeChatButton);
 		participatorsVerticalPanel.setCellHorizontalAlignment(closeChatButton,HasHorizontalAlignment.ALIGN_CENTER );
@@ -277,14 +282,17 @@ public class IBuyTabGUI {
 	
 	private void fillChatMessages(){
 		this.chatTable.clear();
-		this.chatTable.resizeRows(currentItem.getChatMessages().size()*2);
+		FlexCellFormatter cellFormatter = chatTable.getFlexCellFormatter();
         int row = 0;
         
         for (ChatMessageData message : currentItem.getChatMessages()) {
             chatTable.setText(row, 0, message.getUserName()+" "+ "says :");
             DateTimeFormat dateFormatter = 	DateTimeFormat.getMediumDateTimeFormat();
             chatTable.setText(row, 1, dateFormatter.format(message.getTimeStamp()));
+            
             chatTable.setText(row+1, 0, message.getMesssage());
+            cellFormatter.setColSpan(row+1, 0, 2);
+            cellFormatter.setHorizontalAlignment(row+1, 0, HasHorizontalAlignment.ALIGN_LEFT);
             row+=2;
         }
 
