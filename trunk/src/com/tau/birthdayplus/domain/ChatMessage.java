@@ -2,6 +2,7 @@ package com.tau.birthdayplus.domain;
 
 import java.util.Date;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -14,7 +15,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 public class ChatMessage {
 
 	@PrimaryKey
-	@Persistent
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key idKey;
 	@Persistent
 	private String id;
@@ -25,7 +26,6 @@ public class ChatMessage {
 	
 	public ChatMessage(String userId,Date timeStamp,String message){
 		this.id = userId;
-		this.idKey = KeyFactory.createKey(ChatMessage.class.getSimpleName(), userId);
 		this.setTimeStamp(timeStamp);
 		this.setMessage(message);
 	}
