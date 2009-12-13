@@ -9,6 +9,7 @@ import com.google.appengine.api.datastore.Key;
 import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
@@ -31,6 +32,10 @@ public class DALWrapper {
 	
 	public Guest getGuestByKey(Key parentKey){
 		return pm.getObjectById(Guest.class, parentKey);
+	}
+	
+	public Participator getParticipatorByKey(Key pKey){
+		return pm.getObjectById(Participator.class, pKey);
 	}
 	
 	public WishlistItem getWishlistItem(String itemId){
