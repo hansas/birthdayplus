@@ -347,6 +347,9 @@ public class BusinessObjectDAL {
 			WishlistItem item = loadWishlistItem(KeyFactory.keyToString(p.getIdKey().getParent()),pm);
 			wishlistItems.add(item);
 		}
+		for (WishlistItem i : wishlistItems){
+			log.info(i.getItemName());
+		}
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
 			query.declareImports("import com.google.appengine.api.datastore.Key");
@@ -361,10 +364,18 @@ public class BusinessObjectDAL {
 		if (buyers==null){
 			log.info("getBookedWishlistItems2: there is no buyers");
 		}
+		else{
+			for (WishlistItem buyer : buyers){
+				log.info(buyer.getItemName());
+			}
+		}
 		for (WishlistItem buyer : buyers){
 			if (!wishlistItems.contains(buyer)){
 				wishlistItems.add(buyer);
 			}
+		}
+		for (WishlistItem i : wishlistItems){
+			log.info("Final result"+i.getItemName());
 		}
 		return wishlistItems;
 	}

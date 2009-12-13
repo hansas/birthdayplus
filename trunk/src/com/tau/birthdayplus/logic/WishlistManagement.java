@@ -112,6 +112,8 @@ public class WishlistManagement {
 			WishlistItemNewData newItemData = new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
 					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
 			newItemData.setParticipators(getParticipatorDataList(item.getParticipators(),wrapper));
+			ParticipatorData buyer = participatorToParticipatorData(wrapper.getParticipatorByKey(item.getBuyerKey()), wrapper);
+			newItemData.setBuyer(buyer);
 			return newItemData;
 		}
 	}
