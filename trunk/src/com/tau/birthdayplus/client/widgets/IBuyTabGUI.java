@@ -163,7 +163,7 @@ public class IBuyTabGUI {
 	
 	private void buildChat(){
 		chatBoxHorizontalPanel = new HorizontalPanel();
-        chatBoxHorizontalPanel.setSpacing(0);
+        chatBoxHorizontalPanel.setStylePrimaryName("chatPanel");
 
 		chatBoxHorizontalPanel.setVisible(false);
         buildChatLeftSide();
@@ -171,6 +171,9 @@ public class IBuyTabGUI {
     	
     	chatBoxHorizontalPanel.add(chatVerticalPanel);
     	chatBoxHorizontalPanel.add(participatorsVerticalPanel);
+    	
+    	chatBoxHorizontalPanel.setCellWidth(chatVerticalPanel, "80%");
+    	chatBoxHorizontalPanel.setCellWidth(participatorsVerticalPanel,"20%");
 		
 	}
 	
@@ -203,40 +206,44 @@ public class IBuyTabGUI {
 	
 	private void buildChatLeftSide(){
 		    chatVerticalPanel = new VerticalPanel();
-	        chatVerticalPanel.setWidth("60%");
+	        chatVerticalPanel.setStylePrimaryName("chatLeftSide");
 		    
 	        chatTable = new FlexTable();
-	        chatTable.addStyleName("chatTable");
+	        chatTable.setStylePrimaryName("chatTable");
 	        
-	        
-	        chatTable.getColumnFormatter().addStyleName(0, "chatTableColumnName");
-	        chatTable.getColumnFormatter().addStyleName(1, "chatTableColumnTime");
-	        
+	        chatTable.getColumnFormatter().setWidth(0, "70%");
+	        chatTable.getColumnFormatter().setWidth(1, "30%");
 	        
 	        chatHorizontalPanel = new HorizontalPanel();
 	        
 	        
 			chatTextArea = new TextBox();
-			chatTextArea.addStyleName("chatTextBox");
+			chatTextArea.setStylePrimaryName("chatTextBox");
 			
 			addMessageButton = new Button("send");
 			
 			chatHorizontalPanel.add(chatTextArea);
 			chatHorizontalPanel.add(addMessageButton);
 			
+			chatHorizontalPanel.setCellWidth(chatTextArea, "70%");
+			chatHorizontalPanel.setCellHorizontalAlignment(addMessageButton, HasHorizontalAlignment.ALIGN_RIGHT);
 			
 			chatVerticalPanel.add(chatTable);
 			chatVerticalPanel.add(chatHorizontalPanel);
 			chatVerticalPanel.setCellVerticalAlignment(chatHorizontalPanel, HasVerticalAlignment.ALIGN_BOTTOM);
+			
+			chatVerticalPanel.setCellHeight(chatTable, "90%");
+			chatVerticalPanel.setCellHeight(chatHorizontalPanel, "10%");
 		
 	}
 	
 	
 	private void buildChatRightSide(){
 		participatorsVerticalPanel = new VerticalPanel();
-		participatorsVerticalPanel.setWidth("40%");
+		participatorsVerticalPanel.setStylePrimaryName("chatRightSide");
 		
 		participatorsLabel = new Label("Participators");
+		participatorsLabel.setStylePrimaryName("participatorsLabel");
 		
 		buildParticipatorsTable();
 		
@@ -246,18 +253,22 @@ public class IBuyTabGUI {
 		participatorsVerticalPanel.setCellHorizontalAlignment(participatorsLabel, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		participatorsVerticalPanel.add(participatorsTable);
-		participatorsTable.setWidth("100%");
+		
 		
 		participatorsVerticalPanel.add(closeChatButton);
 		participatorsVerticalPanel.setCellHorizontalAlignment(closeChatButton,HasHorizontalAlignment.ALIGN_CENTER );
 		participatorsVerticalPanel.setCellVerticalAlignment(closeChatButton, HasVerticalAlignment.ALIGN_BOTTOM);
+		
+		participatorsVerticalPanel.setCellHeight(participatorsLabel, "10%");
+		participatorsVerticalPanel.setCellHeight(participatorsTable,"80%");
+		participatorsVerticalPanel.setCellHeight(closeChatButton, "10%");
 	}
 	
 	
 	
 	private void buildParticipatorsTable(){
 		participatorsTable = new TableWithHeader();
-		participatorsTable.addStyleName("participatorsTable");
+		participatorsTable.setStylePrimaryName("participatorsTable");
 		
 		//header
 		participatorsTable.setHeader(0, "Name");
@@ -283,10 +294,13 @@ public class IBuyTabGUI {
 	private void fillChatMessages(){
 		this.chatTable.clear();
 		FlexCellFormatter cellFormatter = chatTable.getFlexCellFormatter();
+		RowFormatter rowFormatter = chatTable.getRowFormatter();
         int row = 0;
         
         for (ChatMessageData message : currentItem.getChatMessages()) {
             chatTable.setText(row, 0, message.getUserName()+" "+ "says :");
+            rowFormatter.setStylePrimaryName(row, "chatLineDate");
+            
             DateTimeFormat dateFormatter = 	DateTimeFormat.getMediumDateTimeFormat();
             chatTable.setText(row, 1, dateFormatter.format(message.getTimeStamp()));
             
@@ -331,7 +345,7 @@ public class IBuyTabGUI {
 	        case NAME_LINK    : if(!item.getLink().equals(""))
        		                       Window.open(item.getLink(), "_blank", null);
 	                            break;
-	        case PRICE_LINK   : //loadChat(item);
+	        case PRICE_LINK   : loadChat(item);
 	                            break;
 	        case UPDATE_LINK  : loadMoneyDialog(item);    
 	                            break;
