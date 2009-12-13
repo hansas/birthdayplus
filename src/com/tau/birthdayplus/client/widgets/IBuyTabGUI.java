@@ -2,6 +2,7 @@ package com.tau.birthdayplus.client.widgets;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -351,10 +352,18 @@ public class IBuyTabGUI {
 	                            break;
 	        case CANCEL_LINK  : if(item.getParticipators().isEmpty())
 	        	                   this.wishlistService.cancelBookItemForUser(item.getWishlistItemId(), entryPoint.userId);
-	                            else
-	                               this.wishlistService.deleteParticipator(item.getWishlistItemId(), entryPoint.userId);
+	                            else 
+	                            {  if(item.getIsActive())
+	                                 this.wishlistService.deleteParticipator(item.getWishlistItemId(), entryPoint.userId);
+	                               else
+	                               { if(item.getBuyer().getUserId().equals(entryPoint.userId))
+	                            	   this.wishlistService.cancelBookItemForGroup(item.getWishlistItemId(), entryPoint.userId);
+	                               }
+	                            }
 	                            break;
 	        case BUY_LINK     : //ASK ABOUT CONTACTS AND SHORT MESSAGE
+	        	                if(item.getIsActive())
+	        	                   this.wishlistService.bookItemForGroup(item.getWishlistItemId(), new ParticipatorData(entryPoint.userId,entryPoint.firstName,entryPoint.lastName,0));
                                 break;
 	        }
 	        
@@ -406,6 +415,13 @@ public class IBuyTabGUI {
 	    	        	wishTable.setWidget(row, 4, updateImage);
 	    	        	wishTable.setWidget(row, 5, cancelImage);
 	    	        	wishTable.setWidget(row, 6, buyImage);
+	    	        }else{
+	    	        	if(item.getBuyer().getUserId().equals(entryPoint.userId)){
+	    	        	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
+	    			       cancelImage.setTitle("reopen this group");
+	    			       wishTable.setWidget(row, 5, cancelImage);
+	    	        	}
+	    	        	
 	    	        }
 	    
 	           
@@ -464,6 +480,13 @@ public class IBuyTabGUI {
 			
 		}
 		
+		private void gui_eventAddMessageButtonClicked(){
+			if(chatTextArea.equals(""))
+				return;
+			ChatMessageData message = new ChatMessageData(entryPoint.userId,entryPoint.firstName+" "+entryPoint.lastName,chatTextArea.getText());
+			this.wishlistService.addChatMessage(currentItem.getWishlistItemId(),message);
+		}
+		
 		
 	
 
@@ -504,6 +527,23 @@ public class IBuyTabGUI {
 					if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
 						gui_eventOkMoneyButtonClicked();
 					}
+			});
+			
+			this.addMessageButton.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					gui_eventAddMessageButtonClicked();
+				}
+				
+			});
+			
+			this.chatTextArea.addKeyUpHandler(new KeyUpHandler(){
+
+				public void onKeyUp(KeyUpEvent event) {
+					if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
+					   gui_eventAddMessageButtonClicked();
+				}
+				
 			});
 		}
 
@@ -558,6 +598,70 @@ public class IBuyTabGUI {
 
 		public void service_getBookedWishlistFailed(Throwable caught) {
 			// TODO Auto-generated method stub
+			
+		}
+
+
+
+
+		public void service_addChatMessageFailed(Throwable caught) {
+			
+			
+		}
+
+
+
+
+		public void service_addChatMessageSuccesfull() {
+			this.chatTextArea.setText("");
+			this.wishlistService.getWishlistItem(currentItem.getWishlistItemId());
+			
+		}
+
+
+
+
+		public void service_getWishlistItemFailed(Throwable caught) {
+			
+			
+		}
+
+
+
+
+		public void service_getWishlistItemSuccesfull(WishlistItemNewData result) {
+			this.loadChat(result);
+			
+		}
+
+
+
+
+		public void service_cancelBookItemForGroupFailed(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+
+		public void service_cancelBookItemForGroupSuccesfull() {
+			this.wishlistService.getBookedWishlist(entryPoint.userId);
+		}
+
+
+
+
+		public void service_bookItemForGroupFailed(Throwable caught) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+
+		public void service_bookItemForGroupSuccesfull() {
+			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
