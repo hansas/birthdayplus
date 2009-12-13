@@ -15,7 +15,6 @@ import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
-import com.tau.birthdayplus.dto.client.BuyerData;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
