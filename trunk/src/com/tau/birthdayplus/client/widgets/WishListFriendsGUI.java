@@ -205,7 +205,7 @@ public class WishListFriendsGUI  {
             
 		    
 		    closeFriendWishlistBoxButton = new Button("Close");
-		    closeFriendWishlistBoxButton.setStyleName("cw-Button");
+		    
 		    
 		   // create panel to layout the content
 		    wishlistBoxVerticalPanel = new VerticalPanel();
