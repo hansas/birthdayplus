@@ -325,7 +325,7 @@ public class IBuyTabGUI {
 	    	chatBoxHorizontalPanel.setVisible(true);
 	    	
 		    fillParticipatorsTable();
-		    Window.alert("loading chat, number of messages is : "+currentItem.getChatMessages().size());
+		  //  Window.alert("loading chat, number of messages is : "+currentItem.getChatMessages().size());
 		    fillChatMessages();
 		}
 	}
