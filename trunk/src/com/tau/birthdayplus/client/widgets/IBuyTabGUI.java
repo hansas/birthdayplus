@@ -187,7 +187,7 @@ public class IBuyTabGUI {
 	private void buildWishlistTable(){
 		//create table for whishlistitems
 	    wishTable=new TableWithHeader();
-	    wishTable.setStyleName(constants.cwTableStyle());
+	    wishTable.setStyleName("tables");
 	    
 	    //header
 	    wishTable.setHeader(0,"Event");
@@ -201,6 +201,8 @@ public class IBuyTabGUI {
 		wishTable.getColumnFormatter().addStyleName(3, "tablesColumns");
 		
 		wishTable.getColumnFormatter().addStyleName(4, "lastColumns");
+		wishTable.getColumnFormatter().addStyleName(5, "lastColumns");
+		wishTable.getColumnFormatter().addStyleName(6, "lastColumns");
 	}
 	
 	

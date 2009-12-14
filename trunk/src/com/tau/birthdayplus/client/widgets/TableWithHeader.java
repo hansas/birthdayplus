@@ -16,8 +16,8 @@ public class TableWithHeader  extends FlexTable{
 	  DOM.insertChild(this.getElement(), head, 0);  
 	  DOM.insertChild(head, headerTr, 0);  
 	  Element tBody = getBodyElement();  
-	  DOM.setElementAttribute(tBody, "style", "overflow:auto;text-align: center;");  
-	  DOM.setElementAttribute(head, "style", "text-align: center;height:14px; font-size:13px;color:#473C8B;font-family:Arial;font-weight:bold;");
+	  DOM.setElementAttribute(tBody, "style", "overflow: auto; text-align: center;");  
+	  DOM.setElementAttribute(head, "style", "text-align: center;height:14px; font-size:13px;color:black;font-family:Arial;font-weight:bold;");
 	  
 	 }  
 	   
