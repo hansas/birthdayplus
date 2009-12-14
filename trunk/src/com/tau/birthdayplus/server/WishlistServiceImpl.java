@@ -255,8 +255,8 @@ WishlistService  {
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	public void bookItemForGroup(String itemId, ParticipatorData buyer) throws UserNotFoundException {
-		WishlistManagement.bookItemForGroup(itemId, buyer);
+	public void bookItemForGroup(String itemId, String userId,String message,Boolean showEmail) throws UserNotFoundException {
+		WishlistManagement.bookItemForGroup(itemId, userId);
 	}
 	/*
 	 * only the buyer can cancel the reservation of the item
@@ -275,12 +275,22 @@ WishlistService  {
 		return WishlistManagement.getWishlistItem(itemId);
 	}
 	
-	
+	/*
+	 * Three last items that this person bought for me
+	 * 
+	 */
+	public ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,
+			String anotherUserId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	protected String readContent(HttpServletRequest request)
 	throws ServletException, IOException {
 return RPCServletUtils.readContentAsUtf8(request, false);
 }
+
+	
 
 	
 

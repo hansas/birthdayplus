@@ -65,7 +65,7 @@ public interface WishlistServiceAsync {
 	RequestBuilder deleteParticipator(String wishlistItemId, String userId,
 			AsyncCallback<Void> callback);
 
-	RequestBuilder bookItemForGroup(String itemId, ParticipatorData buyer,
+	RequestBuilder bookItemForGroup(String itemId, String userId,String message,Boolean showEmail,
 			AsyncCallback<Void> callback);
 
 	RequestBuilder cancelBookItemForGroup(String itemId, String userId,
@@ -76,6 +76,9 @@ public interface WishlistServiceAsync {
 
 	RequestBuilder getWishlistItem(String itemId,
 			AsyncCallback<WishlistItemNewData> callback);
+
+	void getLastItemsForUser(String myUserId, String anotherUserId,
+			AsyncCallback<ArrayList<WishlistItemNewData>> callback);
 	
 
 	
