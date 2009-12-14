@@ -239,8 +239,8 @@ public class WishListFriendsGUI  {
 	    friendWishTable.setHeader(1,"Priority");
 	    friendWishTable.setHeader(2,"Price");
 	    
+	    friendWishTable.getColumnFormatter().addStyleName(3, "lastColumns");
 	    friendWishTable.getColumnFormatter().addStyleName(4, "lastColumns");
-	    friendWishTable.getColumnFormatter().addStyleName(5, "lastColumns");
        
 	}
 	
