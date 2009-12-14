@@ -125,6 +125,7 @@ public class WishlistManagement {
 				}
 			}
 			newItemData.setBuyer(pData);
+			newItemData.setChatMessages(getChatMessageDataList(item.getMessages(),wrapper));
 			return newItemData;
 		}
 	}
@@ -191,6 +192,18 @@ public class WishlistManagement {
 		return participatorsD;
 	}
 	
+	public static ArrayList<ChatMessageData> getChatMessageDataList(ArrayList<ChatMessage> messages,DALWrapper wrapper) throws UserNotFoundException{
+		ArrayList<ChatMessageData> messagesD = new ArrayList<ChatMessageData>();
+		for (ChatMessage m:messages){
+			messagesD.add(chatMessageToChatMessageData(m,wrapper));
+		}
+		return messagesD;
+	}
+	
+	public static ChatMessageData chatMessageToChatMessageData(ChatMessage message,DALWrapper wrapper) throws UserNotFoundException{
+		Guest guest = wrapper.getGuestById(message.getId());
+		return new ChatMessageData(guest.getId(),guest.getFirstName(),message.getTimeStamp(),message.getMessage());
+	}
 	
 	
 //	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
