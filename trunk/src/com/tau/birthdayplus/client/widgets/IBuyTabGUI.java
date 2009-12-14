@@ -317,13 +317,15 @@ public class IBuyTabGUI {
 	
 	
 	private void loadChat(WishlistItemNewData item){
+		
 		if(!item.getParticipators().isEmpty()){
 	    	currentItem = item;
-	//	    participatorsBox.show();
+	
 	    	wishTable.setVisible(false);
 	    	chatBoxHorizontalPanel.setVisible(true);
 	    	
 		    fillParticipatorsTable();
+		    Window.alert("loading chat, number of messages is : "+currentItem.getChatMessages().size());
 		    fillChatMessages();
 		}
 	}
@@ -365,7 +367,7 @@ public class IBuyTabGUI {
 	                            break;
 	        case BUY_LINK     : //ASK ABOUT CONTACTS AND SHORT MESSAGE
 	        	                if(item.getIsActive())
-	        	                   this.wishlistService.bookItemForGroup(item.getWishlistItemId(), new ParticipatorData(entryPoint.userId,entryPoint.firstName,entryPoint.lastName,0));
+	        	                   this.wishlistService.bookItemForGroup(item.getWishlistItemId(), entryPoint.userId,"",false);
                                 break;
 	        }
 	        
