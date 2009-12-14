@@ -174,8 +174,8 @@ public class WishlistManagement {
 		BusinessObjectDAL.cancelBookItemForUser(wishlistItemId, userId);
 	}
 	
-	public static void bookItemForGroup(String itemId, ParticipatorData buyer) throws UserNotFoundException{
-		BusinessObjectDAL.bookItemForGroup(itemId, buyer);
+	public static void bookItemForGroup(String itemId, String userId) throws UserNotFoundException{
+		BusinessObjectDAL.bookItemForGroup(itemId, userId);
 	}
 	
 	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException{
