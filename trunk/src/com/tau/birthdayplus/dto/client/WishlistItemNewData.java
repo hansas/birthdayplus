@@ -31,7 +31,7 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemNewData(String wishlistItemId,String userId,String userName,String eventId,String eventName,String name, Integer priority, String link, Integer price,Boolean isActive){
+	public WishlistItemNewData(String wishlistItemId,String userId,String userName,String eventId,String eventName,String name, Boolean priority, String link, Double price,Boolean isActive){
 		super(wishlistItemId,userId,name,priority,link,price,isActive);
 		this.userName = userName;
 		this.eventId = eventId;
