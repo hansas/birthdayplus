@@ -12,11 +12,11 @@ public class WishlistItemData implements IsSerializable{
 	   //the item name 
 	   private String itemName;
 	   //priority
-	   private Integer priority;
+	   private Boolean priority;
 	   //link
 	   private String link;
 	   //price
-	   private Integer price;
+	   private Double price;
 
 	   private Boolean isActive;
 
@@ -32,7 +32,7 @@ public class WishlistItemData implements IsSerializable{
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemData(String wishlistItemId,String userId,String name, Integer priority, String link, Integer price,Boolean isActive){
+	public WishlistItemData(String wishlistItemId,String userId,String name, Boolean priority, String link, Double price,Boolean isActive){
 		this.wishlistItemId=wishlistItemId;
 		this.userId = userId;
 		this.itemName = name;
@@ -47,7 +47,7 @@ public class WishlistItemData implements IsSerializable{
 	 * constructor for client side - create new item 
 	 */
 	public WishlistItemData(String userId){
-		this(null,userId,null,5,null,0,false);
+		this(null,userId,null,true,null,0.0,false);
 	}
 	
 	public String getWishlistItemId(){
@@ -64,10 +64,10 @@ public class WishlistItemData implements IsSerializable{
 	public String getItemName() {
 		return itemName;
 	}
-	public void setPriority(Integer priority) {
+	public void setPriority(Boolean priority) {
 		this.priority = priority;
 	}
-	public Integer getPriority() {
+	public Boolean getPriority() {
 		return priority;
 	}
 	public void setLink(String link) {
@@ -76,10 +76,10 @@ public class WishlistItemData implements IsSerializable{
 	public String getLink() {
 		return link;
 	}
-	public void setPrice(Integer price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
-	public Integer getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 	
