@@ -209,6 +209,7 @@ public class IBuyTabGUI {
 		iBuyTableHeader.setStyleName("iBuyTableHeader");
 		iBuyTableHeader.setSize("100%", "25px");
 		
+		
 		iBuyTableHeader.getColumnFormatter().setWidth(0, "60px");
 		iBuyTableHeader.getColumnFormatter().setWidth(1, "50px");
 		iBuyTableHeader.getColumnFormatter().setWidth(2, "25px");
@@ -348,7 +349,7 @@ public class IBuyTabGUI {
 	    	chatPanel.setVisible(true);
 	    	
 		    fillParticipatorsTable();
-		    Window.alert("loading chat, number of messages is : "+currentItem.getChatMessages().size());
+		//    Window.alert("loading chat, number of messages is : "+currentItem.getChatMessages().size());
 		    fillChatMessages();
 		}
 	}
