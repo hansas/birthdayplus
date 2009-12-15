@@ -111,7 +111,7 @@ public class EventTabGUI {
 		btnAddEvent = new Button("Add Event");
 		eventPanel.add(btnAddEvent);
 		btnAddEvent.setStyleName("buttonAddEvent");
-		btnAddEvent.setSize("50px","25px");
+		btnAddEvent.setSize("100px","25px");
 		
 		//create DialogBox for user's friend wishlist
 		wishlistFriendGUI = new WishListFriendsGUI();
@@ -133,16 +133,16 @@ public class EventTabGUI {
 	private void buildEventTable(){
 		eventTableHeader = new FlexTable();
 		eventPanel.add(eventTableHeader);
-		eventTableHeader.setStyleName("eventTableHeader");
-		eventTableHeader.setSize("100%", "25px");
+		eventTableHeader.addStyleName("eventTableHeader");
+		//eventTableHeader.setSize("100%", "25px");
 		
-		eventTableHeader.getColumnFormatter().setWidth(0, "50px");
-		eventTableHeader.getColumnFormatter().setWidth(1, "60px");
+		eventTableHeader.getColumnFormatter().setWidth(0, "100px");
+		eventTableHeader.getColumnFormatter().setWidth(1, "100px");
 		eventTableHeader.getColumnFormatter().setWidth(2, "25px");
 				
-		eventTableHeader.setWidget(0, 0, new Label("Name"));
-		eventTableHeader.setWidget(0,1, new Label("Event"));
-		eventTableHeader.setWidget(0, 2, new Label("Due"));
+		eventTableHeader.setText(0, 0, "Name");
+		eventTableHeader.setText(0,1, "Event");
+		eventTableHeader.setText(0, 2, "Due");
 		
 		eventScrollPanel = new ScrollPanel();
 		eventPanel.add(eventScrollPanel);
@@ -152,12 +152,12 @@ public class EventTabGUI {
 		
 		eventTable = new FlexTable();
 		eventScrollPanel.add(eventTable);
-		eventTable.setStyleName("eventTable");
-		eventTable.setWidth("100%");
+		eventTable.addStyleName("eventTable");
+	//	eventTable.setWidth("100%");
 		
-		eventTable.getColumnFormatter().setWidth(0, "50px");
-		eventTable.getColumnFormatter().setWidth(1, "60px");
-		eventTable.getColumnFormatter().setWidth(2, "25px");
+		eventTable.getColumnFormatter().setWidth(0, "100px");
+		eventTable.getColumnFormatter().setWidth(1, "100px");
+	//	eventTable.getColumnFormatter().setWidth(2, "25px");
 
 		
 		
