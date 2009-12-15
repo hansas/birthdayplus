@@ -28,11 +28,11 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   @Persistent
 	   private String itemName;
 	   @Persistent
-	   private Integer priority;
+	   private Boolean priority;
 	   @Persistent
 	   private String link;
 	   @Persistent
-	   private Integer price;
+	   private Double price;
 	   //people that want to buy this together
 	   @Persistent (defaultFetchGroup="true")
 	   ArrayList<Participator> participators;
@@ -46,7 +46,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   ArrayList<ChatMessage> messages;
 	   
 	
-	public WishlistItem(String userId, String name, Integer priority, String link, Integer price){
+	public WishlistItem(String userId, String name, Boolean priority, String link, Double price){
 		this.itemName = name;
 		this.priority = priority;
 		this.link = link;
@@ -80,10 +80,10 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	public String getItemName() {
 		return itemName;
 	}
-	public void setPriority(Integer priority) {
+	public void setPriority(Boolean priority) {
 		this.priority = priority;
 	}
-	public Integer getPriority() {
+	public Boolean getPriority() {
 		return priority;
 	}
 	public void setLink(String link) {
@@ -92,10 +92,10 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	public String getLink() {
 		return link;
 	}
-	public void setPrice(Integer price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
-	public Integer getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 	
