@@ -21,12 +21,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.ui.TextBox;
@@ -49,12 +52,14 @@ public class WishListFriendsGUI  {
 
 	/*GUI Widgets*/
 	
-	//Dialog Bog with friend's wishlist
-	public DialogBox friendWishlistBox;
+
 	//VerticalPanel for the content of wishlist box
-	protected VerticalPanel wishlistBoxVerticalPanel;
+	protected FlowPanel wishlistBoxPanel;
+	protected Label title;
+	private ScrollPanel scrollWishlistPanel;
+	private FlexTable headerFriendWishTable;
 	//friend's wishlist table
-	protected TableWithHeader friendWishTable;
+	protected FlexTable friendWishTable;
 	//close button for closing wishlist box
 	protected Button closeFriendWishlistBoxButton;
 	//popup panel for participators
@@ -95,22 +100,29 @@ public class WishListFriendsGUI  {
 		 * This is the entry point method.
 		 */
 		public void init() {
-			 buildFriendWishlistBox();
-			 buildMoneyDialogBox();
-			 buildParticipatorsPopupPanel();
+			items = new ArrayList<WishlistItemNewData>();
+
+			wishlistBoxPanel = new FlowPanel();
+			parent.mainPanel.add(wishlistBoxPanel);
+			wishlistBoxPanel.setSize("100%", "350px");
+			wishlistBoxPanel.setVisible(false);
+			wishlistBoxPanel.setStyleName("wishlistFriendPanel");
+			
+			title = new Label();
+			wishlistBoxPanel.add(title);
+			title.setSize("100%", "25px");
+			
+			buildFriendWishlistTable();
+			    
+			closeFriendWishlistBoxButton = new Button("Close");
+			wishlistBoxPanel.add(closeFriendWishlistBoxButton);
+			closeFriendWishlistBoxButton.setSize("50px", "25px");
+			
+			buildMoneyDialogBox();
+			buildParticipatorsPopupPanel();
 			 
 			 
-			 items = new ArrayList<WishlistItemNewData>();
 			
-			
-			 ArrayList<WishlistItemNewData> data=new ArrayList<WishlistItemNewData>();
-			    for(int i=0;i<5;i++){
-			    //	data.add(new WishlistItemData("555","name"+i,i,"http://techblog.maydu.eu/?p=7",500));
-			    	
-			    }
-			    
-			//    service_eventGetWishlistSuccesfull(data);
-			    
 			   
 		}
 		
@@ -120,34 +132,30 @@ public class WishListFriendsGUI  {
 	
 		
 		moneyVerticalPanel  = new VerticalPanel();
-		enterSumTextBox = new TextBox();
-			
-		moneyHorizontalPanel = new HorizontalPanel();
-		moneyHorizontalPanel.setSpacing(20);
-		
-		okMoneyButton = new Button();
-	//	okMoneyButton.setStyleName(constants.cwButtonStyle());
-		okMoneyButton.setText("Participate");
-		
-		cancelMoneyButton = new Button();
-	//	cancelMoneyButton.setStyleName(constants.cwButtonStyle());
-		cancelMoneyButton.setText("Cancel");
-		
-		moneyHorizontalPanel.add(okMoneyButton);
-	//	moneyHorizontalPanel.setCellHorizontalAlignment(okMoneyButton, HasHorizontalAlignment.ALIGN_LEFT);
-		
-		moneyHorizontalPanel.add(cancelMoneyButton);
-	//	moneyHorizontalPanel.setCellHorizontalAlignment(okMoneyButton, HasHorizontalAlignment.ALIGN_RIGHT);
+		moneyDialogBox.add(moneyVerticalPanel);
 		
 		errorMsgLabel = new Label();
+		moneyVerticalPanel.add(errorMsgLabel);
 		errorMsgLabel.setStyleName("errorMessage");
 		errorMsgLabel.setVisible(false);
 		
-		moneyVerticalPanel.add(errorMsgLabel);
-		moneyVerticalPanel.add(enterSumTextBox);
-		moneyVerticalPanel.add(moneyHorizontalPanel);
 		
-		moneyDialogBox.add(moneyVerticalPanel);
+		
+		enterSumTextBox = new TextBox();
+		moneyVerticalPanel.add(enterSumTextBox);
+		
+		moneyHorizontalPanel = new HorizontalPanel();
+		moneyVerticalPanel.add(moneyHorizontalPanel);
+		moneyHorizontalPanel.setSpacing(20);
+		
+		okMoneyButton = new Button();
+		moneyHorizontalPanel.add(okMoneyButton);
+		okMoneyButton.setText("Participate");
+		
+		cancelMoneyButton = new Button();
+		moneyHorizontalPanel.add(cancelMoneyButton);
+		cancelMoneyButton.setText("Cancel");
+		
 		
 	}
 	
@@ -161,9 +169,10 @@ public class WishListFriendsGUI  {
 		
 	private void buildParticipatorsPopupPanel(){	
 	   participatorsPanel = new PopupPanel(true);
-	   participatorsPanel.addStyleName("participatorPopupPanel");
+	  
 	   
  	   participatorsTable = new TableWithHeader();
+ 	   participatorsPanel.add(participatorsTable);
  	   participatorsTable.setStyleName("tables");
  	   
  	   participatorsTable.setHeader(0, "Name");
@@ -172,7 +181,7 @@ public class WishListFriendsGUI  {
  	   participatorsTable.getColumnFormatter().addStyleName(0, "tablesColumns");
  	   participatorsTable.getColumnFormatter().addStyleName(1, "tablesColumns");
  	  
- 	   participatorsPanel.add(participatorsTable);
+ 	   
 	}
 	
 	private void showParticipatorsPanel(WishlistItemNewData item,Widget widgetClicked){
@@ -199,48 +208,40 @@ public class WishListFriendsGUI  {
 	
 	
 	
-	private void buildFriendWishlistBox(){
-	    	friendWishlistBox=new DialogBox();
-	    	friendWishlistBox.addStyleName("friendWishlistBox");
-            
-		    
-		    closeFriendWishlistBoxButton = new Button("Close");
-		    
-		    
-		   // create panel to layout the content
-		    wishlistBoxVerticalPanel = new VerticalPanel();
-		    
-		    
-		    buildFriendWishlistTable();
-		    
-		    wishlistBoxVerticalPanel.add(friendWishTable);
-		    wishlistBoxVerticalPanel.setCellHorizontalAlignment(friendWishTable,
-	     	        HasHorizontalAlignment.ALIGN_CENTER);
 
-
-		    wishlistBoxVerticalPanel.add(closeFriendWishlistBoxButton);
-		  
-		    wishlistBoxVerticalPanel.setCellHorizontalAlignment(closeFriendWishlistBoxButton,
-		          HasHorizontalAlignment.ALIGN_RIGHT);
-		    
-		    friendWishlistBox.add(wishlistBoxVerticalPanel);
-
-	}
 	
 	/*
 	 * create flex table for friend's wishlist items
 	 */
 	private void buildFriendWishlistTable(){
-	    friendWishTable=new TableWithHeader();
-	    
-	    friendWishTable.setStyleName("tables");    
-	    
-	    friendWishTable.setHeader(0,"Item");
-	    friendWishTable.setHeader(1,"Priority");
-	    friendWishTable.setHeader(2,"Price");
-	    
-	    friendWishTable.getColumnFormatter().addStyleName(3, "lastColumns");
-	    friendWishTable.getColumnFormatter().addStyleName(4, "lastColumns");
+		headerFriendWishTable = new FlexTable();
+		wishlistBoxPanel.add(headerFriendWishTable);
+		headerFriendWishTable.setSize("100%", "25px");
+		 
+	
+		
+		headerFriendWishTable.getColumnFormatter().setWidth(0, "50px");
+		headerFriendWishTable.getColumnFormatter().setWidth(1, "20px");
+		headerFriendWishTable.getColumnFormatter().setWidth(2, "35px");
+		
+		headerFriendWishTable.setWidget(0, 0, new Label ("Item"));
+		headerFriendWishTable.setWidget(0, 1, new Label("Priority"));
+		headerFriendWishTable.setWidget(0, 2, new Label("Price"));
+
+		
+		scrollWishlistPanel = new ScrollPanel();
+		wishlistBoxPanel.add(scrollWishlistPanel);
+		scrollWishlistPanel.setSize("100%", "275px");
+
+	   
+		friendWishTable = new FlexTable();
+		scrollWishlistPanel.add(friendWishTable);
+		friendWishTable.setWidth("100%");
+		friendWishTable.setStyleName("friendWishTable");
+		
+		friendWishTable.getColumnFormatter().setWidth(0, "50px");
+		friendWishTable.getColumnFormatter().setWidth(1, "20px");
+		
        
 	}
 	
@@ -275,7 +276,8 @@ public class WishListFriendsGUI  {
 	
 	
 	public void gui_eventCloseButtonClicked() {
-		friendWishlistBox.hide();
+	    wishlistBoxPanel.setVisible(false);
+	    parent.eventPanel.setVisible(true);
 		friendWishTable.clear();
         
     }
@@ -383,7 +385,7 @@ public class WishListFriendsGUI  {
         	else
         		friendWishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
         	//priority
-        	if(item.getPriority()== 5)
+        	if(item.getPriority())
         	   friendWishTable.setWidget(row,1,new Label("high"));
         	else
         		friendWishTable.setWidget(row,1,new Label("low"));

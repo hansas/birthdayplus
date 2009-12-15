@@ -79,7 +79,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	public HashMap<String,String> userFriends= new HashMap<String,String>();
 	public GuestData user;
 	
-	private TabPanel tab ;
+	public TabPanel tab ;
 	public  PopupPanel loadingImagePopup ;
 
 	
@@ -136,18 +136,15 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	 * This is the entry point method.
 	 */
  private void buildTab(){
+	        Window.enableScrolling(false);
+	        Window.setMargin("0px");
 	        
 		    tab = new TabPanel();
-		    tab.addStyleName("tabsPanel");
+		    RootPanel.get().add(tab);
 		    
-	//	    tab.setStyleName(constants.cwTabStyle());
-		
-			tab.getElement().setId("tab");
+		    tab.setSize("100%", "400px");
+		  //  tab.setStyleName("tabsPanel");
 			tab.setAnimationEnabled(true);
-		//	RootPanel.get("tabBarContainer").add(tab);
-			
-		//	RootPanel.get().add(tab);
-			
 			
 			
 			//initiate event tab
@@ -158,7 +155,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    eventGui.entryPoint=this;
 		    eventDelegate.entryPoint=this;
 		    eventGui.init();
-		    tab.add(eventGui.vPanel, "Events");
+		   
 		   
 			
 		    //initiate My wIwishlist tab
@@ -169,7 +166,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	        myWishlistGUI.entryPoint=this;
 	        myWishlistDelegate.entryPoint=this;
 	        myWishlistGUI.init();
-			tab.add(myWishlistGUI.wishlistVerticalPanel, "Wishlist");
+			
 			
 			
 			//initiate I Buy tab
@@ -182,7 +179,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    iBuyGUI.init();
 	        
 			//tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
-		    tab.add(iBuyGUI.iBuyPanel, "I buy");
+		    
 		    
 		   
 		    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
@@ -191,19 +188,13 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	
 			
 		    loadingImagePopup = new PopupPanel(false,true);
+		   
 		    loadingImagePopup.setAnimationEnabled(true);
 		    
 		    loadingImagePopup.setStyleName(constants.cwLoadingPopupPanelStyle());
 		    loadingImagePopup.setWidget(loadingImage);
 		    
-		 // Remove the loading message
-        //    DOM.setInnerHTML(RootPanel.get("Loading-Message").getElement(), "");
-
-		    // Get the Application Container div from the DOM
-		 //    RootPanel.get().add(tab);
-		    
-		    RootPanel.get().add(tab);
-		 //   feature.getContentDiv().add(tab);
+		
 		    
 			
             
@@ -217,9 +208,11 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 
 			public void onSelection(SelectionEvent<Integer> event) {
 				if(event.getSelectedItem()== 0){
-					ArrayList<String> temp=new ArrayList<String>();
-					temp = getUserAndFriendsIds();
-					eventDelegate.getEvents(temp);
+					if(eventGui.eventList == null){
+						ArrayList<String> temp=new ArrayList<String>();
+					    temp = getUserAndFriendsIds();
+					    eventDelegate.getEvents(temp);
+					}
 				}else{
 				     if(event.getSelectedItem()== 1)
 				    	myWishlistDelegate.getMyWishlist(userId);

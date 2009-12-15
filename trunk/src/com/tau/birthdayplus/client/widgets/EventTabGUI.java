@@ -16,11 +16,13 @@ import com.google.gwt.user.client.ui.CheckBox;
 
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -43,15 +45,18 @@ public class EventTabGUI {
     private static final int DELETE_LINK = 4;
     
     /*GUI Widgets*/
+    protected FlowPanel mainPanel;
     //vertical panel for the content of event list
-	public VerticalPanel vPanel;
+	protected FlowPanel eventPanel;
 	//table for events
-	public TableWithHeader eventTable;
+	private ScrollPanel eventScrollPanel;
+	private FlexTable eventTableHeader;
+	private FlexTable eventTable;
 	//add new event button
-	public Button btnAddEvent;
+	private Button btnAddEvent;
 	
 	//add event box
-	public DialogBox eventDialogBox;
+	private DialogBox eventDialogBox;
 	
 	VerticalPanel eventDialogBoxVerticalPanel;
 	//table for the form
@@ -65,19 +70,19 @@ public class EventTabGUI {
 	//update button
 //	public Button updateButton;
 	//add button
-    public Button boxButton;
+    private Button boxButton;
     //cancel button
-    public Button cancelButton;
+    private Button cancelButton;
     
-    public Boolean addEvent;
+    private Boolean addEvent;
     
-   public  WishListFriendsGUI wishlistFriendGUI;
+    private  WishListFriendsGUI wishlistFriendGUI;
     private WishListFriendsDelegate wishlistFriendService;
     
     //Data Model\\
 	public EventTabDelegate eventService;
 //	private WishListFriendsGUI wishlistFriendGui;
-	private ArrayList<EventData> eventList;
+	public ArrayList<EventData> eventList=null;
 	protected EventData currentEvent;
 	public Birthdayplus entryPoint;
 	
@@ -89,8 +94,24 @@ public class EventTabGUI {
 
 	
 	public void init(){
-		eventList = new ArrayList<EventData>(); 
+	//	eventList = new ArrayList<EventData>(); 
+
+		mainPanel = new FlowPanel();
+		entryPoint.tab.add(mainPanel, "Events");
+		mainPanel.setSize("100%","350px");
+	
+		eventPanel = new FlowPanel();
+		mainPanel.add(eventPanel);
+		eventPanel.setStyleName("eventPanel");
+		eventPanel.setSize("100%", "350px");
 		
+		buildEventTable();
+		buildEventDialogBox();
+	
+		btnAddEvent = new Button("Add Event");
+		eventPanel.add(btnAddEvent);
+		btnAddEvent.setStyleName("buttonAddEvent");
+		btnAddEvent.setSize("50px","25px");
 		
 		//create DialogBox for user's friend wishlist
 		wishlistFriendGUI = new WishListFriendsGUI();
@@ -102,21 +123,6 @@ public class EventTabGUI {
 	    
 	    wishlistFriendGUI.parent = this;
 	    wishlistFriendGUI.init();
-	    
-		vPanel = new VerticalPanel();
-		vPanel.addStyleName("vPanel");
-		
-		buildEventTable();
-		buildEventDialogBox();
-	
-		
-		btnAddEvent = new Button("Add Event");
-		
-		
-
-	
-		placeWidgets();
-		
 		wishlistFriendGUI.wireWishlistFriendGUIEvents();
 		
 	}
@@ -125,25 +131,40 @@ public class EventTabGUI {
 	* create flex table for wishlist items
 	*/
 	private void buildEventTable(){
-		eventTable=new TableWithHeader();
-		eventTable.setStyleName("tables");
+		eventTableHeader = new FlexTable();
+		eventPanel.add(eventTableHeader);
+		eventTableHeader.setStyleName("eventTableHeader");
+		eventTableHeader.setSize("100%", "25px");
 		
-		eventTable.setHeader(0, "Name" );
-		eventTable.setHeader(1, "Event");
-		eventTable.setHeader(2, "Due");   
+		eventTableHeader.getColumnFormatter().setWidth(0, "50px");
+		eventTableHeader.getColumnFormatter().setWidth(1, "60px");
+		eventTableHeader.getColumnFormatter().setWidth(2, "25px");
+				
+		eventTableHeader.setWidget(0, 0, new Label("Name"));
+		eventTableHeader.setWidget(0,1, new Label("Event"));
+		eventTableHeader.setWidget(0, 2, new Label("Due"));
 		
-		eventTable.getColumnFormatter().addStyleName(0, "tablesColumns");
-		eventTable.getColumnFormatter().addStyleName(1, "tablesColumns");
-		eventTable.getColumnFormatter().addStyleName(2, "tablesColumns");
+		eventScrollPanel = new ScrollPanel();
+		eventPanel.add(eventScrollPanel);
+		eventScrollPanel.setStyleName("eventScrollPanle");
+		eventScrollPanel.setSize("100%", "300px");
+		
+		
+		eventTable = new FlexTable();
+		eventScrollPanel.add(eventTable);
+		eventTable.setStyleName("eventTable");
+		eventTable.setWidth("100%");
+		
+		eventTable.getColumnFormatter().setWidth(0, "50px");
+		eventTable.getColumnFormatter().setWidth(1, "60px");
+		eventTable.getColumnFormatter().setWidth(2, "25px");
 
-		eventTable.getColumnFormatter().addStyleName(3, "lastColumns");
-		eventTable.getColumnFormatter().addStyleName(4, "lastColumns");
+		
+		
+		
 	}
 	
-	private void placeWidgets() {
-		vPanel.add(eventTable);
-		vPanel.add(btnAddEvent);
-	}
+	
 	
 	
 	 
@@ -153,45 +174,21 @@ public class EventTabGUI {
 	*/
 	private void buildEventDialogBox() {
 		eventDialogBox = new DialogBox();
-	//	eventDialogBox.setStyleName(constants.cwDialogBoxStyle());
+	
 		eventDialogBoxVerticalPanel = new VerticalPanel();
+		eventDialogBox.add(eventDialogBoxVerticalPanel);
 		
-		MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
-		    String[] words = constants.cwSuggestBoxEvents();
-		    for (int i = 0; i < words.length; ++i) {
-		      oracle.add(words[i]);
-		    }
-
-		
-		txtName =new SuggestBox(oracle);
-	//	txtName.setStyleName(constants.cwTextBoxStyle());
-		
-		txtDate = new DateBox();
-	//	txtDate.setStyleName(constants.cwDateBoxStyle());
-		DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
-		txtDate.setFormat(new DateBox.DefaultFormat(fmt));
-		
-		chkRecurrence=new CheckBox();
-	//	chkRecurrence.setStyleName(constants.cwCheckBoxStyle());
-		
-	//	updateButton=new Button("Update item");
-      //  updateButton.setStyleName(constants.cwButtonStyle());
-        
-        boxButton=new Button();
-
-        
-	    cancelButton = new Button(constants.cwDialogBoxCancel()); 
-	    
 	    errorMsgLabel = new Label();
+	    eventDialogBoxVerticalPanel.add(errorMsgLabel);
+	    errorMsgLabel.setWidth("100%");
 		errorMsgLabel.setStyleName("errorMessage");
 		errorMsgLabel.setVisible(false);
 
-		eventDialogBoxVerticalPanel.add(errorMsgLabel);
 		
 		buildForm();
 		
-		eventDialogBoxVerticalPanel.add(layout);  
-		eventDialogBox.add(eventDialogBoxVerticalPanel);
+		 
+		
 		
 		eventDialogBox.setVisible(false);
 		
@@ -203,9 +200,25 @@ public class EventTabGUI {
 	
 	
 	private void buildForm(){
-		layout = new FlexTable();
-	//	layout.setStyleName(constants.cwTableStyle());
-	//	layout.setCellSpacing(6);
+		
+		MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
+	    String[] words = constants.cwSuggestBoxEvents();
+	    for (int i = 0; i < words.length; ++i) {
+	      oracle.add(words[i]);
+	    }
+	    
+	    txtName =new SuggestBox(oracle);
+	
+    	txtDate = new DateBox();
+	    DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
+	    txtDate.setFormat(new DateBox.DefaultFormat(fmt));
+	
+	    chkRecurrence=new CheckBox();
+ 	    boxButton=new Button();
+
+        cancelButton = new Button(constants.cwDialogBoxCancel()); 
+        layout = new FlexTable();
+        eventDialogBoxVerticalPanel.add(layout); 
 		
 	    layout.setText(0,0,"Event Name");
 	    layout.setWidget(0, 1, txtName);
@@ -216,7 +229,7 @@ public class EventTabGUI {
 	    layout.setText(2, 0, "Recurrence");
 	    layout.setWidget(2, 1, chkRecurrence);
 	    
-	 //   layout.setWidget(3, 0, updateButton);
+	 
         layout.setWidget(3, 1, boxButton);
         layout.setWidget(3, 2, cancelButton);
 	    
@@ -226,18 +239,7 @@ public class EventTabGUI {
 		
 	}
 	
-	/*
-	 * list of user and his friends id's
-	 */
-	//private ArrayList<String> getUserAndFriendsIds(){
-//		Set<String> set = entryPoint.userFriends.keySet();
-	//	ArrayList<String> temp=new ArrayList<String>();
-	///	temp.add(entryPoint.userId);
-	//	for(String key : set){
-	//		temp.add(key);
-	//	}
-	///	return temp;
-	//}
+
 	
 	 /*
      * show the form
@@ -311,10 +313,9 @@ public class EventTabGUI {
          }else if(col==EVENT_LINK){
         	 if(! event.getUserId().equals(entryPoint.userId)){
         	      currentEvent = event;
-        	      wishlistFriendGUI.friendWishlistBox.setText("wishlist for " + entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
-        	      wishlistFriendGUI.friendWishlistBox.center();
-        	  
-        	      wishlistFriendGUI.friendWishlistBox.show();
+        	      wishlistFriendGUI.title.setText("wishlist for " + entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
+        	      eventPanel.setVisible(false);
+        	      wishlistFriendGUI.wishlistBoxPanel.setVisible(true);
         	      this.wishlistFriendService.getWishlist(event.getUserId() , event.getEventId());
         	 }
          }
@@ -499,6 +500,8 @@ public class EventTabGUI {
         		gui_eventCancelButtonClicked();
         	}
         });
+		
+	
 	}
 
 	

@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -48,12 +50,13 @@ public class MyWishlistTabGUI {
 
 	/*GUI Widgets*/
 
-	//VerticalPanel for the content of wishlist
-	public VerticalPanel wishlistVerticalPanel;
+	private FlowPanel wishlistPanel;
 	// wishlist table
-	public TableWithHeader wishTable;
+	private FlexTable wishTableHeader;
+	private FlexTable wishTable;
+	private ScrollPanel wishlistScrollPanel;
 	// add new item button
-	public Button addItemButton;
+	private Button addItemButton;
 	//box for adding new item
 	
 	
@@ -100,29 +103,22 @@ public class MyWishlistTabGUI {
 	 * This is the entry point method.
 	 */
 	public void init() {
-		//it's the main panel for this tab
-		wishlistVerticalPanel=new VerticalPanel();
-		wishlistVerticalPanel.addStyleName("wishPanel");
+		items = new ArrayList<WishlistItemData>();
+		
+		wishlistPanel = new FlowPanel();
+		entryPoint.tab.add(wishlistPanel, "My Wishlist");
+		wishlistPanel.setSize("100%", "350px");
+		
 		buildWishlistTable();
 		buildAddItemBox();
 		
 		addItemButton=new Button("Add item");
+	    wishlistPanel.add(addItemButton);
+		addItemButton.setSize("50px","50px");
 		
 		
-		wishlistVerticalPanel.add(wishTable);
-		wishlistVerticalPanel.add(addItemButton);
+
 		    
-		
-		    
-		   
-		 //   ArrayList<WishlistItemData> data=new ArrayList<WishlistItemData>();
-		//    for(int i=0;i<5;i++){
-		 //   	data.add(new WishlistItemData(entryPoint.userId,"name"+i,i,"http://techblog.maydu.eu/?p=7",500));
-		    	
-		    	
-		 //   }
-		    
-		 //   service_eventGetWishlistSuccesfull(data);
 		
 	}
 
@@ -132,6 +128,23 @@ public class MyWishlistTabGUI {
      */
     private void buildForm() {
         formTable = new FlexTable();
+        itemDialogBoxVerticalPanel.add(formTable);
+        
+        itemField=new TextBox();
+   	 
+        priorityPanel = new HorizontalPanel();
+        highPriorityButton = new RadioButton("priority", "High");
+        priorityPanel.add(highPriorityButton);
+        lowPriorityButton = new RadioButton("priority", "Low");
+        priorityPanel.add(lowPriorityButton);
+        
+        linkField=new TextBox();
+        
+        priceField=new TextBox();
+        
+        boxButton=new Button();
+   
+	    cancelButton = new Button(constants.cwDialogBoxCancel());
         
      //   formTable.setStyleName(constants.cwTableStyle());
    
@@ -160,35 +173,14 @@ public class MyWishlistTabGUI {
 	    	addItemBox=new DialogBox();
 	    	
 	    	itemDialogBoxVerticalPanel = new VerticalPanel();
+	    	addItemBox.add(itemDialogBoxVerticalPanel); 
 	    
-	        itemField=new TextBox();
-	 
-	        priorityPanel = new HorizontalPanel();
-	        highPriorityButton = new RadioButton("priority", "High");
-	        priorityPanel.add(highPriorityButton);
-	        lowPriorityButton = new RadioButton("priority", "Low");
-	        priorityPanel.add(lowPriorityButton);
-	        
-	        linkField=new TextBox();
-	        
-	        priceField=new TextBox();
-	        
-	        boxButton=new Button();
-	   
-		    cancelButton = new Button(constants.cwDialogBoxCancel());
-		       
 		    errorMsgLabel = new Label();
+		    itemDialogBoxVerticalPanel.add(errorMsgLabel);
 			errorMsgLabel.setStyleName("errorMessage");
-			errorMsgLabel.setVisible(false);
-
-			itemDialogBoxVerticalPanel.add(errorMsgLabel);
+			errorMsgLabel.setVisible(false);	
 
 		    buildForm();
-		    
-		    itemDialogBoxVerticalPanel.add(formTable);
-		    
-		    addItemBox.add(itemDialogBoxVerticalPanel); 
-		    
 		
 	}
 	
@@ -198,21 +190,31 @@ public class MyWishlistTabGUI {
 	 * create flex table for wishlist items
 	 */
 	private void buildWishlistTable(){
-		//create table for whishlistitems
-	    wishTable=new TableWithHeader();
-	    wishTable.setStyleName("tables");
-	
-	    wishTable.setHeader(0,"Item");
-	    wishTable.setHeader(1,"Priority");
-	    wishTable.setHeader(2,"Price");
-        
-		wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
-		wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
-		wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
-	    
+		wishTableHeader = new FlexTable();
+		wishlistPanel.add(wishTableHeader);
+		wishTableHeader.setSize("100%", "25px");
 		
-		wishTable.getColumnFormatter().addStyleName(3, "lastColumns");
-		wishTable.getColumnFormatter().addStyleName(4, "lastColumns");
+		wishTableHeader.getColumnFormatter().setWidth(0, "50px");
+		wishTableHeader.getColumnFormatter().setWidth(1, "20px");
+		wishTableHeader.getColumnFormatter().setWidth(2, "35px");
+				
+		wishTableHeader.setWidget(0, 0, new Label("Item"));
+		wishTableHeader.setWidget(0,1, new Label("Priority"));
+		wishTableHeader.setWidget(0, 2, new Label("Price"));
+		
+		wishlistScrollPanel = new ScrollPanel();
+		wishlistPanel.add(wishlistScrollPanel);
+		wishlistScrollPanel.setSize("100%", "300px");
+		//create table for whishlistitems
+		
+		wishTable = new FlexTable();
+		wishlistScrollPanel.add(wishTable);
+		wishTable.setWidth("100%");
+		
+		wishTable.getColumnFormatter().setWidth(0, "50px");
+		wishTable.getColumnFormatter().setWidth(1, "20px");
+		//wishTable.getColumnFormatter().setWidth(2, "35px");
+
 	}
 	
 	
@@ -294,9 +296,9 @@ public class MyWishlistTabGUI {
     	currentItem.setItemName(itemField.getText());
     	
     	if(highPriorityButton.getValue())
-        	currentItem.setPriority(5);
+        	currentItem.setPriority(true);
         else
-        	currentItem.setPriority(1);
+        	currentItem.setPriority(false);
     	
         currentItem.setLink(linkField.getText());
         
@@ -306,7 +308,7 @@ public class MyWishlistTabGUI {
     		return false;
         }
         try{
-        	int price=Integer.parseInt(priceField.getText());
+        	double price=Double.parseDouble(priceField.getText());
         	if(price < 1){
         		errorMsgLabel.setText("Enter valid price ");
         		priceField.setFocus(true);
@@ -356,7 +358,7 @@ public class MyWishlistTabGUI {
 	        	else
 	        		wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
 	        	//priority
-	        	if(item.getPriority()== 5)
+	        	if(item.getPriority())
 	        		wishTable.setWidget(row,1,new Label("high"));
 	        	else	
 	    	        wishTable.setWidget(row,1,new Label("low"));
