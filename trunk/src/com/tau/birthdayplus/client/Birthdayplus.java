@@ -51,6 +51,8 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 import com.tau.birthdayplus.client.widgets.EventTabDelegate;
 import com.tau.birthdayplus.client.widgets.EventTabGUI;
+import com.tau.birthdayplus.client.widgets.IBuyDelegate;
+import com.tau.birthdayplus.client.widgets.IBuyTabGUI;
 import com.tau.birthdayplus.client.widgets.MyWishlistDelegate;
 import com.tau.birthdayplus.client.widgets.MyWishlistTabGUI;
 
@@ -100,8 +102,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	/*
 	 * IBuy Tab
 	 */
-	private com.tau.birthdayplus.client.widgets.IBuyTabGUI iBuyGUI;
-	private com.tau.birthdayplus.client.widgets.IBuyDelegate iBuyDelegate;
+	public IBuyTabGUI iBuyGUI;
+	private IBuyDelegate iBuyDelegate;
 	
 	static {
 		disableStats();
@@ -204,6 +206,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	
 	  
 	  private void wireTabGUIEvents(){
+		  
 		  tab.addSelectionHandler(new SelectionHandler<Integer>(){
 
 			public void onSelection(SelectionEvent<Integer> event) {
