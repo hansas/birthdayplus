@@ -1,5 +1,7 @@
 package com.tau.birthdayplus.dto.client;
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
@@ -11,6 +13,8 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	   private String eventId;
 	   //event name, for "I buy" tab, to see for what event is this present
 	   private String eventName;
+	   //event date for "I buy" list sorting
+	   private Date eventDate;
 	   
 	   //people that want to buy this together
 	   private ArrayList<ParticipatorData> participators;
@@ -31,11 +35,12 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemNewData(String wishlistItemId,String userId,String userName,String eventId,String eventName,String name, Boolean priority, String link, Double price,Boolean isActive){
+	public WishlistItemNewData(String wishlistItemId,String userId,String userName,String eventId,String eventName,Date eventDate,String name, Boolean priority, String link, Double price,Boolean isActive){
 		super(wishlistItemId,userId,name,priority,link,price,isActive);
 		this.userName = userName;
 		this.eventId = eventId;
 		this.eventName = eventName;
+		this.eventDate = eventDate;
 		this.participators = new ArrayList<ParticipatorData>();
 		this.chatMessages = new ArrayList<ChatMessageData>();
 		this.buyer = null;
@@ -91,6 +96,12 @@ public class WishlistItemNewData extends WishlistItemData implements  IsSerializ
 	
 	public ArrayList<ChatMessageData> getChatMessages(){
 		return this.chatMessages;
+	}
+	public void setEventDate(Date eventDate) {
+		this.eventDate = eventDate;
+	}
+	public Date getEventDate() {
+		return eventDate;
 	}
 	
 	

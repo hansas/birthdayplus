@@ -528,7 +528,6 @@ public class BusinessObjectDAL {
 	
 	public static void addParticipator(String wishlistItemId, String eventId,
 			ParticipatorData participatorD) throws UserNotFoundException {
-		int i=0;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();

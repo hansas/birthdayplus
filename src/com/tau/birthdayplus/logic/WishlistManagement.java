@@ -104,13 +104,13 @@ public class WishlistManagement {
 	public static WishlistItemNewData itemToItemNewData(WishlistItem item,Guest guest,DALWrapper wrapper) throws UserNotFoundException{
 		if (item.getEventKey()==null){
 			return new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
-			guest.getFirstName(),"","",
+			guest.getFirstName(),"","",null,
 			item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
 		}
 		else{
 			Event event = wrapper.getEventByKey(item.getEventKey());
 			WishlistItemNewData newItemData = new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
-					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
+					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),event.getEventDate(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
 			ArrayList<Participator> participators = item.getParticipators();
 			newItemData.setParticipators(getParticipatorDataList(participators,wrapper));
 			ParticipatorData pData=null;

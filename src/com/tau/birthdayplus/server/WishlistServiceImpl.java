@@ -281,7 +281,7 @@ WishlistService  {
 	 */
 	public ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,
 			String anotherUserId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
