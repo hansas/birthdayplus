@@ -22,5 +22,5 @@
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.tau.birthdayplus.client.Birthdayplus'/>
-  <stylesheet src='Birthdayp.css'/>
+  <stylesheet src='Birthdayplus.css'/>
 </module>
