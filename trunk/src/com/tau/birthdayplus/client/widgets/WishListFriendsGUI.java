@@ -216,17 +216,20 @@ public class WishListFriendsGUI  {
 	private void buildFriendWishlistTable(){
 		headerFriendWishTable = new FlexTable();
 		wishlistBoxPanel.add(headerFriendWishTable);
-		headerFriendWishTable.setSize("100%", "25px");
+		headerFriendWishTable.addStyleName("headerFriendWishTable");
+	//	headerFriendWishTable.setSize("100%", "25px");
 		 
 	
 		
-		headerFriendWishTable.getColumnFormatter().setWidth(0, "50px");
-		headerFriendWishTable.getColumnFormatter().setWidth(1, "20px");
+		headerFriendWishTable.getColumnFormatter().setWidth(0, "100px");
+		headerFriendWishTable.getColumnFormatter().setWidth(1, "70px");
 		headerFriendWishTable.getColumnFormatter().setWidth(2, "35px");
+	
 		
 		headerFriendWishTable.setWidget(0, 0, new Label ("Item"));
 		headerFriendWishTable.setWidget(0, 1, new Label("Priority"));
 		headerFriendWishTable.setWidget(0, 2, new Label("Price"));
+		headerFriendWishTable.getFlexCellFormatter().setColSpan(0, 2, 3);
 
 		
 		scrollWishlistPanel = new ScrollPanel();
@@ -236,11 +239,11 @@ public class WishListFriendsGUI  {
 	   
 		friendWishTable = new FlexTable();
 		scrollWishlistPanel.add(friendWishTable);
-		friendWishTable.setWidth("100%");
+	//	friendWishTable.setWidth("100%");
 		friendWishTable.setStyleName("friendWishTable");
 		
-		friendWishTable.getColumnFormatter().setWidth(0, "50px");
-		friendWishTable.getColumnFormatter().setWidth(1, "20px");
+		friendWishTable.getColumnFormatter().setWidth(0, "100px");
+		friendWishTable.getColumnFormatter().setWidth(1, "70px");
 		
        
 	}
