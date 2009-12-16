@@ -460,6 +460,7 @@ public class WishListFriendsGUI  {
 
 	public void service_eventBookItemForUserSuccesfull() {
 		//showMessage("Now you can see this item in "I buy " tab");
+		parent.entryPoint.iBuyGUI.itemsToBuy = null;
 		this.wishlistService.getWishlist(parent.currentEvent.getUserId(), parent.currentEvent.getEventId());
 		
 	}
@@ -470,6 +471,7 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
+		parent.entryPoint.iBuyGUI.itemsToBuy = null;
 		this.wishlistService.getWishlist(parent.currentEvent.getUserId(), parent.currentEvent.getEventId());
 		
 	}
