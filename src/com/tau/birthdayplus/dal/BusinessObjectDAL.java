@@ -39,12 +39,13 @@ public class BusinessObjectDAL {
 	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException {
 		Guest guest = null;
 		try{
+		log.info(guestId);
 		Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
 		guest = pm.getObjectById(Guest.class, key);
 		}catch(JDOObjectNotFoundException ex){
 			throw new UserNotFoundException();
 		}catch(Exception ex){
-			log.severe(ex.getMessage());
+			log.severe("the error is: " + ex.getMessage());
 			throw new RuntimeException("can't get your profile");
 		}
 		return guest;
@@ -517,8 +518,8 @@ public class BusinessObjectDAL {
 		List<WishlistItem> items = guest.getWishlistItems();
 		List<WishlistItem> itemsForEvent = new ArrayList<WishlistItem>();
 		for(WishlistItem item: items){
-			if (((item.getEventKey()==null)||item.getEventKey().equals(eventKey))
-					&&(item.getIsActive()==true)){
+			if ((item.getEventKey()==null)||item.getEventKey().equals(eventKey)){
+					//&&(item.getIsActive()==true)){
 				itemsForEvent.add(item);
 			}
 		}
