@@ -65,9 +65,10 @@ public class IBuyTabGUI {
 	private HorizontalPanel chatPanel;
 	
 	private FlowPanel leftSide;
+	private Label chatLabel;
 	private ScrollPanel chatScrollPanel;
 	private FlexTable chatTable;
-    TextBox chatTextArea ;
+    private TextBox chatTextArea ;
 	private Button addMessageButton;
 	
 	private FlowPanel rightSide;
@@ -88,7 +89,7 @@ public class IBuyTabGUI {
 	
 	
 	//////////////////Model///////////////////////////////
-	ArrayList<WishlistItemNewData> itemsToBuy;
+	public ArrayList<WishlistItemNewData> itemsToBuy=null;
 	WishlistItemNewData currentItem;
 	public IBuyDelegate wishlistService;
 	public Birthdayplus entryPoint;
@@ -103,18 +104,20 @@ public class IBuyTabGUI {
 	public void init() {
 		iBuyPanel = new FlowPanel();
 		entryPoint.tab.add(iBuyPanel, "I buy");
-		iBuyPanel.setSize("100%", "350px");
+	//	iBuyPanel.setSize("100%", "350px");
 		iBuyPanel.addStyleName("iBuyPanel");
 		
 		wishPanel= new FlowPanel();
 		iBuyPanel.add(wishPanel);
-		wishPanel.setSize("100%", "350px");
+		wishPanel.addStyleName("iBuyWishlistPanel");
+	//	wishPanel.setSize("100%", "350px");
 	
 		buildWishlistTable();
 		
 		chatPanel = new HorizontalPanel();
 		iBuyPanel.add(chatPanel);
-		chatPanel.setSize("100%", "350px");
+		chatPanel.addStyleName("chatPanel");
+	//	chatPanel.setSize("100%", "350px");
 		chatPanel.setVisible(false);
 		
 	    buildChat();
@@ -176,14 +179,14 @@ public class IBuyTabGUI {
 		leftSide = new FlowPanel();
 		chatPanel.add(leftSide);
 		chatPanel.setCellWidth(leftSide,"70%");
-		leftSide.setSize("100%", "350px");
-		leftSide.setStyleName("leftSide");
+	//	leftSide.setSize("100%", "350px");
+		leftSide.addStyleName("chatLeftSidePanel");
 		
 		rightSide = new FlowPanel();
 		chatPanel.add(rightSide);
 		chatPanel.setCellWidth(rightSide, "30%");
-		rightSide.setSize("100%", "350px");
-		rightSide.setStyleName("rightSide");
+	//	rightSide.setSize("100%", "350px");
+		rightSide.addStyleName("chatRightSidePanel");
 		
 		
 		buildChatLeftSide();
@@ -212,7 +215,7 @@ public class IBuyTabGUI {
 		
 		iBuyTableHeader.getColumnFormatter().setWidth(0, "80px");
 		iBuyTableHeader.getColumnFormatter().setWidth(1, "70px");
-		iBuyTableHeader.getColumnFormatter().setWidth(2, "40px");
+		iBuyTableHeader.getColumnFormatter().setWidth(2, "50px");
 		iBuyTableHeader.getColumnFormatter().setWidth(3, "40px");
 				
 		iBuyTableHeader.setText(0, 0, "Event");
@@ -224,7 +227,8 @@ public class IBuyTabGUI {
 		
 		iBuyScrollPanel = new ScrollPanel();
 		wishPanel.add(iBuyScrollPanel);
-		iBuyScrollPanel.setSize("100%", "300px");
+		iBuyScrollPanel.addStyleName("iBuyScrollPanel");
+	//	iBuyScrollPanel.setSize("100%", "300px");
 	
 		wishTable = new FlexTable();
 		iBuyScrollPanel.add(wishTable);
@@ -233,7 +237,7 @@ public class IBuyTabGUI {
 		
 		wishTable.getColumnFormatter().setWidth(0, "80px");
 		wishTable.getColumnFormatter().setWidth(1, "70px");
-		wishTable.getColumnFormatter().setWidth(2, "40px");
+		wishTable.getColumnFormatter().setWidth(2, "50px");
 	    
 	   // wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
 	//	wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
@@ -248,9 +252,14 @@ public class IBuyTabGUI {
 	
 	
 	private void buildChatLeftSide(){
+		chatLabel = new Label();
+		leftSide.add(chatLabel);
+		chatLabel.addStyleName("chatLabel");
+	//	chatLabel.setSize("100%", "25px");
 		chatScrollPanel = new ScrollPanel();
 		leftSide.add(chatScrollPanel);
-		chatScrollPanel.setSize("100%", "325px");
+		chatScrollPanel.addStyleName("chatScrollPanel");
+	//	chatScrollPanel.setSize("100%", "300px");
 		
 		    
 	    chatTable = new FlexTable();
@@ -262,12 +271,14 @@ public class IBuyTabGUI {
 	        
 	    chatTextArea = new TextBox();
 	    leftSide.add(chatTextArea);
-	    chatTextArea.setSize("65%", "25px");
+	    chatTextArea.addStyleName("chatTextArea");
+	   // chatTextArea.setSize("70%", "25px");
 	    chatTextArea.setMaxLength(25);
 			
 	    addMessageButton = new Button("send");
 	    leftSide.add(addMessageButton);
-	    addMessageButton.setSize("25%", "25px");
+	    addMessageButton.addStyleName("sendButton");
+	  //  addMessageButton.setSize("25%", "25px");
 		
 	}
 	
@@ -275,13 +286,15 @@ public class IBuyTabGUI {
 	private void buildChatRightSide(){
 		participatorsLabel = new Label("Participators");
 		rightSide.add(participatorsLabel);
-		participatorsLabel.setSize("100%", "25px");
+		participatorsLabel.addStyleName("participatorsLabel");
+//		participatorsLabel.setSize("100%", "25px");
 		
 		buildParticipatorsTable();
 		
 		closeChatButton = new Button("return");
 	    rightSide.add(closeChatButton);
-	    closeChatButton.setSize("100%", "25px");
+	    closeChatButton.addStyleName("closeChatButton");
+//	    closeChatButton.setSize("100%", "25px");
 	}
 	
 	
@@ -299,7 +312,8 @@ public class IBuyTabGUI {
 		
 		participatorsScrollPanel = new ScrollPanel();
 		rightSide.add(participatorsScrollPanel);
-		participatorsScrollPanel.setSize("100%", "275px");
+		participatorsScrollPanel.setStyleName("participatorsScrollPanel");
+	//	participatorsScrollPanel.setSize("100%", "275px");
 		
 		
 		participatorsTable = new FlexTable();
