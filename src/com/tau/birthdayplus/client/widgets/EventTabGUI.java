@@ -110,7 +110,6 @@ public class EventTabGUI {
 	
 		btnAddEvent = new Button("Add Event");
 		eventPanel.add(btnAddEvent);
-		btnAddEvent.setStyleName("buttonAddEvent");
 		btnAddEvent.setSize("100px","25px");
 		
 		//create DialogBox for user's friend wishlist
@@ -143,6 +142,7 @@ public class EventTabGUI {
 		eventTableHeader.setText(0, 0, "Name");
 		eventTableHeader.setText(0,1, "Event");
 		eventTableHeader.setText(0, 2, "Due");
+		eventTableHeader.getFlexCellFormatter().setColSpan(0, 2, 3);
 		
 		eventScrollPanel = new ScrollPanel();
 		eventPanel.add(eventScrollPanel);

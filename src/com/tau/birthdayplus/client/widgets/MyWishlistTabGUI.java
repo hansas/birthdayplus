@@ -192,15 +192,17 @@ public class MyWishlistTabGUI {
 	private void buildWishlistTable(){
 		wishTableHeader = new FlexTable();
 		wishlistPanel.add(wishTableHeader);
-		wishTableHeader.setSize("100%", "25px");
+		wishTableHeader.addStyleName("wishTableHeader");
+	//	wishTableHeader.setSize("100%", "25px");
 		
-		wishTableHeader.getColumnFormatter().setWidth(0, "50px");
-		wishTableHeader.getColumnFormatter().setWidth(1, "20px");
+		wishTableHeader.getColumnFormatter().setWidth(0, "100px");
+		wishTableHeader.getColumnFormatter().setWidth(1, "50px");
 		wishTableHeader.getColumnFormatter().setWidth(2, "35px");
 				
 		wishTableHeader.setWidget(0, 0, new Label("Item"));
 		wishTableHeader.setWidget(0,1, new Label("Priority"));
 		wishTableHeader.setWidget(0, 2, new Label("Price"));
+		wishTableHeader.getFlexCellFormatter().setColSpan(0, 2, 3);
 		
 		wishlistScrollPanel = new ScrollPanel();
 		wishlistPanel.add(wishlistScrollPanel);
@@ -209,10 +211,11 @@ public class MyWishlistTabGUI {
 		
 		wishTable = new FlexTable();
 		wishlistScrollPanel.add(wishTable);
-		wishTable.setWidth("100%");
+		wishTable.addStyleName("wishTable");
+	//	wishTable.setWidth("100%");
 		
-		wishTable.getColumnFormatter().setWidth(0, "50px");
-		wishTable.getColumnFormatter().setWidth(1, "20px");
+		wishTable.getColumnFormatter().setWidth(0, "100px");
+		wishTable.getColumnFormatter().setWidth(1, "50px");
 		//wishTable.getColumnFormatter().setWidth(2, "35px");
 
 	}

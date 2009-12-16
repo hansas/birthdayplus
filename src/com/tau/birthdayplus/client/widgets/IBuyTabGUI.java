@@ -206,19 +206,20 @@ public class IBuyTabGUI {
 	private void buildWishlistTable(){
 		iBuyTableHeader = new FlexTable();
 		wishPanel.add(iBuyTableHeader);
-		iBuyTableHeader.setStyleName("iBuyTableHeader");
-		iBuyTableHeader.setSize("100%", "25px");
+		iBuyTableHeader.addStyleName("iBuyTableHeader");
+	//	iBuyTableHeader.setSize("100%", "25px");
 		
 		
-		iBuyTableHeader.getColumnFormatter().setWidth(0, "60px");
-		iBuyTableHeader.getColumnFormatter().setWidth(1, "50px");
-		iBuyTableHeader.getColumnFormatter().setWidth(2, "25px");
-		iBuyTableHeader.getColumnFormatter().setWidth(3, "30px");
+		iBuyTableHeader.getColumnFormatter().setWidth(0, "80px");
+		iBuyTableHeader.getColumnFormatter().setWidth(1, "70px");
+		iBuyTableHeader.getColumnFormatter().setWidth(2, "40px");
+		iBuyTableHeader.getColumnFormatter().setWidth(3, "40px");
 				
 		iBuyTableHeader.setText(0, 0, "Event");
 		iBuyTableHeader.setText(0,1, "Item");
 		iBuyTableHeader.setText(0, 2, "Priority");
 		iBuyTableHeader.setText(0, 3, "Price");
+		iBuyTableHeader.getFlexCellFormatter().setColSpan(0, 3, 4);
 		
 		
 		iBuyScrollPanel = new ScrollPanel();
@@ -227,11 +228,12 @@ public class IBuyTabGUI {
 	
 		wishTable = new FlexTable();
 		iBuyScrollPanel.add(wishTable);
-		wishTable.setWidth("100%");
+		wishTable.addStyleName("iBuyWishTable");
+	//	wishTable.setWidth("100%");
 		
-		wishTable.getColumnFormatter().setWidth(0, "60px");
-		wishTable.getColumnFormatter().setWidth(1, "50px");
-		wishTable.getColumnFormatter().setWidth(2, "25px");
+		wishTable.getColumnFormatter().setWidth(0, "80px");
+		wishTable.getColumnFormatter().setWidth(1, "70px");
+		wishTable.getColumnFormatter().setWidth(2, "40px");
 	    
 	   // wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
 	//	wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
@@ -253,13 +255,15 @@ public class IBuyTabGUI {
 		    
 	    chatTable = new FlexTable();
         chatScrollPanel.add(chatTable);
-        chatTable.setWidth("100%");
-        chatTable.getColumnFormatter().setWidth(0, "70%");
-        chatTable.getColumnFormatter().setWidth(1, "30%");
+        chatTable.addStyleName("chatTable");
+     //   chatTable.setWidth("100%");
+      //  chatTable.getColumnFormatter().setWidth(0, "50%");
+      //  chatTable.getColumnFormatter().setWidth(1, "50%");
 	        
 	    chatTextArea = new TextBox();
 	    leftSide.add(chatTextArea);
 	    chatTextArea.setSize("65%", "25px");
+	    chatTextArea.setMaxLength(25);
 			
 	    addMessageButton = new Button("send");
 	    leftSide.add(addMessageButton);
@@ -285,9 +289,10 @@ public class IBuyTabGUI {
 	private void buildParticipatorsTable(){
 		participatorsTableHeader = new FlexTable();
 		rightSide.add(participatorsTableHeader);
-		participatorsTableHeader.setSize("100%", "25px");
+		participatorsTableHeader.addStyleName("chatParticipatorsTableHeader");
+	//	participatorsTableHeader.setSize("100%", "25px");
 		
-				
+		participatorsTableHeader.getColumnFormatter().setWidth(0, "50px");		
 		participatorsTableHeader.setText(0, 0, "Name");
 		participatorsTableHeader.setText(0,1, "Sum");
 		
@@ -299,7 +304,9 @@ public class IBuyTabGUI {
 		
 		participatorsTable = new FlexTable();
 		participatorsScrollPanel.add(participatorsTable);
-		participatorsTable.setWidth("100%");
+		participatorsTable.addStyleName("chatParticipatorsTable");
+	//	participatorsTable.setWidth("100%");
+		participatorsTable.getColumnFormatter().setWidth(0, "50px");
 	}
 	
 	
