@@ -1,14 +1,28 @@
-
 .tabsPanel{
 border: 1px dashed red;
-
+width : 100%;
+height : 400px;
 }
 
-/*event panel*/
+/*event tab*/
+
+.mainPanel{
+width : 100%;
+height : 350px;
+}
 
 .eventPanel{
-border: 1px dashed black;
+position:relative;
+border-style:solid;
+border-width:1px;
+border-color:#B0E0E6;
+width : 100%;
+height : 350px;
+}
 
+.buttonAddEvent{
+width : 100px;
+height : 25px;
 }
 
 .eventTableHeader{
@@ -20,7 +34,8 @@ text-align:left;
 }
 
 .eventScrollPanel{
-
+width : 100%;
+height : 300px;
 }
 
 .eventTable{
@@ -35,8 +50,21 @@ text-align:left;
 }
 
 /*FRIEND WISHLIST*/
+
 .wishlistFriendPanel{
 border: 1px dashed black;
+width : 100%;
+height : 350px;
+}
+
+.titleLabel{
+width : 100%;
+height : 25px;
+}
+
+.closeButton{
+width : 100px;
+height : 25px;
 }
 
 .headerFriendWishTable{
@@ -46,72 +74,152 @@ height : 25px;
 text-align:left;
 }
 
+.friendScrollPanel{
+width : 100%;
+height : 275px;
+}
+
 .friendWishTable{
 table-layout:fixed;
 width : 100%;
-text-align:center;
+text-align : left;
 }
 
 /*my wishlist tab*/
-.wishTableHeader{
+.myWishlistPanel {
+width : 100%;
+height : 350px;
+}
+
+.addItemButton{
+width : 100%;
+height : 25px;
+}
+
+.myWishlistTableHeader{
 table-layout:fixed;
 width : 100%;
 height : 25px;
 text-align:left;
+}
+
+.myWishlistScrollPanel{
+width : 100%;
+height : 300px;
 }
 
 .wishTable{
 table-layout:fixed;
 width : 100%;
-text-align:center;
+text-align : left;
 }
 
+/*I BUY TAB*/
 
-/*I buy tab*/
-.leftSide{
-border: 1px dashed red; 
+.iBuyPanel{
+width : 100%;
+height : 350px;
 }
 
-.rightSide{
-border: 1px dashed green; 
+.iBuyWishlistPanel {
+width : 100%;
+height : 350px;
 }
+
 
 .iBuyTableHeader{
 table-layout:fixed;
 width : 100%;
 height : 25px;
-text-align:left;
+text-align : left;
+}
+
+.iBuyScrollPanel{
+width : 100%;
+height : 300px;
 }
 
 .iBuyWishTable{
 table-layout:fixed;
 width : 100%;
-text-align:center;
+text-align : left;
+}
+
+.chatPanel{
+width : 100%;
+height : 350px;
 }
 
 /*chat*/
-.chatTable{
+.chatLeftSidePanel{
+border: 1px dashed red; 
 width : 100%;
-text-align:left;
+height : 350px;
+}
+
+.chatRightSidePanel{
+border: 1px dashed green; 
+width : 100%;
+height : 350px;
+}
+
+.chatLabel{
+width : 100%;
+height : 25px;
+}
+
+.chatScrollPanel{
+width : 100%;
+height : 300px;
+}
+
+.chatTable{
+table-layout:fixed;
+width : 100%;
+text-align : left;
+}
+
+.chatTextArea{
+width : 70%;
+height : 25px;
+}
+
+.sendButton{
+width : 25%;
+height : 25px;
+}
+
+.participatorsLabel{
+width : 100%;
+height : 25px;
 }
 
 .chatParticipatorsTableHeader{
 table-layout:fixed;
 width : 100%;
 height : 25px;
-text-align:left;
+text-align : left;
+}
+
+.participatorsScrollPanel{
+width : 100%;
+height : 275px;
 }
 
 .chatParticipatorsTable{
 table-layout:fixed;
 width : 100%;
-text-align:center;
+text-align : left;
 }
 
 .chatLineDate{
 background-color:#FFEFD5;
 }
 
+.closeChatButton{
+width : 100%;
+height : 25px;
+}
 
 .gwt-Button 
 { 
@@ -123,14 +231,13 @@ font-family:arial,sans-serif;
 } 
 
 .gwt-Image { 
-cursor: pointer;
-  cursor: hand;
+ cursor: hand;
 
 }
 
-.gwt-Image:hover {
-  background-color: 	#D0D0D0; 
-  
+
+.errorMessage {
+  color: Red;
 }
 
 .gwt-DialogBox .Caption {

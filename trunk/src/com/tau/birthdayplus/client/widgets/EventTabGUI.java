@@ -51,7 +51,7 @@ public class EventTabGUI {
 	//table for events
 	private ScrollPanel eventScrollPanel;
 	private FlexTable eventTableHeader;
-	private FlexTable eventTable;
+	private HoverTable eventTable;
 	//add new event button
 	private Button btnAddEvent;
 	
@@ -98,19 +98,23 @@ public class EventTabGUI {
 
 		mainPanel = new FlowPanel();
 		entryPoint.tab.add(mainPanel, "Events");
-		mainPanel.setSize("100%","350px");
+		mainPanel.addStyleName("mainPanel");
+	//	mainPanel.setSize("100%","350px");
 	
 		eventPanel = new FlowPanel();
 		mainPanel.add(eventPanel);
 		eventPanel.setStyleName("eventPanel");
-		eventPanel.setSize("100%", "350px");
+	//	eventPanel.setSize("100%", "350px");
+		
+		btnAddEvent = new Button("Add Event");
+		eventPanel.add(btnAddEvent);
+		btnAddEvent.addStyleName("buttonAddEvent");
+	//	btnAddEvent.setSize("100px","25px");
 		
 		buildEventTable();
 		buildEventDialogBox();
 	
-		btnAddEvent = new Button("Add Event");
-		eventPanel.add(btnAddEvent);
-		btnAddEvent.setSize("100px","25px");
+		
 		
 		//create DialogBox for user's friend wishlist
 		wishlistFriendGUI = new WishListFriendsGUI();
@@ -146,11 +150,11 @@ public class EventTabGUI {
 		
 		eventScrollPanel = new ScrollPanel();
 		eventPanel.add(eventScrollPanel);
-		eventScrollPanel.setStyleName("eventScrollPanle");
-		eventScrollPanel.setSize("100%", "300px");
+		eventScrollPanel.addStyleName("eventScrollPanel");
+//		eventScrollPanel.setSize("100%", "300px");
 		
 		
-		eventTable = new FlexTable();
+		eventTable = new HoverTable();
 		eventScrollPanel.add(eventTable);
 		eventTable.addStyleName("eventTable");
 	//	eventTable.setWidth("100%");
@@ -181,7 +185,7 @@ public class EventTabGUI {
 	    errorMsgLabel = new Label();
 	    eventDialogBoxVerticalPanel.add(errorMsgLabel);
 	    errorMsgLabel.setWidth("100%");
-		errorMsgLabel.setStyleName("errorMessage");
+		errorMsgLabel.addStyleName("errorMessage");
 		errorMsgLabel.setVisible(false);
 
 		

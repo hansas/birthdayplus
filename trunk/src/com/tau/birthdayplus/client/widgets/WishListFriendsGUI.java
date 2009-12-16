@@ -104,19 +104,25 @@ public class WishListFriendsGUI  {
 
 			wishlistBoxPanel = new FlowPanel();
 			parent.mainPanel.add(wishlistBoxPanel);
-			wishlistBoxPanel.setSize("100%", "350px");
+			wishlistBoxPanel.addStyleName("wishlistFriendPanel");
+		//	wishlistBoxPanel.setSize("100%", "350px");
 			wishlistBoxPanel.setVisible(false);
-			wishlistBoxPanel.setStyleName("wishlistFriendPanel");
+			
 			
 			title = new Label();
 			wishlistBoxPanel.add(title);
-			title.setSize("100%", "25px");
+			title.addStyleName("titleLabel");
+		//	title.setSize("100%", "25px");
+			
+			
+			closeFriendWishlistBoxButton = new Button("Back");
+			wishlistBoxPanel.add(closeFriendWishlistBoxButton);
+			closeFriendWishlistBoxButton.addStyleName("closeButton");
+		//	closeFriendWishlistBoxButton.setSize("50px", "25px");
 			
 			buildFriendWishlistTable();
 			    
-			closeFriendWishlistBoxButton = new Button("Close");
-			wishlistBoxPanel.add(closeFriendWishlistBoxButton);
-			closeFriendWishlistBoxButton.setSize("50px", "25px");
+			
 			
 			buildMoneyDialogBox();
 			buildParticipatorsPopupPanel();
@@ -234,13 +240,14 @@ public class WishListFriendsGUI  {
 		
 		scrollWishlistPanel = new ScrollPanel();
 		wishlistBoxPanel.add(scrollWishlistPanel);
-		scrollWishlistPanel.setSize("100%", "275px");
+		scrollWishlistPanel.addStyleName("friendScrollPanel");
+	//	scrollWishlistPanel.setSize("100%", "275px");
 
 	   
 		friendWishTable = new FlexTable();
 		scrollWishlistPanel.add(friendWishTable);
 	//	friendWishTable.setWidth("100%");
-		friendWishTable.setStyleName("friendWishTable");
+		friendWishTable.addStyleName("friendWishTable");
 		
 		friendWishTable.getColumnFormatter().setWidth(0, "100px");
 		friendWishTable.getColumnFormatter().setWidth(1, "70px");
@@ -248,7 +255,16 @@ public class WishListFriendsGUI  {
        
 	}
 	
-
+    private boolean userInGroup(WishlistItemNewData item){
+    	boolean userInGroup = false;
+    
+    	 for (ParticipatorData data : item.getParticipators()){
+		      if(parent.entryPoint.userId.equals(data.getUserId()))
+			     userInGroup = true;
+    	 }
+    	 return userInGroup;
+    	
+    }
 	
 	/*
 	 * on click in the table
@@ -266,10 +282,12 @@ public class WishListFriendsGUI  {
   		                        showParticipatorsPanel(item , widgetClicked);
                             break;
                           
-       case BUY_LINK :      wishlistService.bookItemForUser(item.getWishlistItemId(), parent.currentEvent.getEventId(),parent.entryPoint.userId);
+       case BUY_LINK :      if(item.getIsActive())
+    	                       wishlistService.bookItemForUser(item.getWishlistItemId(), parent.currentEvent.getEventId(),parent.entryPoint.userId);
                             break;
                           
-       case GROUP_BUY_LINK :loadMoneyDialog(item , widgetClicked);
+       case GROUP_BUY_LINK :if(item.getIsActive()&& !userInGroup(item))
+    	                       loadMoneyDialog(item , widgetClicked);
                             break;
        }      
        
@@ -392,33 +410,40 @@ public class WishListFriendsGUI  {
         	   friendWishTable.setWidget(row,1,new Label("high"));
         	else
         		friendWishTable.setWidget(row,1,new Label("low"));
-        	//the item is free
-        	if(item.getParticipators().isEmpty()){
-        	   friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
-        	   Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
-			   buyImage.setTitle("I'll buy");
-        	   friendWishTable.setWidget(row, 3, buyImage);
-        	   Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
-			   groupImage.setTitle("Start a group");
-			   groupImage.setPixelSize(16, 16);
-    	       friendWishTable.setWidget(row ,4, groupImage);
-        	}else{
-        	   Integer sum = 0;
-        	   Boolean userInGroup = false;
-        	   for (ParticipatorData data : item.getParticipators()){
-        		   if(parent.entryPoint.userId.equals(data.getUserId()))
-        			   userInGroup = true;
-        		   sum += data.getMoney(); 
-        	   }
-        	   friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );
-        	   if(!userInGroup){
-        		   Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
-    			   groupImage.setTitle("Join the group");
-    			   groupImage.setPixelSize(16, 16);
-        	      friendWishTable.setWidget(row, 4, groupImage);
-        	   }
-        	}
-        	friendWishTable.getRowFormatter().addStyleName(row, "tablesRows");
+        	
+            if(item.getIsActive()){	
+        	   if(item.getParticipators().isEmpty()){
+        	      friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
+        	      
+        	      Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
+			      buyImage.setTitle("I'll buy");
+        	      friendWishTable.setWidget(row, 3, buyImage);
+        	      
+        	      Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
+			      groupImage.setTitle("Start a group");
+			      groupImage.setPixelSize(16, 16);
+    	          friendWishTable.setWidget(row ,4, groupImage);
+            	}else{
+        	      Integer sum = 0;
+        	      Boolean userInGroup = false;
+        	      for (ParticipatorData data : item.getParticipators()){
+        		      if(parent.entryPoint.userId.equals(data.getUserId()))
+        			     userInGroup = true;
+        		      sum += data.getMoney(); 
+        	      }
+        	      friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );
+        	      if(!userInGroup){
+        		     Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
+    			     groupImage.setTitle("Join the group");
+    			     groupImage.setPixelSize(16, 16);
+        	         friendWishTable.setWidget(row, 4, groupImage);
+        	      }
+            	}
+            }else {
+            	friendWishTable.setText(row, 2,item.getPrice().toString() );
+            	friendWishTable.getRowFormatter().addStyleName( row,constants.cwInactiveRowStyle());
+            }
+        //	friendWishTable.getRowFormatter().addStyleName(row, "tablesRows");
             row ++;
         }
 		

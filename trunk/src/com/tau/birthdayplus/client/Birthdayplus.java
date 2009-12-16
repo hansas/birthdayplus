@@ -142,8 +142,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    tab = new TabPanel();
 		    RootPanel.get().add(tab);
 		    
-		    tab.setSize("100%", "400px");
-		  //  tab.setStyleName("tabsPanel");
+		  //  tab.setSize("100%", "400px");
+		    tab.addStyleName("tabsPanel");
 			tab.setAnimationEnabled(true);
 			
 			
@@ -214,10 +214,14 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 					    eventDelegate.getEvents(temp);
 					}
 				}else{
-				     if(event.getSelectedItem()== 1)
-				    	myWishlistDelegate.getMyWishlist(userId);
-				     else
-				    	 iBuyDelegate.getBookedWishlist(userId);
+				     if(event.getSelectedItem()== 1){
+				    	 if(myWishlistGUI.items == null)
+				        	myWishlistDelegate.getMyWishlist(userId);
+				     }
+				     else{
+				    	 if(iBuyGUI.itemsToBuy==null)
+				    	   iBuyDelegate.getBookedWishlist(userId);
+				     }
 				
 				}
 					
