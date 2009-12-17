@@ -2,6 +2,7 @@ package com.tau.birthdayplus.logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.catalina.mbeans.UserMBean;
 
@@ -22,6 +23,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 public class WishlistManagement {
+	private static final Logger log = Logger.getLogger(WishlistManagement.class.getName());
 	
 	public static void createWishlistItem(WishlistItemData item) {
 		try{
@@ -167,8 +169,35 @@ public class WishlistManagement {
 		}
 	}
 	
+	public static ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,
+			String anotherUserId) throws UserNotFoundException {
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			List<WishlistItem> itemList = wrapper.getLastItemsForUser(myUserId, anotherUserId);
+			return getBookedWishlistItemNewData(itemList,wrapper);
+		}
+		finally{
+			wrapper.close();
+		}
+	}
+	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException {
 		BusinessObjectDAL.bookItemForUser(wishlistItemId,eventId,userId);
+//		DALWrapper wrapper = new DALWrapper();
+//		try{
+//			WishlistItem i = wrapper.getWishlistItem(wishlistItemId);
+//			Guest g = wrapper.getGuestByKey(i.getKey().getParent());
+//			String anotherUserId = g.getId();
+//			log.info("user Id: "+userId);
+//			log.info("anotherUserId: "+anotherUserId);
+//			List<WishlistItemNewData> items = getLastItemsForUser(userId, anotherUserId);
+//			for (WishlistItemNewData item : items){
+//				log.info(item.getItemName());
+//			}
+//		}
+//		finally{
+//			wrapper.close();
+//		}
 	}
 	
 	public static void cancelBookItemForUser(String wishlistItemId, String userId) {

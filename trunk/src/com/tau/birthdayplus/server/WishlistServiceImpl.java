@@ -280,9 +280,8 @@ WishlistService  {
 	 * 
 	 */
 	public ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,
-			String anotherUserId) {
-		
-		return null;
+			String anotherUserId) throws UserNotFoundException {
+		return WishlistManagement.getLastItemsForUser(myUserId, anotherUserId);
 	}
 	
 	protected String readContent(HttpServletRequest request)
