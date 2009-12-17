@@ -1,5 +1,7 @@
 package com.tau.birthdayplus.dto.client;
 
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
@@ -15,6 +17,8 @@ public class WishlistItemPolaniData implements IsSerializable{
 	   private Integer participation;
 	   //event for which item was bought
 	   private String eventName;
+	   //date of event
+	   private Date eventDate;
 
 	
 	/*
@@ -65,6 +69,12 @@ public class WishlistItemPolaniData implements IsSerializable{
 	}
 	public String getEventName() {
 		return eventName;
+	}
+	public void setEventDate(Date eventDate) {
+		this.eventDate = eventDate;
+	}
+	public Date getEventDate() {
+		return eventDate;
 	}
 	
 }

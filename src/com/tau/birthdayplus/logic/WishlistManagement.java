@@ -1,6 +1,7 @@
 package com.tau.birthdayplus.logic;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -174,8 +175,10 @@ public class WishlistManagement {
 			String anotherUserId) throws UserNotFoundException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
-			List<WishlistItem> itemList = wrapper.getLastItemsForUser(myUserId, anotherUserId);
-			return getWishlistitemPolaniDataList(itemList,anotherUserId,wrapper);
+			//List<WishlistItem> itemList = wrapper.getLastItemsForUser(myUserId, anotherUserId);
+			//return getWishlistitemPolaniDataList(itemList,anotherUserId,wrapper);
+			//return null;
+			return wrapper.getLastItemsForUser(myUserId, anotherUserId);
 		}
 		finally{
 			wrapper.close();
