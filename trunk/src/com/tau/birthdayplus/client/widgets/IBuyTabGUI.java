@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -46,11 +47,11 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 public class IBuyTabGUI {
 	//////////////////Constants///////////////////////////
 	CwConstants constants = GWT.create(CwConstants.class);
-	private static final int BUY_LINK = 6;
-	private static final int CANCEL_LINK = 5;
-	private static final int UPDATE_LINK = 4;
-	private static final int PRICE_LINK  = 3;
-	private static final int NAME_LINK   =1;
+	private static final int BUY_LINK = 5;
+	private static final int CANCEL_LINK = 4;
+	private static final int UPDATE_LINK = 3;
+	private static final int PRICE_LINK  = 2;
+	
 	
 
 	//////////////////GUI Widgets////////////////////////
@@ -63,6 +64,7 @@ public class IBuyTabGUI {
 	
 
 	private HorizontalPanel chatPanel;
+	private HorizontalPanel buttonPanel;
 	
 	private FlowPanel leftSide;
 	private Label chatLabel;
@@ -105,18 +107,18 @@ public class IBuyTabGUI {
 		iBuyPanel = new FlowPanel();
 		entryPoint.tab.add(iBuyPanel, "I buy");
 	//	iBuyPanel.setSize("100%", "350px");
-		iBuyPanel.addStyleName("iBuyPanel");
+		iBuyPanel.addStyleName("Panel");
 		
 		wishPanel= new FlowPanel();
 		iBuyPanel.add(wishPanel);
-		wishPanel.addStyleName("iBuyWishlistPanel");
+		wishPanel.addStyleName("Panel");
 	//	wishPanel.setSize("100%", "350px");
 	
 		buildWishlistTable();
 		
 		chatPanel = new HorizontalPanel();
 		iBuyPanel.add(chatPanel);
-		chatPanel.addStyleName("chatPanel");
+		chatPanel.addStyleName("Panel");
 	//	chatPanel.setSize("100%", "350px");
 		chatPanel.setVisible(false);
 		
@@ -176,17 +178,25 @@ public class IBuyTabGUI {
 	
 	
 	private void buildChat(){
+		buttonPanel = new HorizontalPanel();
+		chatPanel.add(buttonPanel);
+		
+		closeChatButton = new Button("return");
+	    buttonPanel.add(closeChatButton);
+	    buttonPanel.setStyleName("buttonPanel");
+//	    closeChatButton.setSize("100%", "25px");
+		
 		leftSide = new FlowPanel();
 		chatPanel.add(leftSide);
 		chatPanel.setCellWidth(leftSide,"70%");
-	//	leftSide.setSize("100%", "350px");
-		leftSide.addStyleName("chatLeftSidePanel");
+	//	leftSide.setSize("100%", "325px");
+		leftSide.addStyleName("chatPanel");
 		
 		rightSide = new FlowPanel();
 		chatPanel.add(rightSide);
 		chatPanel.setCellWidth(rightSide, "30%");
-	//	rightSide.setSize("100%", "350px");
-		rightSide.addStyleName("chatRightSidePanel");
+	//	rightSide.setSize("100%", "325px");
+		rightSide.addStyleName("chatPanel");
 		
 		
 		buildChatLeftSide();
@@ -209,35 +219,35 @@ public class IBuyTabGUI {
 	private void buildWishlistTable(){
 		iBuyTableHeader = new FlexTable();
 		wishPanel.add(iBuyTableHeader);
-		iBuyTableHeader.addStyleName("iBuyTableHeader");
+		iBuyTableHeader.addStyleName("TableHeader");
 	//	iBuyTableHeader.setSize("100%", "25px");
 		
 		
-		iBuyTableHeader.getColumnFormatter().setWidth(0, "80px");
-		iBuyTableHeader.getColumnFormatter().setWidth(1, "70px");
-		iBuyTableHeader.getColumnFormatter().setWidth(2, "50px");
-		iBuyTableHeader.getColumnFormatter().setWidth(3, "40px");
+		iBuyTableHeader.getColumnFormatter().setWidth(0, "150px");
+	//	iBuyTableHeader.getColumnFormatter().setWidth(1, "70px");
+	//	iBuyTableHeader.getColumnFormatter().setWidth(2, "50px");
+		iBuyTableHeader.getColumnFormatter().setWidth(1, "90px");
 				
-		iBuyTableHeader.setText(0, 0, "Event");
-		iBuyTableHeader.setText(0,1, "Item");
-		iBuyTableHeader.setText(0, 2, "Priority");
-		iBuyTableHeader.setText(0, 3, "Price");
-		iBuyTableHeader.getFlexCellFormatter().setColSpan(0, 3, 4);
+		iBuyTableHeader.setText(0, 0, "What");
+	//	iBuyTableHeader.setText(0,1, "Item");
+	//	iBuyTableHeader.setText(0, 2, "Priority");
+		iBuyTableHeader.setText(0, 1, "Price");
+		iBuyTableHeader.getFlexCellFormatter().setColSpan(0, 1, 4);
 		
 		
 		iBuyScrollPanel = new ScrollPanel();
 		wishPanel.add(iBuyScrollPanel);
-		iBuyScrollPanel.addStyleName("iBuyScrollPanel");
+		iBuyScrollPanel.addStyleName("ScrollPanel");
 	//	iBuyScrollPanel.setSize("100%", "300px");
 	
 		wishTable = new FlexTable();
 		iBuyScrollPanel.add(wishTable);
-		wishTable.addStyleName("iBuyWishTable");
+		wishTable.addStyleName("Table");
 	//	wishTable.setWidth("100%");
 		
-		wishTable.getColumnFormatter().setWidth(0, "80px");
-		wishTable.getColumnFormatter().setWidth(1, "70px");
-		wishTable.getColumnFormatter().setWidth(2, "50px");
+		wishTable.getColumnFormatter().setWidth(0, "150px");
+	//	wishTable.getColumnFormatter().setWidth(1, "70px");
+//		wishTable.getColumnFormatter().setWidth(2, "50px");
 	    
 	   // wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
 	//	wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
@@ -252,19 +262,19 @@ public class IBuyTabGUI {
 	
 	
 	private void buildChatLeftSide(){
-		chatLabel = new Label();
+		chatLabel = new Label("chat");
 		leftSide.add(chatLabel);
-		chatLabel.addStyleName("chatLabel");
+		chatLabel.addStyleName("Label");
 	//	chatLabel.setSize("100%", "25px");
 		chatScrollPanel = new ScrollPanel();
 		leftSide.add(chatScrollPanel);
-		chatScrollPanel.addStyleName("chatScrollPanel");
+		chatScrollPanel.addStyleName("ShortScrollPanel");
 	//	chatScrollPanel.setSize("100%", "300px");
 		
 		    
 	    chatTable = new FlexTable();
         chatScrollPanel.add(chatTable);
-        chatTable.addStyleName("chatTable");
+        chatTable.addStyleName("Table");
      //   chatTable.setWidth("100%");
       //  chatTable.getColumnFormatter().setWidth(0, "50%");
       //  chatTable.getColumnFormatter().setWidth(1, "50%");
@@ -286,15 +296,12 @@ public class IBuyTabGUI {
 	private void buildChatRightSide(){
 		participatorsLabel = new Label("Participators");
 		rightSide.add(participatorsLabel);
-		participatorsLabel.addStyleName("participatorsLabel");
+		participatorsLabel.addStyleName("Label");
 //		participatorsLabel.setSize("100%", "25px");
 		
 		buildParticipatorsTable();
 		
-		closeChatButton = new Button("return");
-	    rightSide.add(closeChatButton);
-	    closeChatButton.addStyleName("closeChatButton");
-//	    closeChatButton.setSize("100%", "25px");
+		
 	}
 	
 	
@@ -302,7 +309,7 @@ public class IBuyTabGUI {
 	private void buildParticipatorsTable(){
 		participatorsTableHeader = new FlexTable();
 		rightSide.add(participatorsTableHeader);
-		participatorsTableHeader.addStyleName("chatParticipatorsTableHeader");
+		participatorsTableHeader.addStyleName("TableHeader");
 	//	participatorsTableHeader.setSize("100%", "25px");
 		
 		participatorsTableHeader.getColumnFormatter().setWidth(0, "50px");		
@@ -312,15 +319,16 @@ public class IBuyTabGUI {
 		
 		participatorsScrollPanel = new ScrollPanel();
 		rightSide.add(participatorsScrollPanel);
-		participatorsScrollPanel.setStyleName("participatorsScrollPanel");
+		participatorsScrollPanel.setStyleName("ShortScrollPanel");
 	//	participatorsScrollPanel.setSize("100%", "275px");
 		
 		
 		participatorsTable = new FlexTable();
 		participatorsScrollPanel.add(participatorsTable);
-		participatorsTable.addStyleName("chatParticipatorsTable");
+		participatorsTable.addStyleName("Table");
 	//	participatorsTable.setWidth("100%");
 		participatorsTable.getColumnFormatter().setWidth(0, "50px");
+		
 	}
 	
 	
@@ -392,9 +400,6 @@ public class IBuyTabGUI {
 	         
 	        
 	        switch(col){
-	        case NAME_LINK    : if(!item.getLink().equals(""))
-       		                       Window.open(item.getLink(), "_blank", null);
-	                            break;
 	        case PRICE_LINK   : loadChat(item);
 	                            break;
 	        case UPDATE_LINK  : loadMoneyDialog(item);    
@@ -430,30 +435,33 @@ public class IBuyTabGUI {
 	        int row = 0;
 	        
 	        for (WishlistItemNewData item : result) {
-	        	wishTable.setWidget(row,0,new Label(item.getUserName()+"'s "+item.getEventName()));
+	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
+	       // 	wishTable.setWidget(row,0,new Label(item.getUserName()+"'s "+item.getEventName()));
 	        	//link
 	        	if (item.getLink().equals(""))
-	        		wishTable.setWidget(row, 1,new Label(item.getItemName()));
+	        		wishTable.setText(row, 0,what);
 	        	else
-	        		wishTable.setWidget(row, 1,new Hyperlink(item.getItemName(),null));
+	        		wishTable.setWidget(row, 1,new Anchor(what,item.getLink(),"_blank"));
 	        	//priority
-	        	if(item.getPriority() )
-	        		wishTable.setWidget(row,2,new Label("high"));
-	        	else
-	    	        wishTable.setWidget(row,2,new Label("low"));
+	        	//if(item.getPriority() )
+	        	///	wishTable.setWidget(row,2,new Label("high"));
+	        	//else
+	    	  //     wishTable.setWidget(row,2,new Label("low"));
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
-	    	    	wishTable.setWidget(row, 3,new Label(item.getPrice().toString()) );
+	    	    	wishTable.setText(row, 2,item.getPrice().toString() );
 	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
 				    cancelImage.setTitle("cancel reservation");
-		    	    wishTable.setWidget(row, 5, cancelImage); 
+		    	    wishTable.setWidget(row, 4, cancelImage); 
 		
 	    	    }else{
 	    	    	Integer sum = 0;
 	    	    	for(ParticipatorData user : item.getParticipators()){
 	    	    		sum+=user.getMoney();
 	    	    	}
-	    	        wishTable.setWidget(row, 3,new Hyperlink(sum+ " / " + item.getPrice().toString(), null) );
+	    	    	Hyperlink chatLink = new Hyperlink(sum+ " / " + item.getPrice().toString(), null);
+	    	    	chatLink.setTitle("click to enter the chat");
+	    	        wishTable.setWidget(row, 2,chatLink );
 	    	        if(item.getIsActive()){
 	    	        	Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 	    			    updateImage.setTitle("update ");
@@ -461,22 +469,23 @@ public class IBuyTabGUI {
 	    			    cancelImage.setTitle("leave this group");
 	    			    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
 	    			    buyImage.setTitle("We'll buy");
-	    	        	wishTable.setWidget(row, 4, updateImage);
-	    	        	wishTable.setWidget(row, 5, cancelImage);
-	    	        	wishTable.setWidget(row, 6, buyImage);
+	    	        	wishTable.setWidget(row, 3, updateImage);
+	    	        	wishTable.setWidget(row, 4, cancelImage);
+	    	        	wishTable.setWidget(row, 5, buyImage);
 	    	        }else{
 	    	        	if(item.getBuyer().getUserId().equals(entryPoint.userId)){
 	    	        	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
 	    			       cancelImage.setTitle("reopen this group");
-	    			       wishTable.setWidget(row, 5, cancelImage);
+	    			       wishTable.setWidget(row, 4, cancelImage);
 	    	        	}
 	    	        	
 	    	        }
+	    	        
 	    
 	           
 	        }
 	    	    
-	    	    wishTable.getRowFormatter().addStyleName(row, "tablesRows");
+	  //  	    wishTable.getRowFormatter().addStyleName(row, "tablesRows");
 
 	    	    
 	    	    row ++;

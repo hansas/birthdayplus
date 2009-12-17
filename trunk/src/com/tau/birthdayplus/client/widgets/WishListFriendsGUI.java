@@ -104,21 +104,22 @@ public class WishListFriendsGUI  {
 
 			wishlistBoxPanel = new FlowPanel();
 			parent.mainPanel.add(wishlistBoxPanel);
-			wishlistBoxPanel.addStyleName("wishlistFriendPanel");
+			wishlistBoxPanel.addStyleName("Panel");
 		//	wishlistBoxPanel.setSize("100%", "350px");
 			wishlistBoxPanel.setVisible(false);
 			
+			closeFriendWishlistBoxButton = new Button("Back");
+			wishlistBoxPanel.add(closeFriendWishlistBoxButton);
+			closeFriendWishlistBoxButton.addStyleName("Button");
+		//	closeFriendWishlistBoxButton.setSize("50px", "25px");
 			
 			title = new Label();
 			wishlistBoxPanel.add(title);
-			title.addStyleName("titleLabel");
+			title.addStyleName("Label");
 		//	title.setSize("100%", "25px");
 			
 			
-			closeFriendWishlistBoxButton = new Button("Back");
-			wishlistBoxPanel.add(closeFriendWishlistBoxButton);
-			closeFriendWishlistBoxButton.addStyleName("closeButton");
-		//	closeFriendWishlistBoxButton.setSize("50px", "25px");
+			
 			
 			buildFriendWishlistTable();
 			    
@@ -222,7 +223,7 @@ public class WishListFriendsGUI  {
 	private void buildFriendWishlistTable(){
 		headerFriendWishTable = new FlexTable();
 		wishlistBoxPanel.add(headerFriendWishTable);
-		headerFriendWishTable.addStyleName("headerFriendWishTable");
+		headerFriendWishTable.addStyleName("TableHeader");
 	//	headerFriendWishTable.setSize("100%", "25px");
 		 
 	
@@ -240,14 +241,14 @@ public class WishListFriendsGUI  {
 		
 		scrollWishlistPanel = new ScrollPanel();
 		wishlistBoxPanel.add(scrollWishlistPanel);
-		scrollWishlistPanel.addStyleName("friendScrollPanel");
+		scrollWishlistPanel.addStyleName("ShortScrollPanel");
 	//	scrollWishlistPanel.setSize("100%", "275px");
 
 	   
 		friendWishTable = new FlexTable();
 		scrollWishlistPanel.add(friendWishTable);
 	//	friendWishTable.setWidth("100%");
-		friendWishTable.addStyleName("friendWishTable");
+		friendWishTable.addStyleName("Table");
 		
 		friendWishTable.getColumnFormatter().setWidth(0, "100px");
 		friendWishTable.getColumnFormatter().setWidth(1, "70px");
