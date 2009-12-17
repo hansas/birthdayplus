@@ -4,8 +4,11 @@ package com.tau.birthdayplus.dal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.SortedMap;
 
 import javax.jdo.JDOObjectNotFoundException;
@@ -28,6 +31,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData; //import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.WishlistManagement;
 import java.util.logging.Logger;
@@ -35,6 +39,26 @@ import java.util.logging.Logger;
 public class BusinessObjectDAL {
 	
 	private static final Logger log = Logger.getLogger(BusinessObjectDAL.class.getName());
+	
+	public static final Comparator<WishlistItemPolaniData> WISHLISTITEMPOLANI_DATA_ORDER =
+        new Comparator<WishlistItemPolaniData>() {
+			public int compare(WishlistItemPolaniData e1, WishlistItemPolaniData e2) {
+					if ((e1.getEventDate() == null) || (e2.getEventDate()==null)){
+						return 0;
+					}
+					int result = e2.getEventDate().compareTo(e1.getEventDate());
+					if(result==-1){
+						return -1;
+					}
+					else if (result==1){
+						return 1;
+					}
+					else{
+						return 0;
+					}
+				}
+		};
+
 	
 	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException {
 		Guest guest = null;
@@ -283,11 +307,18 @@ public class BusinessObjectDAL {
 			Guest parent = BusinessObjectDAL.loadGuest(itemD.getUserId(), pm);
 			WishlistItem item = pm.getObjectById(WishlistItem.class, itemD
 					.getWishlistItemId());
-			if (item.getParticipators().isEmpty() && item.getBuyerKey()==null){ //User may delete item iff there is no buyers and no participators
+			if (item.getBuyerKey()==null){ //User may delete item iff there is no buyers
+				if(!item.getParticipators().isEmpty()){
+					List<Participator> participators = item.getParticipators();
+					for (Participator p : participators){
+						pm.deletePersistent(p);
+					}
+				}
 				parent.removeWishlistItem(item);
 				pm.makePersistent(parent);
 				pm.deletePersistent(item);
 			}
+			
 			tx.commit();
 		} catch (Exception ex) {
 			throw new RuntimeException("error in data base: deleteWishlistItem");
@@ -375,27 +406,64 @@ public class BusinessObjectDAL {
 		return wishlistItems;
 	}
 	
-	public static List<WishlistItem> getLastItemsForUser(String myUserId,String anotherUserId,
-			PersistenceManager pm) {
+	public static ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,String anotherUserId,
+		PersistenceManager pm) throws UserNotFoundException {
 		Key buyer = KeyFactory.createKey(Guest.class.getSimpleName(), anotherUserId);
 		Key myKey = KeyFactory.createKey(Guest.class.getSimpleName(), myUserId);
-		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
-		try {
-			Query query = pm.newQuery(WishlistItem.class);
-			query.declareImports("import com.google.appengine.api.datastore.Key");
-			query.setFilter("buyerKey == buyer");
-			query.declareParameters("Key buyer");
-			wishlistItems = (List<WishlistItem>) query.execute(buyer);
-		} catch (Exception ex) {
-			log.severe("Error in getLastItemsForUser: "+ex.getMessage());
-			throw new RuntimeException("error in data base: getLastItemsForUser");
+		//List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
+		//List<WishlistItemPolaniData> resultItems = new ArrayList<WishlistItemPolaniData>();
+//		try {
+//			Query query = pm.newQuery(WishlistItem.class);
+//			query.declareImports("import com.google.appengine.api.datastore.Key");
+//			query.setFilter("buyerKey == buyer");
+//			query.declareParameters("Key buyer");
+//			wishlistItems = (List<WishlistItem>) query.execute(buyer);
+//		} catch (Exception ex) {
+//			log.severe("Error in getLastItemsForUser: "+ex.getMessage());
+//			throw new RuntimeException("error in data base: getLastItemsForUser");
+//		}
+//		for (WishlistItem item : wishlistItems){
+//			if (item.getKey().getParent().equals(myKey)){
+//				resultItems.add(item);
+//			}
+//		}
+		Guest guest = loadGuest(myUserId, pm);
+		List<WishlistItem> myItems = guest.getWishlistItems();
+		List<Event> myEvents = guest.getEvents();
+		PriorityQueue<WishlistItemPolaniData> results = new PriorityQueue<WishlistItemPolaniData>(4, WISHLISTITEMPOLANI_DATA_ORDER);
+
+		HashMap<Key, Event> events = new HashMap<Key, Event>();
+		for(Event e : myEvents){
+			events.put(e.getKey(),e);
 		}
-		for (WishlistItem item : wishlistItems){
-			if (!item.getKey().getParent().equals(myKey)){
-				wishlistItems.remove(item);
+		for (WishlistItem item : myItems){
+			if (item.getBuyerKey()!=null){
+				if (item.getBuyerKey().equals(buyer)){
+					addThreeSortedItems(item,events.get(item.getEventKey()),item.getPrice(), results);
+				}
+				else{
+					List<Participator> participators = item.getParticipators();
+					for (Participator p : participators){
+						if (p.getId().equals(anotherUserId)){
+							addThreeSortedItems(item,events.get(item.getEventKey()),p.getMoney(), results);
+							break;
+						}
+					}
+				}
 			}
 		}
+		
+		ArrayList<WishlistItemPolaniData> wishlistItems = new ArrayList<WishlistItemPolaniData>(results);
 		return wishlistItems;
+	}
+	
+	public static void addThreeSortedItems(WishlistItem item,Event e, double price, PriorityQueue<WishlistItemPolaniData> items){
+		WishlistItemPolaniData polani = new WishlistItemPolaniData(KeyFactory.keyToString(item.getKey()),item.getItemName(), item.getPrice(), (int)price, e.getEventName());
+		items.add(polani);
+		if (items.size()>3)
+		{
+			items.remove();
+		}
 	}
 	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException{
@@ -613,13 +681,10 @@ public class BusinessObjectDAL {
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();
 		int size = partisipators.size();
-		
 		if (item.getIsActive()==true){
 			Transaction tx = (Transaction) pm.currentTransaction();
-			//Guest user = loadGuest(userId, pm);
 			try {
 				tx.begin();
-				int i=1;
 				for(Participator p: partisipators){
 					if (p.getId().equals(userId)){
 						item.removeParticipator(p);
@@ -629,8 +694,6 @@ public class BusinessObjectDAL {
 				if(size==1){
 					item.setEventKey(null);
 				}
-				//user.removeIBuyItem(item);
-				//pm.makePersistent(user);
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {

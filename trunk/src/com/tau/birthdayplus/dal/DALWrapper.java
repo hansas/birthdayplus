@@ -12,6 +12,7 @@ import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 public class DALWrapper {
 	
@@ -66,8 +67,8 @@ public class DALWrapper {
 		return BusinessObjectDAL.getBookedWishlistItems2(userId, pm);
 	}
 	
-	public List<WishlistItem> getLastItemsForUser(String myUserId,
-			String anotherUserId) {
+	public ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,
+			String anotherUserId) throws UserNotFoundException {
 		return BusinessObjectDAL.getLastItemsForUser(myUserId, anotherUserId, pm);
 	}
 	
