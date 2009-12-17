@@ -115,14 +115,16 @@ public class EventTabGUI {
 		eventPanel.add(buttonPanel);
 		buttonPanel.setStyleName("buttonPanel");
 		
+		googleButton = new Button("Remind me");
+		buttonPanel.add(googleButton);
+	//	googleButton.setSize("100px", "25px");
+		
 		btnAddEvent = new Button("Add Event");
 		buttonPanel.add(btnAddEvent);
 	//	btnAddEvent.setSize("100px","25px");
 		
 
-		googleButton = new Button("Remind me");
-		buttonPanel.add(googleButton);
-	//	googleButton.setSize("100px", "25px");
+		
 		
 		buildEventTable();
 		buildEventDialogBox();

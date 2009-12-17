@@ -39,6 +39,7 @@ public class HoverTable extends FlexTable {
             int row = DOM.getChildIndex(body, tr);
             // Fire the event
             DOM.setStyleAttribute(tr, "backgroundColor", "#AFEEEE");
+            DOM.setStyleAttribute(tr, "cursor", "default");
             break;
         }
         case Event.ONMOUSEOUT: {
