@@ -8,6 +8,7 @@ import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 
 /**
@@ -78,7 +79,7 @@ public interface WishlistServiceAsync {
 			AsyncCallback<WishlistItemNewData> callback);
 
 	void getLastItemsForUser(String myUserId, String anotherUserId,
-			AsyncCallback<ArrayList<WishlistItemNewData>> callback);
+			AsyncCallback<ArrayList<WishlistItemPolaniData>> callback);
 	
 
 	

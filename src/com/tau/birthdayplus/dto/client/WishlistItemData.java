@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 public class WishlistItemData implements IsSerializable{
-	 //item id
+	   //item id
 	   private String wishlistItemId;
 	   //owner of this item 
 	   private String userId;

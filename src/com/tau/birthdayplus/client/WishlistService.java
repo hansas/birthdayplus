@@ -9,6 +9,7 @@ import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 
 
@@ -115,7 +116,7 @@ public interface WishlistService extends RemoteService{
 	 * Three last items that this person bought for me
 	 * 
 	 */
-	ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,String anotherUserId ) throws UserNotFoundException;
+	ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,String anotherUserId ) throws UserNotFoundException;
 	
 	
 
