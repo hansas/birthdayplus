@@ -26,6 +26,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.UserManagement;
 import com.tau.birthdayplus.logic.WishlistManagement;
@@ -279,7 +280,7 @@ WishlistService  {
 	 * Three last items that this person bought for me
 	 * 
 	 */
-	public ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,
+	public ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,
 			String anotherUserId) throws UserNotFoundException {
 		return WishlistManagement.getLastItemsForUser(myUserId, anotherUserId);
 	}

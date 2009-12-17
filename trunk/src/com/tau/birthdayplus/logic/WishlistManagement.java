@@ -21,6 +21,7 @@ import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 public class WishlistManagement {
 	private static final Logger log = Logger.getLogger(WishlistManagement.class.getName());
@@ -169,16 +170,33 @@ public class WishlistManagement {
 		}
 	}
 	
-	public static ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,
+	public static ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,
 			String anotherUserId) throws UserNotFoundException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			List<WishlistItem> itemList = wrapper.getLastItemsForUser(myUserId, anotherUserId);
-			return getBookedWishlistItemNewData(itemList,wrapper);
+			return getWishlistitemPolaniDataList(itemList,anotherUserId,wrapper);
 		}
 		finally{
 			wrapper.close();
 		}
+	}
+	
+	public static ArrayList<WishlistItemPolaniData> getWishlistitemPolaniDataList(List<WishlistItem> itemList,String anotherUserId,DALWrapper wrapper){
+		ArrayList<WishlistItemPolaniData> itemsPolani = new ArrayList<WishlistItemPolaniData>();
+		for (WishlistItem item : itemList){
+			Event e = wrapper.getEventByKey(item.getEventKey());
+			List<Participator> participators = item.getParticipators();
+			Integer participation = 0;
+			for (Participator p : participators){
+				if (p.getId().equals(anotherUserId)){
+					participation = p.getMoney();
+				}
+			}
+			WishlistItemPolaniData itemPolani = new WishlistItemPolaniData(KeyFactory.keyToString(item.getKey()),item.getItemName(), item.getPrice(), participation, e.getEventName());
+			itemsPolani.add(itemPolani);
+		}
+		return itemsPolani;
 	}
 	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException {
