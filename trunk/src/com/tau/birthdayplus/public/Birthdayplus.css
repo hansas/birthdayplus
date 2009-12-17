@@ -4,179 +4,62 @@ width : 100%;
 height : 400px;
 }
 
-/*event tab*/
 
-.mainPanel{
+.Panel{
+//position:relative;
+//border-style:solid;
+//border-width:1px;
+//border-color:#B0E0E6;
 width : 100%;
 height : 350px;
 }
 
-.eventPanel{
-position:relative;
-border-style:solid;
-border-width:1px;
-border-color:#B0E0E6;
+.buttonPanel{
 width : 100%;
-height : 350px;
+height : 25px;
 }
-
-.buttonAddEvent{
+.Button{
 width : 100px;
 height : 25px;
 }
 
-.eventTableHeader{
+.TableHeader{
 table-layout:fixed;
 width : 100%;
 height : 25px;
 text-align:left;
-
 }
 
-.eventScrollPanel{
+.ScrollPanel{
 width : 100%;
 height : 300px;
 }
 
-.eventTable{
-table-layout:fixed;
-width : 100%;
-text-align:left;
-
-}
-
-
-
-/*FRIEND WISHLIST*/
-
-.wishlistFriendPanel{
-border: 1px dashed black;
-width : 100%;
-height : 350px;
-}
-
-.titleLabel{
-width : 100%;
-height : 25px;
-}
-
-.closeButton{
-width : 100px;
-height : 25px;
-}
-
-.headerFriendWishTable{
-table-layout:fixed;
-width : 100%;
-height : 25px;
-text-align:left;
-}
-
-.friendScrollPanel{
+.ShortScrollPanel{
 width : 100%;
 height : 275px;
 }
 
-.friendWishTable{
+.Table{
 table-layout:fixed;
 width : 100%;
-text-align : left;
-}
-
-/*my wishlist tab*/
-.myWishlistPanel {
-width : 100%;
-height : 350px;
-}
-
-.addItemButton{
-width : 100%;
-height : 25px;
-}
-
-.myWishlistTableHeader{
-table-layout:fixed;
-width : 100%;
-height : 25px;
 text-align:left;
 }
 
-.myWishlistScrollPanel{
-width : 100%;
-height : 300px;
+.eventRadioButton{
+width : 16px;
 }
 
-.wishTable{
-table-layout:fixed;
-width : 100%;
-text-align : left;
-}
-
-/*I BUY TAB*/
-
-.iBuyPanel{
-width : 100%;
-height : 350px;
-}
-
-.iBuyWishlistPanel {
-width : 100%;
-height : 350px;
-}
-
-
-.iBuyTableHeader{
-table-layout:fixed;
+.Label{
 width : 100%;
 height : 25px;
-text-align : left;
-}
-
-.iBuyScrollPanel{
-width : 100%;
-height : 300px;
-}
-
-.iBuyWishTable{
-table-layout:fixed;
-width : 100%;
-text-align : left;
+text-align:center;
 }
 
 .chatPanel{
 width : 100%;
-height : 350px;
+height : 325px;
 }
-
-/*chat*/
-.chatLeftSidePanel{
-border: 1px dashed red; 
-width : 100%;
-height : 350px;
-}
-
-.chatRightSidePanel{
-border: 1px dashed green; 
-width : 100%;
-height : 350px;
-}
-
-.chatLabel{
-width : 100%;
-height : 25px;
-}
-
-.chatScrollPanel{
-width : 100%;
-height : 300px;
-}
-
-.chatTable{
-table-layout:fixed;
-width : 100%;
-text-align : left;
-}
-
 .chatTextArea{
 width : 70%;
 height : 25px;
@@ -187,37 +70,11 @@ width : 25%;
 height : 25px;
 }
 
-.participatorsLabel{
-width : 100%;
-height : 25px;
-}
-
-.chatParticipatorsTableHeader{
-table-layout:fixed;
-width : 100%;
-height : 25px;
-text-align : left;
-}
-
-.participatorsScrollPanel{
-width : 100%;
-height : 275px;
-}
-
-.chatParticipatorsTable{
-table-layout:fixed;
-width : 100%;
-text-align : left;
-}
-
 .chatLineDate{
 background-color:#FFEFD5;
 }
 
-.closeChatButton{
-width : 100%;
-height : 25px;
-}
+
 
 .gwt-Button 
 { 
@@ -229,10 +86,9 @@ font-family:arial,sans-serif;
 } 
 
 .gwt-Image { 
- cursor: hand;
-
+cursor: pointer;
+cursor: hand;
 }
-
 
 .errorMessage {
   color: Red;
@@ -266,5 +122,28 @@ TD {
 TABLE {
 border: 1px dashed blue; 
 }
+
+
+/*
+Event Tab
+Panel - > Buttons -> TableHeder->ScrollPanel ->Table
+*/
+
+/*
+Friend wishlist
+Panel -> title Label ->Button->Header->ShortScrollPanel
+*/
+
+/*
+MyWishlist tab
+Panel -> Button - > TableHeader - >ScrollPanel -> Table 
+*/
+
+/*
+I buy tab
+Panel : Panel -> TableHeader ->  ScrollPanel - >Table
+          Panel ->  Panel ->  Label -> ScrollPanel -> Table -> chatTextArea - >Button
+                       Panel ->  Label -> TableHeader -> ShortScrollPanel -> Table -> Button
+*/         
 
 
