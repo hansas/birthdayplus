@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -40,9 +41,9 @@ public class EventTabGUI {
      * constants
      */
 	CwConstants constants = GWT.create(CwConstants.class);
-	private static final int EVENT_LINK = 1;
-	private static final int UPDATE_LINK = 3;
-    private static final int DELETE_LINK = 4;
+	private static final int EVENT_LINK = 2;
+	private static final int UPDATE_LINK = 4;
+    private static final int DELETE_LINK = 5;
     
     /*GUI Widgets*/
     protected FlowPanel mainPanel;
@@ -54,6 +55,8 @@ public class EventTabGUI {
 	private HoverTable eventTable;
 	//add new event button
 	private Button btnAddEvent;
+	private Button googleButton;
+	private ArrayList<RadioButton> radioButtonList;
 	
 	//add event box
 	private DialogBox eventDialogBox;
@@ -111,6 +114,13 @@ public class EventTabGUI {
 		btnAddEvent.addStyleName("buttonAddEvent");
 	//	btnAddEvent.setSize("100px","25px");
 		
+	//	Image image = new Image(GWT.getModuleBaseURL()+"gc_button2.gif");
+	//	image.setSize("100px", "25px");
+		googleButton = new Button("remind me");
+		eventPanel.add(googleButton);
+		googleButton.addStyleName("remindMe");
+	//	googleButton.setSize("100px", "25px");
+		
 		buildEventTable();
 		buildEventDialogBox();
 	
@@ -139,14 +149,16 @@ public class EventTabGUI {
 		eventTableHeader.addStyleName("eventTableHeader");
 		//eventTableHeader.setSize("100%", "25px");
 		
-		eventTableHeader.getColumnFormatter().setWidth(0, "100px");
-		eventTableHeader.getColumnFormatter().setWidth(1, "100px");
-		eventTableHeader.getColumnFormatter().setWidth(2, "25px");
+		eventTableHeader.getColumnFormatter().setWidth(0, "16px");
+		eventTableHeader.getColumnFormatter().setWidth(1, "84px");
+		eventTableHeader.getColumnFormatter().setWidth(2, "100px");
+		eventTableHeader.getColumnFormatter().setWidth(3, "25px");
 				
-		eventTableHeader.setText(0, 0, "Name");
-		eventTableHeader.setText(0,1, "Event");
-		eventTableHeader.setText(0, 2, "Due");
-		eventTableHeader.getFlexCellFormatter().setColSpan(0, 2, 3);
+		eventTableHeader.setText(0, 0, "");
+		eventTableHeader.setText(0, 1, "Name");
+		eventTableHeader.setText(0, 2, "Event");
+		eventTableHeader.setText(0, 3, "Due");
+		eventTableHeader.getFlexCellFormatter().setColSpan(0, 3, 3);
 		
 		eventScrollPanel = new ScrollPanel();
 		eventPanel.add(eventScrollPanel);
@@ -159,8 +171,9 @@ public class EventTabGUI {
 		eventTable.addStyleName("eventTable");
 	//	eventTable.setWidth("100%");
 		
-		eventTable.getColumnFormatter().setWidth(0, "100px");
-		eventTable.getColumnFormatter().setWidth(1, "100px");
+		eventTable.getColumnFormatter().setWidth(0, "16px");
+		eventTable.getColumnFormatter().setWidth(1, "84px");
+		eventTable.getColumnFormatter().setWidth(2, "100px");
 	//	eventTable.getColumnFormatter().setWidth(2, "25px");
 
 		
@@ -380,27 +393,57 @@ public class EventTabGUI {
     	errorMsgLabel.setVisible(false);
     	eventDialogBox.hide();
     }
+    
+    private void gui_eventGoogleButtonClicked(){
+    	int row = -1;
+    
+    	for(int i=0;i<radioButtonList.size();i++){
+    		if(radioButtonList.get(i).getValue()){
+    			row =i;
+    			radioButtonList.get(i).setValue(false);
+    			break;
+    		}
+    		
+    	}
+    	
+    	
+    	if(row == -1)
+    		System.out.println("You need to choose item");
+    	else{
+    		DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("yyyyMMdd");
+    		String date = dateFormatter.format(eventList.get(row).getEventDate());
+    		String event = eventTable.getText(row, 1)+" "+eventTable.getText(row, 2);
+    		String url = "http://www.google.com/calendar/event?action=TEMPLATE&text="+event+"&dates="+date+"/"+date+"&details=&location=&trp=false&sprop=&sprop=name:Birthdayplus";
+    		Window.open(url, "_blank" , "height=300,width=200");
+    		
+    	}
+    }
 	
     
     
    public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
-	   String due;
+	    String due;
 		this.eventList = result;
 		this.eventTable.clear();
+		radioButtonList = new ArrayList<RadioButton>();
 		
 	
 		
 		int row = 0;
 	
 		for (EventData event : eventList) {
+			RadioButton radioButton = new RadioButton("event");
+			eventTable.setWidget(row, 0, radioButton);
+			radioButtonList.add(radioButton);
+			
 			if(event.getUserId().equals(entryPoint.userId)){
-				eventTable.setWidget(row, 0, new Label("My"));
-				 eventTable.setWidget(row, 1, new Label(event.getEventName()));
+				eventTable.setText(row, 1, "My");
+				 eventTable.setText(row, 2, event.getEventName());
 				
 			}
 			else{
-			    eventTable.setWidget(row, 0, new Label(entryPoint.userFriends.get(event.getUserId())));
-			    eventTable.setWidget(row, 1, new Hyperlink(event.getEventName(),null));
+			    eventTable.setText(row, 1, entryPoint.userFriends.get(event.getUserId()));
+			    eventTable.setWidget(row, 2, new Hyperlink(event.getEventName(),null));
 			   
 			}
 			
@@ -410,14 +453,14 @@ public class EventTabGUI {
 				DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
     			lblEventDate.setTitle(dateFormatter.format(event.getEventDate()));
 			}
-			eventTable.setWidget(row, 2, lblEventDate);
+			eventTable.setWidget(row, 3, lblEventDate);
 			if(event.getUserId().equals( entryPoint.userId)){
 			    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update event");
 			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
 			    deleteImage.setTitle("delete event");
-				eventTable.setWidget(row, 3, updateImage);
-	    	    eventTable.setWidget(row,4, deleteImage); 
+				eventTable.setWidget(row, 4, updateImage);
+	    	    eventTable.setWidget(row,5, deleteImage); 
 			}
 
 			eventTable.getRowFormatter().addStyleName(row, "tablesRows");
@@ -425,7 +468,6 @@ public class EventTabGUI {
 			row++;
 		}
 		
-	//	entryPoint.feature.adjustHeight();
 	}
 	
 	
@@ -504,6 +546,14 @@ public class EventTabGUI {
         		gui_eventCancelButtonClicked();
         	}
         });
+		
+		this.googleButton.addClickHandler(new ClickHandler(){
+
+			public void onClick(ClickEvent event) {
+				gui_eventGoogleButtonClicked();
+				
+			}	
+		});
 		
 	
 	}
