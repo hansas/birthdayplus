@@ -18,6 +18,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.gadgets.client.DynamicHeightFeature;
@@ -146,7 +148,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    
 		  //  tab.setSize("100%", "400px");
 		    tab.addStyleName("tabsPanel");
-			tab.setAnimationEnabled(true);
+		//	tab.setAnimationEnabled(true);
 			
 			
 			//initiate event tab
@@ -207,17 +209,18 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 	  
 	  private void wireTabGUIEvents(){
 		  
-		  tab.addSelectionHandler(new SelectionHandler<Integer>(){
+		  tab.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>(){
 
-			public void onSelection(SelectionEvent<Integer> event) {
-				if(event.getSelectedItem()== 0){
+			public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
+			
+				if(event.getItem()== 0){
 					if(eventGui.eventList == null){
 						ArrayList<String> temp=new ArrayList<String>();
 					    temp = getUserAndFriendsIds();
 					    eventDelegate.getEvents(temp);
 					}
 				}else{
-				     if(event.getSelectedItem()== 1){
+				     if(event.getItem()== 1){
 				    	 if(myWishlistGUI.items == null)
 				        	myWishlistDelegate.getMyWishlist(userId);
 				     }
@@ -225,12 +228,10 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 				    	 if(iBuyGUI.itemsToBuy==null)
 				    	   iBuyDelegate.getBookedWishlist(userId);
 				     }
-				
-				}
-					
-					
-				
+				}	
 			}});
+		  
+		  
 		  
 	  
 	  }
