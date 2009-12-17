@@ -9,6 +9,8 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -114,6 +116,8 @@ public class EventTabGUI {
 		buttonPanel = new HorizontalPanel();
 		eventPanel.add(buttonPanel);
 		buttonPanel.setStyleName("buttonPanel");
+		
+		buttonPanel.setSpacing(1);
 		
 		googleButton = new Button("Remind me");
 		buttonPanel.add(googleButton);
@@ -436,11 +440,14 @@ public class EventTabGUI {
 		for (EventData event : eventList) {
 			RadioButton radioButton = new RadioButton("event");
 			eventTable.setWidget(row, 0, radioButton);
-			radioButton.setStyleName("eventRadioButton");
+			radioButton.setWidth("16px");
+		
+		//	radioButton.setStyleName("eventRadioButton");
 			radioButtonList.add(radioButton);
+		
 			
 			if(event.getUserId().equals(entryPoint.userId)){
-				eventTable.setText(row, 1, "My"+ " "+event.getEventName());
+				eventTable.setWidget(row, 1, new Label("My"+ " "+event.getEventName()));
 			//	 eventTable.setText(row, 2, event.getEventName());
 				
 			}
@@ -466,6 +473,8 @@ public class EventTabGUI {
 			    deleteImage.setTitle("delete event");
 				eventTable.setWidget(row, 3, updateImage);
 	    	    eventTable.setWidget(row,4, deleteImage); 
+			}else{
+				eventTable.setWidget(row, 4, new Label(""));
 			}
 
 			eventTable.getRowFormatter().addStyleName(row, "tablesRows");

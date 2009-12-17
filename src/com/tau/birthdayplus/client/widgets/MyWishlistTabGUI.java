@@ -54,7 +54,7 @@ public class MyWishlistTabGUI {
 	private HorizontalPanel buttonPanel;
 	// wishlist table
 	private FlexTable wishTableHeader;
-	private FlexTable wishTable;
+	private HoverTable wishTable;
 	private ScrollPanel wishlistScrollPanel;
 	// add new item button
 	private Button addItemButton;
@@ -218,7 +218,7 @@ public class MyWishlistTabGUI {
 	//	wishlistScrollPanel.setSize("100%", "300px");
 		//create table for whishlistitems
 		
-		wishTable = new FlexTable();
+		wishTable = new HoverTable();
 		wishlistScrollPanel.add(wishTable);
 		wishTable.addStyleName("Table");
 	//	wishTable.setWidth("100%");
