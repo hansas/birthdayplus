@@ -130,7 +130,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	public Key getBuyerKey() {
 		return this.buyerKey;
 	}
-	
+
 	public String toString(){
 		return "name is: "+ itemName +" "+"priority is: "+priority+" "+"link is :" +link+"price is : "+ price;
 	}

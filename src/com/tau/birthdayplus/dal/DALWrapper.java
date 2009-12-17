@@ -66,5 +66,10 @@ public class DALWrapper {
 		return BusinessObjectDAL.getBookedWishlistItems2(userId, pm);
 	}
 	
+	public List<WishlistItem> getLastItemsForUser(String myUserId,
+			String anotherUserId) {
+		return BusinessObjectDAL.getLastItemsForUser(myUserId, anotherUserId, pm);
+	}
+	
 	
 }

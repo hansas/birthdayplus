@@ -115,7 +115,7 @@ public interface WishlistService extends RemoteService{
 	 * Three last items that this person bought for me
 	 * 
 	 */
-	ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,String anotherUserId );
+	ArrayList<WishlistItemNewData> getLastItemsForUser(String myUserId,String anotherUserId ) throws UserNotFoundException;
 	
 	
 

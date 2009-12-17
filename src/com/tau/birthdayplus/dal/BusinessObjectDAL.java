@@ -39,7 +39,6 @@ public class BusinessObjectDAL {
 	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException {
 		Guest guest = null;
 		try{
-		log.info(guestId);
 		Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
 		guest = pm.getObjectById(Guest.class, key);
 		}catch(JDOObjectNotFoundException ex){
@@ -340,7 +339,6 @@ public class BusinessObjectDAL {
 			log.severe("Error in getBookedWishlistItems2's first query");
 			throw new RuntimeException("error in data base: getBookedWishlistItems2");
 		}
-		log.info("first query was successful");
 		if (partisipators==null){
 			log.info("getBookedWishlistItems2: there is no partisipators");
 		}
@@ -361,7 +359,6 @@ public class BusinessObjectDAL {
 			log.severe("Error in getBookedWishlistItems2's second query"+ex.getMessage());
 			throw new RuntimeException("error in data base: getBookedWishlistItems2");
 		}
-		log.info("second query was successful");
 		if (buyers==null){
 			log.info("getBookedWishlistItems2: there is no buyers");
 		}
@@ -375,8 +372,28 @@ public class BusinessObjectDAL {
 				wishlistItems.add(buyer);
 			}
 		}
-		for (WishlistItem i : wishlistItems){
-			log.info("Final result"+i.getItemName());
+		return wishlistItems;
+	}
+	
+	public static List<WishlistItem> getLastItemsForUser(String myUserId,String anotherUserId,
+			PersistenceManager pm) {
+		Key buyer = KeyFactory.createKey(Guest.class.getSimpleName(), anotherUserId);
+		Key myKey = KeyFactory.createKey(Guest.class.getSimpleName(), myUserId);
+		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
+		try {
+			Query query = pm.newQuery(WishlistItem.class);
+			query.declareImports("import com.google.appengine.api.datastore.Key");
+			query.setFilter("buyerKey == buyer");
+			query.declareParameters("Key buyer");
+			wishlistItems = (List<WishlistItem>) query.execute(buyer);
+		} catch (Exception ex) {
+			log.severe("Error in getLastItemsForUser: "+ex.getMessage());
+			throw new RuntimeException("error in data base: getLastItemsForUser");
+		}
+		for (WishlistItem item : wishlistItems){
+			if (!item.getKey().getParent().equals(myKey)){
+				wishlistItems.remove(item);
+			}
 		}
 		return wishlistItems;
 	}
