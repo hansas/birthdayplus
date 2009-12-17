@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-	<application>testrpcplus</application>
-	<version>1-18</version>
+	<application>birthdayplus</application>
+	<version>1</version>
 	
 	<!-- Configure java.util.logging -->
 	<system-properties>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
 	</system-properties>
+	
+	<servlet>
+  		<servlet-name>cronJobs</servlet-name>
+ 		<servlet-class>com.tau.birthdayplus.cron.cronJobs</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+  		<servlet-name>cronJobs</servlet-name>
+  		<url-pattern>/cron/cronjob</url-pattern>
+	</servlet-mapping>
 	
 </appengine-web-app>
