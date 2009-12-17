@@ -51,6 +51,7 @@ public class MyWishlistTabGUI {
 	/*GUI Widgets*/
 
 	private FlowPanel wishlistPanel;
+	private HorizontalPanel buttonPanel;
 	// wishlist table
 	private FlexTable wishTableHeader;
 	private FlexTable wishTable;
@@ -107,12 +108,15 @@ public class MyWishlistTabGUI {
 		
 		wishlistPanel = new FlowPanel();
 		entryPoint.tab.add(wishlistPanel, "My Wishlist");
-		wishlistPanel.addStyleName("myWishlistPanel");
+		wishlistPanel.addStyleName("Panel");
 	//	wishlistPanel.setSize("100%", "350px");
 		
+		buttonPanel = new HorizontalPanel();
+		wishlistPanel.add(buttonPanel);
+		buttonPanel.setStyleName("buttonPanel");
+		
 		addItemButton=new Button("Add item");
-	    wishlistPanel.add(addItemButton);
-	    addItemButton.addStyleName("addItemButton");
+	    buttonPanel.add(addItemButton);
 	//	addItemButton.setSize("100px","25px");
 		
 		buildWishlistTable();
@@ -196,7 +200,7 @@ public class MyWishlistTabGUI {
 	private void buildWishlistTable(){
 		wishTableHeader = new FlexTable();
 		wishlistPanel.add(wishTableHeader);
-		wishTableHeader.addStyleName("myWishlistTableHeader");
+		wishTableHeader.addStyleName("TableHeader");
 	//	wishTableHeader.setSize("100%", "25px");
 		
 		wishTableHeader.getColumnFormatter().setWidth(0, "100px");
@@ -210,13 +214,13 @@ public class MyWishlistTabGUI {
 		
 		wishlistScrollPanel = new ScrollPanel();
 		wishlistPanel.add(wishlistScrollPanel);
-		wishlistScrollPanel.addStyleName("myWishlistScrollPanel");
+		wishlistScrollPanel.addStyleName("ScrollPanel");
 	//	wishlistScrollPanel.setSize("100%", "300px");
 		//create table for whishlistitems
 		
 		wishTable = new FlexTable();
 		wishlistScrollPanel.add(wishTable);
-		wishTable.addStyleName("wishTable");
+		wishTable.addStyleName("Table");
 	//	wishTable.setWidth("100%");
 		
 		wishTable.getColumnFormatter().setWidth(0, "100px");
