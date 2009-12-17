@@ -11,6 +11,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -179,6 +181,7 @@ public class EventTabGUI {
 		eventScrollPanel.add(eventTable);
 		eventTable.addStyleName("Table");
 	//	eventTable.setWidth("100%");
+		eventTable.setCellSpacing(0);
 		
 		eventTable.getColumnFormatter().setWidth(0, "16px");
 		eventTable.getColumnFormatter().setWidth(1, "184px");
@@ -440,11 +443,11 @@ public class EventTabGUI {
 		for (EventData event : eventList) {
 			RadioButton radioButton = new RadioButton("event");
 			eventTable.setWidget(row, 0, radioButton);
-			radioButton.setWidth("16px");
+		//	radioButton.setWidth("16px");
 		
-		//	radioButton.setStyleName("eventRadioButton");
+			radioButton.setStyleName("eventRadioButton");
 			radioButtonList.add(radioButton);
-		
+		   
 			
 			if(event.getUserId().equals(entryPoint.userId)){
 				eventTable.setWidget(row, 1, new Label("My"+ " "+event.getEventName()));
