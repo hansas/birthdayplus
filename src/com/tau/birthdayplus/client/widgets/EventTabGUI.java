@@ -159,6 +159,7 @@ public class EventTabGUI {
 		eventPanel.add(eventTableHeader);
 		eventTableHeader.addStyleName("TableHeader");
 		//eventTableHeader.setSize("100%", "25px");
+		eventTableHeader.setCellSpacing(0);
 		
 		eventTableHeader.getColumnFormatter().setWidth(0, "16px");
 	//	eventTableHeader.getColumnFormatter().setWidth(1, "84px");
