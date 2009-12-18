@@ -173,7 +173,41 @@ public class BusinessObjectDAL {
 		if (!items.isEmpty()){
 			log.info("There is items for this event");
 		}
-		return items.isEmpty();
+		Boolean result = true;
+		for (WishlistItem item : items){
+			if (item.getBuyerKey()!=null){
+				result = false;
+			}
+			else{
+				List<Participator> participators = item.getParticipators();
+				for (Participator p : participators){
+					item.removeParticipator(p);
+					pm.deletePersistent(p);
+				}
+				item.setEventKey(null);
+				pm.makePersistent(item);
+			}
+		}
+		return result;
+	}
+	
+	public static void cronDeleteEvent(){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		List<Guest> guests = new ArrayList<Guest>();
+		Query query = pm.newQuery(Guest.class);
+		guests = (List<Guest>)query.execute();
+		Calendar cal = Calendar.getInstance();
+		for (Guest g : guests){
+			List<Event> events = g.getEvents();
+			for (Event e : events){
+				if ((e.getEventDate().getDate()==cal.get(Calendar.DAY_OF_MONTH))&&mayIDeleteEvent(e,pm)){
+					log.info("event "+e.getEventName()+" was deleted");
+					g.removeEvent(e);
+					pm.makePersistent(g);
+					pm.deletePersistent(e);
+				}
+			}
+		}
 	}
 
 	public static void createEvent(EventData eventD) {
@@ -688,6 +722,7 @@ public class BusinessObjectDAL {
 				for(Participator p: partisipators){
 					if (p.getId().equals(userId)){
 						item.removeParticipator(p);
+						pm.deletePersistent(p);
 						break;
 					}
 				}

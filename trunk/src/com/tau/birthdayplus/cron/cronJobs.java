@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;  
 import javax.servlet.http.*;  
 
+import com.tau.birthdayplus.dal.BusinessObjectDAL;
+
 
 
  @SuppressWarnings("serial")  
@@ -14,12 +16,12 @@ public class cronJobs extends HttpServlet {
 
  public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {  
   try {  
-	  _logger.info("Cron Job has been executed");  
-    //Put your logic here  
+    BusinessObjectDAL.cronDeleteEvent();
+    _logger.info("Cron Job has been executed");
  }  
 
   catch (Exception ex) {  
-//Log any exceptions in your Cron Job  
+	  _logger.severe("Cron Job failed: " + ex.getMessage());
  }  
 
  }  
