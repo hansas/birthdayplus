@@ -175,9 +175,6 @@ public class WishlistManagement {
 			String anotherUserId) throws UserNotFoundException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
-			//List<WishlistItem> itemList = wrapper.getLastItemsForUser(myUserId, anotherUserId);
-			//return getWishlistitemPolaniDataList(itemList,anotherUserId,wrapper);
-			//return null;
 			return wrapper.getLastItemsForUser(myUserId, anotherUserId);
 		}
 		finally{
@@ -211,8 +208,8 @@ public class WishlistManagement {
 //			String anotherUserId = g.getId();
 //			log.info("user Id: "+userId);
 //			log.info("anotherUserId: "+anotherUserId);
-//			List<WishlistItemNewData> items = getLastItemsForUser(userId, anotherUserId);
-//			for (WishlistItemNewData item : items){
+//			List<WishlistItemPolaniData> items = getLastItemsForUser(userId, anotherUserId);
+//			for (WishlistItemPolaniData item : items){
 //				log.info(item.getItemName());
 //			}
 //		}
