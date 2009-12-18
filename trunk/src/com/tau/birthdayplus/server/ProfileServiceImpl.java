@@ -42,7 +42,7 @@ ProfileService {
 	}
 
 	public GuestData getProfile(String userId) throws UserNotFoundException {
-		return UserManagement.loadGuestData(userId);
+		return UserManagement.loadGuestDataCached(userId);
 	}
 
 	public void updateProfile(GuestData profile) throws UserNotFoundException {

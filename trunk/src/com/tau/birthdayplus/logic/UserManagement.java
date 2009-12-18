@@ -3,12 +3,16 @@ package com.tau.birthdayplus.logic;
 
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.cache.Cache;
+
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.tau.birthdayplus.cache.Caching;
 import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.domain.Event;
@@ -26,6 +30,17 @@ public class UserManagement {
          GuestData guestData = GuestToGuestData(guest);
          return guestData;
  }
+	 
+	 public static GuestData loadGuestDataCached (String guestId) throws UserNotFoundException{
+		 Cache guestCache = Caching.getGuestCache();
+		 String guestKey = Caching.generateGuestIDKey(guestId);
+		 GuestData guest = (GuestData)guestCache.get(guestKey); 
+		 if (guest == null){
+			guest = loadGuestData(guestId);
+			guestCache.put(guestKey, guest);
+		 }
+		 return guest;
+	 }
 
 	 @SuppressWarnings("deprecation")
 	 public static void createProfile(GuestData guestData) {
@@ -55,6 +70,9 @@ public class UserManagement {
 	
 	public static void updateProfile(GuestData profile) throws UserNotFoundException {
 		BusinessObjectDAL.updateGuest(profile);
+		Cache guestCache = Caching.getGuestCache();
+		String guestKey = Caching.generateGuestIDKey(profile.getId());
+		guestCache.put(guestKey, profile);
 	}
 	
 }
