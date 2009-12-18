@@ -5,10 +5,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.cache.Cache;
+
 import org.apache.catalina.mbeans.UserMBean;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.tau.birthdayplus.cache.Caching;
 import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.DALWrapper;
@@ -135,15 +138,22 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException{
-		DALWrapper wrapper = new DALWrapper();
-		try{
-			List<WishlistItem> itemList = wrapper.getWishlistForEvent(userId,eventId);
-			Guest guest = wrapper.getGuestById(userId);
-			return getWishlistItemNewDataForEvent(itemList,guest,wrapper);
+		Cache cache = Caching.getWishlistForEventCache();
+		String key = Caching.generateWishlistForEventId(eventId);
+		ArrayList<WishlistItemNewData> result = (ArrayList<WishlistItemNewData>)cache.get(key);
+		if (result==null){
+			DALWrapper wrapper = new DALWrapper();
+			try{
+				List<WishlistItem> itemList = wrapper.getWishlistForEvent(userId,eventId);
+				Guest guest = wrapper.getGuestById(userId);
+				result = getWishlistItemNewDataForEvent(itemList,guest,wrapper);
+				cache.put(key, result);
+			}
+			finally{
+				wrapper.close();
+			}
 		}
-		finally{
-			wrapper.close();
-		}
+		return result;
 	}
 	
 //	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException{

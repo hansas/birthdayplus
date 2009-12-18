@@ -200,7 +200,7 @@ public class BusinessObjectDAL {
 		for (Guest g : guests){
 			List<Event> events = g.getEvents();
 			for (Event e : events){
-				if ((e.getEventDate().getDate()==cal.get(Calendar.DAY_OF_MONTH))&&mayIDeleteEvent(e,pm)){
+				if ((e.getEventDate().getDate()<cal.get(Calendar.DAY_OF_MONTH))&&mayIDeleteEvent(e,pm)){
 					log.info("event "+e.getEventName()+" was deleted");
 					g.removeEvent(e);
 					pm.makePersistent(g);
