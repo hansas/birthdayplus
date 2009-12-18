@@ -445,7 +445,7 @@ public class EventTabGUI {
 			eventTable.setWidget(row, 0, radioButton);
 		//	radioButton.setWidth("16px");
 		
-			radioButton.setStyleName("eventRadioButton");
+		//	radioButton.setStyleName("eventRadioButton");
 			radioButtonList.add(radioButton);
 		   
 			
