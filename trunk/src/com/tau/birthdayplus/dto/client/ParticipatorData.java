@@ -1,9 +1,11 @@
 package com.tau.birthdayplus.dto.client;
 
+import java.io.Serializable;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
-public class ParticipatorData implements IsSerializable{
+public class ParticipatorData implements IsSerializable,Serializable{
 
 	   String userId;
 	   private String userFirstName;

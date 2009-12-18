@@ -1,4 +1,5 @@
 package com.tau.birthdayplus.dto.client;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -6,7 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 
-public class WishlistItemNewData extends WishlistItemData implements  IsSerializable{
+public class WishlistItemNewData extends WishlistItemData implements  IsSerializable,Serializable{
 	   //owner name , for "I buy" tab, to see who you buy for
 	   private String userName;
 	   //book this item for the event
