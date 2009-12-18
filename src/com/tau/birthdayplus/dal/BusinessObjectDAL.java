@@ -313,7 +313,7 @@ public class BusinessObjectDAL {
 		return item;
 	}	
 
-	public static void updateWishlistItem(WishlistItemData itemD) {
+	public static WishlistItem updateWishlistItem(WishlistItemData itemD) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
@@ -323,6 +323,7 @@ public class BusinessObjectDAL {
 			item.copyFromWishlistItemData(itemD);
 			pm.makePersistent(item);
 			tx.commit();
+			return item;
 		} catch (Exception ex) {
 			throw new RuntimeException("error in data base: updateWishlistItem");
 		} finally {
@@ -333,7 +334,7 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void deleteWishlistItem(WishlistItemData itemD) {
+	public static WishlistItem deleteWishlistItem(WishlistItemData itemD) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
@@ -352,8 +353,8 @@ public class BusinessObjectDAL {
 				pm.makePersistent(parent);
 				pm.deletePersistent(item);
 			}
-			
 			tx.commit();
+			return item;
 		} catch (Exception ex) {
 			throw new RuntimeException("error in data base: deleteWishlistItem");
 		} finally {
