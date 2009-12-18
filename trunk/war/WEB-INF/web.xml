@@ -38,6 +38,16 @@
     <url-pattern>/birthdayplus/profile</url-pattern>
   </servlet-mapping>
   
+  	<servlet>
+ <servlet-name>cronJobs</servlet-name>
+ <servlet-class>com.tau.birthdayplus.cron.cronJobs</servlet-class>
+ </servlet>
+
+<servlet-mapping>
+ <servlet-name>cronJobs</servlet-name>
+ <url-pattern>/birthdayplus/cron</url-pattern>
+ </servlet-mapping>
+	
   
  
   
