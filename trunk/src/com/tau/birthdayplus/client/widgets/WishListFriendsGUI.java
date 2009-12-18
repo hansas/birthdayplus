@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
@@ -91,6 +92,7 @@ public class WishListFriendsGUI  {
     private WishlistItemNewData currentItem;
     protected WishListFriendsDelegate wishlistService;
     protected EventTabGUI parent;
+    protected EventData currentEvent;
  
 	
 
@@ -287,7 +289,7 @@ public class WishListFriendsGUI  {
                             break;
                           
        case BUY_LINK :      if(item.getIsActive())
-    	                       wishlistService.bookItemForUser(item.getWishlistItemId(), parent.currentEvent.getEventId(),parent.entryPoint.userId);
+    	                       wishlistService.bookItemForUser(item.getWishlistItemId(), currentEvent.getEventId(),parent.entryPoint.userId);
                             break;
                           
        case GROUP_BUY_LINK :if(item.getIsActive()&& !userInGroup(item))
@@ -336,7 +338,7 @@ public class WishListFriendsGUI  {
 			moneyDialogBox.hide();
 			enterSumTextBox.setText("");
 		    ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
-            this.wishlistService.addParticipator(currentItem.getWishlistItemId(), parent.currentEvent.getEventId(), data);
+            this.wishlistService.addParticipator(currentItem.getWishlistItemId(), currentEvent.getEventId(), data);
 		}else{
 			errorMsgLabel.setText("Enter valid sum ");
     		enterSumTextBox.setFocus(true);
@@ -472,7 +474,7 @@ public class WishListFriendsGUI  {
 	public void service_eventBookItemForUserSuccesfull() {
 		//showMessage("Now you can see this item in "I buy " tab");
 		parent.entryPoint.iBuyGUI.itemsToBuy = null;
-		this.wishlistService.getWishlist(parent.currentEvent.getUserId(), parent.currentEvent.getEventId());
+		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
 		
 	}
 
@@ -483,7 +485,7 @@ public class WishListFriendsGUI  {
 
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.itemsToBuy = null;
-		this.wishlistService.getWishlist(parent.currentEvent.getUserId(), parent.currentEvent.getEventId());
+		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
 		
 	}
 

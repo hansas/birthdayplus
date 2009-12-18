@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -25,6 +26,8 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -52,16 +55,17 @@ public class EventTabGUI {
     
     /*GUI Widgets*/
     protected FlowPanel mainPanel;
+    private MenuBar menu ;
     //vertical panel for the content of event list
-    private HorizontalPanel buttonPanel;
+ //   private HorizontalPanel buttonPanel;
 	protected FlowPanel eventPanel;
 	//table for events
 	private ScrollPanel eventScrollPanel;
 	private FlexTable eventTableHeader;
 	private HoverTable eventTable;
 	//add new event button
-	private Button btnAddEvent;
-	private Button googleButton;
+//	private Button btnAddEvent;
+	//private Button googleButton;
 	private ArrayList<RadioButton> radioButtonList;
 	
 	//add event box
@@ -115,18 +119,67 @@ public class EventTabGUI {
 		eventPanel.setStyleName("Panel");
 	//	eventPanel.setSize("100%", "350px");
 		
-		buttonPanel = new HorizontalPanel();
-		eventPanel.add(buttonPanel);
-		buttonPanel.setStyleName("buttonPanel");
+		menu = new MenuBar();
+		eventPanel.add(menu);
+		menu.addStyleName("buttonPanel");
+		menu.setAutoOpen(true);
+		menu.setAnimationEnabled(true);
 		
-		buttonPanel.setSpacing(1);
+		Command remindMeCommand = new Command(){
+			public void execute() {
+				gui_eventGoogleButtonClicked();
+		      }
+		    };
 		
-		googleButton = new Button("Remind me");
-		buttonPanel.add(googleButton);
+		menu.addItem("Remind Me",remindMeCommand);
+		
+		Command addEventCommand = new Command() {
+			public void execute() {
+				gui_eventAddEventButtonClicked();
+		      }
+		    };
+		menu.addItem("Create Event", addEventCommand);
+		
+		MenuBar viewMenu = new MenuBar(true);
+	    viewMenu.setAnimationEnabled(true);
+	    menu.addItem(new MenuItem("View", viewMenu));
+	    
+	    Command viewAllCommand = new Command(){
+			public void execute() {
+			}
+	    };
+	    
+	    viewMenu.addItem("All Events",viewAllCommand);
+	    
+	    Command viewThisMonthCommand = new Command(){
+
+			public void execute() {
+				
+			}
+	    };
+	    
+	    viewMenu.addItem("For Current Month",viewThisMonthCommand);
+	    
+	    
+	    
+
+		    
+
+		
+
+        
+	//	buttonPanel = new HorizontalPanel();
+	//	eventPanel.add(buttonPanel);
+	//	buttonPanel.setStyleName("buttonPanel");
+		
+	//	buttonPanel.setSpacing(1);
+		
+	//	googleButton = new Button("Remind me");
+	//	buttonPanel.add(googleButton);
 	//	googleButton.setSize("100px", "25px");
 		
-		btnAddEvent = new Button("Add Event");
-		buttonPanel.add(btnAddEvent);
+	//	btnAddEvent = new Button("Add Event");
+	//	buttonPanel.add(btnAddEvent);
 	//	btnAddEvent.setSize("100px","25px");
 		
 
@@ -161,9 +214,9 @@ public class EventTabGUI {
 		//eventTableHeader.setSize("100%", "25px");
 		eventTableHeader.setCellSpacing(0);
 		
-		eventTableHeader.getColumnFormatter().setWidth(0, "16px");
+		eventTableHeader.getColumnFormatter().setWidth(0, "22px");
 	//	eventTableHeader.getColumnFormatter().setWidth(1, "84px");
-		eventTableHeader.getColumnFormatter().setWidth(1, "184px");
+		eventTableHeader.getColumnFormatter().setWidth(1, "178px");
 		eventTableHeader.getColumnFormatter().setWidth(2, "25px");
 				
 		eventTableHeader.setText(0, 0, "");
@@ -184,8 +237,8 @@ public class EventTabGUI {
 	//	eventTable.setWidth("100%");
 		eventTable.setCellSpacing(0);
 		
-		eventTable.getColumnFormatter().setWidth(0, "16px");
-		eventTable.getColumnFormatter().setWidth(1, "184px");
+		eventTable.getColumnFormatter().setWidth(0, "22px");
+		eventTable.getColumnFormatter().setWidth(1, "178px");
 	//	eventTable.getColumnFormatter().setWidth(2, "100px");
 	//	eventTable.getColumnFormatter().setWidth(2, "25px");
 
@@ -203,7 +256,7 @@ public class EventTabGUI {
 	* Create a form that contains undisclosed advanced options.
 	*/
 	private void buildEventDialogBox() {
-		eventDialogBox = new DialogBox();
+		eventDialogBox = new DialogBox(false,true);
 	
 		eventDialogBoxVerticalPanel = new VerticalPanel();
 		eventDialogBox.add(eventDialogBoxVerticalPanel);
@@ -334,7 +387,7 @@ public class EventTabGUI {
                // this.addButton.setVisible(false);
                // this.updateButton.setVisible(true);
         		this.addEvent = false;
-                this.btnAddEvent.setVisible(false);
+          //      this.btnAddEvent.setVisible(false);
                 loadForm(event,Actions.UPDATE);
         	 }
          } else if (col==DELETE_LINK) {
@@ -343,6 +396,7 @@ public class EventTabGUI {
          }else if(col==EVENT_LINK){
         	 if(! event.getUserId().equals(entryPoint.userId)){
         	      currentEvent = event;
+        	      wishlistFriendGUI.currentEvent = event;
         	      wishlistFriendGUI.title.setText("wishlist for " + entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
         	      eventPanel.setVisible(false);
         	      wishlistFriendGUI.wishlistBoxPanel.setVisible(true);
@@ -359,7 +413,7 @@ public class EventTabGUI {
 	    	boolean valid=copyFieldDateToEvent();
 	      
 	        if(valid){
-	            btnAddEvent.setVisible(true);
+	   //         btnAddEvent.setVisible(true);
 	            errorMsgLabel.setVisible(false);
 	            eventDialogBox.hide();
 	            this.eventService.createEvent(currentEvent);
@@ -375,7 +429,7 @@ public class EventTabGUI {
 	    public void gui_eventUpdateButtonClicked() {
 	    	boolean valid = copyFieldDateToEvent();
 	        if(valid){
-	            btnAddEvent.setVisible(true);
+	      //      btnAddEvent.setVisible(true);
 	            errorMsgLabel.setVisible(false);
 	            eventDialogBox.hide();
 	            this.eventService.updateEvent(currentEvent);
@@ -388,7 +442,7 @@ public class EventTabGUI {
      * on click on add item
      */
     public void gui_eventAddEventButtonClicked() {
-        this.btnAddEvent.setVisible(false);
+     //   this.btnAddEvent.setVisible(false);
       //  this.updateButton.setVisible(false);
       //  this.addButton.setVisible(true);
         this.addEvent = true;
@@ -402,7 +456,7 @@ public class EventTabGUI {
      * on click on cancel button in dialog box
      */
     public void gui_eventCancelButtonClicked(){
-    	btnAddEvent.setVisible(true);
+   // 	btnAddEvent.setVisible(true);
     	errorMsgLabel.setVisible(false);
     	eventDialogBox.hide();
     }
@@ -410,6 +464,9 @@ public class EventTabGUI {
     private void gui_eventGoogleButtonClicked(){
     	int row = -1;
     
+    	if(radioButtonList == null)
+    		return;
+    	
     	for(int i=0;i<radioButtonList.size();i++){
     		if(radioButtonList.get(i).getValue()){
     			row =i;
@@ -545,10 +602,10 @@ public class EventTabGUI {
 				   gui_eventEventGridClicked(cellForEvent);
 			}
 		});
-		this.btnAddEvent.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent event) {
-            	gui_eventAddEventButtonClicked();
-            }});
+//		this.btnAddEvent.addClickHandler(new ClickHandler(){
+    //        public void onClick(ClickEvent event) {
+      //      	gui_eventAddEventButtonClicked();
+      //      }});
 
 		this.boxButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
@@ -565,13 +622,13 @@ public class EventTabGUI {
         	}
         });
 		
-		this.googleButton.addClickHandler(new ClickHandler(){
+	//	this.googleButton.addClickHandler(new ClickHandler(){
 
-			public void onClick(ClickEvent event) {
-				gui_eventGoogleButtonClicked();
+		//	public void onClick(ClickEvent event) {
+		//		gui_eventGoogleButtonClicked();
 				
-			}	
-		});
+		//	}	
+	//	});
 		
 	
 	}

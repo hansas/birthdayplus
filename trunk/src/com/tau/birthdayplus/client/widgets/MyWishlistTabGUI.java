@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import org.gwtwidgets.client.util.regex.Pattern;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -167,6 +170,8 @@ public class MyWishlistTabGUI {
         
         formTable.setText(3, 0, "price");
         formTable.setWidget(3, 1, priceField);
+        
+     
         
      //   formTable.setWidget(4, 0, updateButton);
         formTable.setWidget(4, 1, boxButton);
