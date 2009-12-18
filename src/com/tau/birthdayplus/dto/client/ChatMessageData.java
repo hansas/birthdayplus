@@ -1,10 +1,11 @@
 package com.tau.birthdayplus.dto.client;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ChatMessageData implements IsSerializable{
+public class ChatMessageData implements IsSerializable,Serializable{
 	
 	private String userId;
 	private String userName;
