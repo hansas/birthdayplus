@@ -380,7 +380,7 @@ public class IBuyTabGUI {
 	    	currentItem = item;
 	
 	    	wishPanel.setVisible(false);
-	    	chatPanel.setVisible(true);
+	    	mainChatPanel.setVisible(true);
 	    	
 		    fillParticipatorsTable();
 		//    Window.alert("loading chat, number of messages is : "+currentItem.getChatMessages().size());
@@ -538,7 +538,7 @@ public class IBuyTabGUI {
 		}
 		
 		public void gui_eventCloseChatButtonClicked(){
-			chatPanel.setVisible(false);
+			mainChatPanel.setVisible(false);
 	    	wishPanel.setVisible(true);
 			
 		}
