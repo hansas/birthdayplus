@@ -38,10 +38,18 @@ public class WishlistManagement {
 		}
 	}
 	
+	public static void removeWishlistItemForEventFromCache(WishlistItem i){
+		if ((i!=null)&&(i.getEventKey()!=null)){
+			Cache cache = Caching.getWishlistForEventCache();
+			String key = Caching.generateWishlistForEventKey(i.getEventKey());
+			cache.remove(key);
+		}
+	}
 		
 	public static void updateWishlistItem(WishlistItemData item) {
 		try{
-			BusinessObjectDAL.updateWishlistItem(item);
+			WishlistItem i = BusinessObjectDAL.updateWishlistItem(item);
+			removeWishlistItemForEventFromCache(i);
 		}catch(Exception ex){
 			throw new RuntimeException("updateWishlistItem failed", ex);
 		}	
@@ -49,7 +57,8 @@ public class WishlistManagement {
 	
 	public static void deleteWishlistItem(WishlistItemData item) {
 		try{
-			BusinessObjectDAL.deleteWishlistItem(item);
+			WishlistItem i = BusinessObjectDAL.deleteWishlistItem(item);
+			removeWishlistItemForEventFromCache(i);
 		}catch(Exception ex){
 			throw new RuntimeException("deleteWishlistItem failed", ex);
 		}		
