@@ -9,6 +9,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 
 
 import com.google.gwt.user.client.Window;
@@ -187,6 +189,7 @@ public class WishListFriendsGUI  {
  	   
  	   participatorsTable.getColumnFormatter().addStyleName(0, "tablesColumns");
  	   participatorsTable.getColumnFormatter().addStyleName(1, "tablesColumns");
+ 	   
  	  
  	   
 	}
@@ -195,9 +198,9 @@ public class WishListFriendsGUI  {
 		currentItem = item;
         participatorsTable.clear();
 
-       // int left =  widgetClicked.getAbsoluteLeft() + 10;
+        int left =  widgetClicked.getAbsoluteLeft() + 10;
         int top = widgetClicked.getAbsoluteTop() + 10;
-        participatorsPanel.setPopupPosition(0, top);
+        participatorsPanel.setPopupPosition(left, top);
         
         participatorsPanel.show();
      //   participatorsPanel.showRelativeTo(widgetClicked);
@@ -363,6 +366,8 @@ public class WishListFriendsGUI  {
                     gui_eventItemGridClicked(cellForEvent);                
             }});
 		
+		
+		
 		this.participatorsTable.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
 				gui_eventParticipatorsTableClicked();
@@ -432,9 +437,14 @@ public class WishListFriendsGUI  {
         			     userInGroup = true;
         		      sum += data.getMoney(); 
         	      }
-        	      friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );
+        	      Label price = new Label (sum +"/"+item.getPrice().toString());
+          	      friendWishTable.setWidget(row, 2,price );
+
+        	   
+        	    //  friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );
         	      if(!userInGroup){
         		     Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
+        		     
     			     groupImage.setTitle("Join the group");
     			     groupImage.setPixelSize(16, 16);
         	         friendWishTable.setWidget(row, 4, groupImage);
