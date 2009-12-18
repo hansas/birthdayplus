@@ -153,6 +153,9 @@ public class WishlistManagement {
 				wrapper.close();
 			}
 		}
+		for(WishlistItemNewData item:result){
+			log.info(item.getItemName()+item.getUserName());
+		}
 		return result;
 	}
 	

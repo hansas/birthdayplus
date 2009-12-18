@@ -1,10 +1,12 @@
 package com.tau.birthdayplus.dto.client;
 
+import java.io.Serializable;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 
-public class WishlistItemData implements IsSerializable{
+public class WishlistItemData implements IsSerializable,Serializable{
 	   //item id
 	   private String wishlistItemId;
 	   //owner of this item 
