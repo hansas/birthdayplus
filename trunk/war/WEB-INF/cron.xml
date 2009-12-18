@@ -2,7 +2,7 @@
 <cronentries>
  <cron>
  <url>/cron/cronjob</url>
- <description>....</description>
+ <description>delete past events</description>
  <schedule>every 2 minutes</schedule>
  </cron>
 </cronentries>
