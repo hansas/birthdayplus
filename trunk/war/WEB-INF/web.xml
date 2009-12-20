@@ -48,15 +48,6 @@
  <url-pattern>/birthdayplus/cron/delete</url-pattern>
  </servlet-mapping>
  
- <servlet>
- <servlet-name>cronReccurentEvents</servlet-name>
- <servlet-class>com.tau.birthdayplus.cron.cronReccurentEvents</servlet-class>
- </servlet>
-
-<servlet-mapping>
- <servlet-name>cronReccurentEvents</servlet-name>
- <url-pattern>/birthdayplus/cron/reccurentEvent</url-pattern>
- </servlet-mapping>
 	
   
  
