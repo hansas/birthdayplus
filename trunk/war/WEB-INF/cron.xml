@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
  <cron>
- <url>/birthdayplus/cron</url>
+ <url>/birthdayplus/cron/delete</url>
  <description>delete past events</description>
+ <schedule>every day 00:01</schedule>
+ </cron>
+ 
+ <cron>
+ <url>/birthdayplus/cron/reccurentEvent</url>
+ <description>update recurrent events</description>
  <schedule>every day 00:01</schedule>
  </cron>
 </cronentries>
