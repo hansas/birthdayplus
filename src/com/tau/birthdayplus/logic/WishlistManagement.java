@@ -162,9 +162,9 @@ public class WishlistManagement {
 				wrapper.close();
 			}
 		}
-		for(WishlistItemNewData item:result){
-			log.info(item.getItemName()+item.getUserName());
-		}
+//		for(WishlistItemNewData item:result){
+//			log.info(item.getItemName()+item.getUserName());
+//		}
 		return result;
 	}
 	
@@ -183,14 +183,21 @@ public class WishlistManagement {
 	
 	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId)
 	throws UserNotFoundException{
-		DALWrapper wrapper = new DALWrapper();
-		try{
-			List<WishlistItem> items = wrapper.getBookedWishlistItems2(userId);
-			return getBookedWishlistItemNewData(items,wrapper);
+		Cache cache = Caching.getBookedWishlistItemsCache();
+		String key = Caching.generateBookedWishlistItemsId(userId);
+		ArrayList<WishlistItemNewData> result = (ArrayList<WishlistItemNewData>)cache.get(key);
+		if (result==null){
+			DALWrapper wrapper = new DALWrapper();
+			try{
+				List<WishlistItem> items = wrapper.getBookedWishlistItems2(userId);
+				result = getBookedWishlistItemNewData(items,wrapper);
+				cache.put(key, result);
+			}
+			finally{
+				wrapper.close();
+			}
 		}
-		finally{
-			wrapper.close();
-		}
+		return result;
 	}
 	
 	public static ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,

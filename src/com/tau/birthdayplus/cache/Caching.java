@@ -62,4 +62,25 @@ private static Cache wishlistForEventCache;
 	public static String generateWishlistForEventId(String eventId){
 		return "WishlistForEventCache="+eventId;
 	}
+	
+	private static Cache bookedWishlistItemCache;
+	
+	public static Cache getBookedWishlistItemsCache(){
+		if (bookedWishlistItemCache == null){
+		    try {
+		    	CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+		        Map props = new HashMap();
+		        props.put(GCacheFactory.EXPIRATION_DELTA, 60);
+		        bookedWishlistItemCache = cacheFactory.createCache(props);
+		    }
+		    catch (Exception ex){
+		    	log.severe(ex.getMessage());
+		    }
+		}
+		return bookedWishlistItemCache;
+	}
+	
+	public static String generateBookedWishlistItemsId(String userId){
+		return "BookedWishlistItemsCache="+userId;
+	}
 }
