@@ -34,7 +34,7 @@ public class Guest   {
 		@Persistent
 		private String email;
 	
-	    @Persistent (defaultFetchGroup="true") 
+	    @Persistent (defaultFetchGroup="true")
 		List<Event> events;
 	    @Persistent (defaultFetchGroup="true")
 		List<WishlistItem> wishlistItems;
