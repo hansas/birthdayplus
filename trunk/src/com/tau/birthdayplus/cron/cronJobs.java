@@ -16,7 +16,7 @@ public class cronJobs extends HttpServlet {
 
  public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {  
   try {  
-    BusinessObjectDAL.cronDeleteEvent();
+    BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent();
     _logger.info("Cron Job has been executed");
  }  
 

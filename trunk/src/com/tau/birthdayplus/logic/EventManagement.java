@@ -81,7 +81,6 @@ public class EventManagement {
 			List<Event> guestEvents = guest.getEvents();
 			if ((guest!=null) && (!guestEvents.isEmpty())){
 				Calendar cal = Calendar.getInstance();
-				//cal.add(Calendar.DATE, 7);
 				Calendar eDate = Calendar.getInstance();
 				for (Event event: guestEvents){
 					int eMonth = event.getEventDate().getMonth();
@@ -91,17 +90,6 @@ public class EventManagement {
 					eDate.set(Calendar.MONTH, eMonth);
 					eDate.set(Calendar.DATE, eDay);
 					if (eDate.after(cal)){
-						events.add(EventManagement.eventToEventData(event,wrapper));
-					}
-					else if(event.getRecurrence()==true){
-						Date newEDate = new Date(cal.get(Calendar.YEAR)-1900,eMonth,eDay);
-						int currentDom = cal.get(Calendar.DAY_OF_MONTH);
-						int currentMonth = cal.get(Calendar.MONTH) + 1;
-						if ((eMonth<currentMonth)||((eMonth==currentMonth)&&(eDay<currentDom))){
-							newEDate.setYear(cal.get(Calendar.YEAR)+1-1900);
-						}
-						event.setEventDate(newEDate);
-						updateEvent(eventToEventData(event, wrapper));
 						events.add(EventManagement.eventToEventData(event,wrapper));
 					}
 				}

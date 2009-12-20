@@ -133,34 +133,7 @@ public class BusinessObjectDAL {
 			pm.close();
 		}
 	}
-	
-	public static void cronUpdateRecurrentEvent(){
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		List<Guest> guests = new ArrayList<Guest>();
-		Query query = pm.newQuery(Guest.class);
-		guests = (List<Guest>)query.execute();
-		Calendar cal = Calendar.getInstance();
-		Calendar eDate = Calendar.getInstance();
-		int currentDom = cal.get(Calendar.DAY_OF_MONTH);
-		int currentMonth = cal.get(Calendar.MONTH) + 1;
-		for (Guest g : guests){
-			List<Event> events = g.getEvents();
-			for (Event e : events){
-				int eMonth = e.getEventDate().getMonth();
-				int eDay = e.getEventDate().getDate();
-				eDate.clear();
-				eDate.set(Calendar.YEAR, e.getEventDate().getYear()+1900);
-				eDate.set(Calendar.MONTH, eMonth);
-				eDate.set(Calendar.DATE, eDay);
-				if((e.getRecurrence()==true)&&(cal.after(eDate))){
-					Date newEDate = new Date(cal.get(Calendar.YEAR)-1900+1,eMonth,eDay);
-					e.setEventDate(newEDate);
-					pm.makePersistent(e);
-				}
-			}
-		}
-	}
-
+		
 	public static void deleteEvent(EventData eventD) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
@@ -218,20 +191,33 @@ public class BusinessObjectDAL {
 		return result;
 	}
 	
-	public static void cronDeleteEvent(){
+	public static void cronDeleteEventAndUpdateRecurrent(){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		List<Guest> guests = new ArrayList<Guest>();
 		Query query = pm.newQuery(Guest.class);
 		guests = (List<Guest>)query.execute();
 		Calendar cal = Calendar.getInstance();
+		Calendar eDate = Calendar.getInstance();
 		for (Guest g : guests){
 			List<Event> events = g.getEvents();
 			for (Event e : events){
-				if ((e.getEventDate().getDate()<cal.get(Calendar.DAY_OF_MONTH))&&mayIDeleteEvent(e,pm)){
-					log.info("event "+e.getEventName()+" was deleted");
+				int eMonth = e.getEventDate().getMonth();
+				int eDay = e.getEventDate().getDate();
+				eDate.clear();
+				eDate.set(Calendar.YEAR, e.getEventDate().getYear()+1900);
+				eDate.set(Calendar.MONTH, eMonth);
+				eDate.set(Calendar.DATE, eDay);
+				if ((cal.after(eDate))&&(e.getRecurrence()==false)&&mayIDeleteEvent(e,pm)){
+					log.info("event "+e.getEventName()+" was deleted by cron");
 					g.removeEvent(e);
 					pm.makePersistent(g);
 					pm.deletePersistent(e);
+				}
+				else if((e.getRecurrence()==true)&&(cal.after(eDate))){
+					log.info("event "+e.getEventName()+" was updated by cron");
+					Date newEDate = new Date(cal.get(Calendar.YEAR)-1900+1,eMonth,eDay);
+					e.setEventDate(newEDate);
+					pm.makePersistent(e);
 				}
 			}
 		}
