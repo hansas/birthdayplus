@@ -376,13 +376,13 @@ public class IBuyTabGUI {
         int row = 0;
         
         for (ChatMessageData message : currentItem.getChatMessages()) {
-            chatTable.setText(row, 0, message.getUserName()+" "+ "says :");
+            chatTable.setWidget(row, 0, new Label(message.getUserName()+" "+ "says :"));
             rowFormatter.setStylePrimaryName(row, "chatLineDate");
             
             DateTimeFormat dateFormatter = 	DateTimeFormat.getMediumDateTimeFormat();
-            chatTable.setText(row, 1, dateFormatter.format(message.getTimeStamp()));
+            chatTable.setWidget(row, 1, new Label(dateFormatter.format(message.getTimeStamp())));
             
-            chatTable.setText(row+1, 0, message.getMesssage());
+            chatTable.setWidget(row+1, 0, new Label(message.getMesssage()));
             cellFormatter.setColSpan(row+1, 0, 2);
             cellFormatter.setHorizontalAlignment(row+1, 0, HasHorizontalAlignment.ALIGN_LEFT);
             row+=2;
