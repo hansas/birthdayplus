@@ -38,6 +38,27 @@
     <url-pattern>/birthdayplus/profile</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>addWishlistItemServlet</servlet-name>
+    <servlet-class>com.tau.birthdayplus.server.AddWishlistItem</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>addWishlistItemServlet</servlet-name>
+    <url-pattern>/birthdayplus/addWishlistItem</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>com.tau.birthdayplus.server.LoginService</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/birthdayplus/login</url-pattern>
+  </servlet-mapping>
+  
   	<servlet>
  <servlet-name>cronJobs</servlet-name>
  <servlet-class>com.tau.birthdayplus.cron.cronJobs</servlet-class>
