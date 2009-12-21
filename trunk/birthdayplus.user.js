@@ -29,7 +29,7 @@ navbar.parentNode.insertBefore(link, navbar.nextSibling);
 link.addEventListener("click",addItem,true);
 }
 
-
+function addItem(){
 window.open("http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?href="+window.location.href ,"_blank","width=800,height=500");
 
 }
