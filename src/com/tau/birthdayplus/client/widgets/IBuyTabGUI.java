@@ -561,7 +561,7 @@ public class IBuyTabGUI {
 		}
 		
 		private void gui_eventAddMessageButtonClicked(){
-			if(chatTextArea.equals(""))
+			if(chatTextArea.getText().equals(""))
 				return;
 			ChatMessageData message = new ChatMessageData(entryPoint.userId,entryPoint.firstName+" "+entryPoint.lastName,chatTextArea.getText());
 			this.wishlistService.addChatMessage(currentItem.getWishlistItemId(),message);
