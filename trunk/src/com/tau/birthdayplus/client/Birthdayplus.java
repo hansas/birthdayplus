@@ -373,7 +373,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 
 						public void onClick(ClickEvent event) {
 							if(yearTextBox.getText().equals("")){
-								errorMessage.setText(" please enter your birth year");
+								errorMessage.setText(" please enter your birth year (you want people to give you birthday presents,right?)");
 								errorMessage.setVisible(true);
 							}else{	
 								boolean valid = true;
@@ -402,8 +402,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 				
 
 				public void onSuccess(GuestData result) {
-					Window.alert("get profile sucessful");
-					Window.alert(result.getId());
+			//		Window.alert("get profile sucessful");
+			//		Window.alert(result.getId());
 					loadingImagePopup.hide();
 				    user = result;
 				    buildTab();
