@@ -36,11 +36,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -131,9 +135,22 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
  * This is the entry point method.
  */
  protected void init(UserPreferences preferences) {
-	 if (tab == null)
-		 buildTab();
-	 getSocialInfo();
+//	 if (tab == null)
+	//	 buildTab();
+	    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
+	    loadingImage.setStyleName("loading image");
+		
+
+		
+	    loadingImagePopup = new PopupPanel(false,true);
+	   
+	    loadingImagePopup.setAnimationEnabled(true);
+	    
+	    loadingImagePopup.setStyleName(constants.cwLoadingPopupPanelStyle());
+	    loadingImagePopup.setWidget(loadingImage);
+	    loadingImagePopup.center();
+	    loadingImagePopup.show();
+	    getSocialInfo();
      
  }
 	/**
@@ -186,17 +203,6 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		    
 		    
 		   
-		    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
-		    loadingImage.setStyleName("loading image");
-			
-	
-			
-		    loadingImagePopup = new PopupPanel(false,true);
-		   
-		    loadingImagePopup.setAnimationEnabled(true);
-		    
-		    loadingImagePopup.setStyleName(constants.cwLoadingPopupPanelStyle());
-		    loadingImagePopup.setWidget(loadingImage);
 		    
 		
 		    
@@ -241,7 +247,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		 * return social info about the user and his friends
 		 */
 		private  native void getSocialInfo()/*-{
-		//	  $wnd.alert("i'm getting social info");
+		//  $wnd.alert("i'm getting social info");
 			  //global variable that points to this,important in javascript
 			  that=this;
 			  var req = $wnd.opensocial.newDataRequest();
@@ -283,7 +289,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		        		that.@com.tau.birthdayplus.client.Birthdayplus::userFriends.@java.util.HashMap::put(Ljava/lang/Object;Ljava/lang/Object;)(person.getId(),person.getDisplayName());
 		        	}
 		        });
-		        that.@com.tau.birthdayplus.client.Birthdayplus::print()();
+		        that.@com.tau.birthdayplus.client.Birthdayplus::getProfile()();
 			}else{
 				if (user.getErrorCode() == 'forbidden' ||user.getErrorCode() == '403') {
 	                  // user needs to approve social data access
@@ -307,75 +313,100 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		/*
 		 * function that is called after retrieving social information about the user
 		 */
-		public void print(){
+		public void getProfile(){
 		//	Window.alert(firstName); 
 		//	Window.alert(lastName);
 			RequestBuilder requestBuilder=profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
 				public void onFailure(Throwable caught) {
+					loadingImagePopup.hide();
 			//		Window.alert("creating new profile" +caught);
 					if (caught instanceof UserNotFoundException) {
 
-					
-					final DialogBox dateDialogBox = new DialogBox();
-		//			dateDialogBox.setStyleName(constants.cwDialogBoxStyle());
-					dateDialogBox.setText("Enter your birthday :");
-					
-					final VerticalPanel vPanel =new VerticalPanel();
-		//			vPanel.setStyleName(constants.cwVerticalPanelStyle());
-					
-					final DateBox dateBox = new DateBox();
-		//			dateBox.setStyleName(constants.cwDialogBoxStyle());
-					DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
-					dateBox.setFormat(new DateBox.DefaultFormat(fmt));
+						final FlowPanel main= new FlowPanel();
+						RootPanel.get().add(main);
+						main.setWidth("100%");
+						
+						Label title1 = new Label(firstName+", wellcome to Birthdayplus!");
+						main.add(title1);
+						title1.setWidth("100%");
+						Label title2 = new Label("We just need you to confirm a few things before you start using Birthdayplus:");
+						main.add(title2);
+						title2.setWidth("100%");
+						Label questionLabel= new Label("Sorry if we're being rude, but when were you born?");
+						main.add(questionLabel);
+						questionLabel.setWidth("100%");
+						
+						final ListBox days = new ListBox(false);
+						main.add(days);
+						
+						
+					    String[] listDayTypes = constants.cwListBoxDays();
+					    for (int i = 0; i < listDayTypes.length; i++) {
+					      days.addItem(listDayTypes[i]);
+					    }
+						
+						final ListBox months= new ListBox(false);
+						main.add(months);
+						String[] listTypes = constants.cwListBoxMonths();
+					    for (int i = 0; i < listTypes.length; i++) {
+					      months.addItem(listTypes[i]);
+					    }
+					    final TextBox yearTextBox = new TextBox();
+					    main.add(yearTextBox);
+					    yearTextBox.setWidth("4em");
+					    yearTextBox.setMaxLength(4);
+					    
+					 
+						
+						Label text = new Label("(your birth year, such as  1985)");
+				       main.add(text);
+				       
+				      final  Label errorMessage= new Label();
+				       main.add(errorMessage);
+				       errorMessage.setVisible(false);
+				       errorMessage.addStyleName("errorMessage");
+				       
+				       Anchor submit = new Anchor("all done, create my account!");
+				       main.add(submit);
+				       submit.addClickHandler(new ClickHandler(){
 
-					final Button okButton = new Button();
-		//			okButton.setStyleName(constants.cwButtonStyle());
-					okButton.setText("ok");
-					
-					vPanel.add(dateBox);
-					vPanel.add(okButton);
-					
-					vPanel.setCellHorizontalAlignment(okButton,HasHorizontalAlignment.ALIGN_CENTER);
-					
-					dateDialogBox.add(vPanel);
-					
-					
-					dateDialogBox.center();
-					dateDialogBox.show();
-					
-					
-					okButton.addClickHandler(new ClickHandler(){
-				        public void onClick(ClickEvent event) {
-				        	dateDialogBox.hide();
-					        GuestData user= new GuestData(userId,firstName,lastName,dateBox.getValue());
-					        RequestBuilder requestBuilder1=profileService.createProfile(user, new AsyncCallback<Void>(){
-			                	public void onFailure(Throwable caught){
-			    		    	Window.alert("failed to create profile " +caught);
-			    	     	}
-			    		
-					        	public void onSuccess(Void result) {
-					    	//	Window.alert("create profile sucessful");
-					    		//listen to the events in the tabs
-						    	eventGui.wireEventGUIEvents();
-			    		    	myWishlistGUI.wireMyWishlistGUIEvents();
-			    	    		iBuyGUI.wireIBuyGUIEvents();
-			    		    	wireTabGUIEvents();
-			    			
-			    	    		tab.selectTab(0);	
-					        	}
-					        });
-					        RequestProxy.makePostRequest(requestBuilder1.getUrl(), requestBuilder1.getRequestData(), requestBuilder1.getCallback());
-					
-				        }});
-				}else{
-					//do something
+						public void onClick(ClickEvent event) {
+							if(yearTextBox.getText().equals("")){
+								errorMessage.setText(" please enter your birth year");
+								errorMessage.setVisible(true);
+							}else{	
+								boolean valid = true;
+								int day = days.getSelectedIndex()+1;
+								int month = months.getSelectedIndex()+1;
+								int year = 0;
+								try{
+								   year = Integer.parseInt(yearTextBox.getText());
+								}catch( NumberFormatException ex){
+									errorMessage.setText("please enter valid year");
+									valid= false;
+								}
+								if(valid){
+								    main.removeFromParent();
+								    loadingImagePopup.center();
+								    loadingImagePopup.show();
+								    openWindow("http://testrpcplus.appspot.com/birthdayplus/login?openSocialId="+userId+"&firstName="+firstName+"&lastName="+lastName+"&day="+day+"&month="+month+"&year="+year);
+								}
+							}
+						}
+				       });
+					}else{
+						
+					}
 				}
-				}
+				
 
 				public void onSuccess(GuestData result) {
-		//			Window.alert("get profile sucessful");
+					Window.alert("get profile sucessful");
+					Window.alert(result.getId());
+					loadingImagePopup.hide();
 				    user = result;
+				    buildTab();
 			//	    Window.alert(user.toString());
 			    	eventGui.wireEventGUIEvents();
 			    	
@@ -397,6 +428,46 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 		//	wireTabGUIEvents();
 			
 		}
+		
+		
+		/**
+		 * open window for google login and wait until it closed
+		 * @param destination
+		 */
+		private native void openWindow(String destination) /*-{
+	    that = this;	
+	   	var win = null;
+		 win = $wnd.open(destination, "_blank", "width=800,height=500");
+	     if (win) {
+	       // Poll every 100ms to check if the window has been closed
+	       timer = $wnd.setInterval(checkClosed, 100);
+	      
+	     }
+	     
+	    function checkClosed() {
+	      if ((!win) || win.closed) {
+	          win = null;
+	          handleApproval();
+	    }
+	  }
+	  
+	  function handleApproval() {
+	    if (timer) {
+	      $wnd.clearInterval(timer);
+	      timer = null;
+	    }
+	    if (win) {
+	      win.close();
+	      win = null;
+	    }
+	    that.@com.tau.birthdayplus.client.Birthdayplus::getProfile()();
+	    return false;
+	  }
+	  
+
+
+	}-*/;
+		
 	
 	  
 

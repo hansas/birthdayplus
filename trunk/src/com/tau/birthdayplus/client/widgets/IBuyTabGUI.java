@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.HorizontalSplitPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -56,6 +58,7 @@ public class IBuyTabGUI {
 
 	//////////////////GUI Widgets////////////////////////
 	private FlowPanel iBuyPanel;
+	 private MenuBar menu ;
 	
 	private FlowPanel wishPanel;
 	private  ScrollPanel iBuyScrollPanel;
@@ -64,7 +67,7 @@ public class IBuyTabGUI {
 	
     private FlowPanel mainChatPanel;
 	private HorizontalPanel chatPanel;
-	private HorizontalPanel buttonPanel;
+//	private HorizontalPanel buttonPanel;
 	
 	private FlowPanel leftSide;
 	private Label chatLabel;
@@ -78,7 +81,7 @@ public class IBuyTabGUI {
 	private ScrollPanel participatorsScrollPanel;
 	private FlexTable participatorsTableHeader;
 	private FlexTable participatorsTable;
-	private Button closeChatButton;
+//	private Button closeChatButton;
 	
 	
 	private DialogBox moneyDialogBox;
@@ -121,12 +124,26 @@ public class IBuyTabGUI {
 		mainChatPanel.setStyleName("Panel");
 		mainChatPanel.setVisible(false);
 		
-		buttonPanel = new HorizontalPanel();
-		mainChatPanel.add(buttonPanel);
-		buttonPanel.setStyleName("buttonPanel");
+		menu = new MenuBar();
+		mainChatPanel.add(menu);
+		menu.addStyleName("buttonPanel");
+		menu.setAutoOpen(true);
+		menu.setAnimationEnabled(true);
 		
-		closeChatButton = new Button("return");
-	    buttonPanel.add(closeChatButton);
+		Command closeChatCommand = new Command(){
+			public void execute() {
+				gui_eventCloseChatButtonClicked();
+		      }
+		    };
+		
+		menu.addItem("<img src='http://birthdayplus.googlecode.com/svn/trunk/src/com/tau/birthdayplus/public/left_16.png' alt='Return to IBuy tab' title= 'Return' />",true,closeChatCommand);
+		
+	//	buttonPanel = new HorizontalPanel();
+	//	mainChatPanel.add(buttonPanel);
+	//	buttonPanel.setStyleName("buttonPanel");
+		
+	//	closeChatButton = new Button("return");
+	//    buttonPanel.add(closeChatButton);
 	    
 		chatPanel = new HorizontalPanel();
 		mainChatPanel.add(chatPanel);
@@ -578,12 +595,12 @@ public class IBuyTabGUI {
 				}
 			});
 			
-			this.closeChatButton.addClickHandler(new ClickHandler(){
+		//	this.closeChatButton.addClickHandler(new ClickHandler(){
 
-				public void onClick(ClickEvent event) {
-					gui_eventCloseChatButtonClicked();
-				}
-			});
+		//		public void onClick(ClickEvent event) {
+		//			gui_eventCloseChatButtonClicked();
+		//		}
+		//	});
 			
 			this.enterSumTextBox.addKeyUpHandler(new KeyUpHandler(){
 				public void onKeyUp(KeyUpEvent event) {

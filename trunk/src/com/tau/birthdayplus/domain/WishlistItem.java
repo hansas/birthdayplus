@@ -39,6 +39,8 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
        //if booked or not
 	   @Persistent
 	   private Boolean isActive;
+	   @Persistent
+	   private String thumbnail;
 	   //key of the person that buys this item
 	   @Persistent 
 	   private Key buyerKey;
@@ -46,7 +48,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   ArrayList<ChatMessage> messages;
 	   
 	
-	public WishlistItem(String userId, String name, Boolean priority, String link, Double price){
+	public WishlistItem(String userId, String name, Boolean priority, String link, Double price,String thumbnail){
 		this.itemName = name;
 		this.priority = priority;
 		this.link = link;
@@ -54,12 +56,13 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		this.participators = new ArrayList<Participator>();
 		this.messages = new ArrayList<ChatMessage>();
 		this.setIsActive(true);
+		this.thumbnail = thumbnail;
 		this.buyerKey=null; 
 		this.setEventKey(null);
 	}
 	
 	public WishlistItem(WishlistItemData itemData){
-		this(itemData.getUserId(),itemData.getItemName(),itemData.getPriority(),itemData.getLink(),itemData.getPrice());
+		this(itemData.getUserId(),itemData.getItemName(),itemData.getPriority(),itemData.getLink(),itemData.getPrice(),itemData.getThumbnail());
 	}
 	
 	public void copyFromWishlistItemData(WishlistItemData itemData){
@@ -67,6 +70,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		setLink(itemData.getLink());
 		setPriority(itemData.getPriority());
 		setPrice(itemData.getPrice());
+		setThumbnail(itemData.getThumbnail());
 		//setBuyerKey(itemData.getBuyerKey());
 	}
 	
@@ -158,6 +162,14 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	
 	public ArrayList<ChatMessage> getMessages(){
 		return this.messages;
+	}
+	
+	public String getThumbnail(){
+		return this.thumbnail;
+	}
+	
+	public void setThumbnail(String thumbnail){
+		this.thumbnail = thumbnail;
 	}
 	
 }

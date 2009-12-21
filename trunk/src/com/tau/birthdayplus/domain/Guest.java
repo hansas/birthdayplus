@@ -26,6 +26,8 @@ public class Guest   {
 		@Persistent
 		private String id;
 		@Persistent
+		private String googleId;
+		@Persistent
 		private String firstName;
 		@Persistent
 		private String lastName;
@@ -42,20 +44,21 @@ public class Guest   {
 		//List<Key> iBuyItems;
 
 		
-		public Guest(String googleId, String firstName, String lastName, Date birthday ,String email) {
+		public Guest(String id, String firstName, String lastName, Date birthday ,String email,String googleId) {
 			this.setFirstName(firstName);
 			this.setLastName(lastName);
 			this.setBirthday(birthday);
-			this.id = googleId;
-			this.idKey = KeyFactory.createKey(Guest.class.getSimpleName(), googleId);
+			this.id = id;
+			this.idKey = KeyFactory.createKey(Guest.class.getSimpleName(), id);
 			this.events = new ArrayList<Event>();
 			this.wishlistItems = new ArrayList<WishlistItem>();
 			//this.iBuyItems = new ArrayList<Key>();
 			this.email = email;
+			this.googleId = googleId;
 		}
 		
 		public Guest(GuestData guestData){
-			this(guestData.getId(),guestData.getFirstName(),guestData.getLastName(),guestData.getBirthday(),guestData.getEmail());
+			this(guestData.getId(),guestData.getFirstName(),guestData.getLastName(),guestData.getBirthday(),guestData.getEmail(),null);
 		}
 		
 		public void copyFromGuestData(GuestData guestData){
@@ -148,6 +151,14 @@ public class Guest   {
 		
 		public String getEmail(){
 			return this.email;
+		}
+		
+		public String getGoogleId(){
+			return this.googleId;
+		}
+		
+		public void setGoogleId(String googleId){
+			this.googleId= googleId;
 		}
 		
 		/*

@@ -20,7 +20,7 @@ public interface ProfileService extends RemoteService{
 	/*
 	 * create new profile
 	 */
-	void createProfile(GuestData guest);
+//	void createProfile(GuestData guest);
 	/*
 	 * update profile
 	 */

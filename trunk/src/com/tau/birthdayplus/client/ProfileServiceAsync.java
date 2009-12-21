@@ -14,7 +14,7 @@ public interface ProfileServiceAsync {
 	 */
 	void printHello(AsyncCallback<Void> callback);
 
-	RequestBuilder createProfile(GuestData guest, AsyncCallback<Void> callback);
+//	RequestBuilder createProfile(GuestData guest, AsyncCallback<Void> callback);
 
 	RequestBuilder updateProfile(GuestData profile, AsyncCallback<Void> callback);
 

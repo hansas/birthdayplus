@@ -15,6 +15,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -28,6 +29,7 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -54,13 +56,14 @@ public class MyWishlistTabGUI {
 	/*GUI Widgets*/
 
 	private FlowPanel wishlistPanel;
-	private HorizontalPanel buttonPanel;
+	 private MenuBar menu ;
+	//private HorizontalPanel buttonPanel;
 	// wishlist table
 	private FlexTable wishTableHeader;
 	private HoverTable wishTable;
 	private ScrollPanel wishlistScrollPanel;
 	// add new item button
-	private Button addItemButton;
+//	private Button addItemButton;
 	//box for adding new item
 	
 	
@@ -114,12 +117,34 @@ public class MyWishlistTabGUI {
 		wishlistPanel.addStyleName("Panel");
 	//	wishlistPanel.setSize("100%", "350px");
 		
-		buttonPanel = new HorizontalPanel();
-		wishlistPanel.add(buttonPanel);
-		buttonPanel.setStyleName("buttonPanel");
+		menu = new MenuBar();
+		wishlistPanel.add(menu);
+		menu.addStyleName("buttonPanel");
+		menu.setAutoOpen(true);
+		menu.setAnimationEnabled(true);
 		
-		addItemButton=new Button("Add item");
-	    buttonPanel.add(addItemButton);
+		Command addItemCommand = new Command(){
+			public void execute() {
+				gui_eventAddItemButtonClicked();
+		      }
+		    };
+		
+		menu.addItem("Add Item",addItemCommand);
+		
+		Command addItemZap = new Command(){
+
+			public void execute() {
+				Window.open("http://birthdayplus.googlecode.com/svn/trunk/birthdayplus.user.js", "_blank", null);	
+			}
+		};
+		menu.addItem("Add Items From Zap",addItemZap);
+		
+	//	buttonPanel = new HorizontalPanel();
+	//	wishlistPanel.add(buttonPanel);
+	//	buttonPanel.setStyleName("buttonPanel");
+		
+	//	addItemButton=new Button("Add item");
+	//    buttonPanel.add(addItemButton);
 	//	addItemButton.setSize("100px","25px");
 		
 		buildWishlistTable();
@@ -183,7 +208,7 @@ public class MyWishlistTabGUI {
      * build add item DialogBox
      */
 	private void buildAddItemBox(){
-	    	addItemBox=new DialogBox();
+	    	addItemBox=new DialogBox(false,true);
 	    	
 	    	itemDialogBoxVerticalPanel = new VerticalPanel();
 	    	addItemBox.add(itemDialogBoxVerticalPanel); 
@@ -247,7 +272,7 @@ public class MyWishlistTabGUI {
        
          if (col==UPDATE_LINK) {
         	 this.addItem = false;
-             this.addItemButton.setVisible(false);
+           //  this.addItemButton.setVisible(false);
              loadForm(item,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item);
@@ -280,7 +305,7 @@ public class MyWishlistTabGUI {
     public void gui_eventAddButtonClicked() {
     	boolean valid = copyFieldDateToItem();
         if(valid){
-            addItemButton.setVisible(true);
+       //     addItemButton.setVisible(true);
             errorMsgLabel.setVisible(false);
             addItemBox.hide();
             this.wishlistService.createWishlistItem(currentItem);
@@ -294,7 +319,7 @@ public class MyWishlistTabGUI {
     public void gui_eventUpdateButtonClicked() {
     	boolean valid = copyFieldDateToItem();
         if(valid){
-            addItemButton.setVisible(true);
+         //   addItemButton.setVisible(true);
             errorMsgLabel.setVisible(false);
             addItemBox.hide();
             this.wishlistService.updateWishlistItem(currentItem);
@@ -344,7 +369,7 @@ public class MyWishlistTabGUI {
      * on click on add item
      */
     public void gui_eventAddItemButtonClicked() {
-        this.addItemButton.setVisible(false);
+       // this.addItemButton.setVisible(false);
         this.addItem = true;
         loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
     }
@@ -353,7 +378,7 @@ public class MyWishlistTabGUI {
      * on click on cancel button in dialog box
      */
     public void gui_eventCancelButtonClicked(){
-    	addItemButton.setVisible(true);
+    //	addItemButton.setVisible(true);
     	errorMsgLabel.setVisible(false);
     	 addItemBox.hide();
     }
@@ -444,10 +469,10 @@ public class MyWishlistTabGUI {
                  gui_eventItemGridClicked(cellForEvent);                
             }});
         
-		this.addItemButton.addClickHandler(new ClickHandler(){
-            public void onClick(ClickEvent event) {
-            	gui_eventAddItemButtonClicked();
-            }});
+	//	this.addItemButton.addClickHandler(new ClickHandler(){
+    //        public void onClick(ClickEvent event) {
+     //       	gui_eventAddItemButtonClicked();
+     //       }});
 
 		this.boxButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
