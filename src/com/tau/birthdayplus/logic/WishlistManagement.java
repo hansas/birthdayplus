@@ -84,7 +84,7 @@ public class WishlistManagement {
 	}
 	
 	public static WishlistItemData itemToItemData(WishlistItem item,String userId){
-		return new WishlistItemData(KeyFactory.keyToString(item.getKey()),userId,item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
+		return new WishlistItemData(KeyFactory.keyToString(item.getKey()),userId,item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail());
 	}
 	
 	public static ArrayList<WishlistItemData> getWishlist(String userId) throws UserNotFoundException {
@@ -121,12 +121,12 @@ public class WishlistManagement {
 		if (item.getEventKey()==null){
 			return new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
 			guest.getFirstName(),"","",null,
-			item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
+			item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail());
 		}
 		else{
 			Event event = wrapper.getEventByKey(item.getEventKey());
 			WishlistItemNewData newItemData = new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
-					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),event.getEventDate(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive());
+					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),event.getEventDate(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail());
 			ArrayList<Participator> participators = item.getParticipators();
 			newItemData.setParticipators(getParticipatorDataList(participators,wrapper));
 			ParticipatorData pData=null;

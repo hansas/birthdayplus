@@ -21,6 +21,8 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	   private Double price;
 
 	   private Boolean isActive;
+	   //item thumbnail
+	   private String thumbnail;
 
 	
 	/*
@@ -34,7 +36,7 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemData(String wishlistItemId,String userId,String name, Boolean priority, String link, Double price,Boolean isActive){
+	public WishlistItemData(String wishlistItemId,String userId,String name, Boolean priority, String link, Double price,Boolean isActive,String thumbnail){
 		this.wishlistItemId=wishlistItemId;
 		this.userId = userId;
 		this.itemName = name;
@@ -42,6 +44,7 @@ public class WishlistItemData implements IsSerializable,Serializable{
 		this.link = link;
 		this.price = price;
 		this.isActive = isActive;
+		this.thumbnail = thumbnail;
 	}
 	
 
@@ -49,7 +52,7 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	 * constructor for client side - create new item 
 	 */
 	public WishlistItemData(String userId){
-		this(null,userId,null,true,null,0.0,false);
+		this(null,userId,null,true,null,0.0,false,null);
 	}
 	
 	public String getWishlistItemId(){
@@ -96,6 +99,14 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	
 	public String getUserId() {
 		return userId;
+	}
+	
+	public String getThumbnail(){
+		return this.thumbnail;
+	}
+	
+	public void setThumbnail(String thumbnail){
+		this.thumbnail = thumbnail;
 	}
 
 }

@@ -17,6 +17,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.ProfileService;
 import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
+import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.logic.UserManagement;
 
@@ -35,11 +36,11 @@ ProfileService {
 		
 	}
 
-	public void createProfile(GuestData guestData) {
+//	public void createProfile(Guest guestData) {
 		
-		UserManagement.createProfile(guestData);
+	//	UserManagement.createProfile(guestData);
 		
-	}
+	//}
 
 	public GuestData getProfile(String userId) throws UserNotFoundException {
 		return UserManagement.loadGuestDataCached(userId);

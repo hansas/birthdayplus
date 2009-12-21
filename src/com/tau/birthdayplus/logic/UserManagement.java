@@ -43,11 +43,11 @@ public class UserManagement {
 	 }
 
 	 @SuppressWarnings("deprecation")
-	 public static void createProfile(GuestData guestData) {
+	 public static void createProfile(Guest guest) {
 //		 UserService userService = UserServiceFactory.getUserService();
 //		 User user = userService.getCurrentUser();
 //		 String email = user.getEmail();
-         Guest guest = new Guest(guestData);
+     //    Guest guest = new Guest(guestData);
          int guestDom = guest.getBirthday().getDate();
          int guestMonth = guest.getBirthday().getMonth();
          Calendar cal = Calendar.getInstance();
