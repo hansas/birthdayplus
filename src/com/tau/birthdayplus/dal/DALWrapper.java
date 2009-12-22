@@ -11,6 +11,8 @@ import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
 import com.tau.birthdayplus.domain.WishlistItem;
+import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.dto.client.WishlistItemData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
@@ -55,8 +57,20 @@ public class DALWrapper {
 		return BusinessObjectDAL.loadGuest(userId, pm);
 	}
 	
+	public Guest loadGuestByGmail(String gmail){
+		return BusinessObjectDAL.loadGuestByGmail(gmail, pm);
+	}
+	
 	public Event getEventByKey(Key eventKey){
 		return pm.getObjectById(Event.class, eventKey);
+	}
+	
+	public void newCreateEvent(EventData eventD,Guest user){
+		BusinessObjectDAL.newCreateEvent(eventD, user, pm);
+	}
+	
+	public void newCreateWishlistItem(WishlistItemData itemData,Guest user){
+		BusinessObjectDAL.newCreateWishlistItem(itemData, user, pm);
 	}
 	
 	public List<WishlistItem> getWishlistItemById(List<Key> keys){

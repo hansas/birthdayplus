@@ -30,11 +30,24 @@ import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 public class WishlistManagement {
 	private static final Logger log = Logger.getLogger(WishlistManagement.class.getName());
 	
-	public static void createWishlistItem(WishlistItemData item) {
+	public static void createWishlistItem(WishlistItemData item) throws UserNotFoundException {
+		DALWrapper wrapper = new DALWrapper();
 		try{
-			BusinessObjectDAL.createWishlistItem(item);
-		}catch(Exception ex){
-			throw new RuntimeException("createWishlistItem failed", ex);
+			BusinessObjectDAL.createWishlistItem(item, wrapper);
+		}
+		finally{
+			wrapper.close();
+		}
+	}
+	
+	public static void createWishlistItem(WishlistItemData item,String googleId) throws UserNotFoundException{
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			Guest guest = wrapper.getGuestById(googleId);
+			wrapper.newCreateWishlistItem(item, guest);
+		}
+		finally{
+			wrapper.close();
 		}
 	}
 	
@@ -326,7 +339,5 @@ public class WishlistManagement {
 //	}
 
 	
-	public static void createWishlistItem(WishlistItemData item,String googleId){
-		
-	}
+	
 }

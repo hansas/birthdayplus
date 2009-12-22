@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.appengine.api.datastore.KeyFactory;
+import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
@@ -35,11 +36,24 @@ public class EventManagement {
 				}
 		};
 
-	public static void createEvent(EventData event){
+	public static void createEvent(EventData event) throws UserNotFoundException{
+		DALWrapper wrapper = new DALWrapper();
 		try{
-			BusinessObjectDAL.createEvent(event);
-		}catch(Exception ex){
-			throw new RuntimeException("createEvent(EventData event) failed", ex);
+			BusinessObjectDAL.createEvent(event,wrapper);
+		}
+		finally{
+			wrapper.close();
+		}
+	}
+	
+	public static void createEvent(EventData event,String gmail){
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			Guest guest = wrapper.loadGuestByGmail(gmail);
+			wrapper.newCreateEvent(event, guest);
+		}
+		finally{
+			wrapper.close();
 		}
 	}
 	
@@ -100,8 +114,6 @@ public class EventManagement {
 	}
 	
 	
-	public static void createEvent(EventData event,String gmail){
-		
-	}
+	
 
 }

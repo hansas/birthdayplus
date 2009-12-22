@@ -82,6 +82,19 @@ public class BusinessObjectDAL {
 		pm.close();
 		return g;
 	}
+	
+	public static Guest loadGuestByGmail(String gmail,PersistenceManager pm){
+		try{
+			Query query = pm.newQuery(Guest.class);
+			query.setFilter("email == gmail");
+			query.declareParameters("String gmail");
+			Guest g =(Guest)query.execute(gmail);
+			pm.close();
+			return g;
+		} catch (Exception ex) {
+			throw new RuntimeException("error in loadGuestByGmail"+ex.getMessage());
+		}
+	}
 
 	/*
 	 * public static Guest loadGuest(String guestId){ PersistenceManager pm =
@@ -223,14 +236,17 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void createEvent(EventData eventD) {
+	public static void createEvent(EventData eventD,DALWrapper wrapper) throws UserNotFoundException {
 		String userId = eventD.getUserId();
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Guest user = wrapper.getGuestById(userId);
+		wrapper.newCreateEvent(eventD,user);
+	}
+		
+	public static void newCreateEvent(EventData eventD,Guest user,PersistenceManager pm){
 		Transaction tx = (Transaction) pm.currentTransaction();
 		Event event = new Event(eventD);
 		try {
 			tx.begin();
-			Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 			user.addEvent(event);
 			eventD.setEventId(KeyFactory.keyToString(event.getKey()));
 			pm.makePersistent(user);
@@ -283,14 +299,17 @@ public class BusinessObjectDAL {
 		return guests;
 	}
 
-	public static void createWishlistItem(WishlistItemData itemData) {
+	public static void createWishlistItem(WishlistItemData itemData,DALWrapper wrapper) throws UserNotFoundException {
 		String userId = itemData.getUserId();
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Guest user = wrapper.getGuestById(userId);
+		wrapper.newCreateWishlistItem(itemData,user);
+	}
+	
+	public static void newCreateWishlistItem(WishlistItemData itemData,Guest user,PersistenceManager pm){
 		Transaction tx = (Transaction) pm.currentTransaction();
 		WishlistItem item = new WishlistItem(itemData);
 		try {
 			tx.begin();
-			Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 			user.addWishlistItem(item); 
 			itemData.setWishlistItemId(KeyFactory.keyToString(item.getKey()));
 			pm.makePersistent(user);
