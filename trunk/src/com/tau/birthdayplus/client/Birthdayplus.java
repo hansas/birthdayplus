@@ -71,6 +71,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		author_email = "yalo_niv@yahoo.com",
 		height = 400
 )
+//@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
 public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial  {
 	CwConstants constants = GWT.create(CwConstants.class);
 	//public DynamicHeightFeature feature;
