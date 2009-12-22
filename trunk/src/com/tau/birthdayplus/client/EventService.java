@@ -19,7 +19,7 @@ public interface EventService extends RemoteService{
 	/*
 	 * creates new event for the user
 	 */
-	void createEvent(EventData event);
+	void createEvent(EventData event) throws UserNotFoundException;
 	/*
 	 * update the event
 	 * Client - give only to owner to update event

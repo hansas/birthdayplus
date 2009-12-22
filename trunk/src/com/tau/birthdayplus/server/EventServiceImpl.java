@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.EventService;
+import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.dto.client.EventData;
 
 
@@ -29,7 +30,7 @@ EventService {
 		
 	}
 
-	public void createEvent(EventData eventD) {
+	public void createEvent(EventData eventD) throws UserNotFoundException {
 		EventManagement.createEvent(eventD);
 	}
 	/*
