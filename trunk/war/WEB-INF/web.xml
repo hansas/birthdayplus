@@ -81,7 +81,7 @@
 
 <servlet-mapping>
   <servlet-name>addEventServlet</servlet-name>
-  <url-pattern>/_ah/mail/event@testrpcplus.appspotmail.com</url-pattern>
+  <url-pattern>/_ah/mail/event@birthdayplus.appspotmail.com</url-pattern>
 </servlet-mapping>
 
 
