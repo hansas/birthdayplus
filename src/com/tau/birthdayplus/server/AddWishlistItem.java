@@ -17,6 +17,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
+import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 
@@ -43,6 +44,7 @@ public class AddWishlistItem  extends HttpServlet {
         try{
         	WishlistItemData  data = new WishlistItemData();
         	Parse(data, req.getParameter("href"));
+        	SendEmail.sendEmail();
         	
         }catch(Exception ex){
         	
