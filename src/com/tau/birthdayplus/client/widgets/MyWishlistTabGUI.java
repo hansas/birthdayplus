@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.gwtwidgets.client.util.regex.Pattern;
 
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -79,9 +80,10 @@ public class MyWishlistTabGUI {
     private RadioButton lowPriorityButton;
 	//   protected ListBox priorityField;
     //link to the item
-    protected TextBox linkField;
+    private TextBox linkField;
     //item's price
-    protected TextBox priceField;
+    private TextBox priceField;
+    private TextBox thumbnailField;
     //ok button in dialog box
   //  public Button updateButton;
     private Button boxButton;
@@ -177,6 +179,8 @@ public class MyWishlistTabGUI {
         linkField=new TextBox();
         
         priceField=new TextBox();
+        
+        thumbnailField=new TextBox();
         
         boxButton=new Button();
    
@@ -296,6 +300,7 @@ public class MyWishlistTabGUI {
 	        this.linkField.setText(item.getLink());
 	        this.priceField.setText(item.getPrice().toString());
 	        this.highPriorityButton.setValue(true);
+	        this.thumbnailField.setText("");
 	    }
 
 
@@ -362,6 +367,7 @@ public class MyWishlistTabGUI {
     		priceField.setFocus(true);
     		return false;
         }
+        currentItem.setThumbnail(thumbnailField.getText());
         return true;
     }
     
@@ -397,15 +403,29 @@ public class MyWishlistTabGUI {
 	        	//link
 	        	if (item.getLink().equals(""))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
-	        	else
-	        		wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
+	        	else{
+	        		if(item.getThumbnail().equals(""))
+	        	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
+	        		else{
+	        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
+	        			wishTable.setWidget(row,0,anchor);
+	        			TooltipListener listener  = new TooltipListener(
+	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"';>", 5000 ,"yourcssclass");
+	        			listener.setOffsetX(60);
+	        			listener.setOffsetY(0);
+	        			anchor.addMouseListener( listener);
+	        		}
+	        	    	
+	        	}
 	        	//priority
 	        	if(item.getPriority())
 	        		wishTable.setWidget(row,1,new Label("high"));
 	        	else	
 	    	        wishTable.setWidget(row,1,new Label("low"));
 	        	
-	    	    wishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
+	        	NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
+	        
+	    	    wishTable.setWidget(row, 2,new Label(format.format(item.getPrice())) );
 	    	    
 	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update item");
@@ -502,7 +522,7 @@ public class MyWishlistTabGUI {
 	private void gui_eventGetPriceByLink(){
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
-		if(linkField.getText().startsWith("http://www.zap.co.il/model.aspx?")){
+		if(linkField.getText().startsWith("http://www.zap.co.il/model.aspx?modelid=")){
 			bringLink(linkField.getText());
 		}else
 			entryPoint.loadingImagePopup.hide();
@@ -525,8 +545,10 @@ public class MyWishlistTabGUI {
 	
 	private void parse(){
 		Integer price = 0;
-		Pattern pattern = new Pattern("[1-9],{0,1}(\\d)* ₪");
-		String[] prices = pattern.match(linkText);
+		Pattern pricePattern = new Pattern("[1-9],{0,1}(\\d)* ₪");
+		Pattern thumbnailPattern = new Pattern("src=\"http://img.zap.co.il/pics/[\\w/.]+\"");
+		String[] prices = pricePattern.match(linkText);
+		
 		if(prices.length != 0){
 			String temp = prices[0].substring(0,prices[0].length()-2);
 	    	try{
@@ -541,7 +563,16 @@ public class MyWishlistTabGUI {
 	    		 }
 	    	 }
 		}
-	    this.priceField.setText(price.toString());	 
+	    this.priceField.setText(price.toString());
+	    String[] thumbnail = thumbnailPattern.match(linkText);
+	    Window.alert(thumbnail.length+"");
+	    Window.alert(thumbnail[0]);
+	    if(thumbnail.length!= 0){
+	    	String temp = thumbnail[0].split("src=\"")[1].replace("\""," ");
+	    	this.thumbnailField.setText(temp);
+	    	Window.alert(temp);
+	    }
+	    
 	    entryPoint.loadingImagePopup.hide();
 			
 		
