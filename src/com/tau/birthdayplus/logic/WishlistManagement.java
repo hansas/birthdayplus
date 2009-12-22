@@ -325,4 +325,8 @@ public class WishlistManagement {
 //		return null;
 //	}
 
+	
+	public static void createWishlistItem(WishlistItemData item,String googleId){
+		
+	}
 }

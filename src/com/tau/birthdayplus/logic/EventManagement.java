@@ -98,5 +98,10 @@ public class EventManagement {
 		Collections.sort(events, EventManagement.EVENT_DATA_ORDER);
 		return events;
 	}
+	
+	
+	public static void createEvent(EventData event,String gmail){
+		
+	}
 
 }
