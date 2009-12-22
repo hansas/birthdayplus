@@ -17,6 +17,7 @@
   </servlet-mapping>
   
   
+  
   <servlet>
     <servlet-name>wishlistServlet</servlet-name>
     <servlet-class>com.tau.birthdayplus.server.WishlistServiceImpl</servlet-class>
@@ -27,8 +28,7 @@
     <url-pattern>/birthdayplus/wishlist</url-pattern>
   </servlet-mapping>
   
-  
-  <servlet>
+   <servlet>
     <servlet-name>profileServlet</servlet-name>
     <servlet-class>com.tau.birthdayplus.server.ProfileServiceImpl</servlet-class>
   </servlet>
@@ -38,6 +38,8 @@
     <url-pattern>/birthdayplus/profile</url-pattern>
   </servlet-mapping>
   
+ 
+ 
   <servlet>
     <servlet-name>addWishlistItemServlet</servlet-name>
     <servlet-class>com.tau.birthdayplus.server.AddWishlistItem</servlet-class>
@@ -47,6 +49,7 @@
     <servlet-name>addWishlistItemServlet</servlet-name>
     <url-pattern>/birthdayplus/addWishlistItem</url-pattern>
   </servlet-mapping>
+  
   
   
   <servlet>
@@ -59,7 +62,8 @@
     <url-pattern>/birthdayplus/login</url-pattern>
   </servlet-mapping>
   
-  	<servlet>
+  
+ <servlet>
  <servlet-name>cronJobs</servlet-name>
  <servlet-class>com.tau.birthdayplus.cron.cronJobs</servlet-class>
  </servlet>
@@ -69,17 +73,29 @@
  <url-pattern>/birthdayplus/cron/delete</url-pattern>
  </servlet-mapping>
  
-	
+ 
+ <servlet>
+  <servlet-name>addEventServlet</servlet-name>
+  <servlet-class>com.tau.birthdayplus.server.AddEventServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>addEventServlet</servlet-name>
+  <url-pattern>/_ah/mail/event@testrpcplus.appspotmail.com</url-pattern>
+</servlet-mapping>
+
+
+<security-constraint>
+  <web-resource-collection>
+    <url-pattern>/_ah/mail/*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+    <role-name>admin</role-name>
+  </auth-constraint>
+</security-constraint>
+  
+  
   
  
-  
-  
-  
-  
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>Birthdayplus.html</welcome-file>
-  </welcome-file-list>
-
+ 
 </web-app>
