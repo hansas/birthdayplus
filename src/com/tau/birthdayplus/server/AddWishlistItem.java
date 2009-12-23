@@ -25,26 +25,25 @@ public class AddWishlistItem  extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddWishlistItem.class.getName());
+	private static final Pattern pricePattern = Pattern.compile("(<input type=\"hidden\" name=\"minPrice\" id=\"minPrice\" value=\")(\\d+)(\" />)");
+    private static final Pattern titleThumbnailPattern = Pattern.compile("(onSessionCreated, connected, loginUser,')(\\d+',')([\\w ]+)(',')([\\w/.]+)(')" );
+
 	/**
 	 * 
 	 */
 
 
-	protected void doGet(HttpServletRequest req,
-            HttpServletResponse resp) throws ServletException, IOException
+	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException
  {
-    	log.info("I'm here");
+    
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
        
-   
-        log.info(req.getParameter("href"));
         
         if (user != null) {
         try{
         	WishlistItemData  data = new WishlistItemData();
         	Parse(data, req.getParameter("href"));
-        	SendEmail.sendEmail();
         	
         }catch(Exception ex){
         	
@@ -52,13 +51,8 @@ public class AddWishlistItem  extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         String html = "<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' dir='rtl'><b><br />המוצר שנבחר התווסף לרשימה שלך בהצלחה. <br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>לחץ כאן לסגירת החלון</u></a></b></td></tr></table></div></div>";
         resp.getWriter().println(html);
-     //   resp.getWriter().println("Hello, " + user.getNickname()+"your want to add "+req.getParameter("href"));
         } else {
-        	
-        	log.info("I don't know you");
-        	 resp.setContentType("text/plain");
-        	// resp.getWriter().println(userService.createLoginURL(req.getRequestURI()+"?href="+req.getParameter("href")));
-        	
+        	// resp.setContentType("text/plain");
         	resp.sendRedirect(userService.createLoginURL(req.getRequestURI()+"?href="+req.getParameter("href")));
          }
        }
@@ -66,13 +60,21 @@ public class AddWishlistItem  extends HttpServlet {
 	
 	private static void Parse(WishlistItemData item,String url){
 		URLConnection connection = null;
+		boolean hasPrice = false;
+		boolean hasTitleThumbnail = false;
 		try {
 		  connection =  new URL(url).openConnection();
 		  Scanner scanner = new Scanner(connection.getInputStream());
 		  while ( scanner.hasNextLine() ){
-		        if(findLine( scanner.nextLine(),item))
-		        		break;
+			  String line =scanner.nextLine();
+		      if(!hasPrice)
+		    	  hasPrice = findPrice(line,item);
+		      if (!hasTitleThumbnail)
+		    	  hasTitleThumbnail = findTitleThumbnail(line,item);
+		      if(hasPrice && hasTitleThumbnail)
+		    	  break;
 		      }
+		  
 	
 		}catch ( Exception ex ) {
 		    ex.printStackTrace();
@@ -82,21 +84,30 @@ public class AddWishlistItem  extends HttpServlet {
 	}
 	
 	
-	 private static boolean findLine(String aLine,WishlistItemData item){
-		    Pattern pattern = Pattern.compile("onSessionCreated, connected, loginUser,'(\\d)+','[\\w ]+','[\\w/.]+'" );
-		    Matcher matcher = pattern.matcher( aLine );
-
+	 private static boolean findTitleThumbnail(String aLine,WishlistItemData item){
+		    Matcher matcher = titleThumbnailPattern.matcher( aLine );
+		   
 		    if (matcher.find() ){
-		      String[] temp = matcher.group(0).split("[,;]");
-		      item.setItemName(temp[4].replace("'", " ").trim());
+		      item.setItemName(matcher.group(3));
+		      item.setThumbnail("http://img.zap.co.il/pics/"+ matcher.group(5));
 		      log.info("item name is : "+item.getItemName());
-		      item.setThumbnail("http://img.zap.co.il/pics/"+temp[5].replace("'", " ").trim());
 		      log.info("item thumbnail is : "+item.getThumbnail());
 		      return true;
 		    }
 		    return false;
 		    
 		  }
+	 
+	 
+	 private static boolean findPrice(String aLine , WishlistItemData item){
+		 Matcher priceMatcher = pricePattern.matcher(aLine);
+		 if (priceMatcher.matches()){
+		    	String price = priceMatcher.group(2);
+		        item.setPrice(Double.parseDouble(price));
+		        return true;
+		 }
+		 return false;
+	 }
 
 
 
