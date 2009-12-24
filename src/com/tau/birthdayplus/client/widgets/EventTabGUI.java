@@ -131,7 +131,7 @@ public class EventTabGUI {
 		      }
 		    };
 		
-		menu.addItem("Remind Me",remindMeCommand);
+		menu.addItem("Remind Me",remindMeCommand).setTitle("Add event reminder to your Google Calendar");
 		
 		Command addEventCommand = new Command() {
 			public void execute() {
@@ -140,25 +140,20 @@ public class EventTabGUI {
 		    };
 		menu.addItem("Create Event", addEventCommand);
 		
-		MenuBar viewMenu = new MenuBar(true);
-	    viewMenu.setAnimationEnabled(true);
-	    menu.addItem(new MenuItem("View", viewMenu));
-	    
-	    Command viewAllCommand = new Command(){
-			public void execute() {
-			}
-	    };
-	    
-	    viewMenu.addItem("All Events",viewAllCommand);
-	    
-	    Command viewThisMonthCommand = new Command(){
+		Command addCalendarGadget = new Command(){
 
 			public void execute() {
-				
+				Window.open("http://www.google.com/calendar/render?gadgeturl=http://birthdayplus.googlecode.com/svn/trunk/BirthdayPlusForCalendar.xml","_blank" , null);
 			}
-	    };
+		};
+		
+	
+	    menu.addItem("Calendar",addCalendarGadget).setTitle("Add small gagdet to your Google Calendar and share you events from the calendar through Birthday+");
 	    
-	    viewMenu.addItem("For Current Month",viewThisMonthCommand);
+	 
+	    
+	 
+	
 	    
 	    
 	    

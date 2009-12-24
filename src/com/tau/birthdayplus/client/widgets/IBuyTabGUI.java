@@ -4,6 +4,7 @@ package com.tau.birthdayplus.client.widgets;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,6 +29,9 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -38,6 +42,7 @@ import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 
@@ -64,6 +69,11 @@ public class IBuyTabGUI {
 	private  ScrollPanel iBuyScrollPanel;
 	private  FlexTable iBuyTableHeader;
 	private  HoverTable wishTable;
+	private  RichTextArea emailTextArea;
+	private  RichTextToolbar emailTextToolbar;
+	private  Grid emailGrid;
+	private  PopupPanel emailPanel;
+	private  Anchor sendEmail;
 	
     private FlowPanel mainChatPanel;
 	private HorizontalPanel chatPanel;
@@ -118,6 +128,25 @@ public class IBuyTabGUI {
 	//	wishPanel.setSize("100%", "350px");
 	
 		buildWishlistTable();
+		
+		emailPanel = new PopupPanel(false,true); 
+		emailTextArea = new RichTextArea();
+	    emailTextArea.setSize("300px", "14em");
+	    emailTextToolbar = new RichTextToolbar(emailTextArea);
+	    emailTextToolbar.setWidth("300px");
+	    sendEmail = new Anchor("send this message");
+	    
+	    
+
+	    // Add the components to a panel
+	    emailGrid = new Grid(4, 1);
+	    emailGrid.setWidth("300px");
+	    emailGrid.setText(0, 0, "We will send mail to the group on your behalf. Please enter the mail text below ");
+	    emailGrid.setWidget(1, 0, emailTextToolbar);
+	    emailGrid.setWidget(2, 0, emailTextArea);
+	    emailGrid.setWidget(3, 0, sendEmail);
+	    sendEmail.setWidth("100%");
+	    emailPanel.add(emailGrid);
 		
 		mainChatPanel = new FlowPanel();
 		iBuyPanel.add(mainChatPanel);
@@ -404,6 +433,17 @@ public class IBuyTabGUI {
 		    fillChatMessages();
 		}
 	}
+	
+	
+	private void showTextArea(WishlistItemNewData item){
+		if(item.getIsActive() && !item.getParticipators().isEmpty()){
+			currentItem = item;
+	    	emailPanel.center();
+		    emailPanel.show();
+	    	emailTextArea.setFocus(true);
+		}
+		
+	}
 		
 	
 		
@@ -437,9 +477,7 @@ public class IBuyTabGUI {
 	                               }
 	                            }
 	                            break;
-	        case BUY_LINK     : //ASK ABOUT CONTACTS AND SHORT MESSAGE
-	        	                if(item.getIsActive())
-	        	                   this.wishlistService.bookItemForGroup(item.getWishlistItemId(), entryPoint.userId,"",false);
+	        case BUY_LINK     : showTextArea(item);
                                 break;
 	        }
 	        
@@ -568,6 +606,17 @@ public class IBuyTabGUI {
 		}
 		
 		
+		private void gui_eventSendEmailButtomClicked(){
+			if(emailTextArea.getText().equals(""))
+				return;
+			emailPanel.hide();
+		//	this.wishlistService.sendEmail(emailTextArea.getHTML());
+			this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML(),false);
+			emailTextArea.setText("");
+			
+		}
+		
+		
 	
 
 		
@@ -625,6 +674,15 @@ public class IBuyTabGUI {
 				}
 				
 			});
+			
+			this.sendEmail.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					gui_eventSendEmailButtomClicked();
+					
+				}
+				
+			});
 		}
 
 
@@ -677,7 +735,7 @@ public class IBuyTabGUI {
 
 
 		public void service_getBookedWishlistFailed(Throwable caught) {
-			// TODO Auto-generated method stub
+			
 			
 		}
 
