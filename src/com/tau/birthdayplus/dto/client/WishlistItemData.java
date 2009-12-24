@@ -31,7 +31,7 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	 * (with any access modifier) or no constructor at all.
 	 */
 	public WishlistItemData(){	
-		
+		this(null,null,null,true,null,null,true,null);
 	}
 	/*
 	 * constructor for server side
