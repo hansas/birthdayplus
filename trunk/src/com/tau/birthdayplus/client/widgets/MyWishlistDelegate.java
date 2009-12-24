@@ -95,6 +95,8 @@ public class MyWishlistDelegate {
 		   );//end of method call
 			RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
 
-	   }    
+	   }
+	   
+	  
 
 }

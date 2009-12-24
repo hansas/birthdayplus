@@ -78,8 +78,10 @@ public interface WishlistServiceAsync {
 	RequestBuilder getWishlistItem(String itemId,
 			AsyncCallback<WishlistItemNewData> callback);
 
-	void getLastItemsForUser(String myUserId, String anotherUserId,
+	RequestBuilder getLastItemsForUser(String myUserId, String anotherUserId,
 			AsyncCallback<ArrayList<WishlistItemPolaniData>> callback);
+
+	
 	
 
 	

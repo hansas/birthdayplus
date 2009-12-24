@@ -18,6 +18,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
  */
 @RemoteServiceRelativePath("wishlist")
 public interface WishlistService extends RemoteService{
+
 	////////////////for managing my events\\\\\\\\\\\\\\\\\\\\\\
 	/*
 	 * creates new item for the user
