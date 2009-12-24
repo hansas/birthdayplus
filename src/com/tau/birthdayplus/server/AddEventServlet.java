@@ -1,7 +1,9 @@
 package com.tau.birthdayplus.server;
 import java.io.IOException; 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties; 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,34 +27,53 @@ public class AddEventServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddEventServlet.class.getName());
+	/*
+	 * Invitation: vcxv dgdg @ Annually on June 6 (event@testrpcplus.appspotmail.com)
+	 * Invitation: kkk kk skk @ Annually from 9pm to 10pm on June 26 (event@testrpcplus.appspotmail.com)
+	 */
+	private static final Pattern eventAnnualyPattern  = Pattern.compile("(?:Invitation:) ([\\w ]+) (?:@ Annually(?: from [\\w:]+ to [\\w:]+)? on) (\\w{3,}) (\\d{1,2}) (\\(event@testrpcplus.appspotmail.com\\))");
+	/*
+	 * Invitation: something @ Thu Dec 24, 2009 (event@testrpcplus.appspotmail.com)
+	 * Invitation: something @ Sat Jan 23 8:30am - 9:30am (event@testrpcplus.appspotmail.com)
+	 */
+    private static final Pattern eventOncePattern = Pattern.compile("(?:Invitation:) ([\\w ]+) (?:@ \\w+) (\\w{3,}) (\\d{1,2})(?:, \\d+)?(?: [\\w :-]+)? (\\(event@testrpcplus.appspotmail.com\\))");
+
+	/*
+	 * Olya Vingurt <yalo_niv@yahoo.com>
+	 */
+    private static final Pattern emailPattern = Pattern.compile("(?:[\\w ]+) (?:<)([\\w@.]+)(>)");
+
+
 	
     private enum Month {
 		
-		Jan(0,"Jan"),
-		Feb(1,"Feb"),
-		Mar(2,"Mar"),
-		Apr(3,"Apr"),
-		May(4,"May"),
-		June(5,"June"),
-		July(6,"July"),
-		Aug(7,"Aug"),
-		Sep(8,"Sep"),
-		Oct(9,"Oct"),
-		Nov(10,"Nov"),
-		Dec(11,"Dec");
+		Jan(0,"Jan","January"),
+		Feb(1,"Feb","February"),
+		Mar(2,"Mar","March"),
+		Apr(3,"Apr","April"),
+		May(4,"May","May"),
+		June(5,"June","June"),
+		July(6,"July","July"),
+		Aug(7,"Aug","August"),
+		Sep(8,"Sep","September"),
+		Oct(9,"Oct","October"),
+		Nov(10,"Nov","November"),
+		Dec(11,"Dec","December");
 		
 		
 		private int index;
-		private String name;
-		private Month(int index,String name){
+		private String shortName;
+		private String fullName;
+		private Month(int index,String shortName,String fullName){
 			this.index = index;
-			this.name = name;
+			this.shortName = shortName;
+			this.fullName = fullName;
 		}
 		
 		
 		public static int getIndex(String name){
 			for(Month month : Month.values() ){
-				if(month.name.equals(name))
+				if(month.shortName.equals(name) || month.fullName.equals(name))
 					return month.index;
 			}
 			return -1;
@@ -76,17 +97,15 @@ public class AddEventServlet extends HttpServlet {
 			if (from.length > 0) {
 			    fromAddress = from[0].toString();
 			}
-		    Pattern emailPattern = Pattern.compile("([\\w ]+) (<)([\\w@.]+)(>)");
             Matcher emailMatcher = emailPattern.matcher(fromAddress);
             String email;
             if (emailMatcher.matches()){
-    		    	email = emailMatcher.group(3);
+    		    	email = emailMatcher.group(1);
     		    	log.info("mail is : "+email);
             }else{
             	return;
             }
-			log.info(fromAddress);
-			log.info(message.getSubject());
+			log.info("the subject is : "+message.getSubject());
 			EventData event = getEvent(message.getSubject());
 			if(event == null )
 				return;
@@ -96,29 +115,45 @@ public class AddEventServlet extends HttpServlet {
 		} catch (MessagingException e) {
 			log.info("exception : "+e.getMessage());
 			
+		}catch (Exception ex){
+        	log.log(Level.INFO, "the log from calling to createEvent with gmail", ex);
+
 		}
 
     }
     
     
     private EventData getEvent(String subject){
-    	    Pattern eventAnnualy  = Pattern.compile("(Invitation:) ([\\w ]+) (@ Annually on) (\\w{3,4}+) (\\d{1,2}) (\\(event@testrpcplus.appspotmail.com\\))");		
-		    Matcher matcher = eventAnnualy.matcher( subject );
+		    Matcher eventAnnualyMatcher = eventAnnualyPattern.matcher( subject );
+		    Matcher eventOnceMatcher = eventOncePattern.matcher(subject);
 		    EventData data = null;
             
-		    //match annual event 
-		    if (matcher.matches()){
-		    	String event = matcher.group(2);
-		        int  month = Month.getIndex(matcher.group(4));
+		    //match  event 
+		    if (eventAnnualyMatcher.matches() || eventOnceMatcher.matches()){
+		    	String event = eventAnnualyMatcher.matches() ? eventAnnualyMatcher.group(1) : eventOnceMatcher.group(1);
+		    	log.info("event :" +event);
+		        int  month = eventAnnualyMatcher.matches() ? Month.getIndex(eventAnnualyMatcher.group(2)) : Month.getIndex(eventOnceMatcher.group(2));
+		        log.info("month :"+month);
 		        if (month == -1 )
 		        	return data;
-		    	int day = Integer.parseInt(matcher.group(5));
-		    	Calendar calendar = Calendar.getInstance();
-		    	calendar.clear();
-		    	calendar.set(Calendar.YEAR, month, day);
-		    	data = new EventData("","",event,calendar.getTime(),true);
+		    	int day = Integer.parseInt(eventAnnualyMatcher.matches() ? eventAnnualyMatcher.group(3) : eventOnceMatcher.group(3));
+		    	log.info("day : "+day);
+		    	if(eventAnnualyMatcher.matches())
+		    	   data = new EventData("","",event,buildDate(month,day),true);
+		    	else
+		    	   data = new EventData("","",event,buildDate(month,day),false);
 		    }
 		    return data;
     
+    }
+    
+    private static Date buildDate(int month , int day){
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.clear();
+    	if(Calendar.MONTH > month || (Calendar.MONTH == month && Calendar.DAY_OF_MONTH > day))
+    		calendar.set(Calendar.YEAR+1, month, day);
+    	else	
+        	calendar.set(Calendar.YEAR, month, day);
+    	return calendar.getTime();
     }
 }

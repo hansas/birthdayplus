@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
+import com.tau.birthdayplus.logic.WishlistManagement;
 
 
 public class AddWishlistItem  extends HttpServlet {
@@ -35,33 +37,41 @@ public class AddWishlistItem  extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException
  {
-    
+        boolean created = false;
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
        
         
         if (user != null) {
         try{
-        	WishlistItemData  data = new WishlistItemData();
-        	Parse(data, req.getParameter("href"));
-        	
+        	WishlistItemData data = Parse( req.getParameter("href"));
+        	if((data.getPrice()!=null) && (data.getItemName()!=null)){
+        		log.info("calling to create wishlistItem");
+        	    WishlistManagement.createWishlistItem(data, user.getUserId());
+        	    created = true;
+        	}
         }catch(Exception ex){
-        	
+        	log.log(Level.INFO, "the log from calling to createWishlistItem with googleId", ex);
         }
         resp.setContentType("text/html; charset=UTF-8");
-        String html = "<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' dir='rtl'><b><br />המוצר שנבחר התווסף לרשימה שלך בהצלחה. <br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>לחץ כאן לסגירת החלון</u></a></b></td></tr></table></div></div>";
+        String html = "";
+        if (created)
+            html = "<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' dir='rtl'><b><br />המוצר שנבחר התווסף לרשימה שלך בהצלחה. <br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>לחץ כאן לסגירת החלון</u></a></b></td></tr></table></div></div>";
+        else 
+            html = "<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' dir='rtl'><b><br />המוצר שנבחר לא הוסף לרשימה שלך . <br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>לחץ כאן לסגירת החלון</u></a></b></td></tr></table></div></div>";
+
         resp.getWriter().println(html);
         } else {
-        	// resp.setContentType("text/plain");
         	resp.sendRedirect(userService.createLoginURL(req.getRequestURI()+"?href="+req.getParameter("href")));
          }
        }
 	
 	
-	private static void Parse(WishlistItemData item,String url){
+	private static WishlistItemData Parse(String url){
 		URLConnection connection = null;
 		boolean hasPrice = false;
 		boolean hasTitleThumbnail = false;
+		WishlistItemData item = new WishlistItemData();
 		try {
 		  connection =  new URL(url).openConnection();
 		  Scanner scanner = new Scanner(connection.getInputStream());
@@ -72,13 +82,14 @@ public class AddWishlistItem  extends HttpServlet {
 		      if (!hasTitleThumbnail)
 		    	  hasTitleThumbnail = findTitleThumbnail(line,item);
 		      if(hasPrice && hasTitleThumbnail)
-		    	  break;
+		    	  return item;
 		      }
 		  
 	
 		}catch ( Exception ex ) {
 		    ex.printStackTrace();
 		}
+		return item;
 		
 
 	}
@@ -104,6 +115,7 @@ public class AddWishlistItem  extends HttpServlet {
 		 if (priceMatcher.matches()){
 		    	String price = priceMatcher.group(2);
 		        item.setPrice(Double.parseDouble(price));
+		        log.info("the price is :"+price);
 		        return true;
 		 }
 		 return false;

@@ -1,6 +1,7 @@
 package com.tau.birthdayplus.cron;
 
 import java.io.IOException;  
+import java.util.logging.Level;
 import java.util.logging.Logger;  
 import javax.servlet.ServletException;  
 import javax.servlet.http.*;  
@@ -22,6 +23,7 @@ public class cronJobs extends HttpServlet {
 
   catch (Exception ex) {  
 	  _logger.severe("Cron Job failed: " + ex.getMessage());
+	  _logger.log(Level.SEVERE, "the log from cron job ", ex);
  }  
 
  }  
