@@ -84,26 +84,28 @@ public class BusinessObjectDAL {
 	}
 	
 	public static Guest loadGuestByGoogleId(String id,PersistenceManager pm){
+		List<Guest> guest = new ArrayList<Guest>();
 		try{
 			Query query = pm.newQuery(Guest.class);
 			query.setFilter("googleId == id");
 			query.declareParameters("String id");
-			Guest g =(Guest)query.execute(id);
+			guest = (List<Guest>)query.execute(id);
 			pm.close();
-			return g;
+			return guest.get(0);
 		} catch (Exception ex) {
 			throw new RuntimeException("error in loadGuestByGoogleId"+ex.getMessage());
 		}
 	}
 	
 	public static Guest loadGuestByGmail(String gmail,PersistenceManager pm){
+		List<Guest> guest = new ArrayList<Guest>();
 		try{
 			Query query = pm.newQuery(Guest.class);
 			query.setFilter("email == gmail");
 			query.declareParameters("String gmail");
-			Guest g =(Guest)query.execute(gmail);
+			guest =(List<Guest>)query.execute(gmail);
 			pm.close();
-			return g;
+			return guest.get(0);
 		} catch (Exception ex) {
 			throw new RuntimeException("error in loadGuestByGmail"+ex.getMessage());
 		}
