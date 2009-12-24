@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="Birthdayplus Calendar gadget" height="40" author="BirthdayPlus team" author_email="gadgetBirthdayPlus@gmail.com">
+  <Require feature="google.calendar-0.5"/>
+</ModulePrefs>
+<Content type="html">
+  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<body>
+
+<script>
+function compose() {
+  var eventData = {
+    details: 'You can see my wishlist in BirthdayPlus Gadget',
+
+    // Note that attendees MUST be sent in contact format.
+    attendees: [
+      {email: 'event@testrpcplus.appspotmail.com'}
+    ]
+  };
+  google.calendar.composeEvent(eventData);
+}
+</script>
+
+<center>
+<button onclick="compose()">Compose Event</button>
+</center>
+
+</body>
+</html>
+
+
+</Content>
+</Module>
