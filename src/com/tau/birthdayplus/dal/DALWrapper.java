@@ -61,6 +61,10 @@ public class DALWrapper {
 		return BusinessObjectDAL.loadGuestByGmail(gmail, pm);
 	}
 	
+	public Guest loadGuestByGoogleId(String googleId){
+		return BusinessObjectDAL.loadGuestByGoogleId(googleId, pm);
+	}
+	
 	public Event getEventByKey(Key eventKey){
 		return pm.getObjectById(Event.class, eventKey);
 	}

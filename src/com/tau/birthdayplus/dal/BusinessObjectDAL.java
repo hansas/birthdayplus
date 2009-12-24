@@ -83,6 +83,19 @@ public class BusinessObjectDAL {
 		return g;
 	}
 	
+	public static Guest loadGuestByGoogleId(String id,PersistenceManager pm){
+		try{
+			Query query = pm.newQuery(Guest.class);
+			query.setFilter("googleId == id");
+			query.declareParameters("String id");
+			Guest g =(Guest)query.execute(id);
+			pm.close();
+			return g;
+		} catch (Exception ex) {
+			throw new RuntimeException("error in loadGuestByGoogleId"+ex.getMessage());
+		}
+	}
+	
 	public static Guest loadGuestByGmail(String gmail,PersistenceManager pm){
 		try{
 			Query query = pm.newQuery(Guest.class);

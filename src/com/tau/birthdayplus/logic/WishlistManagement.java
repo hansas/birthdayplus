@@ -11,6 +11,9 @@ import org.apache.catalina.mbeans.UserMBean;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.tau.birthdayplus.cache.Caching;
 import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
@@ -43,7 +46,7 @@ public class WishlistManagement {
 	public static void createWishlistItem(WishlistItemData item,String googleId) throws UserNotFoundException{
 		DALWrapper wrapper = new DALWrapper();
 		try{
-			Guest guest = wrapper.getGuestById(googleId);
+			Guest guest = wrapper.loadGuestByGoogleId(googleId);
 			wrapper.newCreateWishlistItem(item, guest);
 		}
 		finally{
