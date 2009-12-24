@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="composeEvent Test" height="40" author="Google"
-     author_email="calendar-gadget-questions@google.com">
+  <ModulePrefs title="Share events through Birthday+" height="40" author="Birthday+ Team"
+     author_email="gadgetBirthdayPlus@gmail.com ">
    <Require feature="google.calendar-0.5" />
   </ModulePrefs>
   <Content type="html">
@@ -14,7 +14,7 @@
 <script>
 function compose() {
   var eventData = {
-    details: 'You can see my Wisghlist in Birthday+ gadget',
+    details: 'You can see my Wishlist in Birthday+ gadget',
 
  
 
