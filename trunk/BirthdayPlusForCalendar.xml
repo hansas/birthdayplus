@@ -1,25 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-<ModulePrefs title="Birthdayplus Calendar gadget" height="40" author="BirthdayPlus team" author_email="gadgetBirthdayPlus@gmail.com">
-  <Require feature="google.calendar-0.5"/>
-</ModulePrefs>
-<Content type="html">
-  
-  
+  <ModulePrefs title="composeEvent Test" height="40" author="Google"
+     author_email="calendar-gadget-questions@google.com">
+   <Require feature="google.calendar-0.5" />
+  </ModulePrefs>
+  <Content type="html">
+<![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <body>
 
 <script>
 function compose() {
   var eventData = {
-    details: 'You can see my wishlist in BirthdayPlus Gadget',
+    details: 'You can see my Wisghlist in Birthday+ gadget',
+
+ 
 
     // Note that attendees MUST be sent in contact format.
     attendees: [
       {email: 'event@testrpcplus.appspotmail.com'}
     ]
+
+
   };
   google.calendar.composeEvent(eventData);
 }
@@ -31,7 +35,6 @@ function compose() {
 
 </body>
 </html>
-
-
-</Content>
+]]>
+  </Content>
 </Module>
