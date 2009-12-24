@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.client.UserNotFoundException;
 import com.tau.birthdayplus.client.WishlistService;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
@@ -196,6 +197,8 @@ WishlistService  {
 	throws ServletException, IOException {
 return RPCServletUtils.readContentAsUtf8(request, false);
 }
+
+
 
 	
 
