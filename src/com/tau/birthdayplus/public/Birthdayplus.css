@@ -108,9 +108,11 @@ font-size:small;
 }
 
 
+.inactiveRow td{text-decoration:line-through;}
+
 {
 border: 1px dashed red;
-padding: 3px;
+
 
 }
 
@@ -121,6 +123,7 @@ TD {
 TABLE {
 border: 1px dashed blue; 
 }
+
 
 
 /*
