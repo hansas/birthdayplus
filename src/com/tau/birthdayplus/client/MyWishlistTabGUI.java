@@ -38,9 +38,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
-
-import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.HoverTable;
@@ -57,45 +56,49 @@ public class MyWishlistTabGUI {
     private static final int DELETE_LINK = 4;
 
 	/*GUI Widgets*/
-
 	private FlowPanel wishlistPanel;
-	 private MenuBar menu ;
-	//private HorizontalPanel buttonPanel;
+	private MenuBar menu ;
+	private Label title;
+	
 	// wishlist table
 	private FlexTable wishTableHeader;
 	private HoverTable wishTable;
 	private ScrollPanel wishlistScrollPanel;
-	// add new item button
-//	private Button addItemButton;
-	//box for adding new item
+
 	
-	
-	protected DialogBox addItemBox;
-	//table for the add form
-	VerticalPanel itemDialogBoxVerticalPanel;
-	protected FlexTable formTable;
-	//name of the item 
-	protected TextBox itemField;
-	//priority of the item
+	//add item box 
+	private DialogBox addItemBox;
+	private VerticalPanel itemDialogBoxVerticalPanel;
+	private FlexTable formTable; 
+	private TextBox itemField;
     private HorizontalPanel priorityPanel;
     private RadioButton highPriorityButton;
     private RadioButton lowPriorityButton;
-	//   protected ListBox priorityField;
-    //link to the item
     private TextBox linkField;
-    //item's price
     private TextBox priceField;
     private TextBox thumbnailField;
-    //ok button in dialog box
-  //  public Button updateButton;
     private Button boxButton;
-    //cancel button
     private Button cancelButton;
-    
     private Label errorMsgLabel ;
     
     private Boolean addItem;
-
+    
+    
+    private enum Actions {
+    	CREATE("Add"), 
+    	REMOVE("Delete"), 
+    	UPDATE("Update");
+    	
+    	private String description;
+    	
+    	private Actions(String description){
+    		this.description = description;
+    	}
+    	
+    	public String toString(){
+    		return description;
+    	}
+    }
 
 	
  
@@ -121,6 +124,10 @@ public class MyWishlistTabGUI {
 		wishlistPanel.addStyleName("Panel");
 	//	wishlistPanel.setSize("100%", "350px");
 		
+		title = new Label();
+		wishlistPanel.add(title);
+		title.addStyleName("Label");
+		
 		menu = new MenuBar();
 		wishlistPanel.add(menu);
 		menu.addStyleName("buttonPanel");
@@ -133,7 +140,7 @@ public class MyWishlistTabGUI {
 		      }
 		    };
 		
-		menu.addItem("Add Item",addItemCommand);
+		menu.addItem("Add Item",addItemCommand).setTitle("Add new item to your wishlist");
 		
 		Command addItemZap = new Command(){
 
@@ -142,14 +149,6 @@ public class MyWishlistTabGUI {
 			}
 		};
 		menu.addItem("Add Items From Zap",addItemZap);
-		
-	//	buttonPanel = new HorizontalPanel();
-	//	wishlistPanel.add(buttonPanel);
-	//	buttonPanel.setStyleName("buttonPanel");
-		
-	//	addItemButton=new Button("Add item");
-	//    buttonPanel.add(addItemButton);
-	//	addItemButton.setSize("100px","25px");
 		
 		buildWishlistTable();
 		buildAddItemBox();
@@ -250,7 +249,7 @@ public class MyWishlistTabGUI {
 		
 		wishlistScrollPanel = new ScrollPanel();
 		wishlistPanel.add(wishlistScrollPanel);
-		wishlistScrollPanel.addStyleName("ScrollPanel");
+		wishlistScrollPanel.addStyleName("ShortScrollPanel");
 	//	wishlistScrollPanel.setSize("100%", "300px");
 		//create table for whishlistitems
 		
@@ -397,8 +396,10 @@ public class MyWishlistTabGUI {
 	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemData> result) {
 	        this.items = result;
 	        this.wishTable.clear();
+	        int countInactive = 0;
 	        
-	        RowFormatter rf = wishTable.getRowFormatter();
+	       // RowFormatter rf = wishTable.getRowFormatter();
+	        CellFormatter cellFormatter = wishTable.getCellFormatter();
            	        
 	        int row = 0;
 	        for (WishlistItemData item : result) {
@@ -413,8 +414,8 @@ public class MyWishlistTabGUI {
 	        			wishTable.setWidget(row,0,anchor);
 	        			TooltipListener listener  = new TooltipListener(
 	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' ;>", 5000 ,"yourcssclass");
-	        			listener.setOffsetX(60);
-	        			listener.setOffsetY(0);
+	        		//	listener.setOffsetX(60);
+	        		//	listener.setOffsetY(0);
 	        			anchor.addMouseListener( listener);
 	        		}
 	        	    	
@@ -437,15 +438,17 @@ public class MyWishlistTabGUI {
 			
 	    	    wishTable.setWidget(row, 3, updateImage);
 	    	    wishTable.setWidget(row,4,deleteImage); 
-	    	    if(item.getIsActive())
-	    	    	rf.addStyleName(row,constants.cwActiveRowStyle());
-	    	    else
-	    	    	rf.addStyleName(row, constants.cwInactiveRowStyle());
-
+	    	    if(!item.getIsActive())
+	    	    {
+	    	    	cellFormatter.addStyleName(row, 0,constants.cwInactiveRowStyle());
+	    	    	countInactive+=1;
+	    	    }
 	    	    
-	    	    wishTable.getRowFormatter().addStyleName(row, "tablesRows");	    	    
+	    	 //   wishTable.getRowFormatter().addStyleName(row, "tablesRows");	  
 	    	    row ++;
 	        }
+	        
+	        title.setText("Your friends will give you "+countInactive+" presents soon");
 	    }
 	
 	public void service_eventCreateWishlistItemSuccessful(){
