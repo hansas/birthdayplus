@@ -13,7 +13,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.tau.birthdayplus.cache.Caching;
-import com.tau.birthdayplus.client.UserNotFoundException;
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;

@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.client.Services;
 
 import com.google.gwt.http.client.RequestCallback;
 
@@ -13,7 +13,7 @@ public class RequestProxy {
 		$wnd.gadgets.io.makeRequest(url, response, params); 
 
 	function response(obj) {
-			@com.tau.birthdayplus.client.RequestProxy::onSuccessInternal(Lcom/tau/birthdayplus/client/GadgetResponse;Lcom/google/gwt/http/client/RequestCallback;)(obj, callback);
+			@com.tau.birthdayplus.client.Services.RequestProxy::onSuccessInternal(Lcom/tau/birthdayplus/client/Services/GadgetResponse;Lcom/google/gwt/http/client/RequestCallback;)(obj, callback);
 	};
 }-*/;
 

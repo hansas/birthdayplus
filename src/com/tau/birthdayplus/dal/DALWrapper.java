@@ -6,7 +6,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.datastore.Key;
-import com.tau.birthdayplus.client.UserNotFoundException;
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;

@@ -26,7 +26,7 @@ public class TooltipListener extends MouseListenerAdapter{
 	      int left = sender.getAbsoluteLeft() + offsetX;
 	      int top = sender.getAbsoluteTop() + offsetY;
 
-	      setPopupPosition(left, top);
+	 //     setPopupPosition(left, top);
 	    
 	      setStyleName(styleName);
 	    }
@@ -67,7 +67,8 @@ public class TooltipListener extends MouseListenerAdapter{
 	      tooltip.hide();
 	    }
 	    tooltip = new Tooltip(sender, offsetX, offsetY, text, delay, styleName);
-	    tooltip.show();
+	//    tooltip.show();
+	    tooltip.showRelativeTo(sender);
 	  }
 
 	  public void onMouseLeave(Widget sender) {

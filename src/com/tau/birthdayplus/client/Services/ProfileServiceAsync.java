@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.client.Services;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;

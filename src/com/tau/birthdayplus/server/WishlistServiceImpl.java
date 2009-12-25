@@ -13,8 +13,9 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.Email.SendEmail;
-import com.tau.birthdayplus.client.UserNotFoundException;
-import com.tau.birthdayplus.client.WishlistService;
+
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
+import com.tau.birthdayplus.client.Services.WishlistService;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.PMF;
 import com.tau.birthdayplus.domain.Event;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.client.Services;
 
 import com.google.gwt.http.client.Header;
 import com.google.gwt.http.client.Response;

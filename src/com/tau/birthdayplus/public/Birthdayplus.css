@@ -109,6 +109,10 @@ font-size:small;
 
 
 .inactiveRow td{text-decoration:line-through;}
+.dueColumn{
+cursor: pointer;
+cursor: hand;
+}
 
 {
 border: 1px dashed red;
