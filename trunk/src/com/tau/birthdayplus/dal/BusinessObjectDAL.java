@@ -334,7 +334,7 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
-			pm.close();
+		//	pm.close();
 		}
 	}
 	
