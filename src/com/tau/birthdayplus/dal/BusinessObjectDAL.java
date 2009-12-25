@@ -90,7 +90,6 @@ public class BusinessObjectDAL {
 			query.setFilter("googleId == id");
 			query.declareParameters("String id");
 			guest = (List<Guest>)query.execute(id);
-			pm.close();
 			return guest.get(0);
 		} catch (Exception ex) {
 			throw new RuntimeException("error in loadGuestByGoogleId"+ex.getMessage());
@@ -104,7 +103,6 @@ public class BusinessObjectDAL {
 			query.setFilter("email == gmail");
 			query.declareParameters("String gmail");
 			guest =(List<Guest>)query.execute(gmail);
-			pm.close();
 			return guest.get(0);
 		} catch (Exception ex) {
 			throw new RuntimeException("error in loadGuestByGmail"+ex.getMessage());
@@ -273,7 +271,6 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
-			pm.close();
 		}
 	}
 	
