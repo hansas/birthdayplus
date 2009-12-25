@@ -47,6 +47,7 @@ public class AddWishlistItem  extends HttpServlet {
         	WishlistItemData data = Parse( req.getParameter("href"));
         	if((data.getPrice()!=null) && (data.getItemName()!=null)){
         		log.info("calling to create wishlistItem");
+        		data.setLink(req.getParameter("href"));
         	    WishlistManagement.createWishlistItem(data, user.getUserId());
         	    created = true;
         	}

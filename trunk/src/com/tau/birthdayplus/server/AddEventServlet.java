@@ -128,8 +128,12 @@ public class AddEventServlet extends HttpServlet {
 		    Matcher eventOnceMatcher = eventOncePattern.matcher(subject);
 		    EventData data = null;
             
-		    //match  event 
+		    //match  event
+		    log.info("match event");
+		    log.info(subject);
+		    
 		    if (eventAnnualyMatcher.matches() || eventOnceMatcher.matches()){
+		    	log.info("matching the subject");
 		    	String event = eventAnnualyMatcher.matches() ? eventAnnualyMatcher.group(1) : eventOnceMatcher.group(1);
 		    	log.info("event :" +event);
 		        int  month = eventAnnualyMatcher.matches() ? Month.getIndex(eventAnnualyMatcher.group(2)) : Month.getIndex(eventOnceMatcher.group(2));
@@ -149,11 +153,17 @@ public class AddEventServlet extends HttpServlet {
     
     private static Date buildDate(int month , int day){
     	Calendar calendar = Calendar.getInstance();
+    	int currentYear = calendar.get(Calendar.YEAR);
+    	int currentMonth = calendar.get(Calendar.MONTH);
     	calendar.clear();
-    	if(Calendar.MONTH > month || (Calendar.MONTH == month && Calendar.DAY_OF_MONTH > day))
-    		calendar.set(Calendar.YEAR+1, month, day);
+    	if(currentMonth > month || (currentMonth == month && Calendar.DAY_OF_MONTH > day)){
+    		calendar.set(currentYear+1, month, day);
+    		
+    	}
     	else	
-        	calendar.set(Calendar.YEAR, month, day);
+        	calendar.set(currentYear, month, day);
+    	
+    	log.info("The date is : "+calendar.toString());
     	return calendar.getTime();
     }
 }
