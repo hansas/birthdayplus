@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client;
 
 
 import java.util.ArrayList;
@@ -43,6 +43,8 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class MyWishlistTabGUI {
@@ -239,7 +241,7 @@ public class MyWishlistTabGUI {
 		
 		wishTableHeader.getColumnFormatter().setWidth(0, "100px");
 		wishTableHeader.getColumnFormatter().setWidth(1, "50px");
-		wishTableHeader.getColumnFormatter().setWidth(2, "35px");
+	
 				
 		wishTableHeader.setWidget(0, 0, new Label("Item"));
 		wishTableHeader.setWidget(0,1, new Label("Priority"));
@@ -259,7 +261,7 @@ public class MyWishlistTabGUI {
 		
 		wishTable.getColumnFormatter().setWidth(0, "100px");
 		wishTable.getColumnFormatter().setWidth(1, "50px");
-		//wishTable.getColumnFormatter().setWidth(2, "35px");
+		wishTable.getColumnFormatter().setWidth(2, "80px");
 
 	}
 	
@@ -401,16 +403,16 @@ public class MyWishlistTabGUI {
 	        int row = 0;
 	        for (WishlistItemData item : result) {
 	        	//link
-	        	if (item.getLink().equals(""))
+	        	if ((item.getLink().equals("")) || (item.getLink()== null))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
 	        	else{
-	        		if(item.getThumbnail().equals(""))
+	        		if((item.getThumbnail().equals("")) || (item.getThumbnail() == null))
 	        	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
 	        		else{
 	        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
 	        			wishTable.setWidget(row,0,anchor);
 	        			TooltipListener listener  = new TooltipListener(
-	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"';>", 5000 ,"yourcssclass");
+	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' ;>", 5000 ,"yourcssclass");
 	        			listener.setOffsetX(60);
 	        			listener.setOffsetY(0);
 	        			anchor.addMouseListener( listener);
@@ -425,7 +427,7 @@ public class MyWishlistTabGUI {
 	        	
 	        	NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
 	        
-	    	    wishTable.setWidget(row, 2,new Label(format.format(item.getPrice())) );
+	    	    wishTable.setWidget(row, 2,new Label(format.format(item.getPrice()),false) );
 	    	    
 	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update item");
@@ -536,8 +538,8 @@ public class MyWishlistTabGUI {
 
 	function response(obj) {
 		    var responseText = obj.text; 
-			thisTabGui.@com.tau.birthdayplus.client.widgets.MyWishlistTabGUI::linkText=obj.text;
-			thisTabGui.@com.tau.birthdayplus.client.widgets.MyWishlistTabGUI::parse()();
+			thisTabGui.@com.tau.birthdayplus.client.MyWishlistTabGUI::linkText=obj.text;
+			thisTabGui.@com.tau.birthdayplus.client.MyWishlistTabGUI::parse()();
 	};
 }-*/;
 	

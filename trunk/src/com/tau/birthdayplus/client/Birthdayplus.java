@@ -55,12 +55,11 @@ import com.google.gwt.user.datepicker.client.DateBox;
 
 
 
-import com.tau.birthdayplus.client.widgets.EventTabDelegate;
-import com.tau.birthdayplus.client.widgets.EventTabGUI;
-import com.tau.birthdayplus.client.widgets.IBuyDelegate;
-import com.tau.birthdayplus.client.widgets.IBuyTabGUI;
-import com.tau.birthdayplus.client.widgets.MyWishlistDelegate;
-import com.tau.birthdayplus.client.widgets.MyWishlistTabGUI;
+import com.tau.birthdayplus.client.Services.ProfileService;
+import com.tau.birthdayplus.client.Services.ProfileServiceAsync;
+import com.tau.birthdayplus.client.Services.RequestProxy;
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
+
 
 import com.tau.birthdayplus.dto.client.GuestData;
 
@@ -71,8 +70,8 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		author_email = "yalo_niv@yahoo.com",
 		height = 400
 )
-//@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
-public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial  {
+@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
+public class Birthdayplus extends Gadget<UserPreferences>   {
 	CwConstants constants = GWT.create(CwConstants.class);
 	//public DynamicHeightFeature feature;
 	
@@ -192,8 +191,8 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 			
 			
 			//initiate I Buy tab
-		    iBuyGUI = new com.tau.birthdayplus.client.widgets.IBuyTabGUI();
-		    iBuyDelegate = new com.tau.birthdayplus.client.widgets.IBuyDelegate();
+		    iBuyGUI = new IBuyTabGUI();
+		    iBuyDelegate = new IBuyDelegate();
 		    iBuyGUI.wishlistService =iBuyDelegate;
 		    iBuyDelegate.gui =iBuyGUI;
 		    iBuyGUI.entryPoint=this;
@@ -302,13 +301,7 @@ public class Birthdayplus extends Gadget<UserPreferences> implements OpenSocial 
 			
 		}-*/;
 		
-   /*
-    * for open social
-    */
-		public void initializeFeature(OpenSocialFeature feature) {
-			
-			
-		}
+
 		
 		
 		/*

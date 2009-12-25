@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client;
 
 import java.util.ArrayList;
 
@@ -6,11 +6,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.client.Birthdayplus;
-import com.tau.birthdayplus.client.RequestProxy;
-import com.tau.birthdayplus.client.WishlistService;
-import com.tau.birthdayplus.client.WishlistServiceAsync;
+import com.tau.birthdayplus.client.Services.RequestProxy;
+import com.tau.birthdayplus.client.Services.WishlistService;
+import com.tau.birthdayplus.client.Services.WishlistServiceAsync;
+
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 public class WishListFriendsDelegate {
 	private final WishlistServiceAsync wishlistService = GWT.create(WishlistService.class); 
@@ -80,6 +82,30 @@ public class WishListFriendsDelegate {
 		 
 			RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
 
+	 }
+	 
+	 void getPolaniItems(String myUserId,String anotherUserId){
+		 entryPoint.loadingImagePopup.center();
+		 entryPoint.loadingImagePopup.show();
+		 RequestBuilder requestBuilder = wishlistService.getLastItemsForUser(myUserId, anotherUserId, new AsyncCallback<ArrayList<WishlistItemPolaniData>>(){
+
+			public void onFailure(Throwable caught) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_eventGetPolaniItemsFailed(caught);
+				
+			}
+
+			public void onSuccess(ArrayList<WishlistItemPolaniData> result) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_eventGetPolaniItemsSuccesfull(result);
+				
+			}
+			 
+		 });
+			RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
+
+		 
+		 
 	 }
 	       
 

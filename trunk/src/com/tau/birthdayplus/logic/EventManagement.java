@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.appengine.api.datastore.KeyFactory;
-import com.tau.birthdayplus.client.UserNotFoundException;
+
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;

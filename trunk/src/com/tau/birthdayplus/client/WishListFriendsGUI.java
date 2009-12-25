@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client;
 
 
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 
 
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 
@@ -30,6 +31,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,9 +39,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.TableWithHeader;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
+import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 
 
@@ -57,19 +61,24 @@ public class WishListFriendsGUI  {
 	
 
 	//VerticalPanel for the content of wishlist box
-	protected FlowPanel wishlistBoxPanel;
-	protected Label title;
+	private FlowPanel wishlistBoxPanel;
+	private Label title;
+	private MenuBar menu ;
+	
+	//polani
+	private PopupPanel polaniPanel;
+	private FlexTable polaniTable;
+	
+	//friend's wishlist table
 	private ScrollPanel scrollWishlistPanel;
 	private FlexTable headerFriendWishTable;
-	//friend's wishlist table
-	protected FlexTable friendWishTable;
-	//close button for closing wishlist box
-	protected Button closeFriendWishlistBoxButton;
+	private FlexTable friendWishTable;
+
 	//popup panel for participators
-	protected PopupPanel participatorsPanel;
-	//table for participators
-	protected TableWithHeader participatorsTable;
+	private PopupPanel participatorsPanel;
+	private TableWithHeader participatorsTable;
 	
+	//popup for money
 	private DialogBox moneyDialogBox;
 	private VerticalPanel moneyVerticalPanel;
 	private Label errorMsgLabel ;
@@ -92,7 +101,8 @@ public class WishListFriendsGUI  {
     private WishlistItemNewData currentItem;
     protected WishListFriendsDelegate wishlistService;
     protected EventTabGUI parent;
-    protected EventData currentEvent;
+    private EventData currentEvent;
+    private ArrayList<WishlistItemPolaniData> polaniItems;
  
 	
 
@@ -112,15 +122,38 @@ public class WishListFriendsGUI  {
 		//	wishlistBoxPanel.setSize("100%", "350px");
 			wishlistBoxPanel.setVisible(false);
 			
-			closeFriendWishlistBoxButton = new Button("Back");
-			wishlistBoxPanel.add(closeFriendWishlistBoxButton);
-			closeFriendWishlistBoxButton.addStyleName("Button");
-		//	closeFriendWishlistBoxButton.setSize("50px", "25px");
-			
 			title = new Label();
 			wishlistBoxPanel.add(title);
 			title.addStyleName("Label");
-		//	title.setSize("100%", "25px");
+			
+			menu = new MenuBar();
+			wishlistBoxPanel.add(menu);
+			menu.addStyleName("buttonPanel");
+			menu.setAutoOpen(true);
+			menu.setAnimationEnabled(true);
+			
+			Command closeFriendWishlistCommand = new Command(){
+				public void execute() {
+					gui_eventCloseButtonClicked();
+			      }
+			    };
+			
+			menu.addItem("<img src='"+GWT.getModuleBaseURL()+"left_16.png"+"' alt='Return to IBuy tab' title= 'Return' />",true,closeFriendWishlistCommand);
+			
+			
+			Command polaniCommand = new Command(){
+
+				public void execute() {
+					if(polaniItems == null){
+						wishlistService.getPolaniItems(parent.entryPoint.userId, currentEvent.getUserId());
+					}else
+						showPolaniItems();	
+				}
+			};
+			menu.addItem("Polani",polaniCommand);
+
+			
+	
 			
 			
 			
@@ -131,11 +164,22 @@ public class WishListFriendsGUI  {
 			
 			buildMoneyDialogBox();
 			buildParticipatorsPopupPanel();
+			buildPolaniPanel();
 			 
 			 
 			
 			   
 		}
+		
+		protected void showDialogBox(EventData event){
+			  currentEvent = event;
+		      title.setText("wishlist for " + parent.entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
+		      wishlistBoxPanel.setVisible(true);
+		      this.wishlistService.getWishlist(event.getUserId() , event.getEventId());
+			
+		}
+		
+	
 		
 	private void buildMoneyDialogBox(){
 		moneyDialogBox = new DialogBox();
@@ -189,8 +233,8 @@ public class WishListFriendsGUI  {
  	   participatorsTable.setHeader(0, "Name");
  	   participatorsTable.setHeader(1, "sum");
  	   
- 	   participatorsTable.getColumnFormatter().addStyleName(0, "tablesColumns");
- 	   participatorsTable.getColumnFormatter().addStyleName(1, "tablesColumns");
+ 	//   participatorsTable.getColumnFormatter().addStyleName(0, "tablesColumns");
+ 	//   participatorsTable.getColumnFormatter().addStyleName(1, "tablesColumns");
  	   
  	  
  	   
@@ -219,6 +263,26 @@ public class WishListFriendsGUI  {
 	}
 	
 	
+	private void buildPolaniPanel(){
+		polaniPanel = new PopupPanel(true);
+		polaniTable = new FlexTable();
+		polaniPanel.add(polaniTable);
+	}
+		
+	private void showPolaniItems(){
+		
+		polaniTable.clear();
+		 int row = 0;
+	        for(WishlistItemPolaniData item : polaniItems){
+	        	polaniTable.setWidget(row, 0, new Label(item.getItemName()+" for "+item.getEventName(),false));
+	        	row++;
+	        }   
+	     polaniPanel.showRelativeTo(menu);   
+		
+		
+	}
+	
+	
 	
 
 	
@@ -234,8 +298,8 @@ public class WishListFriendsGUI  {
 	
 		
 		headerFriendWishTable.getColumnFormatter().setWidth(0, "100px");
-		headerFriendWishTable.getColumnFormatter().setWidth(1, "70px");
-		headerFriendWishTable.getColumnFormatter().setWidth(2, "35px");
+		headerFriendWishTable.getColumnFormatter().setWidth(1, "50px");
+	//	headerFriendWishTable.getColumnFormatter().setWidth(2, "80px");
 	
 		
 		headerFriendWishTable.setWidget(0, 0, new Label ("Item"));
@@ -256,7 +320,8 @@ public class WishListFriendsGUI  {
 		friendWishTable.addStyleName("Table");
 		
 		friendWishTable.getColumnFormatter().setWidth(0, "100px");
-		friendWishTable.getColumnFormatter().setWidth(1, "70px");
+		friendWishTable.getColumnFormatter().setWidth(1, "50px");
+		friendWishTable.getColumnFormatter().setWidth(2, "80px");
 		
        
 	}
@@ -306,6 +371,7 @@ public class WishListFriendsGUI  {
 	    wishlistBoxPanel.setVisible(false);
 	    parent.eventPanel.setVisible(true);
 		friendWishTable.clear();
+		polaniItems = null;
         
     }
 	
@@ -353,11 +419,11 @@ public class WishListFriendsGUI  {
 	}
 	
 	public void wireWishlistFriendGUIEvents() {
-		this. closeFriendWishlistBoxButton.addClickHandler(new ClickHandler(){
-        	public void onClick(ClickEvent event){
-        	    gui_eventCloseButtonClicked();
-        	}
-        });
+	//	this. closeFriendWishlistBoxButton.addClickHandler(new ClickHandler(){
+     //   	public void onClick(ClickEvent event){
+      //  	    gui_eventCloseButtonClicked();
+      //  	}
+     //   });
 		
 		this.friendWishTable.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
@@ -409,7 +475,7 @@ public class WishListFriendsGUI  {
         int row = 0;
         for (WishlistItemNewData item : result) {
         	//link
-        	if (item.getLink().equals(""))
+        	if ((item.getLink().equals("")) || (item.getLink() == null))
         		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
         	else
         		friendWishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
@@ -486,6 +552,17 @@ public class WishListFriendsGUI  {
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.itemsToBuy = null;
 		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
+		
+	}
+
+	public void service_eventGetPolaniItemsFailed(Throwable caught) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
+		polaniItems = result;
+		showPolaniItems();	
 		
 	}
 

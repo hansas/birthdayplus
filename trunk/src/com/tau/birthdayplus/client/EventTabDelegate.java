@@ -1,14 +1,15 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client;
 
 import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.user.client.Window;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.client.Birthdayplus;
-import com.tau.birthdayplus.client.EventService;
-import com.tau.birthdayplus.client.EventServiceAsync;
-import com.tau.birthdayplus.client.RequestProxy;
+import com.tau.birthdayplus.client.Services.EventService;
+import com.tau.birthdayplus.client.Services.EventServiceAsync;
+import com.tau.birthdayplus.client.Services.RequestProxy;
+
 
 import com.tau.birthdayplus.dto.client.EventData;
 

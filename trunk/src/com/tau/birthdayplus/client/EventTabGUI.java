@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client;
 
 
 import java.util.ArrayList;
@@ -9,6 +9,10 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -41,6 +45,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.dto.client.EventData;
 
 
@@ -56,33 +61,22 @@ public class EventTabGUI {
     /*GUI Widgets*/
     protected FlowPanel mainPanel;
     private MenuBar menu ;
-    //vertical panel for the content of event list
- //   private HorizontalPanel buttonPanel;
+    private Label title;
+    
+    //events
 	protected FlowPanel eventPanel;
-	//table for events
 	private ScrollPanel eventScrollPanel;
 	private FlexTable eventTableHeader;
 	private HoverTable eventTable;
-	//add new event button
-//	private Button btnAddEvent;
-	//private Button googleButton;
 	private ArrayList<RadioButton> radioButtonList;
 	
 	//add event box
 	private DialogBox eventDialogBox;
-	
-	VerticalPanel eventDialogBoxVerticalPanel;
-	//table for the form
+	private VerticalPanel eventDialogBoxVerticalPanel;
 	private FlexTable layout; 
-	//event name field
 	private  SuggestBox txtName;
-	//event date field
 	private DateBox txtDate;
-	//recurrence field
 	private CheckBox chkRecurrence;
-	//update button
-//	public Button updateButton;
-	//add button
     private Button boxButton;
     //cancel button
     private Button cancelButton;
@@ -119,6 +113,10 @@ public class EventTabGUI {
 		eventPanel.setStyleName("Panel");
 	//	eventPanel.setSize("100%", "350px");
 		
+		title = new Label();
+		eventPanel.add(title);
+		title.addStyleName("Label");
+		
 		menu = new MenuBar();
 		eventPanel.add(menu);
 		menu.addStyleName("buttonPanel");
@@ -138,7 +136,7 @@ public class EventTabGUI {
 				gui_eventAddEventButtonClicked();
 		      }
 		    };
-		menu.addItem("Create Event", addEventCommand);
+		menu.addItem("Create Event", addEventCommand).setTitle("Add your event");
 		
 		Command addCalendarGadget = new Command(){
 
@@ -149,37 +147,7 @@ public class EventTabGUI {
 		
 	
 	    menu.addItem("Calendar",addCalendarGadget).setTitle("Add small gagdet to your Google Calendar and share you events from the calendar through Birthday+");
-	    
 	 
-	    
-	 
-	
-	    
-	    
-	    
-
-		    
-
-		
-
-        
-	//	buttonPanel = new HorizontalPanel();
-	//	eventPanel.add(buttonPanel);
-	//	buttonPanel.setStyleName("buttonPanel");
-		
-	//	buttonPanel.setSpacing(1);
-		
-	//	googleButton = new Button("Remind me");
-	//	buttonPanel.add(googleButton);
-	//	googleButton.setSize("100px", "25px");
-		
-	//	btnAddEvent = new Button("Add Event");
-	//	buttonPanel.add(btnAddEvent);
-	//	btnAddEvent.setSize("100px","25px");
-		
-
-		
-		
 		buildEventTable();
 		buildEventDialogBox();
 	
@@ -222,7 +190,7 @@ public class EventTabGUI {
 		
 		eventScrollPanel = new ScrollPanel();
 		eventPanel.add(eventScrollPanel);
-		eventScrollPanel.addStyleName("ScrollPanel");
+		eventScrollPanel.addStyleName("ShortScrollPanel");
 //		eventScrollPanel.setSize("100%", "300px");
 		
 		
@@ -234,6 +202,8 @@ public class EventTabGUI {
 		
 		eventTable.getColumnFormatter().setWidth(0, "22px");
 		eventTable.getColumnFormatter().setWidth(1, "178px");
+		
+		eventTable.getColumnFormatter().addStyleName(2, "dueColumn");
 	//	eventTable.getColumnFormatter().setWidth(2, "100px");
 	//	eventTable.getColumnFormatter().setWidth(2, "25px");
 
@@ -304,7 +274,7 @@ public class EventTabGUI {
 	    layout.setText(1, 0, "Date");
 	    layout.setWidget(1, 1, txtDate);
 	    
-	    layout.setText(2, 0, "Recurrence");
+	    layout.setText(2, 0, "Annual");
 	    layout.setWidget(2, 1, chkRecurrence);
 	    
 	 
@@ -375,30 +345,30 @@ public class EventTabGUI {
          int col = cellClicked.getCellIndex();
         
         EventData event = this.eventList.get(row);
+        
+        
+        switch(col){
+        case UPDATE_LINK : if(event.getUserId().equals(entryPoint.userId)){
+                              this.addEvent = false;
+                              loadForm(event,Actions.UPDATE);
+                           }
+                           break;
+                           
+        case DELETE_LINK : if(event.getUserId().equals(entryPoint.userId))
+                              this.eventService.deleteEvent(event);
+                           break;
+                           
+        case EVENT_LINK  : if(!event.getUserId().equals(entryPoint.userId)){
+        	                  eventPanel.setVisible(false);
+        	                  wishlistFriendGUI.showDialogBox(event);
+                           }
+   		                   break;
+        }
          
-       
-         if (col==UPDATE_LINK) {
-        	 if(event.getUserId().equals(entryPoint.userId)){
-               // this.addButton.setVisible(false);
-               // this.updateButton.setVisible(true);
-        		this.addEvent = false;
-          //      this.btnAddEvent.setVisible(false);
-                loadForm(event,Actions.UPDATE);
-        	 }
-         } else if (col==DELETE_LINK) {
-             if(event.getUserId().equals(entryPoint.userId))
-                this.eventService.deleteEvent(event);
-         }else if(col==EVENT_LINK){
-        	 if(! event.getUserId().equals(entryPoint.userId)){
-        	      currentEvent = event;
-        	      wishlistFriendGUI.currentEvent = event;
-        	      wishlistFriendGUI.title.setText("wishlist for " + entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
-        	      eventPanel.setVisible(false);
-        	      wishlistFriendGUI.wishlistBoxPanel.setVisible(true);
-        	      this.wishlistFriendService.getWishlist(event.getUserId() , event.getEventId());
-        	 }
-         }
     }
+	 
+	 
+
 	 
 	 
 	    /*
@@ -488,6 +458,8 @@ public class EventTabGUI {
 		this.eventList = result;
 		this.eventTable.clear();
 		radioButtonList = new ArrayList<RadioButton>();
+		int countEvents = 0;
+		Date today = new Date();
 		
 	
 		
@@ -496,10 +468,21 @@ public class EventTabGUI {
 		for (EventData event : eventList) {
 			RadioButton radioButton = new RadioButton("event");
 			eventTable.setWidget(row, 0, radioButton);
-		//	radioButton.setWidth("16px");
-		
-		//	radioButton.setStyleName("eventRadioButton");
 			radioButtonList.add(radioButton);
+			radioButton.setTitle("add reminder to Google Calendar");
+			
+			radioButton.addMouseDownHandler(new MouseDownHandler(){
+
+				public void onMouseDown(MouseDownEvent event) {
+					RadioButton button = (RadioButton) event.getSource();
+					if (button.getValue())
+						button.setValue(false);
+					else
+						button.setValue(true);
+				}
+				
+			});
+			
 		   
 			
 			if(event.getUserId().equals(entryPoint.userId)){
@@ -536,7 +519,10 @@ public class EventTabGUI {
 			eventTable.getRowFormatter().addStyleName(row, "tablesRows");
 			
 			row++;
+			if((event.getEventDate().getYear() == today.getYear()) && (event.getEventDate().getMonth()== today.getMonth()))
+				countEvents+=1;
 		}
+		title.setText("In this month there are "+countEvents + " events ");
 		
 	}
 	

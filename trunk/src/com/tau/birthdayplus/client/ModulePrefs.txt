@@ -1,0 +1,1 @@
+<Require feature="opensocial-0.8"/>

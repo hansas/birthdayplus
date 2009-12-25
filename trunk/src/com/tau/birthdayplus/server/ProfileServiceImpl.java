@@ -4,20 +4,10 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-
-import com.tau.birthdayplus.client.ProfileService;
-import com.tau.birthdayplus.client.UserNotFoundException;
-import com.tau.birthdayplus.dal.BusinessObjectDAL;
-import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.client.Services.ProfileService;
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.logic.UserManagement;
 

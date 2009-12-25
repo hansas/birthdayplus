@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client;
+package com.tau.birthdayplus.client.Services;
 
 
 import java.util.ArrayList;

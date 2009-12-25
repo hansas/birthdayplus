@@ -19,7 +19,7 @@ import org.datanucleus.store.Extent;
 import sun.misc.Sort;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.tau.birthdayplus.client.UserNotFoundException;
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.ChatMessage;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
