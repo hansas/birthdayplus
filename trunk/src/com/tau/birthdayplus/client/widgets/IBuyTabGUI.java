@@ -610,8 +610,7 @@ public class IBuyTabGUI {
 			if(emailTextArea.getText().equals(""))
 				return;
 			emailPanel.hide();
-		//	this.wishlistService.sendEmail(emailTextArea.getHTML());
-			this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML(),false);
+			this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML());
 			emailTextArea.setText("");
 			
 		}
