@@ -108,7 +108,7 @@ font-size:small;
 }
 
 
-.inactiveRow td{text-decoration:line-through;}
+.inactiveRow {text-decoration:line-through;}
 .dueColumn{
 cursor: pointer;
 cursor: hand;
