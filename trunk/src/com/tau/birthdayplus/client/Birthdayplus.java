@@ -81,14 +81,14 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	/*
 	 * user id and HashMap of <friend id, friend name> from open social
 	 */
-	public String userId;
-	public String firstName;
-	public String lastName;
-	public HashMap<String,String> userFriends= new HashMap<String,String>();
-	public GuestData user;
+	protected String userId;
+	protected String firstName;
+	protected String lastName;
+	protected HashMap<String,String> userFriends= new HashMap<String,String>();
+	protected GuestData user;
 	
-	public TabPanel tab ;
-	public  PopupPanel loadingImagePopup ;
+	protected  TabPanel tab ;
+	protected  PopupPanel loadingImagePopup ;
 
 	
 	

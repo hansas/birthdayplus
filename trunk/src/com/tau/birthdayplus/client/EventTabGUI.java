@@ -3,20 +3,13 @@ package com.tau.birthdayplus.client;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Set;
+
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
@@ -42,7 +35,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.tau.birthdayplus.client.Actions;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.HoverTable;
@@ -96,6 +88,22 @@ public class EventTabGUI {
 	private Label errorMsgLabel ;
 	
 	
+	private enum Actions {
+		CREATE("Add"), 
+		REMOVE("Delete"), 
+		UPDATE("Update");
+		
+		private String description;
+		
+		private Actions(String description){
+			this.description = description;
+		}
+		
+		public String toString(){
+			return description;
+		}
+	
+	}
 	
 	
 

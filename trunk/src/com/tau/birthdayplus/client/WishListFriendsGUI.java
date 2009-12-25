@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 
 
 import com.google.gwt.user.client.Command;
@@ -40,6 +41,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.TableWithHeader;
+import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -53,7 +55,7 @@ public class WishListFriendsGUI  {
 	 */
 	CwConstants constants = GWT.create(CwConstants.class);
 //	private static final int LINK = 0;
-	private static final int PRICE_LINK =2;
+//	private static final int PRICE_LINK =2;
 	private static final int BUY_LINK = 3;
     private static final int GROUP_BUY_LINK = 4;
 
@@ -75,8 +77,8 @@ public class WishListFriendsGUI  {
 	private FlexTable friendWishTable;
 
 	//popup panel for participators
-	private PopupPanel participatorsPanel;
-	private TableWithHeader participatorsTable;
+//	private PopupPanel participatorsPanel;
+//	private TableWithHeader participatorsTable;
 	
 	//popup for money
 	private DialogBox moneyDialogBox;
@@ -163,7 +165,7 @@ public class WishListFriendsGUI  {
 			
 			
 			buildMoneyDialogBox();
-			buildParticipatorsPopupPanel();
+	//		buildParticipatorsPopupPanel();
 			buildPolaniPanel();
 			 
 			 
@@ -221,7 +223,8 @@ public class WishListFriendsGUI  {
 		moneyDialogBox.showRelativeTo(widgetClicked);
 	    enterSumTextBox.setFocus(true);
 	}
-		
+	
+	/*
 	private void buildParticipatorsPopupPanel(){	
 	   participatorsPanel = new PopupPanel(true);
 	  
@@ -239,6 +242,7 @@ public class WishListFriendsGUI  {
  	  
  	   
 	}
+	
 	
 	private void showParticipatorsPanel(WishlistItemNewData item,Widget widgetClicked){
 		currentItem = item;
@@ -261,6 +265,7 @@ public class WishListFriendsGUI  {
 
 		
 	}
+	*/
 	
 	
 	private void buildPolaniPanel(){
@@ -349,9 +354,9 @@ public class WishListFriendsGUI  {
          
        switch(col){
     	                  
-       case PRICE_LINK :    if(!item.getParticipators().isEmpty())
-  		                        showParticipatorsPanel(item , widgetClicked);
-                            break;
+  //     case PRICE_LINK :    if(!item.getParticipators().isEmpty())
+  		              //          showParticipatorsPanel(item , widgetClicked);
+                    //        break;
                           
        case BUY_LINK :      if(item.getIsActive())
     	                       wishlistService.bookItemForUser(item.getWishlistItemId(), currentEvent.getEventId(),parent.entryPoint.userId);
@@ -375,9 +380,9 @@ public class WishListFriendsGUI  {
         
     }
 	
-	public void gui_eventParticipatorsTableClicked(){
-		participatorsPanel.hide();
-	}
+//	public void gui_eventParticipatorsTableClicked(){
+//		participatorsPanel.hide();
+//	}
 	
 
 	
@@ -436,12 +441,12 @@ public class WishListFriendsGUI  {
 		
 		
 		
-		this.participatorsTable.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
-				gui_eventParticipatorsTableClicked();
+	//	this.participatorsTable.addClickHandler(new ClickHandler(){
+	//		public void onClick(ClickEvent event){
+	//			gui_eventParticipatorsTableClicked();
 				
-			}
-		});
+	//		}
+	//	});
 		
 		this.okMoneyButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
@@ -466,11 +471,10 @@ public class WishListFriendsGUI  {
 	/*
 	 * friend's wishlist
 	 */
-	public void service_eventGetWishlistSuccesfull(
-			ArrayList<WishlistItemNewData> result) {
-	//	
+	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemNewData> result) {
 		this.items = result;
         this.friendWishTable.clear();
+        NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
         
         int row = 0;
         for (WishlistItemNewData item : result) {
@@ -487,8 +491,7 @@ public class WishListFriendsGUI  {
         	
             if(item.getIsActive()){	
         	   if(item.getParticipators().isEmpty()){
-        	      friendWishTable.setWidget(row, 2,new Label(item.getPrice().toString()) );
-        	      
+        	      friendWishTable.setWidget(row, 2,new Label(format.format(item.getPrice()),false) );
         	      Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
 			      buyImage.setTitle("I'll buy");
         	      friendWishTable.setWidget(row, 3, buyImage);
@@ -500,13 +503,20 @@ public class WishListFriendsGUI  {
             	}else{
         	      Integer sum = 0;
         	      Boolean userInGroup = false;
+	    	      String html =" <div style='background-color:#FFFFFF;border-style:inset;border-color:green;'><p style ='color:green'>Participators are :<p><UL style='list-style-type: square;'>";
+        	      
         	      for (ParticipatorData data : item.getParticipators()){
         		      if(parent.entryPoint.userId.equals(data.getUserId()))
         			     userInGroup = true;
-        		      sum += data.getMoney(); 
+        		      sum += data.getMoney();
+        		      html+="<LI>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+format.format(data.getMoney());
         	      }
-        	      Label price = new Label (sum +"/"+item.getPrice().toString());
+	    	      html+="</UL></div>";
+        	      Label price = new Label (format.format(sum) +"/"+format.format(item.getPrice()));
           	      friendWishTable.setWidget(row, 2,price );
+          	      
+          	      TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
+          	      price.addMouseListener(listener);
 
         	   
         	    //  friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );

@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -43,6 +44,7 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -55,21 +57,25 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 public class IBuyTabGUI {
 	//////////////////Constants///////////////////////////
 	CwConstants constants = GWT.create(CwConstants.class);
+	private static final int CHAT_LINK = 5;
 	private static final int BUY_LINK = 4;
 	private static final int CANCEL_LINK = 3;
 	private static final int UPDATE_LINK = 2;
-	private static final int PRICE_LINK  = 1;
+//	private static final int PRICE_LINK  = 1;
 	
 	
 
 	//////////////////GUI Widgets////////////////////////
 	private FlowPanel iBuyPanel;
-	 private MenuBar menu ;
+	private Label title;
+	private MenuBar menu;
 	
+	//items
 	private FlowPanel wishPanel;
 	private  ScrollPanel iBuyScrollPanel;
 	private  FlexTable iBuyTableHeader;
 	private  HoverTable wishTable;
+	//text area for message to group
 	private  RichTextArea emailTextArea;
 	private  RichTextToolbar emailTextToolbar;
 	private  Grid emailGrid;
@@ -77,11 +83,13 @@ public class IBuyTabGUI {
 	private  Anchor sendEmail;
 	
     private FlowPanel mainChatPanel;
+    private MenuBar chatMenu ;
+    private Label chatTitle;
 	private HorizontalPanel chatPanel;
 //	private HorizontalPanel buttonPanel;
 	
 	private FlowPanel leftSide;
-	private Label chatLabel;
+	
 	private ScrollPanel chatScrollPanel;
 	private FlexTable chatTable;
     private TextBox chatTextArea ;
@@ -127,6 +135,16 @@ public class IBuyTabGUI {
 		iBuyPanel.add(wishPanel);
 		wishPanel.addStyleName("Panel");
 	//	wishPanel.setSize("100%", "350px");
+		
+		title = new Label();
+		wishPanel.add(title);
+		title.addStyleName("Label");
+		
+		menu = new MenuBar();
+	    wishPanel.add(menu);
+		menu.addStyleName("buttonPanel");
+		menu.setAutoOpen(true);
+		menu.setAnimationEnabled(true);
 	
 		buildWishlistTable();
 		
@@ -148,17 +166,24 @@ public class IBuyTabGUI {
 	    emailGrid.setWidget(3, 0, sendEmail);
 	    sendEmail.setWidth("100%");
 	    emailPanel.add(emailGrid);
+	    
+	   
 		
 		mainChatPanel = new FlowPanel();
 		iBuyPanel.add(mainChatPanel);
 		mainChatPanel.setStyleName("Panel");
 		mainChatPanel.setVisible(false);
 		
-		menu = new MenuBar();
-		mainChatPanel.add(menu);
-		menu.addStyleName("buttonPanel");
-		menu.setAutoOpen(true);
-		menu.setAnimationEnabled(true);
+		
+		chatTitle = new Label();
+	    mainChatPanel.add(chatTitle);
+	    chatTitle.addStyleName("Label");
+			
+		chatMenu = new MenuBar();
+		mainChatPanel.add(chatMenu);
+		chatMenu.addStyleName("buttonPanel");
+		chatMenu.setAutoOpen(true);
+		chatMenu.setAnimationEnabled(true);
 		
 		Command closeChatCommand = new Command(){
 			public void execute() {
@@ -166,7 +191,7 @@ public class IBuyTabGUI {
 		      }
 		    };
 		
-		menu.addItem("<img src='http://birthdayplus.googlecode.com/svn/trunk/src/com/tau/birthdayplus/public/left_16.png' alt='Return to IBuy tab' title= 'Return' />",true,closeChatCommand);
+		chatMenu.addItem("<img src='http://birthdayplus.googlecode.com/svn/trunk/src/com/tau/birthdayplus/public/left_16.png' alt='Return to IBuy tab' title= 'Return' />",true,closeChatCommand);
 		
 	//	buttonPanel = new HorizontalPanel();
 	//	mainChatPanel.add(buttonPanel);
@@ -278,7 +303,7 @@ public class IBuyTabGUI {
 		iBuyTableHeader.getColumnFormatter().setWidth(0, "150px");
 	//	iBuyTableHeader.getColumnFormatter().setWidth(1, "70px");
 	//	iBuyTableHeader.getColumnFormatter().setWidth(2, "50px");
-		iBuyTableHeader.getColumnFormatter().setWidth(1, "90px");
+	//	iBuyTableHeader.getColumnFormatter().setWidth(1, "90px");
 				
 		iBuyTableHeader.setText(0, 0, "What");
 	//	iBuyTableHeader.setText(0,1, "Item");
@@ -289,7 +314,7 @@ public class IBuyTabGUI {
 		
 		iBuyScrollPanel = new ScrollPanel();
 		wishPanel.add(iBuyScrollPanel);
-		iBuyScrollPanel.addStyleName("ScrollPanel");
+		iBuyScrollPanel.addStyleName("ShortScrollPanel");
 	//	iBuyScrollPanel.setSize("100%", "300px");
 	
 		wishTable = new HoverTable();
@@ -298,7 +323,7 @@ public class IBuyTabGUI {
 	//	wishTable.setWidth("100%");
 		
 		wishTable.getColumnFormatter().setWidth(0, "150px");
-	//	wishTable.getColumnFormatter().setWidth(1, "70px");
+		wishTable.getColumnFormatter().setWidth(1, "80px");
 //		wishTable.getColumnFormatter().setWidth(2, "50px");
 	    
 	   // wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
@@ -314,13 +339,9 @@ public class IBuyTabGUI {
 	
 	
 	private void buildChatLeftSide(){
-		chatLabel = new Label("chat");
-		leftSide.add(chatLabel);
-		chatLabel.addStyleName("Label");
-	//	chatLabel.setSize("100%", "25px");
 		chatScrollPanel = new ScrollPanel();
 		leftSide.add(chatScrollPanel);
-		chatScrollPanel.addStyleName("ShortScrollPanel");
+		chatScrollPanel.addStyleName("ScrollPanel");
 	//	chatScrollPanel.setSize("100%", "300px");
 		
 		    
@@ -422,17 +443,14 @@ public class IBuyTabGUI {
 	
 	
 	private void loadChat(WishlistItemNewData item){
-		
-		if(!item.getParticipators().isEmpty()){
 	    	currentItem = item;
-	
+	    	chatTitle.setText("Group chat for buying a "+item.getItemName());
 	    	wishPanel.setVisible(false);
 	    	mainChatPanel.setVisible(true);
 	    	
 		    fillParticipatorsTable();
-		//    Window.alert("loading chat, number of messages is : "+currentItem.getChatMessages().size());
 		    fillChatMessages();
-		}
+		
 	}
 	
 	
@@ -463,10 +481,11 @@ public class IBuyTabGUI {
 	         
 	        
 	        switch(col){
-	        case PRICE_LINK   : loadChat(item);
-	                            break;
+	//        case PRICE_LINK   : loadChat(item);
+	//                            break;
 	        case UPDATE_LINK  : loadMoneyDialog(item);    
 	                            break;
+	                            
 	        case CANCEL_LINK  : if(item.getParticipators().isEmpty())
 	        	                   this.wishlistService.cancelBookItemForUser(item.getWishlistItemId(), entryPoint.userId);
 	                            else 
@@ -478,51 +497,70 @@ public class IBuyTabGUI {
 	                               }
 	                            }
 	                            break;
-	        case BUY_LINK     : showTextArea(item);
+	                            
+	        case BUY_LINK     : if(item.getIsActive())
+	        	                   showTextArea(item);
                                 break;
+                                
+	        case CHAT_LINK     : if(!item.getParticipators().isEmpty())
+	        	                    loadChat(item);
+	                            break;
+	                              
 	        }
 	        
 	  }
 	    
 
       
-		public void service_getBookedWishlistSuccesfull(
-				ArrayList<WishlistItemNewData> result) {
+		public void service_getBookedWishlistSuccesfull(ArrayList<WishlistItemNewData> result) {
 			this.itemsToBuy = result;
 	        this.wishTable.clear();
-	        
-	       
-	        
+	        NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
+	        Double countMoney = 0.0;
+	        Date today = new Date();
+
 	        int row = 0;
 	        
 	        for (WishlistItemNewData item : result) {
 	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
-	       // 	wishTable.setWidget(row,0,new Label(item.getUserName()+"'s "+item.getEventName()));
-	        	//link
-	        	if (item.getLink().equals(""))
-	        		wishTable.setWidget(row, 0,new Label(what));
+	        
+	        	if ((item.getLink().equals("")) || (item.getLink()==null))
+	        		wishTable.setWidget(row, 0,new Label(what,false));
 	        	else
 	        		wishTable.setWidget(row, 0,new Anchor(what,item.getLink(),"_blank"));
-	        	//priority
-	        	//if(item.getPriority() )
-	        	///	wishTable.setWidget(row,2,new Label("high"));
-	        	//else
-	    	  //     wishTable.setWidget(row,2,new Label("low"));
+	        
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
-	    	    	wishTable.setWidget(row, 1,new Label(item.getPrice().toString()) );
+	    	    	wishTable.setWidget(row, 1,new Label(format.format(item.getPrice()),false)) ;
+	    	    	if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
+	    	    		countMoney+=item.getPrice();
 	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
 				    cancelImage.setTitle("cancel reservation");
 		    	    wishTable.setWidget(row, 3, cancelImage); 
 		
 	    	    }else{
 	    	    	Integer sum = 0;
+	    	    	String html =" <div style='background-color:#FFFFFF;border-style:inset;border-color:green;'><p style ='color:green'>Participators are :<p><UL style='list-style-type: square;'>";
 	    	    	for(ParticipatorData user : item.getParticipators()){
 	    	    		sum+=user.getMoney();
+	    	    		if(user.getUserId().equals(entryPoint.userId)){
+	    	    			if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
+	    	    	    		countMoney+=user.getMoney();
+		        		    html+="<LI style='color:blue'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+format.format(user.getMoney());
+
+	    	    		}else
+	        		        html+="<LI>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+format.format(user.getMoney());
+
 	    	    	}
-	    	    	Hyperlink chatLink = new Hyperlink(sum+ " / " + item.getPrice().toString(), null);
-	    	    	chatLink.setTitle("click to enter the chat");
-	    	        wishTable.setWidget(row, 1,chatLink );
+	    	    	html+="</UL></div>";
+	    	    	Label priceLabel = new Label(format.format(sum)+" / "+format.format(item.getPrice()));
+	    	    //	Hyperlink chatLink = new Hyperlink(sum+ " / " + item.getPrice().toString(), null);
+	    	    //	chatLink.setTitle("click to enter the chat");
+	    	        wishTable.setWidget(row, 1,priceLabel );
+	    	        
+	    	        TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
+	          	    priceLabel.addMouseListener(listener);
+	          	    
 	    	        if(item.getIsActive()){
 	    	        	Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 	    			    updateImage.setTitle("update ");
@@ -542,15 +580,14 @@ public class IBuyTabGUI {
 	    	        	
 	    	        }
 	    	        
-	    
-	           
-	        }
-	    	    
-	  //  	    wishTable.getRowFormatter().addStyleName(row, "tablesRows");
+	    	        Image chatImage = new Image(GWT.getModuleBaseURL()+"chat-icon.png");
+	    	        chatImage.setTitle("chat");
+	    	        wishTable.setWidget(row, 5, chatImage);
 
-	    	    
+	        }   
 	    	    row ++;
 	        }
+	        title.setText("In this month you are going to spend "+format.format(countMoney)+" on presents");
 			    
 		}
 		
