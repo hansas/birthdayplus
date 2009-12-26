@@ -432,6 +432,7 @@ public class BusinessObjectDAL {
 			else{
 				throw new UserException("You may not delete this item, because there are people that want to buy it to you");
 			}
+			tx.commit();
 		} 
 		catch (RuntimeException e)
         {
@@ -447,7 +448,6 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
-			tx.commit();
 			pm.close();
 		}
 		return item;
@@ -533,23 +533,6 @@ public class BusinessObjectDAL {
 		PersistenceManager pm) throws UserNotFoundException {
 		Key buyer = KeyFactory.createKey(Guest.class.getSimpleName(), anotherUserId);
 		Key myKey = KeyFactory.createKey(Guest.class.getSimpleName(), myUserId);
-		//List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
-		//List<WishlistItemPolaniData> resultItems = new ArrayList<WishlistItemPolaniData>();
-//		try {
-//			Query query = pm.newQuery(WishlistItem.class);
-//			query.declareImports("import com.google.appengine.api.datastore.Key");
-//			query.setFilter("buyerKey == buyer");
-//			query.declareParameters("Key buyer");
-//			wishlistItems = (List<WishlistItem>) query.execute(buyer);
-//		} catch (Exception ex) {
-//			log.severe("Error in getLastItemsForUser: "+ex.getMessage());
-//			throw new RuntimeException("error in data base: getLastItemsForUser");
-//		}
-//		for (WishlistItem item : wishlistItems){
-//			if (item.getKey().getParent().equals(myKey)){
-//				resultItems.add(item);
-//			}
-//		}
 		Guest guest = loadGuest(myUserId, pm);
 		List<WishlistItem> myItems = guest.getWishlistItems();
 		List<Event> myEvents = guest.getEvents();
@@ -654,6 +637,9 @@ public class BusinessObjectDAL {
 	public static void bookItemForGroup(String itemId, String userId, String message) throws UserNotFoundException, UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(itemId, pm);
+		if (item==null){
+			log.severe("There is no item with item id "+itemId);
+		}
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
 			if (item.getBuyerKey()==null){
@@ -663,7 +649,9 @@ public class BusinessObjectDAL {
 				item.setIsActive(false);
 				pm.makePersistent(item);
 				Guest itemUser = (Guest)pm.getObjectById(item.getKey().getParent());
+				log.info("item user is: "+itemUser.getFirstName());
 				Event event = (Event)pm.getObjectById(item.getEventKey());
+				log.info("item event is: " + event.getEventName());
 				String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
 				GroupEmail group = new GroupEmail(fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
 				SendEmail.sendEmailToGroup(group, message);
