@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.google.appengine.api.datastore.KeyFactory;
 
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
@@ -58,20 +59,12 @@ public class EventManagement {
 		}
 	}
 	
-	public static void deleteEvent( EventData eventD) {
-	//	if(KeyFactory.stringToKey(eventD.getEventId()).equals(uId)){
-	    	BusinessObjectDAL.deleteEvent(eventD);
-	 //   }else{
-	  //  	throw new RuntimeException(new Exception("You cannot delete someone else's event!"));
-	 //   }
+	public static void deleteEvent( EventData eventD) throws UserException {
+	    BusinessObjectDAL.deleteEvent(eventD);
 	}
 
 	public static void updateEvent( EventData eventD){
-	//    if(KeyFactory.stringToKey(eventD.getEventId()).equals(uId)){
-	    	BusinessObjectDAL.updateEvent(eventD);
-	  //  }else{
-	  //  	throw new RuntimeException(new Exception("You cannot update someone else's event!"));
-	   // }
+		BusinessObjectDAL.updateEvent(eventD);
 	}
 	
 	public static EventData eventToEventData(Event event,DALWrapper wrapper){

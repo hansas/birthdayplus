@@ -11,6 +11,7 @@ import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import com.tau.birthdayplus.client.Services.EventService;
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dto.client.EventData;
 
@@ -38,7 +39,7 @@ EventService {
 	 * delete the event 
 	 * Client- give only to owner to delete event
 	 */
-	 public void deleteEvent(EventData eventD) {
+	 public void deleteEvent(EventData eventD) throws UserException {
 		EventManagement.deleteEvent(eventD);
 		
 	}
