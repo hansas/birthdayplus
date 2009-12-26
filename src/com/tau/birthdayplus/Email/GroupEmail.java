@@ -18,9 +18,6 @@ public class GroupEmail {
 	private String buyerId;
 	private ArrayList<ParticipatorEmail> participators;
 	
-	
-	
-	
 	public GroupEmail(String userName,String eventName,Date eventDate,Double price,String buyerId){
 		this.userName = userName;
 		this.eventName = eventName;

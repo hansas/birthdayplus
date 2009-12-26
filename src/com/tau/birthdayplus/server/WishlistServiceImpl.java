@@ -14,6 +14,7 @@ import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.Email.SendEmail;
 
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.client.Services.WishlistService;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
@@ -78,7 +79,7 @@ WishlistService  {
 	 * set isActive == false
 	 * add this item to guest "I buy" list (you can get userId from Buyer)
 	 */
-	public void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException {
+	public void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException, UserException {
 		WishlistManagement.bookItemForUser(wishlistItemId,eventId,userId);
 	}
 	
@@ -165,8 +166,8 @@ WishlistService  {
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	public void bookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException {
-		WishlistManagement.bookItemForGroup(itemId, userId);
+	public void bookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException {
+		WishlistManagement.bookItemForGroup(itemId, userId, message);
 	}
 	/*
 	 * only the buyer can cancel the reservation of the item
