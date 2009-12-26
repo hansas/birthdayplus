@@ -24,27 +24,62 @@ public class SendEmail {
 	private static final Logger log = Logger.getLogger(SendEmail.class.getName());
     private static String emailAddress = "gadgetBirthdayPlus@gmail.com ";	
     
+    
   	/*
 	 * group - the group for this present
 	 * htmlMessage - message from the buyer
 	 */
-	public static void sendEmailToGroup(GroupEmail group,String htmlMessage){
-	Properties props = new Properties();
-    Session session = Session.getDefaultInstance(props, null);
+	public static void sendEmailToGroup(GroupEmail group,String htmlMessage) throws Exception{
+	//	ArrayList<InternetAddress> addresses = new ArrayList<InternetAddress>();
+		InternetAddress[] addresses = new InternetAddress[group.getParticipators().size()-1];
+		String buyerName = "";
+		InternetAddress buyerAddress = null;
+    	Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        
+        String htmlTable= "<body style='font-size:13px;color:#222;font-family:Arial,Sans-serif'>" +
+        		          "<div style='padding:2px'>" +
+        		         "<h1 style='padding:0 0 6px 0;margin:0;font-family:Arial,Sans-serif;font-size:16px;font-weight:bold;color:#222'>Participants are :</h1>" +
+        		         "<table cellspacing='0' cellpadding='0'> ";
+        int i =0;
+        try {
+        for(ParticipatorEmail participator:group.getParticipators()){
+        	String name = participator.getUserFirstName()+" "+participator.getUserLastName();
+    		htmlTable+="<tr><td style='padding-right:10px;font-family:Arial,Sans-serif;font-size:13px;color:#222'><span style='font-family:Courier New,monospace'>&nbsp;</span></td>";
+        	htmlTable+= "<td style='padding-right:10px;font-family:Arial,Sans-serif;font-size:13px;color:#222'><div><div style='margin:0 0 0.3em 0'>";
+        	if(participator.getUserId().equals(group.getBuyerId())){
+        	    buyerName =	name;	
+			    buyerAddress = new InternetAddress(participator.getEmail(),buyerName);
+		        htmlTable+= buyerName+"<span style='font-size:11px;color:#888'> - buyer</span>";
+        	}else{
+        		addresses[i] = new InternetAddress(participator.getEmail(),name);
+        		htmlTable+=name;
+        	}
+        	htmlTable+="</div></div></td></tr>";
+        	i++;
+        }
+        htmlTable+="</table></div></body>";
+        } catch (UnsupportedEncodingException e) {
+			log.log(Level.INFO, "the log from calling to sendEmailToGroup", e);
+		}
 
-    String msgBody = "You are participating in the group that will buy a car for Olga Vingurt . Olga Vingurt will buy a present .";
+        String msgBody = "You are participating in the group that will buy a "+group.getItemName()+" for "+group.getUserName()+" ."+buyerName+" will buy a present and here is a short message from him : ";
+         
+    
 
     try {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(emailAddress, "Birthday+"));
-        
+            
         ArrayList<InternetAddress>  replyTo = new ArrayList<InternetAddress>();
-        replyTo.add(new InternetAddress("yalo_niv@yahoo.com","Olga Vingurt"));
+        replyTo.add(buyerAddress);
+        
+        msg.setRecipients(Message.RecipientType.TO, addresses);
         
         msg.addRecipient(Message.RecipientType.TO,
                          new InternetAddress("yalo_niv@yahoo.com", "Olga Vingurt"));
-        
-        msg.setSubject("A present for Olga Vingurt's Birthday");
+       
+        msg.setSubject("A present for "+group.getUserName()+"'s "+group.getEventName());
         msg.setText(msgBody);
         
         Multipart mp = new MimeMultipart();
@@ -56,7 +91,7 @@ public class SendEmail {
         msg.setContent(mp);
         
         MimeBodyPart htmlParticipantsPart = new MimeBodyPart();
-        htmlParticipantsPart.setContent(participantsHTML(),"text/html");
+        htmlParticipantsPart.setContent(htmlTable,"text/html");
         mp.addBodyPart(htmlParticipantsPart);
         
         

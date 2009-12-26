@@ -37,12 +37,12 @@ public class GroupEmail {
 		this("",userName,eventName,eventDate,price,buyerId);
 	}
 	
-	public void setItem(String itemName){
+	public void setItemName(String itemName){
 		this.itemName = itemName;
 		
 	}
 	
-	public String getItem(){
+	public String getItemName(){
 		return this.itemName;
 	}
 	
