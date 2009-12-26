@@ -142,13 +142,21 @@ public class MyWishlistTabGUI {
 		
 		menu.addItem("Add Item",addItemCommand).setTitle("Add new item to your wishlist");
 		
-		Command addItemZap = new Command(){
+	//	Command addItemZap = new Command(){
 
-			public void execute() {
-				Window.open("http://birthdayplus.googlecode.com/svn/trunk/birthdayplus.user.js", "_blank", null);	
-			}
-		};
-		menu.addItem("Add Items From Zap",addItemZap);
+	//		public void execute() {
+	//			Window.open("http://birthdayplus.googlecode.com/svn/trunk/birthdayplus.user.js", "_blank", null);	
+	//		}
+	//	};
+//		menu.addItem("Add Items From Zap",addItemZap);
+		//String code="javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}function%20hE(s){return%20s.replace(/&/g,'&amp;').replace(/>/g,'&gt;').replace(/</g,'&lt;').replace(/\"/g,'&quot;');}var%20q,h,i,s;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){s=hE(h);alert(s);break;}}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURI(location.href)+'&wish='+escape(document.title)+'&thumbnail='+encodeURI(s),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes'))})()";
+	 //   Anchor anchor= new Anchor("Add to wishlist",code);
+	 //   String html =anchor.getHTML();
+		menu.addItem("<a href=\"javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}var%20q,h,i;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){break;}}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURIComponent(location.href)+'&wish='+encodeURIComponent(document.title)+'&thumbnail='+encodeURIComponent(h),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes'))})()\">Add to Wishlist</a>",true,new Command(){
+		 public void execute() {
+			}		
+		}).setTitle("Just drag this button to the bookmarks toolbar in your web browser.");
+	   
 		
 		buildWishlistTable();
 		buildAddItemBox();
