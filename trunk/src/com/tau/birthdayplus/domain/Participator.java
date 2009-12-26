@@ -23,8 +23,6 @@ public class Participator
 	    @Persistent
 	    Integer money;  
 	  
-	   
-
 	   public Participator(String userId,Integer money) {
 		   this.id = userId;
 		   this.idKey = KeyFactory.createKey(Participator.class.getSimpleName(), userId);

@@ -24,11 +24,7 @@ public class SendEmail {
 	private static final Logger log = Logger.getLogger(SendEmail.class.getName());
     private static String emailAddress = "gadgetBirthdayPlus@gmail.com ";	
     
-    
-	
-	
-	
-	/*
+  	/*
 	 * group - the group for this present
 	 * htmlMessage - message from the buyer
 	 */

@@ -15,6 +15,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.tau.birthdayplus.cache.Caching;
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.DALWrapper;
@@ -244,7 +245,7 @@ public class WishlistManagement {
 		return itemsPolani;
 	}
 	
-	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException {
+	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException, UserException {
 		BusinessObjectDAL.bookItemForUser(wishlistItemId,eventId,userId);
 //		DALWrapper wrapper = new DALWrapper();
 //		try{
@@ -267,8 +268,8 @@ public class WishlistManagement {
 		BusinessObjectDAL.cancelBookItemForUser(wishlistItemId, userId);
 	}
 	
-	public static void bookItemForGroup(String itemId, String userId) throws UserNotFoundException{
-		BusinessObjectDAL.bookItemForGroup(itemId, userId);
+	public static void bookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException{
+		BusinessObjectDAL.bookItemForGroup(itemId, userId, message);
 	}
 	
 	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException{

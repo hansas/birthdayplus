@@ -45,7 +45,7 @@ public interface WishlistService extends RemoteService{
 	 * set isActive == false
 	 * add this item to guest "I buy" list (you can get userId from Buyer)
 	 */
-	void bookItemForUser(String wishlistItemId, String EventId, String userId) throws UserNotFoundException;
+	void bookItemForUser(String wishlistItemId, String EventId, String userId) throws UserNotFoundException, UserException;
 	/*
 	 * user doesn't want to buy this item
 	 * GUI - user can cancel only from "i'm buying " tab
@@ -96,7 +96,7 @@ public interface WishlistService extends RemoteService{
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	void bookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException;
+	void bookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException;
 	/*
 	 * only the buyer can cancel the reservation of the item
 	 * check if buyer.userId == userId

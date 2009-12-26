@@ -19,6 +19,9 @@ import org.datanucleus.store.Extent;
 import sun.misc.Sort;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.tau.birthdayplus.Email.GroupEmail;
+import com.tau.birthdayplus.Email.SendEmail;
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.ChatMessage;
 import com.tau.birthdayplus.domain.Event;
@@ -550,30 +553,40 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException{
+	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException, UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
-		if (item.getEventKey()==null){
-			Key eventKey = KeyFactory.stringToKey(eventId);
-			Guest guest = loadGuest(userId, pm);
-			item.setEventKey(eventKey);
-			item.setBuyerKey(guest.getIdKey());
-			item.setIsActive(false);
-			Transaction tx = (Transaction) pm.currentTransaction();
-			try {
+		Transaction tx = (Transaction) pm.currentTransaction();
+		try {
+			if (item.getEventKey()==null){
+				Key eventKey = KeyFactory.stringToKey(eventId);
+				Guest guest = loadGuest(userId, pm);
+				item.setEventKey(eventKey);
+				item.setBuyerKey(guest.getIdKey());
+				item.setIsActive(false);
 				tx.begin();
-				//guest.addIBuyItem(item);
-				//pm.makePersistent(guest);
 				pm.makePersistent(item);
 				tx.commit();
-			} catch (Exception ex) {
-				throw new RuntimeException("error in data base: bookItemForUser");
-			} finally {
-				if (tx.isActive()) {
-					tx.rollback();
 				}
-				pm.close();
+			else{
+				throw new UserException("This item have already been booked, you may only participate in it's buying");
+	        }
+		}
+        catch (RuntimeException e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+        catch (Exception e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+        finally {
+			if (tx.isActive()) {
+				tx.rollback();
 			}
+			pm.close();
 		}
 	}
 	
@@ -585,7 +598,6 @@ public class BusinessObjectDAL {
 			Transaction tx = (Transaction) pm.currentTransaction();
 			try {
 				tx.begin();
-				//guest.removeIBuyItem(item);
 				pm.makePersistent(guest);
 				item.setBuyerKey(null);
 				item.setEventKey(null);
@@ -603,27 +615,43 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void bookItemForGroup(String itemId, String userId) throws UserNotFoundException{
+	public static void bookItemForGroup(String itemId, String userId, String message) throws UserNotFoundException, UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(itemId, pm);
-		if (item.getBuyerKey()==null){
-			Transaction tx = (Transaction) pm.currentTransaction();
-			try {
+		Transaction tx = (Transaction) pm.currentTransaction();
+		try {
+			if (item.getBuyerKey()==null){
 				tx.begin();
 				Guest guest = loadGuest(userId, pm);
 				item.setBuyerKey(guest.getIdKey());
 				item.setIsActive(false);
 				pm.makePersistent(item);
+				Guest itemUser = (Guest)pm.getObjectById(item.getKey().getParent());
+				Event event = (Event)pm.getObjectById(item.getEventKey());
+				String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
+				GroupEmail group = new GroupEmail(fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
+				SendEmail.sendEmailToGroup(group, message);
 				tx.commit();
 			}
-			catch (Exception ex) {
-				throw new RuntimeException("error in data base: bookItemForGroup");
-			} finally {
-				if (tx.isActive()) {
-					tx.rollback();
-				}
-				pm.close();
+			else{
+				throw new UserException("The buyer for this item already exists");
 			}
+		}
+		catch (RuntimeException e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+        catch (Exception e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+        finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
 		}
 	}
 	/*
