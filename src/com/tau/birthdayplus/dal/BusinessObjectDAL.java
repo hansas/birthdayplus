@@ -648,11 +648,8 @@ public class BusinessObjectDAL {
 				item.setBuyerKey(guest.getIdKey());
 				item.setIsActive(false);
 				pm.makePersistent(item);
-				log.info("error is in (Guest)pm.getObjectById(item.getKey().getParent())");
 				Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
-				log.info("item user is: "+itemUser.getFirstName());
-				Event event = (Event)pm.getObjectById(item.getEventKey());
-				log.info("item event is: " + event.getEventName());
+				Event event = pm.getObjectById(Event.class,item.getEventKey());
 				String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
 				GroupEmail group = new GroupEmail(fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
 				SendEmail.sendEmailToGroup(group, message);
