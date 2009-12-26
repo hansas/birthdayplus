@@ -341,7 +341,7 @@ public class IBuyTabGUI {
 	private void buildChatLeftSide(){
 		chatScrollPanel = new ScrollPanel();
 		leftSide.add(chatScrollPanel);
-		chatScrollPanel.addStyleName("ScrollPanel");
+		chatScrollPanel.addStyleName("ShortScrollPanel");
 	//	chatScrollPanel.setSize("100%", "300px");
 		
 		    
@@ -525,13 +525,13 @@ public class IBuyTabGUI {
 	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
 	        
 	        	if ((item.getLink().equals("")) || (item.getLink()==null))
-	        		wishTable.setWidget(row, 0,new Label(what,false));
+	        		wishTable.setWidget(row, 0,new Label(what));
 	        	else
 	        		wishTable.setWidget(row, 0,new Anchor(what,item.getLink(),"_blank"));
 	        
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
-	    	    	wishTable.setWidget(row, 1,new Label(format.format(item.getPrice()),false)) ;
+	    	    	wishTable.setWidget(row, 1,new Label(format.format(item.getPrice()))) ;
 	    	    	if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
 	    	    		countMoney+=item.getPrice();
 	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
