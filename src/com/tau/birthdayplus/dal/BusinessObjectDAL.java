@@ -648,6 +648,7 @@ public class BusinessObjectDAL {
 				item.setBuyerKey(guest.getIdKey());
 				item.setIsActive(false);
 				pm.makePersistent(item);
+				log.info("error is in (Guest)pm.getObjectById(item.getKey().getParent())");
 				Guest itemUser = (Guest)pm.getObjectById(item.getKey().getParent());
 				log.info("item user is: "+itemUser.getFirstName());
 				Event event = (Event)pm.getObjectById(item.getEventKey());
