@@ -6,6 +6,8 @@ import java.util.Date;
 import com.tau.birthdayplus.domain.Participator;
 
 public class GroupEmail {
+	//item name
+	private String itemName;
 	//user full name of user that the present is for him
 	private String userName;
 	//event name
@@ -18,13 +20,30 @@ public class GroupEmail {
 	private String buyerId;
 	private ArrayList<ParticipatorEmail> participators;
 	
-	public GroupEmail(String userName,String eventName,Date eventDate,Double price,String buyerId){
+	public GroupEmail(String itemName,String userName,String eventName,Date eventDate,Double price,String buyerId){
+		this.itemName = itemName;
 		this.userName = userName;
 		this.eventName = eventName;
 		this.eventDate = eventDate;
 		this.price = price;
 		this.buyerId = buyerId;
 		participators = new ArrayList<ParticipatorEmail>();
+	}
+	
+	/*
+	 * temporary constructor for BusinessObjectDAL
+	 */
+	public GroupEmail(String userName,String eventName,Date eventDate,Double price,String buyerId){
+		this("",userName,eventName,eventDate,price,buyerId);
+	}
+	
+	public void setItem(String itemName){
+		this.itemName = itemName;
+		
+	}
+	
+	public String getItem(){
+		return this.itemName;
 	}
 	
 	public void setUserName(String userName){
