@@ -3,6 +3,7 @@ package com.tau.birthdayplus.server;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.user.server.rpc.RPCServletUtils;
 
 import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
@@ -44,10 +46,25 @@ public class AddWishlistItem  extends HttpServlet {
         
         if (user != null) {
         try{
-        	WishlistItemData data = Parse( req.getParameter("href"));
-        	if((data.getPrice()!=null) && (data.getItemName()!=null)){
+        	if(req.getCharacterEncoding() == null) {
+        		   req.setCharacterEncoding("UTF-8");
+        		}
+        	log.info("request query string"+req.getQueryString());
+        //	String wish = URLDecoder.decode(req.getParameter("wish"), "UTF-8");
+        	//log.info(wish);
+        	log.info(req.getParameter("link"));
+        	log.info(req.getParameter("wish"));
+        	
+        
+        	log.info(req.getParameter("thumbnail"));
+        //	log.info("עברית");
+        		
+        	WishlistItemData data = Parse( req.getParameter("link"));
+        	if((data.getPrice()!=null)&& (req.getParameter("wish")!=null)){
         		log.info("calling to create wishlistItem");
-        		data.setLink(req.getParameter("href"));
+        		data.setLink(req.getParameter("link"));
+        		data.setThumbnail(req.getParameter("thumbnail"));
+        		data.setItemName(req.getParameter("wish"));
         	    WishlistManagement.createWishlistItem(data, user.getUserId());
         	    created = true;
         	}
@@ -71,7 +88,7 @@ public class AddWishlistItem  extends HttpServlet {
 	private static WishlistItemData Parse(String url){
 		URLConnection connection = null;
 		boolean hasPrice = false;
-		boolean hasTitleThumbnail = false;
+	//	boolean hasTitleThumbnail = false;
 		WishlistItemData item = new WishlistItemData();
 		try {
 		  connection =  new URL(url).openConnection();
@@ -80,9 +97,9 @@ public class AddWishlistItem  extends HttpServlet {
 			  String line =scanner.nextLine();
 		      if(!hasPrice)
 		    	  hasPrice = findPrice(line,item);
-		      if (!hasTitleThumbnail)
-		    	  hasTitleThumbnail = findTitleThumbnail(line,item);
-		      if(hasPrice && hasTitleThumbnail)
+		 //     if (!hasTitleThumbnail)
+		  //  	  hasTitleThumbnail = findTitleThumbnail(line,item);
+		      if(hasPrice/* && hasTitleThumbnail*/)
 		    	  return item;
 		      }
 		  
@@ -101,9 +118,9 @@ public class AddWishlistItem  extends HttpServlet {
 		   
 		    if (matcher.find() ){
 		      item.setItemName(matcher.group(3));
-		      item.setThumbnail("http://img.zap.co.il/pics/"+ matcher.group(5));
+		 //     item.setThumbnail("http://img.zap.co.il/pics/"+ matcher.group(5));
 		      log.info("item name is : "+item.getItemName());
-		      log.info("item thumbnail is : "+item.getThumbnail());
+		   //   log.info("item thumbnail is : "+item.getThumbnail());
 		      return true;
 		    }
 		    return false;
@@ -121,6 +138,9 @@ public class AddWishlistItem  extends HttpServlet {
 		 }
 		 return false;
 	 }
+	 
+	 
+	
 
 
 
