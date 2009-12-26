@@ -576,7 +576,7 @@ public class EventTabGUI {
 	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-		Window.alert("Unable to delete  event");
+		Window.alert(caught.getMessage());
 	}
 	
 

@@ -72,14 +72,11 @@ public class WishlistManagement {
 		}	
 	}
 	
-	public static void deleteWishlistItem(WishlistItemData item) {
-		try{
-			WishlistItem i = BusinessObjectDAL.deleteWishlistItem(item);
-			removeWishlistItemForEventFromCache(i);
-		}catch(Exception ex){
-			throw new RuntimeException("deleteWishlistItem failed", ex);
-		}		
+	public static void deleteWishlistItem(WishlistItemData item) throws UserException {
+		WishlistItem i = BusinessObjectDAL.deleteWishlistItem(item);
+		removeWishlistItemForEventFromCache(i);
 	}
+	
 	public static ArrayList<WishlistItemData> getWishlistItemData(List<WishlistItem> itemList,String userId){
 		ArrayList<WishlistItemData> itemDataList = new ArrayList<WishlistItemData>();
 		for (WishlistItem item : itemList){
@@ -179,9 +176,6 @@ public class WishlistManagement {
 				wrapper.close();
 			}
 		}
-//		for(WishlistItemNewData item:result){
-//			log.info(item.getItemName()+item.getUserName());
-//		}
 		return result;
 	}
 	

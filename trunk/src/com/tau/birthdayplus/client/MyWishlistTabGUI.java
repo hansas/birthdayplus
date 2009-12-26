@@ -483,7 +483,7 @@ public class MyWishlistTabGUI {
 	}
 	
 	public void service_deleteWishlistItemFailed(Throwable caught){
-	//	showMessage("Unable to delete item");
+		Window.alert(caught.getMessage());
 	}
 	
 	

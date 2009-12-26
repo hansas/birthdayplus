@@ -163,7 +163,7 @@ public class BusinessObjectDAL {
 		}
 	}
 		
-	public static void deleteEvent(EventData eventD) {
+	public static void deleteEvent(EventData eventD) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
@@ -175,11 +175,22 @@ public class BusinessObjectDAL {
 				pm.makePersistent(parent);
 				pm.deletePersistent(event);
 			}
+			else{
+				throw new UserException("You may not delete this event, because there are people that want to buy something to you for this event");
+			}
 			tx.commit();
-		} catch (Exception ex) {
-			log.severe("Error in deleteEvent");
-			throw new RuntimeException("error in data base: deleteEvent");
-		} finally {
+		} 
+		catch (RuntimeException e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+        catch (Exception e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        } 
+		finally {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
@@ -203,24 +214,36 @@ public class BusinessObjectDAL {
 			log.info("There is items for this event");
 		}
 		Boolean result = true;
-		for (WishlistItem item : items){
-			if (item.getBuyerKey()!=null){
-				result = false;
-			}
-			else{
-				List<Participator> participators = item.getParticipators();
-				if(participators==null){
-					log.info("There is no participators at "+ item.getItemName()+" "+event.getEventName());
+		try{
+			for (WishlistItem item : items){
+				if (item.getBuyerKey()!=null){
+					result = false;
 				}
 				else{
-					for (Participator p : participators){
-						item.removeParticipator(p);
-						pm.deletePersistent(p);
+					List<Participator> participators = item.getParticipators();
+					if(participators==null){
+						log.info("There is no participators at "+ item.getItemName()+" "+event.getEventName());
 					}
-					item.setEventKey(null);
-					pm.makePersistent(item);
+					else{
+						try{
+							for (Participator p : participators){
+								item.removeParticipator(p);
+								pm.deletePersistent(p);
+							}
+							item.setEventKey(null);
+							pm.makePersistent(item);
+						}
+						catch (Exception ex) {
+							log.severe("Error in second part of mayIDeleteEvent in item "+item.getItemName());
+							throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
+						}
+					}
 				}
 			}
+		}
+		catch (Exception ex) {
+			log.severe("Error in second part of mayIDeleteEvent");
+			throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
 		}
 		return result;
 	}
@@ -386,13 +409,14 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static WishlistItem deleteWishlistItem(WishlistItemData itemD) {
+	public static WishlistItem deleteWishlistItem(WishlistItemData itemD) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
+		WishlistItem item = null;
 		try {
 			tx.begin();
 			Guest parent = BusinessObjectDAL.loadGuest(itemD.getUserId(), pm);
-			WishlistItem item = pm.getObjectById(WishlistItem.class, itemD
+			item = pm.getObjectById(WishlistItem.class, itemD
 					.getWishlistItemId());
 			if (item.getBuyerKey()==null){ //User may delete item iff there is no buyers
 				if(!item.getParticipators().isEmpty()){
@@ -405,16 +429,28 @@ public class BusinessObjectDAL {
 				pm.makePersistent(parent);
 				pm.deletePersistent(item);
 			}
-			tx.commit();
-			return item;
-		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: deleteWishlistItem");
-		} finally {
+			else{
+				throw new UserException("You may not delete this item, because there are people that want to buy it to you");
+			}
+		} 
+		catch (RuntimeException e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+        catch (Exception e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+		finally {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
+			tx.commit();
 			pm.close();
 		}
+		return item;
 	}
 	
 	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) throws UserNotFoundException {
