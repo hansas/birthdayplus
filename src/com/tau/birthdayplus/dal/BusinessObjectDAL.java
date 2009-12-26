@@ -206,12 +206,17 @@ public class BusinessObjectDAL {
 			}
 			else{
 				List<Participator> participators = item.getParticipators();
-				for (Participator p : participators){
-					item.removeParticipator(p);
-					pm.deletePersistent(p);
+				if(participators==null){
+					log.info("There is no participators at "+ item.getItemName()+" "+event.getEventName());
 				}
-				item.setEventKey(null);
-				pm.makePersistent(item);
+				else{
+					for (Participator p : participators){
+						item.removeParticipator(p);
+						pm.deletePersistent(p);
+					}
+					item.setEventKey(null);
+					pm.makePersistent(item);
+				}
 			}
 		}
 		return result;
