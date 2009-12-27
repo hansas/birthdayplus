@@ -2,7 +2,7 @@ package com.tau.birthdayplus.client.Services;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserException extends Throwable
+public class UserException extends  Exception 
 implements IsSerializable{
 	
 	String message;
