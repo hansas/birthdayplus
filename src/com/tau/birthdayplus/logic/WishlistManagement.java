@@ -14,6 +14,9 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.tau.birthdayplus.Email.GroupEmail;
+import com.tau.birthdayplus.Email.ParticipatorEmail;
+import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.cache.Caching;
 import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
@@ -262,8 +265,20 @@ public class WishlistManagement {
 		BusinessObjectDAL.cancelBookItemForUser(wishlistItemId, userId);
 	}
 	
-	public static void bookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException{
-		BusinessObjectDAL.bookItemForGroup(itemId, userId, message);
+	public static void bookItemForGroup(String itemId, String userId,String message) throws UserException, Exception{
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			wrapper.bookItemForGroup(itemId, userId);
+			WishlistItem item = wrapper.getWishlistItem(itemId);
+			ArrayList<Participator> participators = item.getParticipators();
+			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE);
+		}
+		finally{
+			wrapper.close();
+		}
+		
+		
 	}
 	
 	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException{
@@ -277,6 +292,20 @@ public class WishlistManagement {
 			participatorsD.add(participatorToParticipatorData(p,wrapper));
 		}
 		return participatorsD;
+	}
+	
+	public static ArrayList<ParticipatorEmail> getParticipatorEmailList(ArrayList<Participator> participators,
+			DALWrapper wrapper) throws UserNotFoundException{
+		ArrayList<ParticipatorEmail> participatorsE = new ArrayList<ParticipatorEmail>();
+		for (Participator p: participators){
+			participatorsE.add(participatorToParticipatorEmail(p,wrapper));
+		}
+		return participatorsE;
+	}
+	
+	public static ParticipatorEmail participatorToParticipatorEmail(Participator participator,DALWrapper wrapper) throws UserNotFoundException{
+		Guest guest = wrapper.getGuestById(participator.getId());
+		return new ParticipatorEmail(participator.getId(),guest.getFirstName(),guest.getLastName(),participator.getMoney(),guest.getEmail());
 	}
 	
 	public static ArrayList<ChatMessageData> getChatMessageDataList(ArrayList<ChatMessage> messages,DALWrapper wrapper) throws UserNotFoundException{

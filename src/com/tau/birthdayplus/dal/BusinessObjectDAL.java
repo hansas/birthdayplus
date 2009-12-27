@@ -20,6 +20,7 @@ import sun.misc.Sort;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.tau.birthdayplus.Email.GroupEmail;
+import com.tau.birthdayplus.Email.ParticipatorEmail;
 import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
@@ -634,8 +635,7 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void bookItemForGroup(String itemId, String userId, String message) throws UserNotFoundException, UserException{
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public static void bookItemForGroup(String itemId, String userId,PersistenceManager pm) throws UserNotFoundException, UserException{
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		if (item==null){
 			log.severe("There is no item with item id "+itemId);
@@ -648,11 +648,6 @@ public class BusinessObjectDAL {
 				item.setBuyerKey(guest.getIdKey());
 				item.setIsActive(false);
 				pm.makePersistent(item);
-				Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
-				Event event = pm.getObjectById(Event.class,item.getEventKey());
-				String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
-				GroupEmail group = new GroupEmail(fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
-				SendEmail.sendEmailToGroup(group, message);
 				tx.commit();
 			}
 			else{
@@ -673,8 +668,19 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
-			pm.close();
 		}
+	}
+	
+	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm) throws Exception{
+		WishlistItem item = loadWishlistItem(itemId, pm);
+		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
+		Event event = pm.getObjectById(Event.class,item.getEventKey());
+		String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
+		GroupEmail group = new GroupEmail(item.getItemName(),fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
+		for (ParticipatorEmail p : participatorsE){
+			group.addParticipator(p);
+		}
+		SendEmail.sendEmailToGroup(group, message);
 	}
 	/*
 	 * only the buyer can cancel the reservation of the item

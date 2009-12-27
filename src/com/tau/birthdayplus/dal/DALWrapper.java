@@ -6,6 +6,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.datastore.Key;
+import com.tau.birthdayplus.Email.ParticipatorEmail;
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
@@ -88,6 +90,14 @@ public class DALWrapper {
 	public ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,
 			String anotherUserId) throws UserNotFoundException {
 		return BusinessObjectDAL.getLastItemsForUser(myUserId, anotherUserId, pm);
+	}
+	
+	public void bookItemForGroup(String itemId, String userId) throws UserNotFoundException, UserException{
+		BusinessObjectDAL.bookItemForGroup(itemId, userId, pm);
+	}
+	
+	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{
+		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm);
 	}
 	
 	

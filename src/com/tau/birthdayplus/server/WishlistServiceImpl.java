@@ -166,7 +166,7 @@ WishlistService  {
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	public void bookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException {
+	public void bookItemForGroup(String itemId, String userId,String message) throws UserException, Exception {
 		WishlistManagement.bookItemForGroup(itemId, userId, message);
 	}
 	/*
