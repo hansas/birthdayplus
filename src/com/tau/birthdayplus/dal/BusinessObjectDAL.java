@@ -689,29 +689,41 @@ public class BusinessObjectDAL {
 	 * isActive = true
 	 * buyer = null
 	 */
-	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException{
+	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException, UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Transaction tx = (Transaction) pm.currentTransaction();
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		Guest guest = loadGuest(userId, pm);
-		if (item.getBuyerKey().equals(guest.getIdKey())){
-			Transaction tx = (Transaction) pm.currentTransaction();
-			try {
+		try{
+			if (item.getBuyerKey().equals(guest.getIdKey())){
 				tx.begin();
 				item.setBuyerKey(null);
 				item.setIsActive(true);
 				pm.makePersistent(item);
 				tx.commit();
 			}
-			catch (Exception ex) {
-				throw new RuntimeException("error in data base: cancelBookItemForGroup");
-			} finally {
-				if (tx.isActive()) {
-					tx.rollback();
-				}
-				pm.close();
+			else{
+				throw new UserException("You can not cancel reservation that you didn't book");
 			}
 		}
+		catch (RuntimeException e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+        catch (Exception e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+		finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
+
 
 	//TODO: delete this function
 //	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
