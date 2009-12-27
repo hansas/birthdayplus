@@ -11,7 +11,7 @@ public class FlowPanelMenuTitle extends FlowPanel{
     private Label title;
     
     
-    FlowPanelMenuTitle(){
+    public FlowPanelMenuTitle(){
     	setStyleName("Panel");
     	title = new Label("");
 		add(title);
