@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.TableWithHeader;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.EventData;
@@ -74,7 +75,7 @@ public class WishListFriendsGUI  {
 	//friend's wishlist table
 	private ScrollPanel scrollWishlistPanel;
 	private FlexTable headerFriendWishTable;
-	private FlexTable friendWishTable;
+	private HoverTable friendWishTable;
 
 	//popup panel for participators
 //	private PopupPanel participatorsPanel;
@@ -319,7 +320,7 @@ public class WishListFriendsGUI  {
 	//	scrollWishlistPanel.setSize("100%", "275px");
 
 	   
-		friendWishTable = new FlexTable();
+		friendWishTable = new HoverTable();
 		scrollWishlistPanel.add(friendWishTable);
 	//	friendWishTable.setWidth("100%");
 		friendWishTable.addStyleName("Table");
@@ -471,6 +472,7 @@ public class WishListFriendsGUI  {
 	/*
 	 * friend's wishlist
 	 */
+	@SuppressWarnings("deprecation")
 	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemNewData> result) {
 		this.items = result;
         this.friendWishTable.clear();
@@ -529,8 +531,8 @@ public class WishListFriendsGUI  {
         	      }
             	}
             }else {
-            	friendWishTable.setText(row, 2,item.getPrice().toString() );
-            	friendWishTable.getRowFormatter().addStyleName( row,constants.cwInactiveRowStyle());
+            	friendWishTable.setWidget(row, 2,new Label(format.format(item.getPrice())));
+            	friendWishTable.getCellFormatter().addStyleName( row,0,constants.cwInactiveRowStyle());
             }
         //	friendWishTable.getRowFormatter().addStyleName(row, "tablesRows");
             row ++;
