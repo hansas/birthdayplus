@@ -2,6 +2,7 @@ package com.tau.birthdayplus.client;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -37,6 +38,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
@@ -444,7 +446,7 @@ public class IBuyTabGUI {
 	
 	private void loadChat(WishlistItemNewData item){
 	    	currentItem = item;
-	    	chatTitle.setText("Group chat for buying a "+item.getItemName());
+	    	chatTitle.setText("Group chat for buying a "+item.getItemName()+" for "+item.getUserName());
 	    	wishPanel.setVisible(false);
 	    	mainChatPanel.setVisible(true);
 	    	
@@ -512,10 +514,12 @@ public class IBuyTabGUI {
 	    
 
       
+		@SuppressWarnings("deprecation")
 		public void service_getBookedWishlistSuccesfull(ArrayList<WishlistItemNewData> result) {
 			this.itemsToBuy = result;
 	        this.wishTable.clear();
 	        NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
+	        DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
 	        Double countMoney = 0.0;
 	        Date today = new Date();
 
@@ -524,10 +528,17 @@ public class IBuyTabGUI {
 	        for (WishlistItemNewData item : result) {
 	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
 	        
-	        	if ((item.getLink().equals("")) || (item.getLink()==null))
-	        		wishTable.setWidget(row, 0,new Label(what));
-	        	else
-	        		wishTable.setWidget(row, 0,new Anchor(what,item.getLink(),"_blank"));
+	        
+	        	if ((item.getLink().equals("")) || (item.getLink()==null)){
+	        		Label link = new Label(what);
+	        		link.setTitle(dateFormatter.format(item.getEventDate()));
+	        		wishTable.setWidget(row, 0,link);
+	        	}
+	        	else{
+	        		Anchor link = new Anchor(what,item.getLink(),"_blank");
+	        		link.setTitle(dateFormatter.format(item.getEventDate()));
+	        		wishTable.setWidget(row, 0,link);
+	        	}
 	        
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
@@ -554,8 +565,6 @@ public class IBuyTabGUI {
 	    	    	}
 	    	    	html+="</UL></div>";
 	    	    	Label priceLabel = new Label(format.format(sum)+" / "+format.format(item.getPrice()));
-	    	    //	Hyperlink chatLink = new Hyperlink(sum+ " / " + item.getPrice().toString(), null);
-	    	    //	chatLink.setTitle("click to enter the chat");
 	    	        wishTable.setWidget(row, 1,priceLabel );
 	    	        
 	    	        TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
@@ -587,7 +596,7 @@ public class IBuyTabGUI {
 	        }   
 	    	    row ++;
 	        }
-	        title.setText("In this month you are going to spend "+format.format(countMoney)+" on presents");
+	        title.setText("In this month you're going to spend "+format.format(countMoney)+" on presents");
 			    
 		}
 		
