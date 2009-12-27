@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -27,14 +28,17 @@ public class MoneyDialogBox extends DialogBox {
 	
 	public MoneyDialogBox(){
 	//	moneyDialogBox = new DialogBox(false,true);
-	    setText("Enter a sum : ");
+	    setText("Enter the amount you're willing to spend on this present : ");
+	    setWidth("300px");
 	
 		
 		moneyVerticalPanel  = new VerticalPanel();
 		add(moneyVerticalPanel);
+		moneyVerticalPanel.setWidth("100%");
 		
 		errorMsgLabel = new Label();
 		moneyVerticalPanel.add(errorMsgLabel);
+		errorMsgLabel.setWidth("100%");
 		errorMsgLabel.setStyleName("errorMessage");
 		errorMsgLabel.setVisible(false);
 		
@@ -45,15 +49,23 @@ public class MoneyDialogBox extends DialogBox {
 		
 		moneyHorizontalPanel = new HorizontalPanel();
 		moneyVerticalPanel.add(moneyHorizontalPanel);
-		moneyHorizontalPanel.setSpacing(20);
+		moneyHorizontalPanel.setWidth("100%");
+		moneyHorizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+	//	moneyHorizontalPanel.setSpacing(20);
 		
 		okMoneyButton = new Button();
 		moneyHorizontalPanel.add(okMoneyButton);
-		okMoneyButton.setText("Participate");
+		moneyHorizontalPanel.setCellWidth(okMoneyButton, "50%");
+		
+		okMoneyButton.setText("Ok");
+		okMoneyButton.setWidth("90%");
+	//	okMoneyButton.setWidth("100%");
 		
 		cancelMoneyButton = new Button();
 		moneyHorizontalPanel.add(cancelMoneyButton);
+		moneyHorizontalPanel.setCellWidth(cancelMoneyButton, "50%");
 		cancelMoneyButton.setText("Cancel");
+		cancelMoneyButton.setWidth("90%");
 		
 	//	initWidget(moneyDialogBox);
 		valid = false;
