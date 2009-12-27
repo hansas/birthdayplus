@@ -281,7 +281,7 @@ public class WishlistManagement {
 		
 	}
 	
-	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException{
+	public static void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException, UserException{
 		BusinessObjectDAL.cancelBookItemForGroup(itemId, userId);
 	}
 	
