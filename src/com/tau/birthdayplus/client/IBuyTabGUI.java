@@ -733,61 +733,61 @@ public class IBuyTabGUI {
 
 
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
-			Window.alert("CancelBookItemForUserFailed");
+		//	Window.alert("CancelBookItemForUserFailed");
 			System.out.println(caught);
 			
 		}
 
 
 		public void service_eventCancelBookItemForUserSuccesfull() {
-			Window.alert("CancelBookItemForUserSuccesfull");
+		//	Window.alert("CancelBookItemForUserSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
-			Window.alert("DeleteParticipatorFailed");
+		//	Window.alert("DeleteParticipatorFailed");
 			System.out.println(caught);
 			
 		}
 
 
 		public void service_eventDeleteParticipatorSuccesfull() {
-			Window.alert("DeleteParticipatorSuccesfull");
+		//	Window.alert("DeleteParticipatorSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
 
 		public void service_eventDeleteItemFromTabFailed(Throwable caught) {
-			Window.alert("DeleteItemFromTabFailed");
+		//	Window.alert("DeleteItemFromTabFailed");
 			
 		}
 
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
-			Window.alert("DeleteItemFromTabSuccesfull");
+		///	Window.alert("DeleteItemFromTabSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
 
 		public void service_eventUpdateParticipatorFailed(Throwable caught) {
-			Window.alert("UpdateParticipatorFailed");
+		//	Window.alert("UpdateParticipatorFailed");
 			
 		}
 
 
 		public void service_eventUpdateParticipatorSuccesfull() {
-			Window.alert("UpdateParticipatorSuccesfull");
+		//	Window.alert("UpdateParticipatorSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
 
 		public void service_getBookedWishlistFailed(Throwable caught) {
-			Window.alert("BookedWishlistFailed");
+		//	Window.alert("BookedWishlistFailed");
 			
 			
 		}
@@ -796,7 +796,7 @@ public class IBuyTabGUI {
 
 
 		public void service_addChatMessageFailed(Throwable caught) {
-			Window.alert("addChatMessageFailed");
+		//	Window.alert("addChatMessageFailed");
 			
 			
 		}
@@ -805,7 +805,7 @@ public class IBuyTabGUI {
 
 
 		public void service_addChatMessageSuccesfull() {
-			Window.alert("addChatMessageSuccesfull");
+		//	Window.alert("addChatMessageSuccesfull");
 			this.chatTextArea.setText("");
 			this.wishlistService.getWishlistItem(currentItem.getWishlistItemId());
 			
@@ -815,7 +815,7 @@ public class IBuyTabGUI {
 
 
 		public void service_getWishlistItemFailed(Throwable caught) {
-			Window.alert("getWishlistItemFailed");
+		//	Window.alert("getWishlistItemFailed");
 			
 			
 		}
@@ -824,7 +824,7 @@ public class IBuyTabGUI {
 
 
 		public void service_getWishlistItemSuccesfull(WishlistItemNewData result) {
-			Window.alert("getWishlistItemSuccesfull");
+		//	Window.alert("getWishlistItemSuccesfull");
 			this.loadChat(result);
 			
 		}
@@ -833,7 +833,7 @@ public class IBuyTabGUI {
 
 
 		public void service_cancelBookItemForGroupFailed(Throwable caught) {
-			Window.alert("cancelBookItemForGroupFailed");
+		//	Window.alert("cancelBookItemForGroupFailed");
 			
 		}
 
@@ -841,7 +841,7 @@ public class IBuyTabGUI {
 
 
 		public void service_cancelBookItemForGroupSuccesfull() {
-			Window.alert("cancelBookItemForGroupSuccesfull");
+		//	Window.alert("cancelBookItemForGroupSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 		}
 
@@ -849,7 +849,7 @@ public class IBuyTabGUI {
 
 
 		public void service_bookItemForGroupFailed(Throwable caught) {
-			Window.alert("bookItemForGroupFailed");
+		//	Window.alert("bookItemForGroupFailed");
 			
 		}
 
@@ -857,7 +857,7 @@ public class IBuyTabGUI {
 
 
 		public void service_bookItemForGroupSuccesfull() {
-			Window.alert("bookItemForGroupSuccesfull");
+		//	Window.alert("bookItemForGroupSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
