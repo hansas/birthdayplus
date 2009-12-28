@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.Services.RequestProxy;
@@ -20,6 +21,9 @@ public class WishListFriendsDelegate {
 	public Birthdayplus entryPoint;
 	
 	void bookItemForUser(String wishlistItemId,String eventId, String userId){
+		if(entryPoint.loadingImagePopup.isShowing())
+			entryPoint.loadingImagePopup.hide();
+		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder = wishlistService.bookItemForUser(wishlistItemId, eventId, userId, new AsyncCallback<Void>(){
@@ -42,8 +46,11 @@ public class WishListFriendsDelegate {
 	
 	
 	 void getWishlist(final String userId, final String eventId) {
+		 if(entryPoint.loadingImagePopup.isShowing())
+				entryPoint.loadingImagePopup.hide();
+		 
 		 entryPoint.loadingImagePopup.center();
-			entryPoint.loadingImagePopup.show();
+		 entryPoint.loadingImagePopup.show();
 		
 		 RequestBuilder requestBuilder = wishlistService.getWishlistForEvent(userId, eventId,  new AsyncCallback<ArrayList<WishlistItemNewData>>(){
 
@@ -63,8 +70,11 @@ public class WishListFriendsDelegate {
 	    	}
 	 
 	 void addParticipator(String wishlistItemId , String eventId, ParticipatorData participator){
+		 if(entryPoint.loadingImagePopup.isShowing())
+				entryPoint.loadingImagePopup.hide();
+		 
 		 entryPoint.loadingImagePopup.center();
-			entryPoint.loadingImagePopup.show();
+		 entryPoint.loadingImagePopup.show();
 		 RequestBuilder requestBuilder = wishlistService.addParticipator(wishlistItemId, eventId, participator, new AsyncCallback<Void>(){
 
 			public void onFailure(Throwable caught) {
@@ -85,6 +95,9 @@ public class WishListFriendsDelegate {
 	 }
 	 
 	 void getPolaniItems(String myUserId,String anotherUserId){
+		 if(entryPoint.loadingImagePopup.isShowing())
+				entryPoint.loadingImagePopup.hide();
+		 
 		 entryPoint.loadingImagePopup.center();
 		 entryPoint.loadingImagePopup.show();
 		 RequestBuilder requestBuilder = wishlistService.getLastItemsForUser(myUserId, anotherUserId, new AsyncCallback<ArrayList<WishlistItemPolaniData>>(){

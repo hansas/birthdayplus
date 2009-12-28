@@ -41,6 +41,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -70,7 +71,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		author_email = "yalo_niv@yahoo.com",
 		height = 400
 )
-@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
+@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt","MiniMessages.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {
 	CwConstants constants = GWT.create(CwConstants.class);
 	//public DynamicHeightFeature feature;
@@ -144,7 +145,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		
 	    loadingImagePopup = new PopupPanel(false,true);
 	   
-	    loadingImagePopup.setAnimationEnabled(true);
+	    loadingImagePopup.setAnimationEnabled(false);
 	    
 	    loadingImagePopup.setStyleName(constants.cwLoadingPopupPanelStyle());
 	    loadingImagePopup.setWidget(loadingImage);
@@ -160,9 +161,16 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	        Window.enableScrolling(false);
 	        Window.setMargin("0px");
 	        
+	        
 		    tab = new TabPanel();
 		    RootPanel.get().add(tab);
 		    
+		    
+		//    HTML divHTML = new HTML();
+		//    divHTML.ensureDebugId("messadeBox");
+	    //    RootPanel.get().add(divHTML);
+	    //    divHTML.setSize("100%", "25px");
+	        
 		  //  tab.setSize("100%", "400px");
 		    tab.addStyleName("tabsPanel");
 		//	tab.setAnimationEnabled(true);
@@ -199,17 +207,18 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		    iBuyDelegate.entryPoint=this;
 		    iBuyGUI.init();
 	        
-			//tab.add(iBuyGUI.wishlistVerticalPanel, "I buy");
-		    
-		    
-		   
-		    
-		
-		    
-			
-            
+		//    createMiniMessage();
 		
 	}
+ 
+ private  native void createMiniMessage()/*-{
+ 	var elem = $wnd.document.getElementById("messageBox");
+ 	if(elem)
+ 	   $wnd.alert("I found it");
+ 	miniMessage =  new $wnd.gadgets.MiniMessage($wnd.document.getElementById("messageBox"));
+ }-*/;
+ 
+ 
 	
 	
 	  
@@ -454,6 +463,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	      win.close();
 	      win = null;
 	    }
+	    
 	    that.@com.tau.birthdayplus.client.Birthdayplus::getProfile()();
 	    return false;
 	  }

@@ -20,6 +20,9 @@ public class EventTabDelegate {
 	public Birthdayplus entryPoint;
 
 	public void getEvents(final ArrayList<String> uIdlist) {
+		if(entryPoint.loadingImagePopup.isShowing())
+			entryPoint.loadingImagePopup.hide();
+		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.getEvents(uIdlist, new AsyncCallback<ArrayList<EventData>>(){
@@ -37,6 +40,9 @@ public class EventTabDelegate {
 	}
 	
 	void createEvent(final EventData event){
+		if(entryPoint.loadingImagePopup.isShowing())
+			entryPoint.loadingImagePopup.hide();
+		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.createEvent(event, new AsyncCallback<Void>(){
@@ -56,6 +62,9 @@ public class EventTabDelegate {
 	}
 	
 	void updateEvent(final EventData event){
+		if(entryPoint.loadingImagePopup.isShowing())
+			entryPoint.loadingImagePopup.hide();
+		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.updateEvent(event, new AsyncCallback<Void>(){
@@ -76,6 +85,9 @@ public class EventTabDelegate {
 	}
 	
 	void deleteEvent(final EventData event){
+		if(entryPoint.loadingImagePopup.isShowing())
+			entryPoint.loadingImagePopup.hide();
+		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=eventService.deleteEvent(event, new AsyncCallback<Void>(){
