@@ -22,11 +22,6 @@ public class TooltipListener extends MouseListenerAdapter{
 
 	      HTML contents = new HTML(text);
 	      add(contents);
-
-	      int left = sender.getAbsoluteLeft() + offsetX;
-	      int top = sender.getAbsoluteTop() + offsetY;
-
-	 //     setPopupPosition(left, top);
 	    
 	      setStyleName(styleName);
 	    }
@@ -34,14 +29,14 @@ public class TooltipListener extends MouseListenerAdapter{
 	    public void show() {
 	      super.show();
 
-	      Timer t = new Timer() {
+	 //     Timer t = new Timer() {
 
-	        public void run() {
-	          Tooltip.this.hide();
-	        }
+	   //     public void run() {
+	   //       Tooltip.this.hide();
+	   //     }
 
-	      };
-	      t.schedule(delay);
+	   //   };
+	  //    t.schedule(delay);
 	    }
 	  }
 
