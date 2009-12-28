@@ -15,7 +15,9 @@ public class EventData  implements IsSerializable{
 	   /*
 	    * constructor for isSerializable
 	    */
-	   protected EventData(){}
+	   public EventData(){
+		   this(null,null,null,null,false);
+	   }
 	   
 	   /*
 	    * full constructor for the server side
@@ -72,6 +74,8 @@ public class EventData  implements IsSerializable{
 		public String getUserId() {
 			return userId;
 		}
+		
+		
 
 
 }
