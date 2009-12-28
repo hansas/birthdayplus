@@ -36,9 +36,9 @@ public class SendEmail {
 		InternetAddress buyerAddress = null;
     	Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
+        String htmlMes = "<body style='font-size:13px;color:#222;font-family:Arial,Sans-serif'>";
         
-        String htmlTable= "<body style='font-size:13px;color:#222;font-family:Arial,Sans-serif'>" +
-        		          "<div style='padding:2px'>" +
+        String htmlTable= "<div style='padding:2px'>" +
         		         "<h1 style='padding:0 0 6px 0;margin:0;font-family:Arial,Sans-serif;font-size:16px;font-weight:bold;color:#222'>Participants are :</h1>" +
         		         "<table cellspacing='0' cellpadding='0'> ";
         int i =0;
@@ -58,12 +58,17 @@ public class SendEmail {
         	htmlTable+="</div></div></td></tr>";
         	i++;
         }
-        htmlTable+="</table></div></body>";
+        htmlTable+="</table></div>";
         } catch (UnsupportedEncodingException e) {
 			log.log(Level.INFO, "the log from calling to sendEmailToGroup", e);
 		}
+        
+        htmlMes+="<p>You are participating in the group that will buy a "+group.getItemName()+" for "+group.getUserName()+" .<br /> "+buyerName+" will buy a present and here is a short message from  "+buyerName.split(" ")[0]+": "+"</p>";
+        htmlMes+=htmlMessage;
+        htmlMes+=htmlTable;
+        htmlMes+="</body>";
 
-        String msgBody = "You are participating in the group that will buy a "+group.getItemName()+" for "+group.getUserName()+" ."+buyerName+" will buy a present and here is a short message from him : ";
+  //      String msgBody = "You are participating in the group that will buy a "+group.getItemName()+" for "+group.getUserName()+" ."+buyerName+" will buy a present and here is a short message from him : ";
          
     
 
@@ -74,37 +79,39 @@ public class SendEmail {
         ArrayList<InternetAddress>  replyTo = new ArrayList<InternetAddress>();
         replyTo.add(buyerAddress);
         
-        msg.setRecipients(Message.RecipientType.TO, addresses);
+        msg.addRecipients(Message.RecipientType.TO, addresses);
         
-        msg.addRecipient(Message.RecipientType.TO,
-                         new InternetAddress("yalo_niv@yahoo.com", "Olga Vingurt"));
+        msg.addRecipient(Message.RecipientType.CC,
+                         buyerAddress);
+        msg.addRecipient(Message.RecipientType.CC, new InternetAddress("yalo_niv@yahoo.com","Olga Vingurt"));
        
         msg.setSubject("A present for "+group.getUserName()+"'s "+group.getEventName());
-        msg.setText(msgBody);
+     //   msg.setText(msgBody);
         
         Multipart mp = new MimeMultipart();
 
         MimeBodyPart htmlBuyerPart = new MimeBodyPart();
-        htmlBuyerPart.setContent(htmlMessage, "text/html");
+        htmlBuyerPart.setContent(htmlMes, "text/html");
         mp.addBodyPart(htmlBuyerPart);
          
+       
+        
+     //   MimeBodyPart htmlParticipantsPart = new MimeBodyPart();
+     //   htmlParticipantsPart.setContent(htmlTable,"text/html");
+    //    mp.addBodyPart(htmlParticipantsPart);
+        
         msg.setContent(mp);
-        
-        MimeBodyPart htmlParticipantsPart = new MimeBodyPart();
-        htmlParticipantsPart.setContent(htmlTable,"text/html");
-        mp.addBodyPart(htmlParticipantsPart);
-        
         
         Transport.send(msg);
 
     } catch (AddressException e) {
-    	log.log(Level.INFO, "the log from calling to sendEmailToGroup", e);
+    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
     } catch (MessagingException e) {
-    	log.log(Level.INFO, "the log from calling to sendEmailToGroup", e);
+    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
     } catch (UnsupportedEncodingException e) {
-    	log.log(Level.INFO, "the log from calling to sendEmailToGroup", e);
+    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
 	}catch (Exception e){
-    	log.log(Level.INFO, "the log from calling to sendEmailToGroup", e);
+    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
 
 	}
 
