@@ -19,8 +19,11 @@ public class MyWishlistDelegate {
 	public Birthdayplus entryPoint;
 
 	 public void getMyWishlist(final String uIdlist) {
+		 if(entryPoint.loadingImagePopup.isShowing())
+				entryPoint.loadingImagePopup.hide();
+		 
 		 entryPoint.loadingImagePopup.center();
-			entryPoint.loadingImagePopup.show();
+		 entryPoint.loadingImagePopup.show();
 		 RequestBuilder requestBuilder=wishlistService.getMyWishlist(uIdlist, new AsyncCallback<ArrayList<WishlistItemData>>(){
 
 	    		public void onFailure(Throwable caught){
@@ -41,8 +44,10 @@ public class MyWishlistDelegate {
 	    
 	    
 	    void createWishlistItem(final WishlistItemData item){
+	    	if(entryPoint.loadingImagePopup.isShowing())
+				entryPoint.loadingImagePopup.hide();
 	    	 entryPoint.loadingImagePopup.center();
-				entryPoint.loadingImagePopup.show();
+			 entryPoint.loadingImagePopup.show();
 	    	RequestBuilder requestBuilder=wishlistService.createWishlistItem(item, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){
 	    			entryPoint.loadingImagePopup.hide();
@@ -60,8 +65,11 @@ public class MyWishlistDelegate {
 	    }
 	    
 	    void updateWishlistItem(final WishlistItemData item){
+	    	if(entryPoint.loadingImagePopup.isShowing())
+				entryPoint.loadingImagePopup.hide();
+	    	
 	    	 entryPoint.loadingImagePopup.center();
-				entryPoint.loadingImagePopup.show();
+			 entryPoint.loadingImagePopup.show();
 	    	RequestBuilder requestBuilder=wishlistService.updateWishlistItem(item, new AsyncCallback<Void>(){
 	    		public void onFailure(Throwable caught){
 	    			entryPoint.loadingImagePopup.hide();
@@ -80,8 +88,11 @@ public class MyWishlistDelegate {
 
 
 	   void deleteWishlistItem(final WishlistItemData item){
+		   if(entryPoint.loadingImagePopup.isShowing())
+				entryPoint.loadingImagePopup.hide();
+		   
 		   entryPoint.loadingImagePopup.center();
-			entryPoint.loadingImagePopup.show();
+		   entryPoint.loadingImagePopup.show();
 		   RequestBuilder requestBuilder=wishlistService.deleteWishlistItem(item, new AsyncCallback<Void>(){
 			   public void onFailure(Throwable caught){
 				   entryPoint.loadingImagePopup.hide();

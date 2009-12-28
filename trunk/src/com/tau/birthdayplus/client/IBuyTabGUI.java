@@ -12,6 +12,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
@@ -45,7 +47,9 @@ import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
@@ -57,6 +61,10 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
 public class IBuyTabGUI {
+	private static  NumberFormat shortFormat = NumberFormat.getFormat("\u20AA#,##0");
+	private static 	DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
+
+
 	//////////////////Constants///////////////////////////
 	CwConstants constants = GWT.create(CwConstants.class);
 	private static final int CHAT_LINK = 5;
@@ -69,11 +77,12 @@ public class IBuyTabGUI {
 
 	//////////////////GUI Widgets////////////////////////
 	private FlowPanel iBuyPanel;
-	private Label title;
-	private MenuBar menu;
+//	private Label title;
+//	private MenuBar menu;
 	
 	//items
-	private FlowPanel wishPanel;
+//	private FlowPanel wishPanel;
+	private FlowPanelMenuTitle wishPanel;
 	private  ScrollPanel iBuyScrollPanel;
 	private  FlexTable iBuyTableHeader;
 	private  HoverTable wishTable;
@@ -84,12 +93,9 @@ public class IBuyTabGUI {
 	private  PopupPanel emailPanel;
 	private  Anchor sendEmail;
 	
-    private FlowPanel mainChatPanel;
-    private MenuBar chatMenu ;
-    private Label chatTitle;
-	private HorizontalPanel chatPanel;
-//	private HorizontalPanel buttonPanel;
 	
+	private FlowPanelMenuTitle mainChatPanel;
+	private HorizontalPanel chatPanel;
 	private FlowPanel leftSide;
 	
 	private ScrollPanel chatScrollPanel;
@@ -101,17 +107,11 @@ public class IBuyTabGUI {
 	private Label participatorsLabel;
 	private ScrollPanel participatorsScrollPanel;
 	private FlexTable participatorsTableHeader;
-	private FlexTable participatorsTable;
-//	private Button closeChatButton;
+	private HoverTable participatorsTable;
+
 	
-	
-	private DialogBox moneyDialogBox;
-	private VerticalPanel moneyVerticalPanel;
-	private Label errorMsgLabel ;
-	private TextBox   enterSumTextBox;
-	private HorizontalPanel moneyHorizontalPanel;
-	private Button    okMoneyButton;
-	private Button    cancelMoneyButton;
+	private MoneyDialogBox moneyDialogBox;
+
 	
 	
 	//////////////////Model///////////////////////////////
@@ -133,20 +133,10 @@ public class IBuyTabGUI {
 	//	iBuyPanel.setSize("100%", "350px");
 		iBuyPanel.addStyleName("Panel");
 		
-		wishPanel= new FlowPanel();
+		wishPanel= new FlowPanelMenuTitle();
 		iBuyPanel.add(wishPanel);
 		wishPanel.addStyleName("Panel");
-	//	wishPanel.setSize("100%", "350px");
-		
-		title = new Label();
-		wishPanel.add(title);
-		title.addStyleName("Label");
-		
-		menu = new MenuBar();
-	    wishPanel.add(menu);
-		menu.addStyleName("buttonPanel");
-		menu.setAutoOpen(true);
-		menu.setAnimationEnabled(true);
+	
 	
 		buildWishlistTable();
 		
@@ -171,21 +161,11 @@ public class IBuyTabGUI {
 	    
 	   
 		
-		mainChatPanel = new FlowPanel();
+		mainChatPanel = new FlowPanelMenuTitle();
 		iBuyPanel.add(mainChatPanel);
 		mainChatPanel.setStyleName("Panel");
 		mainChatPanel.setVisible(false);
 		
-		
-		chatTitle = new Label();
-	    mainChatPanel.add(chatTitle);
-	    chatTitle.addStyleName("Label");
-			
-		chatMenu = new MenuBar();
-		mainChatPanel.add(chatMenu);
-		chatMenu.addStyleName("buttonPanel");
-		chatMenu.setAutoOpen(true);
-		chatMenu.setAnimationEnabled(true);
 		
 		Command closeChatCommand = new Command(){
 			public void execute() {
@@ -193,14 +173,8 @@ public class IBuyTabGUI {
 		      }
 		    };
 		
-		chatMenu.addItem("<img src='http://birthdayplus.googlecode.com/svn/trunk/src/com/tau/birthdayplus/public/left_16.png' alt='Return to IBuy tab' title= 'Return' />",true,closeChatCommand);
-		
-	//	buttonPanel = new HorizontalPanel();
-	//	mainChatPanel.add(buttonPanel);
-	//	buttonPanel.setStyleName("buttonPanel");
-		
-	//	closeChatButton = new Button("return");
-	//    buttonPanel.add(closeChatButton);
+		    mainChatPanel.addMenuItem("<img src='http://birthdayplus.googlecode.com/svn/trunk/src/com/tau/birthdayplus/public/left_16.png' alt='Return to IBuy tab' title= 'Return' />",true,closeChatCommand);
+	
 	    
 		chatPanel = new HorizontalPanel();
 		mainChatPanel.add(chatPanel);
@@ -209,7 +183,8 @@ public class IBuyTabGUI {
 		
 	    buildChat();
 		
-		buildMoneyDialogBox();
+	    moneyDialogBox = new MoneyDialogBox();
+	//	buildMoneyDialogBox();
 	
 	
 		
@@ -217,43 +192,6 @@ public class IBuyTabGUI {
 	}
 	
 	
-	
-	
-	private void buildMoneyDialogBox(){
-		moneyDialogBox = new DialogBox();
-		moneyDialogBox.setText("Enter a sum ");
-		
-	
-		
-		moneyVerticalPanel  = new VerticalPanel();
-		
-		enterSumTextBox = new TextBox();
-		
-		
-		moneyHorizontalPanel = new HorizontalPanel();
-		moneyHorizontalPanel.setSpacing(20);
-		
-		okMoneyButton = new Button();
-		okMoneyButton.setText("ok");
-		
-		cancelMoneyButton = new Button();
-		cancelMoneyButton.setText("cancel");
-		
-		moneyHorizontalPanel.add(okMoneyButton);
-		moneyHorizontalPanel.add(cancelMoneyButton);
-		
-		errorMsgLabel = new Label();
-		errorMsgLabel.setStyleName("errorMessage");
-		errorMsgLabel.setVisible(false);
-		
-		moneyVerticalPanel.add(errorMsgLabel);
-		moneyVerticalPanel.add(enterSumTextBox);
-		moneyVerticalPanel.add(moneyHorizontalPanel);
-		
-		moneyDialogBox.add(moneyVerticalPanel);
-		
-		
-	}
 	
 	private void loadMoneyDialog(WishlistItemNewData item){
 		currentItem = item;
@@ -281,11 +219,7 @@ public class IBuyTabGUI {
 		buildChatLeftSide();
     	buildChatRightSide();
     	
-    //	chatBoxHorizontalPanel.add(chatVerticalPanel);
-    //	chatBoxHorizontalPanel.add(participatorsVerticalPanel);
-    	
-    //	chatBoxHorizontalPanel.setCellWidth(chatVerticalPanel, "80%");
-    //	chatBoxHorizontalPanel.setCellWidth(participatorsVerticalPanel,"20%");
+   
 		
 	}
 	
@@ -319,7 +253,7 @@ public class IBuyTabGUI {
 		iBuyScrollPanel.addStyleName("ShortScrollPanel");
 	//	iBuyScrollPanel.setSize("100%", "300px");
 	
-		wishTable = new HoverTable();
+		wishTable = new HoverTable(0,6);
 		iBuyScrollPanel.add(wishTable);
 		wishTable.addStyleName("Table");
 	//	wishTable.setWidth("100%");
@@ -328,14 +262,7 @@ public class IBuyTabGUI {
 		wishTable.getColumnFormatter().setWidth(1, "80px");
 //		wishTable.getColumnFormatter().setWidth(2, "50px");
 	    
-	   // wishTable.getColumnFormatter().addStyleName(0, "tablesColumns");
-	//	wishTable.getColumnFormatter().addStyleName(1, "tablesColumns");
-	//	wishTable.getColumnFormatter().addStyleName(2, "tablesColumns");
-	//	wishTable.getColumnFormatter().addStyleName(3, "tablesColumns");
-		
-	//	wishTable.getColumnFormatter().addStyleName(4, "lastColumns");
-	//	wishTable.getColumnFormatter().addStyleName(5, "lastColumns");
-	//	wishTable.getColumnFormatter().addStyleName(6, "lastColumns");
+	 
 	}
 	
 	
@@ -398,7 +325,7 @@ public class IBuyTabGUI {
 	//	participatorsScrollPanel.setSize("100%", "275px");
 		
 		
-		participatorsTable = new FlexTable();
+		participatorsTable = new HoverTable(0,2);
 		participatorsScrollPanel.add(participatorsTable);
 		participatorsTable.addStyleName("Table");
 	//	participatorsTable.setWidth("100%");
@@ -407,35 +334,43 @@ public class IBuyTabGUI {
 	}
 	
 	
-	
+	public static void removeAllRows(FlexTable table) {
+	    int numRows = table.getRowCount();
+	    for (int i = 0; i < numRows; i++) {
+	      table.removeRow(0);
+	    }
+	  }
+
 	private void fillParticipatorsTable(){
-		this.participatorsTable.clear();
+		participatorsTable.clear(true);
+        participatorsTable.resizeRows(currentItem.getParticipators().size());
 		
 		int row = 0;
 		
 		for (ParticipatorData user : currentItem.getParticipators()){
-			participatorsTable.setWidget(row, 0, new Label( user.getUserFirstName() + " " + user.getUserLastName()) );
-			participatorsTable.setWidget(row, 1, new Label(user.getMoney().toString()));
-			participatorsTable.getRowFormatter().addStyleName(row, "tablesRows");
+			participatorsTable.setText(row, 0, user.getUserFirstName() + " " + user.getUserLastName() );
+			participatorsTable.setText(row, 1, shortFormat.format(user.getMoney()));
 			row++;
 		}
 		
 	}
 	
+	
+	
 	private void fillChatMessages(){
-		this.chatTable.clear();
+		removeAllRows(chatTable);
 		FlexCellFormatter cellFormatter = chatTable.getFlexCellFormatter();
 		RowFormatter rowFormatter = chatTable.getRowFormatter();
         int row = 0;
         
         for (ChatMessageData message : currentItem.getChatMessages()) {
-            chatTable.setWidget(row, 0, new Label(message.getUserName()+" "+ "says :"));
+            chatTable.setText(row, 0, message.getUserName()+" "+ "says :");
             rowFormatter.setStylePrimaryName(row, "chatLineDate");
             
             DateTimeFormat dateFormatter = 	DateTimeFormat.getMediumDateTimeFormat();
-            chatTable.setWidget(row, 1, new Label(dateFormatter.format(message.getTimeStamp())));
+            chatTable.setText(row, 1, dateFormatter.format(message.getTimeStamp()));
             
-            chatTable.setWidget(row+1, 0, new Label(message.getMesssage()));
+            chatTable.setText(row+1, 0, message.getMesssage());
             cellFormatter.setColSpan(row+1, 0, 2);
             cellFormatter.setHorizontalAlignment(row+1, 0, HasHorizontalAlignment.ALIGN_LEFT);
             row+=2;
@@ -446,7 +381,7 @@ public class IBuyTabGUI {
 	
 	private void loadChat(WishlistItemNewData item){
 	    	currentItem = item;
-	    	chatTitle.setText("Group chat for buying a "+item.getItemName()+" for "+item.getUserName());
+	    	mainChatPanel.setTitle("Group chat for buying a "+item.getItemName()+" for "+item.getUserName());
 	    	wishPanel.setVisible(false);
 	    	mainChatPanel.setVisible(true);
 	    	
@@ -483,8 +418,6 @@ public class IBuyTabGUI {
 	         
 	        
 	        switch(col){
-	//        case PRICE_LINK   : loadChat(item);
-	//                            break;
 	        case UPDATE_LINK  : loadMoneyDialog(item);    
 	                            break;
 	                            
@@ -517,9 +450,8 @@ public class IBuyTabGUI {
 		@SuppressWarnings("deprecation")
 		public void service_getBookedWishlistSuccesfull(ArrayList<WishlistItemNewData> result) {
 			this.itemsToBuy = result;
-	        this.wishTable.clear();
-	        NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
-	        DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
+	        this.wishTable.clear(true);
+	        wishTable.resizeRows(result.size());
 	        Double countMoney = 0.0;
 	        Date today = new Date();
 
@@ -529,7 +461,7 @@ public class IBuyTabGUI {
 	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
 	        
 	        
-	        	if ((item.getLink().equals("")) || (item.getLink()==null)){
+	        	if ((item.getLink()==null) || (item.getLink().equals("")) ){
 	        		Label link = new Label(what);
 	        		link.setTitle(dateFormatter.format(item.getEventDate()));
 	        		wishTable.setWidget(row, 0,link);
@@ -542,7 +474,7 @@ public class IBuyTabGUI {
 	        
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
-	    	    	wishTable.setWidget(row, 1,new Label(format.format(item.getPrice()))) ;
+	    	    	wishTable.setWidget(row, 1,new Label(shortFormat.format(item.getPrice()))) ;
 	    	    	if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
 	    	    		countMoney+=item.getPrice();
 	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
@@ -557,14 +489,14 @@ public class IBuyTabGUI {
 	    	    		if(user.getUserId().equals(entryPoint.userId)){
 	    	    			if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
 	    	    	    		countMoney+=user.getMoney();
-		        		    html+="<LI style='color:blue'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+format.format(user.getMoney());
+		        		    html+="<LI style='color:blue'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortFormat.format(user.getMoney());
 
 	    	    		}else
-	        		        html+="<LI>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+format.format(user.getMoney());
+	        		        html+="<LI>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortFormat.format(user.getMoney());
 
 	    	    	}
 	    	    	html+="</UL></div>";
-	    	    	Label priceLabel = new Label(format.format(sum)+" / "+format.format(item.getPrice()));
+	    	    	Label priceLabel = new Label(shortFormat.format(sum)+" / "+shortFormat.format(item.getPrice()));
 	    	        wishTable.setWidget(row, 1,priceLabel );
 	    	        
 	    	        TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
@@ -596,47 +528,8 @@ public class IBuyTabGUI {
 	        }   
 	    	    row ++;
 	        }
-	        title.setText("In this month you're going to spend "+format.format(countMoney)+" on presents");
+	        wishPanel.setTitle("In this month you're going to spend "+shortFormat.format(countMoney));
 			    
-		}
-		
-		
-		public void gui_eventOkMoneyButtonClicked(){
-			//is empty
-			if(enterSumTextBox.equals("")){
-				errorMsgLabel.setText("Enter the sum ");
-	    		enterSumTextBox.setFocus(true);
-	    		errorMsgLabel.setVisible(true);
-	    		return;
-			}
-			//parse
-			Integer sum = 0;
-			try{
-			   sum = Integer.parseInt(enterSumTextBox.getText());
-			}catch(NumberFormatException ex){
-				errorMsgLabel.setText("Enter valid sum ");
-		        enterSumTextBox.setFocus(true);
-		        errorMsgLabel.setVisible(true);
-		    	return;
-			}
-			//valid sum
-			if (sum > 0){
-				moneyDialogBox.hide();
-				enterSumTextBox.setText("");
-				errorMsgLabel.setVisible(false);
-			    ParticipatorData data = new ParticipatorData(entryPoint.userId,entryPoint.user.getFirstName(),entryPoint.user.getLastName(),sum);
-			    this.wishlistService.updateParticipator(currentItem.getWishlistItemId(), data);
-			}else{
-				errorMsgLabel.setText("Enter valid sum ");
-		        enterSumTextBox.setFocus(true);
-		        errorMsgLabel.setVisible(true);
-			}
-		}
-		
-		public void gui_eventCancelMoneyButtonClicked(){
-			moneyDialogBox.hide();
-			enterSumTextBox.setText("");
-			errorMsgLabel.setVisible(false);
 		}
 		
 		public void gui_eventCloseChatButtonClicked(){
@@ -676,32 +569,24 @@ public class IBuyTabGUI {
 				}
 			});
 			
-			this.okMoneyButton.addClickHandler(new ClickHandler(){
-
-				public void onClick(ClickEvent event) {
-					gui_eventOkMoneyButtonClicked();
-				}
-			});
 			
-			this.cancelMoneyButton.addClickHandler(new ClickHandler(){
+			this.moneyDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
 
-				public void onClick(ClickEvent event) {
-					 gui_eventCancelMoneyButtonClicked();
-				}
-			});
-			
-		//	this.closeChatButton.addClickHandler(new ClickHandler(){
-
-		//		public void onClick(ClickEvent event) {
-		//			gui_eventCloseChatButtonClicked();
-		//		}
-		//	});
-			
-			this.enterSumTextBox.addKeyUpHandler(new KeyUpHandler(){
-				public void onKeyUp(KeyUpEvent event) {
-					if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
-						gui_eventOkMoneyButtonClicked();
+				public void onClose(CloseEvent<PopupPanel> event) {
+					if(event.isAutoClosed())
+						return;
+					Integer sum = moneyDialogBox.getInput();
+					if (sum == null)
+						return;
+					else
+					{
+						  ParticipatorData data = new ParticipatorData(entryPoint.userId,entryPoint.user.getFirstName(),entryPoint.user.getLastName(),sum);
+						  wishlistService.updateParticipator(currentItem.getWishlistItemId(), data);
+						
 					}
+					
+				}
+				
 			});
 			
 			this.addMessageButton.addClickHandler(new ClickHandler(){
@@ -767,7 +652,7 @@ public class IBuyTabGUI {
 
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
-		///	Window.alert("DeleteItemFromTabSuccesfull");
+		//	Window.alert("DeleteItemFromTabSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}

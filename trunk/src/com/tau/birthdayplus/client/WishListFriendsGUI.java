@@ -11,6 +11,8 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 
 
@@ -33,15 +35,17 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
+
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
-import com.tau.birthdayplus.client.widgets.TableWithHeader;
+import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
+
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -51,24 +55,21 @@ import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 
 public class WishListFriendsGUI  {
+	private static  NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
 	/*
 	 * constants
 	 */
 	CwConstants constants = GWT.create(CwConstants.class);
-//	private static final int LINK = 0;
-//	private static final int PRICE_LINK =2;
+
 	private static final int BUY_LINK = 3;
     private static final int GROUP_BUY_LINK = 4;
 
 	/*GUI Widgets*/
-	
+    private FlowPanelMenuTitle wishlistBoxPanel;
 
-	//VerticalPanel for the content of wishlist box
-	private FlowPanel wishlistBoxPanel;
-	private Label title;
-	private MenuBar menu ;
 	
 	//polani
+    MenuItem polani ;
 	private PopupPanel polaniPanel;
 	private FlexTable polaniTable;
 	
@@ -77,23 +78,9 @@ public class WishListFriendsGUI  {
 	private FlexTable headerFriendWishTable;
 	private HoverTable friendWishTable;
 
-	//popup panel for participators
-//	private PopupPanel participatorsPanel;
-//	private TableWithHeader participatorsTable;
-	
-	//popup for money
-	private DialogBox moneyDialogBox;
-	private VerticalPanel moneyVerticalPanel;
-	private Label errorMsgLabel ;
-	private TextBox   enterSumTextBox;
-	private HorizontalPanel moneyHorizontalPanel;
-	private Button    okMoneyButton;
-	private Button    cancelMoneyButton;
 	
 	
-	
-	
-	
+	private MoneyDialogBox moneyDialogBox;
 	
 	
 	/*  
@@ -119,21 +106,13 @@ public class WishListFriendsGUI  {
 		public void init() {
 			items = new ArrayList<WishlistItemNewData>();
 
-			wishlistBoxPanel = new FlowPanel();
+			wishlistBoxPanel = new FlowPanelMenuTitle();
+		//	wishlistBoxPanel = new FlowPanel();
 			parent.mainPanel.add(wishlistBoxPanel);
 			wishlistBoxPanel.addStyleName("Panel");
 		//	wishlistBoxPanel.setSize("100%", "350px");
 			wishlistBoxPanel.setVisible(false);
 			
-			title = new Label();
-			wishlistBoxPanel.add(title);
-			title.addStyleName("Label");
-			
-			menu = new MenuBar();
-			wishlistBoxPanel.add(menu);
-			menu.addStyleName("buttonPanel");
-			menu.setAutoOpen(true);
-			menu.setAnimationEnabled(true);
 			
 			Command closeFriendWishlistCommand = new Command(){
 				public void execute() {
@@ -141,8 +120,8 @@ public class WishListFriendsGUI  {
 			      }
 			    };
 			
-			menu.addItem("<img src='"+GWT.getModuleBaseURL()+"left_16.png"+"' alt='Return to IBuy tab' title= 'Return' />",true,closeFriendWishlistCommand);
-			
+			wishlistBoxPanel.addMenuItem("<img src='"+GWT.getModuleBaseURL()+"left_16.png"+"' alt='Return to IBuy tab' title= 'Return' />",true,closeFriendWishlistCommand);
+
 			
 			Command polaniCommand = new Command(){
 
@@ -153,20 +132,11 @@ public class WishListFriendsGUI  {
 						showPolaniItems();	
 				}
 			};
-			menu.addItem("Polani",polaniCommand);
-
 			
-	
-			
-			
-			
+		   polani = wishlistBoxPanel.addMenuItem("Polani",polaniCommand);
 			
 			buildFriendWishlistTable();
-			    
-			
-			
-			buildMoneyDialogBox();
-	//		buildParticipatorsPopupPanel();
+			moneyDialogBox = new MoneyDialogBox();
 			buildPolaniPanel();
 			 
 			 
@@ -176,97 +146,22 @@ public class WishListFriendsGUI  {
 		
 		protected void showDialogBox(EventData event){
 			  currentEvent = event;
-		      title.setText("wishlist for " + parent.entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
+		      wishlistBoxPanel.setTitle("wishlist for " + parent.entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
 		      wishlistBoxPanel.setVisible(true);
 		      this.wishlistService.getWishlist(event.getUserId() , event.getEventId());
 			
 		}
 		
 	
-		
-	private void buildMoneyDialogBox(){
-		moneyDialogBox = new DialogBox();
-		moneyDialogBox.setText("Enter a sum : ");
-	
-		
-		moneyVerticalPanel  = new VerticalPanel();
-		moneyDialogBox.add(moneyVerticalPanel);
-		
-		errorMsgLabel = new Label();
-		moneyVerticalPanel.add(errorMsgLabel);
-		errorMsgLabel.setStyleName("errorMessage");
-		errorMsgLabel.setVisible(false);
-		
-		
-		
-		enterSumTextBox = new TextBox();
-		moneyVerticalPanel.add(enterSumTextBox);
-		
-		moneyHorizontalPanel = new HorizontalPanel();
-		moneyVerticalPanel.add(moneyHorizontalPanel);
-		moneyHorizontalPanel.setSpacing(20);
-		
-		okMoneyButton = new Button();
-		moneyHorizontalPanel.add(okMoneyButton);
-		okMoneyButton.setText("Participate");
-		
-		cancelMoneyButton = new Button();
-		moneyHorizontalPanel.add(cancelMoneyButton);
-		cancelMoneyButton.setText("Cancel");
-		
-		
-	}
 	
 	private void loadMoneyDialog(WishlistItemNewData item,Widget widgetClicked){
 		currentItem = item;
-	//	moneyDialogBox.center();
-	   // moneyDialogBox.show();
-		moneyDialogBox.showRelativeTo(widgetClicked);
-	    enterSumTextBox.setFocus(true);
-	}
-	
-	/*
-	private void buildParticipatorsPopupPanel(){	
-	   participatorsPanel = new PopupPanel(true);
-	  
-	   
- 	   participatorsTable = new TableWithHeader();
- 	   participatorsPanel.add(participatorsTable);
- 	   participatorsTable.setStyleName("tables");
- 	   
- 	   participatorsTable.setHeader(0, "Name");
- 	   participatorsTable.setHeader(1, "sum");
- 	   
- 	//   participatorsTable.getColumnFormatter().addStyleName(0, "tablesColumns");
- 	//   participatorsTable.getColumnFormatter().addStyleName(1, "tablesColumns");
- 	   
- 	  
- 	   
-	}
-	
-	
-	private void showParticipatorsPanel(WishlistItemNewData item,Widget widgetClicked){
-		currentItem = item;
-        participatorsTable.clear();
+		moneyDialogBox.center();
+	    moneyDialogBox.show();
 
-        int left =  widgetClicked.getAbsoluteLeft() + 10;
-        int top = widgetClicked.getAbsoluteTop() + 10;
-        participatorsPanel.setPopupPosition(left, top);
-        
-        participatorsPanel.show();
-     //   participatorsPanel.showRelativeTo(widgetClicked);
-        
-        int row = 0;
-        for(ParticipatorData participator : item.getParticipators()){
-        	participatorsTable.setWidget(row, 0, new Label(participator.getUserFirstName()+ " " +participator.getUserLastName()) );
-        	participatorsTable.setWidget(row, 1, new Label(participator.getMoney().toString()));
-        	participatorsTable.getRowFormatter().addStyleName(row, "tablesRows");
-        	row++;
-        }
-
-		
 	}
-	*/
+	
+	
 	
 	
 	private void buildPolaniPanel(){
@@ -283,7 +178,7 @@ public class WishListFriendsGUI  {
 	        	polaniTable.setWidget(row, 0, new Label(item.getItemName()+" for "+item.getEventName(),false));
 	        	row++;
 	        }   
-	     polaniPanel.showRelativeTo(menu);   
+	     polaniPanel.showRelativeTo(polani);   
 		
 		
 	}
@@ -320,7 +215,7 @@ public class WishListFriendsGUI  {
 	//	scrollWishlistPanel.setSize("100%", "275px");
 
 	   
-		friendWishTable = new HoverTable();
+		friendWishTable = new HoverTable(0,5);
 		scrollWishlistPanel.add(friendWishTable);
 	//	friendWishTable.setWidth("100%");
 		friendWishTable.addStyleName("Table");
@@ -328,6 +223,8 @@ public class WishListFriendsGUI  {
 		friendWishTable.getColumnFormatter().setWidth(0, "100px");
 		friendWishTable.getColumnFormatter().setWidth(1, "50px");
 		friendWishTable.getColumnFormatter().setWidth(2, "80px");
+		
+		
 		
        
 	}
@@ -353,12 +250,7 @@ public class WishListFriendsGUI  {
         WishlistItemNewData item = this.items.get(row);
         Widget widgetClicked = friendWishTable.getWidget(row, col);
          
-       switch(col){
-    	                  
-  //     case PRICE_LINK :    if(!item.getParticipators().isEmpty())
-  		              //          showParticipatorsPanel(item , widgetClicked);
-                    //        break;
-                          
+       switch(col){   	                                       
        case BUY_LINK :      if(item.getIsActive())
     	                       wishlistService.bookItemForUser(item.getWishlistItemId(), currentEvent.getEventId(),parent.entryPoint.userId);
                             break;
@@ -376,60 +268,14 @@ public class WishListFriendsGUI  {
 	public void gui_eventCloseButtonClicked() {
 	    wishlistBoxPanel.setVisible(false);
 	    parent.eventPanel.setVisible(true);
-		friendWishTable.clear();
+		friendWishTable.clear(true);
 		polaniItems = null;
         
     }
 	
-//	public void gui_eventParticipatorsTableClicked(){
-//		participatorsPanel.hide();
-//	}
-	
 
-	
-	public void gui_eventOkMoneyButtonClicked(){
-		//if empty
-		if(enterSumTextBox.equals("")){
-			errorMsgLabel.setText("Enter the sum ");
-    		enterSumTextBox.setFocus(true);
-    		errorMsgLabel.setVisible(true);
-    		return;
-		}
-		//full , try to parse
-		Integer sum = 0;
-		try{
-		   sum = Integer.parseInt(enterSumTextBox.getText());
-		}catch(NumberFormatException ex){
-			errorMsgLabel.setText("Enter valid sum ");
-    		enterSumTextBox.setFocus(true);
-    		errorMsgLabel.setVisible(true);
-    		return;
-		}
-		if (sum > 0){
-			errorMsgLabel.setVisible(false);
-			moneyDialogBox.hide();
-			enterSumTextBox.setText("");
-		    ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
-            this.wishlistService.addParticipator(currentItem.getWishlistItemId(), currentEvent.getEventId(), data);
-		}else{
-			errorMsgLabel.setText("Enter valid sum ");
-    		enterSumTextBox.setFocus(true);
-    		errorMsgLabel.setVisible(true);
-		}
-	}
-	
-	public void gui_eventCancelMoneyButtonClicked(){
-		errorMsgLabel.setVisible(false);
-		moneyDialogBox.hide();
-		enterSumTextBox.setText("");
-	}
-	
 	public void wireWishlistFriendGUIEvents() {
-	//	this. closeFriendWishlistBoxButton.addClickHandler(new ClickHandler(){
-     //   	public void onClick(ClickEvent event){
-      //  	    gui_eventCloseButtonClicked();
-      //  	}
-     //   });
+
 		
 		this.friendWishTable.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
@@ -442,32 +288,26 @@ public class WishListFriendsGUI  {
 		
 		
 		
-	//	this.participatorsTable.addClickHandler(new ClickHandler(){
-	//		public void onClick(ClickEvent event){
-	//			gui_eventParticipatorsTableClicked();
-				
-	//		}
-	//	});
-		
-		this.okMoneyButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
-				gui_eventOkMoneyButtonClicked();
-			}
-		});
-		
-		this.cancelMoneyButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
-				gui_eventCancelMoneyButtonClicked();
-			}
-		});
-		
-		this.enterSumTextBox.addKeyUpHandler(new KeyUpHandler(){
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
-					gui_eventOkMoneyButtonClicked();
+		this.moneyDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
+
+			public void onClose(CloseEvent<PopupPanel> event) {
+				if(event.isAutoClosed())
+					return;
+				else{
+					Integer sum = moneyDialogBox.getInput();
+					if(sum == null)
+						return;
+					else {
+						 ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
+				         wishlistService.addParticipator(currentItem.getWishlistItemId(), currentEvent.getEventId(), data);
+					}	
 				}
+			}
 		});
 	}
+	
+
+
 	
 	/*
 	 * friend's wishlist
@@ -475,25 +315,34 @@ public class WishListFriendsGUI  {
 	@SuppressWarnings("deprecation")
 	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemNewData> result) {
 		this.items = result;
-        this.friendWishTable.clear();
-        NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
+        friendWishTable.clear(true);
+        friendWishTable.resizeRows(result.size());
         
         int row = 0;
         for (WishlistItemNewData item : result) {
         	//link
-        	if ((item.getLink().equals("")) || (item.getLink() == null))
+        	if ((item.getLink() == null) || (item.getLink().equals(""))  )
         		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
-        	else
-        		friendWishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
+        	else {
+        		if((item.getThumbnail() == null)||(item.getThumbnail().equals(""))  )
+            		friendWishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
+        		else{
+        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
+        			friendWishTable.setWidget(row,0,anchor);
+        			TooltipListener listener  = new TooltipListener(
+     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'border-style:inset;border-color:green;'>", 5000 ,"yourcssclass");
+        			anchor.addMouseListener( listener);
+        		}
+        	}
         	//priority
         	if(item.getPriority())
-        	   friendWishTable.setWidget(row,1,new Label("high"));
+        	   friendWishTable.setText(row,1,"high");
         	else
-        		friendWishTable.setWidget(row,1,new Label("low"));
+        		friendWishTable.setText(row,1,"low");
         	
             if(item.getIsActive()){	
         	   if(item.getParticipators().isEmpty()){
-        	      friendWishTable.setWidget(row, 2,new Label(format.format(item.getPrice()),false) );
+        	      friendWishTable.setWidget(row, 2,new Label(format.format(item.getPrice())) );
         	      Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
 			      buyImage.setTitle("I'll buy");
         	      friendWishTable.setWidget(row, 3, buyImage);
@@ -514,7 +363,7 @@ public class WishListFriendsGUI  {
         		      html+="<LI>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+format.format(data.getMoney());
         	      }
 	    	      html+="</UL></div>";
-        	      Label price = new Label (format.format(sum) +"/"+format.format(item.getPrice()));
+        	      Label price = new Label (format.format(sum) +" / "+format.format(item.getPrice()));
           	      friendWishTable.setWidget(row, 2,price );
           	      
           	      TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
@@ -532,47 +381,53 @@ public class WishListFriendsGUI  {
             	}
             }else {
             	friendWishTable.setWidget(row, 2,new Label(format.format(item.getPrice())));
-            	friendWishTable.getCellFormatter().addStyleName( row,0,constants.cwInactiveRowStyle());
+            	friendWishTable.getWidget(row, 0).addStyleName(constants.cwInactiveRowStyle());
             }
-        //	friendWishTable.getRowFormatter().addStyleName(row, "tablesRows");
+            
             row ++;
         }
+        
+       
 		
 	}
 
 	public void service_eventGetWishlistFailed(Throwable caught) {
-		// showMessage("Unable to get  wishlist");
+	//	Window.alert("Unable to get  wishlist");
 		
 	}
 	public void service_eventBookItemForUserFailed(Throwable caught) {
-		//show Message("You can't book this item");
+	//	Window.alert("You can't book this item");
 		
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
-		//showMessage("Now you can see this item in "I buy " tab");
+	//	Window.alert("Now you can see this item in \"I buy\"  tab");
 		parent.entryPoint.iBuyGUI.itemsToBuy = null;
 		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
 		
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-		Window.alert("add participator " +caught);
+	//	Window.alert("add participator " +caught);
 		
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
+	//	Window.alert("add Participator succesfull");
 		parent.entryPoint.iBuyGUI.itemsToBuy = null;
+		Window.alert("going to get Wishlist");
 		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
+		Window.alert("went to get wishlist");
 		
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
-		// TODO Auto-generated method stub
+	//	Window.alert("get Polani failed");
 		
 	}
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
+	//	Window.alert("get polani succesfull");
 		polaniItems = result;
 		showPolaniItems();	
 		
