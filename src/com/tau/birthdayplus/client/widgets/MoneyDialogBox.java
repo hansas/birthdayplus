@@ -23,7 +23,7 @@ public class MoneyDialogBox extends DialogBox {
 	private HorizontalPanel moneyHorizontalPanel;
 	private Button    okMoneyButton;
 	private Button    cancelMoneyButton;
-	private boolean valid;
+	private Integer sum ;
 	
 	
 	public MoneyDialogBox(){
@@ -68,14 +68,14 @@ public class MoneyDialogBox extends DialogBox {
 		cancelMoneyButton.setWidth("90%");
 		
 	//	initWidget(moneyDialogBox);
-		valid = false;
+	    sum = null;
 		
 		wireEvents();
 	}
 	
 
 	public void show(){
-		valid = false;
+		sum = null;
 		enterSumTextBox.setText("");
 		enterSumTextBox.setEnabled(true);
 		super.show();
@@ -91,11 +91,9 @@ public class MoneyDialogBox extends DialogBox {
 	
 	
 	
-	public String getInput(){
-		if(valid)
-		   return this.enterSumTextBox.getText();
-		else
-			return null;
+	public Integer getInput(){
+		return sum;
+		
 	}
 	
 	private boolean checkIfValidSum(){
@@ -144,7 +142,7 @@ public class MoneyDialogBox extends DialogBox {
 	this.okMoneyButton.addClickHandler(new ClickHandler(){
 		public void onClick(ClickEvent event){
 			if(checkIfValidSum()){
-				valid = true;
+				sum = Integer.parseInt(enterSumTextBox.getText());
 				errorMsgLabel.setVisible(false);
 				hide();
 			}
@@ -158,7 +156,7 @@ public class MoneyDialogBox extends DialogBox {
 		public void onKeyUp(KeyUpEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
 				if(checkIfValidSum()){
-					valid = true;
+					sum = Integer.parseInt(enterSumTextBox.getText());
 					errorMsgLabel.setVisible(false);
 					hide();
 				}
