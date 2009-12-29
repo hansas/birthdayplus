@@ -61,37 +61,32 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
 public class IBuyTabGUI {
-	private static  NumberFormat shortFormat = NumberFormat.getFormat("\u20AA#,##0");
+//////////////////Constants///////////////////////////
+	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
 	private static 	DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
-
-
-	//////////////////Constants///////////////////////////
-	CwConstants constants = GWT.create(CwConstants.class);
 	private static final int CHAT_LINK = 5;
 	private static final int BUY_LINK = 4;
 	private static final int CANCEL_LINK = 3;
 	private static final int UPDATE_LINK = 2;
-//	private static final int PRICE_LINK  = 1;
-	
+
 	
 
 	//////////////////GUI Widgets////////////////////////
 	private FlowPanel iBuyPanel;
-//	private Label title;
-//	private MenuBar menu;
 	
-	//items
-//	private FlowPanel wishPanel;
+    //items
 	private FlowPanelMenuTitle wishPanel;
 	private  ScrollPanel iBuyScrollPanel;
 	private  FlexTable iBuyTableHeader;
 	private  HoverTable wishTable;
+	
 	//text area for message to group
 	private  RichTextArea emailTextArea;
 	private  RichTextToolbar emailTextToolbar;
-	private  Grid emailGrid;
+	private  FlexTable emailGrid;
 	private  PopupPanel emailPanel;
 	private  Anchor sendEmail;
+	private  Anchor cancelEmail;
 	
 	
 	private FlowPanelMenuTitle mainChatPanel;
@@ -115,10 +110,11 @@ public class IBuyTabGUI {
 	
 	
 	//////////////////Model///////////////////////////////
-	public ArrayList<WishlistItemNewData> itemsToBuy=null;
-	WishlistItemNewData currentItem;
+	private ArrayList<WishlistItemNewData> itemsToBuy = null;
+	private WishlistItemNewData currentItem;
 	public IBuyDelegate wishlistService;
 	public Birthdayplus entryPoint;
+	private boolean closeGroup;
 	
 
 	
@@ -146,17 +142,21 @@ public class IBuyTabGUI {
 	    emailTextToolbar = new RichTextToolbar(emailTextArea);
 	    emailTextToolbar.setWidth("300px");
 	    sendEmail = new Anchor("send this message");
+	    cancelEmail = new Anchor("cancel");
 	    
 	    
 
 	    // Add the components to a panel
-	    emailGrid = new Grid(4, 1);
+	    emailGrid = new FlexTable();
 	    emailGrid.setWidth("300px");
 	    emailGrid.setText(0, 0, "We will send mail to the group on your behalf. Please enter the mail text below ");
+	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
 	    emailGrid.setWidget(1, 0, emailTextToolbar);
+	    emailGrid.getFlexCellFormatter().setColSpan(1, 0, 2);
 	    emailGrid.setWidget(2, 0, emailTextArea);
+	    emailGrid.getFlexCellFormatter().setColSpan(2, 0, 2);
 	    emailGrid.setWidget(3, 0, sendEmail);
-	    sendEmail.setWidth("100%");
+	    emailGrid.setWidget(3, 1, cancelEmail);
 	    emailPanel.add(emailGrid);
 	    
 	   
@@ -186,10 +186,21 @@ public class IBuyTabGUI {
 	    moneyDialogBox = new MoneyDialogBox();
 	//	buildMoneyDialogBox();
 	
-	
-		
 		    
 	}
+	
+	protected void showIBuyTab(){
+		closeChat();
+		if(itemsToBuy == null)
+			this.wishlistService.getBookedWishlist(entryPoint.userId);
+    	wishPanel.setVisible(true);
+	}
+	
+	protected void makeDirtyIBuyItems(){
+		this.itemsToBuy = null;
+	}
+	
+	
 	
 	
 	
@@ -349,7 +360,7 @@ public class IBuyTabGUI {
 		
 		for (ParticipatorData user : currentItem.getParticipators()){
 			participatorsTable.setText(row, 0, user.getUserFirstName() + " " + user.getUserLastName() );
-			participatorsTable.setText(row, 1, shortFormat.format(user.getMoney()));
+			participatorsTable.setText(row, 1, shortMoneyFormat.format(user.getMoney()));
 			row++;
 		}
 		
@@ -392,12 +403,10 @@ public class IBuyTabGUI {
 	
 	
 	private void showTextArea(WishlistItemNewData item){
-		if(item.getIsActive() && !item.getParticipators().isEmpty()){
 			currentItem = item;
 	    	emailPanel.center();
 		    emailPanel.show();
 	    	emailTextArea.setFocus(true);
-		}
 		
 	}
 		
@@ -415,10 +424,12 @@ public class IBuyTabGUI {
 	         int col = cellClicked.getCellIndex();
 	        
 	         WishlistItemNewData item = this.itemsToBuy.get(row);
+	        
 	         
 	        
 	        switch(col){
-	        case UPDATE_LINK  : loadMoneyDialog(item);    
+	        case UPDATE_LINK  : if(item.getIsActive())
+	        	                   loadMoneyDialog(item);    
 	                            break;
 	                            
 	        case CANCEL_LINK  : if(item.getParticipators().isEmpty())
@@ -427,14 +438,18 @@ public class IBuyTabGUI {
 	                            {  if(item.getIsActive())
 	                                 this.wishlistService.deleteParticipator(item.getWishlistItemId(), entryPoint.userId);
 	                               else
-	                               { if(item.getBuyer().getUserId().equals(entryPoint.userId))
-	                            	   this.wishlistService.cancelBookItemForGroup(item.getWishlistItemId(), entryPoint.userId);
+	                               { if(item.getBuyer().getUserId().equals(entryPoint.userId)){
+	                            	   closeGroup = false;
+	                            	   showTextArea(item);
+	                               }
 	                               }
 	                            }
 	                            break;
 	                            
-	        case BUY_LINK     : if(item.getIsActive())
+	        case BUY_LINK     : if(item.getIsActive()){
+	        	                   closeGroup = true;
 	        	                   showTextArea(item);
+	                             }
                                 break;
                                 
 	        case CHAT_LINK     : if(!item.getParticipators().isEmpty())
@@ -474,7 +489,7 @@ public class IBuyTabGUI {
 	        
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
-	    	    	wishTable.setWidget(row, 1,new Label(shortFormat.format(item.getPrice()))) ;
+	    	    	wishTable.setWidget(row, 1,new Label(shortMoneyFormat.format(item.getPrice()))) ;
 	    	    	if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
 	    	    		countMoney+=item.getPrice();
 	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
@@ -489,14 +504,14 @@ public class IBuyTabGUI {
 	    	    		if(user.getUserId().equals(entryPoint.userId)){
 	    	    			if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
 	    	    	    		countMoney+=user.getMoney();
-		        		    html+="<LI style='color:blue'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortFormat.format(user.getMoney());
+		        		    html+="<LI style='color:blue'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortMoneyFormat.format(user.getMoney());
 
 	    	    		}else
-	        		        html+="<LI>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortFormat.format(user.getMoney());
+	        		        html+="<LI>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortMoneyFormat.format(user.getMoney());
 
 	    	    	}
 	    	    	html+="</UL></div>";
-	    	    	Label priceLabel = new Label(shortFormat.format(sum)+" / "+shortFormat.format(item.getPrice()));
+	    	    	Label priceLabel = new Label(shortMoneyFormat.format(sum)+" / "+shortMoneyFormat.format(item.getPrice()));
 	    	        wishTable.setWidget(row, 1,priceLabel );
 	    	        
 	    	        TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
@@ -528,31 +543,49 @@ public class IBuyTabGUI {
 	        }   
 	    	    row ++;
 	        }
-	        wishPanel.setTitle("In this month you're going to spend "+shortFormat.format(countMoney));
+	        wishPanel.setTitle("In this month you're going to spend "+shortMoneyFormat.format(countMoney));
 			    
 		}
 		
-		public void gui_eventCloseChatButtonClicked(){
-			mainChatPanel.setVisible(false);
-	    	wishPanel.setVisible(true);
-			
+		private void closeChat(){
+			if(mainChatPanel.isVisible()){
+				this.itemsToBuy = null;
+				mainChatPanel.setVisible(false);
+			}
+		}
+		
+		private void gui_eventCloseChatButtonClicked(){
+			showIBuyTab();
 		}
 		
 		private void gui_eventAddMessageButtonClicked(){
-			if(chatTextArea.getText().equals(""))
+			if(chatTextArea.getText().equals("")){
+				chatTextArea.setText("please, type a message");
+				chatTextArea.setFocus(true);
 				return;
+			}
 			ChatMessageData message = new ChatMessageData(entryPoint.userId,entryPoint.firstName+" "+entryPoint.lastName,chatTextArea.getText());
 			this.wishlistService.addChatMessage(currentItem.getWishlistItemId(),message);
 		}
 		
 		
 		private void gui_eventSendEmailButtomClicked(){
-			if(emailTextArea.getText().equals(""))
+			if(emailTextArea.getText().equals("")){
+				emailTextArea.setHTML("<FONT color=red>Please, enter the message for the group</FONT>");
 				return;
+			}
 			emailPanel.hide();
-			this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML());
+			if(closeGroup)
+			   this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML());
+			else
+         	   this.wishlistService.cancelBookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML());
 			emailTextArea.setText("");
 			
+		}
+		
+		private void gui_eventCanelEmailButtonClicked(){
+			emailTextArea.setText("");
+		    emailPanel.hide();
 		}
 		
 		
@@ -561,7 +594,7 @@ public class IBuyTabGUI {
 		
 		
 		
-		public void wireIBuyGUIEvents(){
+		protected void wireIBuyGUIEvents(){
 			this.wishTable.addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event){
 					Cell cellForEvent=wishTable.getCellForEvent(event);
@@ -614,12 +647,21 @@ public class IBuyTabGUI {
 				}
 				
 			});
+			
+			this.cancelEmail.addClickHandler(new ClickHandler(){
+
+				public void onClick(ClickEvent event) {
+					gui_eventCanelEmailButtonClicked();
+					
+				}
+				
+			});
 		}
 
 
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
 		//	Window.alert("CancelBookItemForUserFailed");
-			System.out.println(caught);
+		//	System.out.println(caught);
 			
 		}
 
@@ -633,7 +675,7 @@ public class IBuyTabGUI {
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
 		//	Window.alert("DeleteParticipatorFailed");
-			System.out.println(caught);
+		//	System.out.println(caught);
 			
 		}
 

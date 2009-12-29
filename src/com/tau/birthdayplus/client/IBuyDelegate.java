@@ -24,9 +24,6 @@ public class IBuyDelegate {
 	
 	
 	void cancelBookItemForUser(String wishlistItemId, String userId){
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
-		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=wishlistService.cancelBookItemForUser(wishlistItemId, userId,new AsyncCallback<Void>(){
@@ -46,9 +43,6 @@ public class IBuyDelegate {
 	}
 	
 	void deleteParticipator(String wishlistItemId, String userId){
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
-		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=wishlistService.deleteParticipator(wishlistItemId, userId, new AsyncCallback<Void>(){
@@ -69,9 +63,6 @@ public class IBuyDelegate {
 	}
 	
 	void updateParticipator(String wishlistItemId,ParticipatorData participator){
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
-		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder=wishlistService.updateParticipator(wishlistItemId, participator, new AsyncCallback<Void>(){
@@ -91,32 +82,9 @@ public class IBuyDelegate {
 		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
 
 	}
-	
-//	void deleteItemFromTab(String userId,String wishlistItemId){
-//		entryPoint.loadingImagePopup.center();
-//		entryPoint.loadingImagePopup.show();
-//		RequestBuilder requestBuilder=wishlistService.deleteBookedWishlistItem(userId, wishlistItemId,new AsyncCallback<Void>(){
-//
-//			public void onFailure(Throwable caught) {
-//				entryPoint.loadingImagePopup.hide();
-//				gui.service_eventDeleteItemFromTabFailed(caught);
-//			}
-//
-//			public void onSuccess(Void result) {
-//				entryPoint.loadingImagePopup.hide();
-//				gui.service_eventDeleteItemFromTabSuccesfull();				
-//			}
-//		});
-//		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
-//
-//	}
-	
 	 
 	 
 	public void getBookedWishlist(final String userId) {
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
-		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		
@@ -137,9 +105,6 @@ public class IBuyDelegate {
 	    	}
 	
 	public void addChatMessage(String itemId,ChatMessageData message){
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
-		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
 		RequestBuilder requestBuilder = wishlistService.addChatMessageData(itemId, message, new AsyncCallback<Void>(){
@@ -175,9 +140,7 @@ public class IBuyDelegate {
 			}
 
 			public void onSuccess(WishlistItemNewData result) {
-				
-				if(entryPoint.loadingImagePopup.isShowing())
-				   entryPoint.loadingImagePopup.hide();
+				entryPoint.loadingImagePopup.hide();
 				gui.service_getWishlistItemSuccesfull(result);
 				
 			}
@@ -188,13 +151,13 @@ public class IBuyDelegate {
 		
 	}
 	
-	public void cancelBookItemForGroup(String itemId,String userId){
+	public void cancelBookItemForGroup(String itemId,String userId,String message){
 		if(entryPoint.loadingImagePopup.isShowing())
 			entryPoint.loadingImagePopup.hide();
 		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
-		RequestBuilder requestBuilder = wishlistService.cancelBookItemForGroup(itemId, userId, new AsyncCallback<Void>(){
+		RequestBuilder requestBuilder = wishlistService.cancelBookItemForGroup(itemId, userId,message, new AsyncCallback<Void>(){
 
 			public void onFailure(Throwable caught) {
 				entryPoint.loadingImagePopup.hide();

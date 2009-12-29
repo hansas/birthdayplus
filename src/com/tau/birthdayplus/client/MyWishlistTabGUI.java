@@ -28,23 +28,17 @@ import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class MyWishlistTabGUI {
-	private static  NumberFormat shortFormat = NumberFormat.getFormat("\u20AA#,##0");
-
-    /*
-     * constants
-     */
-	CwConstants constants = GWT.create(CwConstants.class);
-//	private static final int LINK = 0;
+	// CONSTANTS 
+	private static CwConstants constants = GWT.create(CwConstants.class);
+	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
 	private static final int UPDATE_LINK = 3;
     private static final int DELETE_LINK = 4;
 
 	/*GUI Widgets*/
     private FlowPanelMenuTitle wishlistPanel;
-	// wishlist table
 	private FlexTable wishTableHeader;
 	private HoverTable wishTable;
 	private ScrollPanel wishlistScrollPanel;
-	//add item box 
 	private ItemDialogBox addItemBox;
     private Boolean addItem;
     
@@ -69,7 +63,7 @@ public class MyWishlistTabGUI {
 	/*  
 	 * Data Model
 	 */
-	public ArrayList<WishlistItemData> items = null;
+	private  ArrayList<WishlistItemData> items = null;
     private WishlistItemData currentItem;
     public MyWishlistDelegate wishlistService;
     public Birthdayplus entryPoint;
@@ -81,8 +75,6 @@ public class MyWishlistTabGUI {
 	 * This is the entry point method.
 	 */
 	public void init() {
-	//	items = new ArrayList<WishlistItemData>();
-		
 		wishlistPanel = new FlowPanelMenuTitle();
 		entryPoint.tab.add(wishlistPanel, "My Wishlist");
 		wishlistPanel.addStyleName("Panel");
@@ -97,7 +89,7 @@ public class MyWishlistTabGUI {
 		
 		wishlistPanel.addMenuItem("Add Item",addItemCommand).setTitle("Add new item to your wishlist");
 		
-		wishlistPanel.addMenuItem("<a href=\"javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}var%20q,h,i;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){break;}}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURIComponent(location.href)+'&wish='+encodeURIComponent(document.title)+'&thumbnail='+encodeURIComponent(h),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes'))})()\">Add to Wishlist</a>",true,new Command(){
+		wishlistPanel.addMenuItem("<a href=\"javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}var%20q,h,i;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){break;}}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURIComponent(location.href)+'&wish='+encodeURIComponent(document.title)+'&thumbnail='+encodeURIComponent(h),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes,width=800,height=500'))})()\">Add to Wishlist</a>",true,new Command(){
 		 public void execute() {
 			}		
 		}).setTitle("Just drag this button to the bookmarks toolbar in your web browser.");
@@ -106,6 +98,12 @@ public class MyWishlistTabGUI {
 		buildWishlistTable();
 	//	buildAddItemBox();
 		addItemBox = new ItemDialogBox();   
+		
+	}
+	
+	protected void showMyWishlistTab(){
+		if (items == null)
+		       this.wishlistService.getMyWishlist(entryPoint.userId);
 		
 	}
 
@@ -223,7 +221,7 @@ public class MyWishlistTabGUI {
 	        	else	
 	    	        wishTable.setText(row,1,"low");
 	        	        
-	    	    wishTable.setText(row, 2,shortFormat.format(item.getPrice()));
+	    	    wishTable.setText(row, 2,shortMoneyFormat.format(item.getPrice()));
 	    	    
 	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update item");

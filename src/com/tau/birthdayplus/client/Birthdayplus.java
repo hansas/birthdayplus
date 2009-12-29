@@ -28,6 +28,7 @@ import com.google.gwt.gadgets.client.NeedsDynamicHeight;
 import com.google.gwt.gadgets.client.UserPreferences;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
@@ -73,8 +74,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 )
 @Gadget.InjectModulePrefs(files = {"ModulePrefs.txt","MiniMessages.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {
-	CwConstants constants = GWT.create(CwConstants.class);
-	//public DynamicHeightFeature feature;
+	private static CwConstants constants = GWT.create(CwConstants.class);
 	
 	// Create a remote service proxy to talk to the server-side Profile service.
 	private final ProfileServiceAsync profileService = GWT.create(ProfileService.class); 
@@ -206,7 +206,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		    iBuyGUI.entryPoint=this;
 		    iBuyDelegate.entryPoint=this;
 		    iBuyGUI.init();
-	        
+	         
 		//    createMiniMessage();
 		
 	}
@@ -229,19 +229,18 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 			public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
 			
 				if(event.getItem()== 0){
-					if(eventGui.eventList == null){
-						ArrayList<String> temp=new ArrayList<String>();
-					    temp = getUserAndFriendsIds();
-					    eventDelegate.getEvents(temp);
-					}
+				//	if(eventGui.eventList == null){
+					//	ArrayList<String> temp=new ArrayList<String>();
+					//    temp = getUserAndFriendsIds();
+					//    eventDelegate.getEvents(temp);
+					eventGui.showEventTab();
+					
 				}else{
 				     if(event.getItem()== 1){
-				    	 if(myWishlistGUI.items == null)
-				        	myWishlistDelegate.getMyWishlist(userId);
+				    	 myWishlistGUI.showMyWishlistTab();
 				     }
 				     else{
-				    	 if(iBuyGUI.itemsToBuy==null)
-				    	   iBuyDelegate.getBookedWishlist(userId);
+				    	 iBuyGUI.showIBuyTab();
 				     }
 				}	
 			}});
@@ -393,7 +392,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 								    main.removeFromParent();
 								    loadingImagePopup.center();
 								    loadingImagePopup.show();
-								    openWindow("http://testrpcplus.appspot.com/birthdayplus/login?openSocialId="+userId+"&firstName="+firstName+"&lastName="+lastName+"&day="+day+"&month="+month+"&year="+year);
+								    openWindow("http://birthdayplus.appspot.com/birthdayplus/login?openSocialId="+userId+"&firstName="+firstName+"&lastName="+lastName+"&day="+day+"&month="+month+"&year="+year);
 								}
 							}
 						}
