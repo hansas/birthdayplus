@@ -176,8 +176,8 @@ WishlistService  {
 	 * isActive = true
 	 * buyer = null
 	 */
-	public void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException, UserException {
-		WishlistManagement.cancelBookItemForGroup(itemId, userId);
+	public void cancelBookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException {
+		WishlistManagement.cancelBookItemForGroup(itemId, userId,message);
 	}
 	/*
 	 * return item by id
