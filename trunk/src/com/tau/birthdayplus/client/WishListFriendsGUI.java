@@ -69,7 +69,7 @@ public class WishListFriendsGUI  {
 
 	
 	//polani
-    MenuItem polani ;
+    private MenuItem polani ;
 	private PopupPanel polaniPanel;
 	private FlexTable polaniTable;
 	
@@ -171,6 +171,8 @@ public class WishListFriendsGUI  {
 	}
 		
 	private void showPolaniItems(){
+		if(polaniItems.isEmpty())
+			return;
 		
 		polaniTable.clear();
 		 int row = 0;
@@ -263,13 +265,20 @@ public class WishListFriendsGUI  {
  
 	 }
 	
-	
+	protected void closeTab(){
+		if(wishlistBoxPanel.isVisible()){
+			wishlistBoxPanel.setVisible(false);
+			friendWishTable.clear(true);
+			polaniItems = null;
+		}
+	}
 	
 	public void gui_eventCloseButtonClicked() {
-	    wishlistBoxPanel.setVisible(false);
-	    parent.eventPanel.setVisible(true);
-		friendWishTable.clear(true);
-		polaniItems = null;
+	//    wishlistBoxPanel.setVisible(false);
+	 //   parent.eventPanel.setVisible(true);
+	///	friendWishTable.clear(true);
+	//	polaniItems = null;
+		parent.showEventTab();
         
     }
 	
@@ -401,8 +410,7 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
-	//	Window.alert("Now you can see this item in \"I buy\"  tab");
-		parent.entryPoint.iBuyGUI.itemsToBuy = null;
+		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
 		
 	}
@@ -413,12 +421,8 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
-	//	Window.alert("add Participator succesfull");
-		parent.entryPoint.iBuyGUI.itemsToBuy = null;
-		Window.alert("going to get Wishlist");
-		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
-		Window.alert("went to get wishlist");
-		
+		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
+		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());		
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {

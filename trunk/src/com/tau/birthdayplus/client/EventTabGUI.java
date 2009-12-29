@@ -59,7 +59,7 @@ public class EventTabGUI {
     /*GUI Widgets*/
     protected FlowPanel mainPanel;
     //events
-    protected FlowPanelMenuTitle eventPanel;
+    private FlowPanelMenuTitle eventPanel;
 	private ScrollPanel eventScrollPanel;
 	private FlexTable eventTableHeader;
 	private HoverTable eventTable;
@@ -71,12 +71,12 @@ public class EventTabGUI {
    
     
     //Data Model\\
+    public EventTabDelegate eventService;
     private  WishListFriendsGUI wishlistFriendGUI;
     private WishListFriendsDelegate wishlistFriendService;
-	public EventTabDelegate eventService;
-	public ArrayList<EventData> eventList=null;
-	protected EventData currentEvent;
-	public Birthdayplus entryPoint;
+	private ArrayList<EventData> eventList = null;
+	private EventData currentEvent;
+	protected Birthdayplus entryPoint;
 	
 //	private Label errorMsgLabel ;
 	
@@ -155,6 +155,13 @@ public class EventTabGUI {
 	    wishlistFriendGUI.init();
 		wishlistFriendGUI.wireWishlistFriendGUIEvents();
 		
+	}
+	
+	protected void showEventTab(){
+		if (eventList == null)
+			 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
+		wishlistFriendGUI.closeTab();
+		eventPanel.setVisible(true);
 	}
 	
 	/*
@@ -305,7 +312,8 @@ public class EventTabGUI {
 
 	   
    }
-   public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
+   @SuppressWarnings("deprecation")
+public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	    String due;
 		this.eventList = result;
 		this.eventTable.clear(true);
