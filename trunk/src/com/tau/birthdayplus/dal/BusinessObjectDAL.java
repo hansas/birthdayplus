@@ -680,7 +680,7 @@ public class BusinessObjectDAL {
 		for (ParticipatorEmail p : participatorsE){
 			group.addParticipator(p);
 		}
-		SendEmail.sendEmailToGroup(group, message);
+		SendEmail.sendEmailToGroup(group, message,true);
 	}
 	/*
 	 * only the buyer can cancel the reservation of the item
