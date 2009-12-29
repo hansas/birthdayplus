@@ -69,7 +69,7 @@ public interface WishlistServiceAsync {
 	RequestBuilder bookItemForGroup(String itemId, String userId,String message,
 			AsyncCallback<Void> callback);
 
-	RequestBuilder cancelBookItemForGroup(String itemId, String userId,
+	RequestBuilder cancelBookItemForGroup(String itemId, String userId,String message,
 			AsyncCallback<Void> callback);
 
 	RequestBuilder addChatMessageData(String itemId, ChatMessageData message,
