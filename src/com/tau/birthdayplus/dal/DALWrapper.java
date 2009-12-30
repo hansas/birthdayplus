@@ -96,8 +96,12 @@ public class DALWrapper {
 		BusinessObjectDAL.bookItemForGroup(itemId, userId, pm);
 	}
 	
-	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{
-		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm);
+	public void cancelBookItemForGroup(String itemId, String userId) throws UserNotFoundException, UserException{
+		BusinessObjectDAL.cancelBookItemForGroup(itemId, userId);
+	}
+	
+	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Boolean closeGroup) throws Exception{
+		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE,closeGroup, pm);
 	}
 	
 	

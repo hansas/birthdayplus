@@ -97,14 +97,13 @@ public class EventManagement {
 				for (Event event: guestEvents){
 					int eMonth = event.getEventDate().getMonth();
 					int eDay = event.getEventDate().getDate();
-					log.info(event.getEventName()+" date: "+event.getEventDate());
-					System.out.println(eDay);
 					eDate.clear();
 					eDate.set(Calendar.YEAR, event.getEventDate().getYear()+1900);
 					eDate.set(Calendar.MONTH, eMonth);
 					eDate.set(Calendar.DATE, eDay);
-					log.info("eDate: "+eDate.get(Calendar.DATE)+" "+eDate.get(Calendar.MONTH)+" "+(eDate.get(Calendar.YEAR)-1900));
-					if (eDate.after(cal)||eDate.equals(cal)){
+					if (eDate.after(cal)||(((eDate.get(Calendar.DATE)+1)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
+							&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))||((eDate.get(Calendar.DATE)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
+							&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))){
 						events.add(EventManagement.eventToEventData(event,wrapper));
 					}
 				}

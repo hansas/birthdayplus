@@ -19,6 +19,7 @@ import org.datanucleus.store.Extent;
 import sun.misc.Sort;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.tau.birthdayplus.Email.EmailException;
 import com.tau.birthdayplus.Email.GroupEmail;
 import com.tau.birthdayplus.Email.ParticipatorEmail;
 import com.tau.birthdayplus.Email.SendEmail;
@@ -671,7 +672,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm) throws Exception{
+	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Boolean closeGroup,PersistenceManager pm) throws EmailException{
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
 		Event event = pm.getObjectById(Event.class,item.getEventKey());
@@ -680,7 +681,12 @@ public class BusinessObjectDAL {
 		for (ParticipatorEmail p : participatorsE){
 			group.addParticipator(p);
 		}
-		SendEmail.sendEmailToGroup(group, message,true);
+		try{
+			SendEmail.sendEmailToGroup(group, message,closeGroup);
+		}
+		catch(EmailException e){
+			throw new EmailException(e.getMessage());
+		}
 	}
 	/*
 	 * only the buyer can cancel the reservation of the item
