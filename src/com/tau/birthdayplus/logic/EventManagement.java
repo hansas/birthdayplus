@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
+
+import org.mortbay.log.Log;
 
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -18,6 +21,7 @@ import com.tau.birthdayplus.dal.DALWrapper;
 import com.tau.birthdayplus.dto.client.EventData;
 
 public class EventManagement {
+	private static final Logger log = Logger.getLogger(EventManagement.class.getName());
 	
 	public static final Comparator<EventData> EVENT_DATA_ORDER =
         new Comparator<EventData>() {
@@ -93,11 +97,14 @@ public class EventManagement {
 				for (Event event: guestEvents){
 					int eMonth = event.getEventDate().getMonth();
 					int eDay = event.getEventDate().getDate();
+					log.info(event.getEventName()+" date: "+event.getEventDate());
+					System.out.println(eDay);
 					eDate.clear();
 					eDate.set(Calendar.YEAR, event.getEventDate().getYear()+1900);
 					eDate.set(Calendar.MONTH, eMonth);
 					eDate.set(Calendar.DATE, eDay);
-					if (eDate.after(cal)){
+					log.info("eDate: "+eDate.get(Calendar.DATE)+" "+eDate.get(Calendar.MONTH)+" "+(eDate.get(Calendar.YEAR)-1900));
+					if (eDate.after(cal)||eDate.equals(cal)){
 						events.add(EventManagement.eventToEventData(event,wrapper));
 					}
 				}
