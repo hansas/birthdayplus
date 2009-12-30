@@ -121,7 +121,6 @@ public class IBuyDelegate {
 			}
 			
 		});
-		
 		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
 
 		

@@ -1,6 +1,7 @@
 package com.tau.birthdayplus.server;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +45,9 @@ ProfileService {
 	
 	protected String readContent(HttpServletRequest request)
 	throws ServletException, IOException {
-return RPCServletUtils.readContentAsUtf8(request, false);
+		String content = RPCServletUtils.readContentAsUtf8(request, false);
+		content = URLDecoder.decode(content, "UTF-8");
+		return content;
 }
 
 

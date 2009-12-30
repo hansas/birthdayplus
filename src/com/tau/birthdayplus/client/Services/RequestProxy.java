@@ -8,12 +8,12 @@ public class RequestProxy {
 	}
 	public static native void makePostRequest(String url, String postdata, RequestCallback callback) /*-{
 	    var params = {};
+	    url = [ url, "?", "nocache=", new Date().getTime() ].join("");
 		params[$wnd.gadgets.io.RequestParameters.METHOD] = $wnd.gadgets.io.MethodType.POST;
-		params[$wnd.gadgets.io.RequestParameters.POST_DATA]= postdata;
-		params[$wnd.gadgets.io.RequestParameters.HEADERS] = { 'Content-Type' : 'text/x-gwt-rpc; charset=UTF-8'};
-		
-	//	$wnd.gadgets.io.makeRequest(url, response, params); 
-        makeCachedRequest(url, response, params, 0);
+		params[$wnd.gadgets.io.RequestParameters.POST_DATA]=  encodeURIComponent(postdata);
+		params[$wnd.gadgets.io.RequestParameters.REFRESH_INTERVAL] = 2;
+		$wnd.gadgets.io.makeRequest(url, response, params); 
+     //   makeCachedRequest(url, response, params, 0);
     //gadgets.io.RequestParameters.REFRESH_INTERVAL = number of seconds to cache    
         
 	function response(obj) {
