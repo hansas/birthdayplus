@@ -272,7 +272,7 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,false);
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,true);
 		}
 		finally{
 			wrapper.close();
@@ -286,7 +286,7 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,true);
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,false);
 		}
 		finally{
 			wrapper.close();

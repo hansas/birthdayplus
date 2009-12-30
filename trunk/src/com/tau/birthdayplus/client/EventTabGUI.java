@@ -47,7 +47,9 @@ import com.tau.birthdayplus.dto.client.EventData;
 
 
 public class EventTabGUI {
-	private static DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
+	private static final DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
+	private static final long ONE_HOUR = 60 * 60 * 1000L;
+	
 	 /*
      * constants
      */
@@ -221,9 +223,12 @@ public class EventTabGUI {
  
     private long daysBetween(Date d1, Date d2) {
     	if(d1== null || d2 == null)
-    		return 0;
-		final long ONE_HOUR = 60 * 60 * 1000L;
-	    return ((d2.getTime() - d1.getTime() + ONE_HOUR) / (ONE_HOUR * 24))+1;
+    		return -1;
+    	long due = 0;
+    	if (d2.after(d1))
+    		due = 1;
+		due += (d2.getTime() - d1.getTime() + ONE_HOUR) / (ONE_HOUR * 24);
+		return due;
 	    
 	}
 	
@@ -435,7 +440,7 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 					if(addEvent)
 						 eventService.createEvent(data);
 					else
-						eventService.updateEvent(currentEvent);
+						eventService.updateEvent(data);
 				}
 			}
 		});
