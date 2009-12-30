@@ -1,8 +1,8 @@
 package com.tau.birthdayplus.client;
 
 
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 
@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
@@ -558,12 +559,16 @@ public class IBuyTabGUI {
 			showIBuyTab();
 		}
 		
+		
+		
+		
 		private void gui_eventAddMessageButtonClicked(){
 			if(chatTextArea.getText().equals("")){
 				chatTextArea.setText("please, type a message");
 				chatTextArea.setFocus(true);
 				return;
 			}
+			
 			ChatMessageData message = new ChatMessageData(entryPoint.userId,entryPoint.firstName+" "+entryPoint.lastName,chatTextArea.getText());
 			this.wishlistService.addChatMessage(currentItem.getWishlistItemId(),message);
 		}

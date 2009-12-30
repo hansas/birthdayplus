@@ -2,6 +2,7 @@ package com.tau.birthdayplus.server;
 
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -65,7 +66,9 @@ EventService {
 	protected String readContent(HttpServletRequest request)
 	throws ServletException, IOException {
 		
-return RPCServletUtils.readContentAsUtf8(request, false);
+		String content = RPCServletUtils.readContentAsUtf8(request, false);
+		content = URLDecoder.decode(content, "UTF-8");
+		return content;
 }
 
 	

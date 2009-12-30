@@ -1,13 +1,18 @@
 package com.tau.birthdayplus.server;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
+import org.mortbay.log.Log;
 
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
@@ -41,6 +46,9 @@ import com.tau.birthdayplus.logic.WishlistManagement;
 @SuppressWarnings("serial")
 public class WishlistServiceImpl extends RemoteServiceServlet implements
 WishlistService  {
+	
+	private static final Logger log = Logger.getLogger(WishlistServiceImpl.class.getName());
+
    
 
 	/*
@@ -156,6 +164,13 @@ WishlistService  {
 	 * add new message to the chat 
 	 */
 	public void addChatMessageData(String itemId, ChatMessageData message){
+        try {
+			log.info(URLDecoder.decode(message.getMesssage(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		WishlistManagement.addChatMessageData(itemId, message);
 	}
 	/*
@@ -197,7 +212,9 @@ WishlistService  {
 	
 	protected String readContent(HttpServletRequest request)
 	throws ServletException, IOException {
-return RPCServletUtils.readContentAsUtf8(request, false);
+		String content = RPCServletUtils.readContentAsUtf8(request, false);
+		content = URLDecoder.decode(content, "UTF-8");
+		return content;
 }
 
 
