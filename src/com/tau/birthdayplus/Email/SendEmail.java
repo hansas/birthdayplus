@@ -60,7 +60,11 @@ public class SendEmail {
         	if(participator.getUserId().equals(group.getBuyerId())){
         	    buyerName =	name;	
 			    buyerAddress = new InternetAddress(participator.getEmail(),buyerName);
-		        htmlTable+= buyerName+"<span style='font-size:11px;color:#888'> - buyer</span>"+" - "+shortMoneyFormat.format(participator.getMoney());
+			    if(closeGroup)
+		           htmlTable+= buyerName+"<span style='font-size:11px;color:#888'> - buyer</span>"+" - "+shortMoneyFormat.format(participator.getMoney());
+			    else 
+			       htmlTable+= buyerName+" - "+shortMoneyFormat.format(participator.getMoney());
+
         	}else{
         		addresses[i] = new InternetAddress(participator.getEmail(),name);
         		htmlTable+=name+" - "+shortMoneyFormat.format(participator.getMoney());
