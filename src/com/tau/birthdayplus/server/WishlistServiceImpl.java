@@ -164,13 +164,6 @@ WishlistService  {
 	 * add new message to the chat 
 	 */
 	public void addChatMessageData(String itemId, ChatMessageData message){
-        try {
-			log.info(URLDecoder.decode(message.getMesssage(), "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		WishlistManagement.addChatMessageData(itemId, message);
 	}
 	/*
