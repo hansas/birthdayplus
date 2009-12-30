@@ -272,17 +272,25 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE);
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,false);
 		}
 		finally{
 			wrapper.close();
 		}
-		
-		
 	}
 	
-	public static void cancelBookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException{
-		BusinessObjectDAL.cancelBookItemForGroup(itemId, userId);
+	public static void cancelBookItemForGroup(String itemId, String userId,String message) throws Exception{
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			wrapper.cancelBookItemForGroup(itemId, userId);
+			WishlistItem item = wrapper.getWishlistItem(itemId);
+			ArrayList<Participator> participators = item.getParticipators();
+			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,true);
+		}
+		finally{
+			wrapper.close();
+		}
 	}
 	
 	public static ArrayList<ParticipatorData> getParticipatorDataList(ArrayList<Participator> participators,

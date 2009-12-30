@@ -104,7 +104,7 @@ public interface WishlistService extends RemoteService{
 	 * isActive = true
 	 * buyer = null
 	 */
-	void cancelBookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException;
+	void cancelBookItemForGroup(String itemId, String userId,String message) throws UserNotFoundException, UserException, Exception;
 	/*
 	 * add new message to the chat 
 	 */
