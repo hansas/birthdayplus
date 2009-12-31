@@ -1,6 +1,9 @@
 package com.tau.birthdayplus.client.widgets;
 
-import org.gwtwidgets.client.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -235,10 +238,9 @@ public class ItemDialogBox extends DialogBox{
     private void gui_eventGetPriceByLink(){
 		loadingImagePopup.center();
 	    loadingImagePopup.show();
-		if(linkField.getText().startsWith("http://www.zap.co.il/model.aspx?modelid=")){
-			bringLink(linkField.getText());
-		}else
-			loadingImagePopup.hide();
+		
+		bringLink(linkField.getText());
+		
 		
 	}
 	public  native void bringLink(String url) /*-{
@@ -257,37 +259,46 @@ public class ItemDialogBox extends DialogBox{
 	
 	
 	private void parse(){
-		Integer price = 0;
-		Pattern pricePattern = new Pattern("[1-9],{0,1}(\\d)* ₪");
-		Pattern thumbnailPattern = new Pattern("src=\"http://img.zap.co.il/pics/[\\w/.]+\"");
-		String[] prices = pricePattern.match(linkText);
+		Double price = 0.0;
+		String[] prices = match(linkText,"([1-9]\\d*)(?:,(\\d+))?(?: ?₪)");
 		
 		if(prices.length != 0){
-			String temp = prices[0].substring(0,prices[0].length()-2);
-	    	try{
-	    	    price = Integer.parseInt(temp);
-	    	 }catch(NumberFormatException ex){
-	    		 String[] splitString= temp.split(",");
-	    		 temp = splitString[0]+splitString[1];
-	    		 try{
-	    			 price = Integer.parseInt(temp);
-	    		 }catch(NumberFormatException exc){ 
-	    			 
-	    		 }
-	    	 }
+			price = Double.parseDouble(prices[1]+prices[2]);
+		}else{
+			prices = match(linkText,"(?:₪ ?)([1-9]\\d*)(?:,(\\d+))?()");
+			if(prices.length != 0)
+				price = Double.parseDouble(prices[1]+prices[2]);
+			
 		}
 	    this.priceField.setText(price.toString());
-	    String[] thumbnail = thumbnailPattern.match(linkText);
-	    Window.alert(thumbnail.length+"");
-	    Window.alert(thumbnail[0]);
-	    if(thumbnail.length!= 0){
-	    	String temp = thumbnail[0].split("src=\"")[1].replace("\""," ");
-	    	this.thumbnailField.setText(temp);
-	    }
+	    String[] thumbnail = match(linkText,"(?:href=\")([^\"]+\\.gif|jpg|jpeg|png|mng)(\")");
+	   
+	    if(thumbnail.length!= 0)
+	    	this.thumbnailField.setText(thumbnail[1]);
+	    else
+	    	this.thumbnailField.setText("");
 	    
 	    loadingImagePopup.hide();
 			
 		
 	}
+	
+	
+	private native static  void _match(String text, List matches,String pattern)/*-{
+	   var regExp = new RegExp(pattern);
+	   var result = text.match(regExp);
+	   if (result == null) return;
+	   for (var i=0;i<result.length;i++)
+	   matches.@java.util.ArrayList::add(Ljava/lang/Object;)(result[i]);
+	   }-*/;
+	
+	public static String[] match(String text,String pattern) {
+	    List matches = new ArrayList();
+	    _match(text, matches,pattern);
+	    String arr[] = new String[matches.size()];
+	    for (int i = 0; i < matches.size(); i++)
+	      arr[i] = matches.get(i).toString();
+	    return arr;
+	  }
 
 }
