@@ -29,7 +29,9 @@ public class AddWishlistItem  extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(AddWishlistItem.class.getName());
-    private static final Pattern pricePattern = Pattern.compile("([1-9])(?:,{0,1})(\\d*) (₪)");
+    private static final Pattern priceAfterPattern = Pattern.compile("([1-9]\\d*)(?:,(\\d+))?( ?\\p{Sc})");
+    private static final Pattern priceBeforePattern = Pattern.compile("(?:\\p{Sc} ?)([1-9]\\d*)(?:,(\\d+))?()");
+
     private static final Pattern contentType = Pattern.compile("(?:charset(?: *))(?:=)(?: *)([^;]+)(;{0,1})");
 
 
@@ -54,12 +56,14 @@ public class AddWishlistItem  extends HttpServlet {
         	log.info("request query string"+req.getQueryString());
         	log.info(req.getParameter("link"));
         	log.info(req.getParameter("wish"));
+        	log.info(req.getParameter("thumbnail"));
         		
         	WishlistItemData data = Parse( req.getParameter("link"));
         	if((data!=null)&& (req.getParameter("wish")!=null)){
         		log.info("calling to create wishlistItem");
         		data.setLink(req.getParameter("link"));
-        		data.setThumbnail(req.getParameter("thumbnail"));
+        		if(!req.getParameter("thumbnail").equals("null"))
+        		   data.setThumbnail(req.getParameter("thumbnail"));
         		data.setItemName(req.getParameter("wish"));
         	    WishlistManagement.createWishlistItem(data, user.getUserId());
         	    created = true;
@@ -81,7 +85,7 @@ public class AddWishlistItem  extends HttpServlet {
        }
 	
 	
-	private  WishlistItemData Parse(String url){
+	private  static WishlistItemData Parse(String url){
 		URLConnection connection = null;
 		WishlistItemData item = null;
 		Double price ;
@@ -98,10 +102,10 @@ public class AddWishlistItem  extends HttpServlet {
 		     scanner = new Scanner(connection.getInputStream(),charset);
 		  else
 			 scanner = new Scanner(connection.getInputStream()); 
-		  
+		 
 		  while ( scanner.hasNextLine() ){
 			  String line =scanner.nextLine();
-		
+		      
 		      if((price = findPrice(line))>=0){
 		    	  item = new WishlistItemData();
 		    	  item.setPrice(price);
@@ -120,16 +124,31 @@ public class AddWishlistItem  extends HttpServlet {
 	
 	 
 	 
-	 private  Double findPrice(String aLine ){
-		 Matcher priceMatcher = pricePattern.matcher(aLine);
+	 private  static Double findPrice(String aLine ){
+		 Matcher priceBeforeMatcher = priceBeforePattern.matcher(aLine);
+		 Matcher priceAfterMatcher = priceAfterPattern.matcher(aLine);
 		 Double price = -1.0;
-		 if (priceMatcher.find()){
-		    	String priceString = priceMatcher.group(1)+ priceMatcher.group(2);;
-		        price = Double.parseDouble(priceString);
-		        log.info("the price is :"+price);
-		 }
+		
+		 if (priceBeforeMatcher.find()) 
+			 price = getPrice(priceBeforeMatcher);
+		 else
+			 if(priceAfterMatcher.find())
+				 price = getPrice(priceAfterMatcher);
 		 return price;
 	 }
+	 
+	 private static Double getPrice(Matcher priceMatcher){
+		 Double price = -1.0;
+		   String afterComma = priceMatcher.group(2);
+		    if(afterComma == null)
+		    	price = Double.parseDouble(priceMatcher.group(1));
+		    else
+		    	price = Double.parseDouble(priceMatcher.group(1)+priceMatcher.group(2));
+		    System.out.println("the price is :"+price);
+		    return price;
+		 
+	 }
+
 	 
 	 
 	

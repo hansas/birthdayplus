@@ -31,12 +31,12 @@ public class AddEventServlet extends HttpServlet {
 	 * Invitation: vcxv dgdg @ Annually on June 6 (event@testrpcplus.appspotmail.com)
 	 * Invitation: kkk kk skk @ Annually from 9pm to 10pm on June 26 (event@testrpcplus.appspotmail.com)
 	 */
-	private static final Pattern eventAnnualyPattern  = Pattern.compile("(?:Invitation:) ([\\w ]+) (?:@ Annually(?: from [\\w:]+ to [\\w:]+)? on) (\\w{3,}) (\\d{1,2}) (\\(event@testrpcplus.appspotmail.com\\))");
+	private static final Pattern eventAnnualyPattern  = Pattern.compile("(?:Invitation:) ([\\p{L} ]+) (?:@ Annually(?: from [\\w:]+ to [\\w:]+)? on) (\\w{3,}) (\\d{1,2}) (\\(event@testrpcplus.appspotmail.com\\))");
 	/*
 	 * Invitation: something @ Thu Dec 24, 2009 (event@testrpcplus.appspotmail.com)
 	 * Invitation: something @ Sat Jan 23 8:30am - 9:30am (event@testrpcplus.appspotmail.com)
 	 */
-    private static final Pattern eventOncePattern = Pattern.compile("(?:Invitation:) ([\\w ]+) (?:@ \\w+) (\\w{3,}) (\\d{1,2})(?:, \\d+)?(?: [\\w :-]+)? (\\(event@testrpcplus.appspotmail.com\\))");
+    private static final Pattern eventOncePattern = Pattern.compile("(?:Invitation:) ([\\p{L} ]+) (?:@ \\w+) (\\w{3,}) (\\d{1,2})(?:, \\d+)?(?: [\\w :-]+)? (\\(event@testrpcplus.appspotmail.com\\))");
 
 	/*
 	 * Olya Vingurt <yalo_niv@yahoo.com>
@@ -105,6 +105,8 @@ public class AddEventServlet extends HttpServlet {
             }else{
             	return;
             }
+            log.info(message.getContentType());
+            log.info(message.getEncoding());
 			log.info("the subject is : "+message.getSubject());
 			EventData event = getEvent(message.getSubject());
 			if(event == null )

@@ -89,7 +89,7 @@ public class MyWishlistTabGUI {
 		
 		wishlistPanel.addMenuItem("Add Item",addItemCommand).setTitle("Add new item to your wishlist");
 		
-		wishlistPanel.addMenuItem("<a href=\"javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}var%20q,h,i;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){break;}}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURIComponent(location.href)+'&wish='+encodeURIComponent(document.title)+'&thumbnail='+encodeURIComponent(h),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes,width=800,height=500'))})()\">Add to Wishlist</a>",true,new Command(){
+		wishlistPanel.addMenuItem("<a href=\"javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}var%20q,h,i;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){break;}else h=null;}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURIComponent(location.href)+'&wish='+encodeURIComponent(document.title)+'&thumbnail='+encodeURIComponent(h),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes,width=800,height=500'))})()\">Add to Wishlist</a>",true,new Command(){
 		 public void execute() {
 			}		
 		}).setTitle("Just drag this button to the bookmarks toolbar in your web browser.");
@@ -204,7 +204,7 @@ public class MyWishlistTabGUI {
 	        	if ((item.getLink()== null) ||(item.getLink().equals("")))
 	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
 	        	else{
-	        		if((item.getThumbnail().equals("")) || (item.getThumbnail() == null))
+	        		if((item.getThumbnail() == null) || (item.getThumbnail().equals(""))  )
 	        	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
 	        		else{
 	        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
