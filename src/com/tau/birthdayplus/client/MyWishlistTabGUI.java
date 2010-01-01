@@ -89,7 +89,7 @@ public class MyWishlistTabGUI {
 		
 		wishlistPanel.addMenuItem("Add Item",addItemCommand).setTitle("Add new item to your wishlist");
 		
-		wishlistPanel.addMenuItem("<a href=\"javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}var%20q,h,i;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){break;}else h=null;}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURIComponent(location.href)+'&wish='+encodeURIComponent(document.title)+'&thumbnail='+encodeURIComponent(h),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes,width=800,height=500'))})()\">Add to Wishlist</a>",true,new Command(){
+		wishlistPanel.addMenuItem("<a onclick=\"alert('Just drag this button to the bookmarks toolbar in your web browser.'); return false;\" href=\"javascript:(function(){function%20I(u){var%20t=u.split('.'),e=t[t.length-1].toLowerCase();return%20{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}var%20q,h,i;for(i=0;q=document.links[i];++i){h=q.href;if(h&&I(h)){break;}else h=null;}void(open('http://testrpcplus.appspot.com/birthdayplus/addWishlistItem?autoclose=yes&link='+encodeURIComponent(location.href)+'&wish='+encodeURIComponent(document.title)+'&thumbnail='+encodeURIComponent(h),'Birthday+','scrollbars=yes,menubars=no,toolbars=no,resizable=yes,width=800,height=500'))})()\"><img width=\"106\" height=\"22\" border=\"0\" align=\"absmiddle\" name=\"Add to Wish List\" alt=\"Add to Wish List\" src=\"http://g-ecx.images-amazon.com/images/G/01/gifts/registries/wishlist/btn-add-to-wish-list-ff._V253705853_.gif\"/></a>",true,new Command(){
 		 public void execute() {
 			}		
 		}).setTitle("Just drag this button to the bookmarks toolbar in your web browser.");
@@ -156,7 +156,6 @@ public class MyWishlistTabGUI {
        
          if (col==UPDATE_LINK) {
         	 this.addItem = false;
-           //  this.addItemButton.setVisible(false);
              loadForm(item,Actions.UPDATE);
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item);
@@ -243,46 +242,38 @@ public class MyWishlistTabGUI {
 	    }
 	
 	
-	 private  native void showMessage(String message)/*-{
-	 	miniMessage.createDismissibleMessage(message);
-	 	
-	 }-*/;
-	
 	
 	
 	public void service_eventCreateWishlistItemSuccessful(){
-	//	showMessage("Item was successfully created");
         this.wishlistService.getMyWishlist(entryPoint.userId);
 
 		
 	}
 	
 	public void service_eventUpdateWishlistItemSuccessful(){
-		//showMessage("Item was successfully updated");
         this.wishlistService.getMyWishlist(entryPoint.userId);
 		
 	}
 	
 	public void service_deleteWishlistItemSuccessful(){
-	//	showMessage("Item was successfully deleteded");
        this.wishlistService.getMyWishlist(entryPoint.userId);
 	}
 	
 	public void service_eventGetWishlistFailed(Throwable caught){
-	//	 showMessage("Unable to get  wishlist");
+	   this.entryPoint.messages.setText(caught.getMessage());
 
 	}
 	
 	public void service_eventCreateWishlistItemFailed(Throwable caught){
-	//	showMessage("Unable to create item");
+	   this.entryPoint.messages.setText(caught.getMessage());
 	}
 	
 	public void service_eventUpdateWishlistItemFailed(Throwable caught){
-		//showMessage("Unable to update item");
+		this.entryPoint.messages.setText(caught.getMessage());
 	}
 	
 	public void service_deleteWishlistItemFailed(Throwable caught){
-	//	Window.alert(caught.getMessage());
+	    this.entryPoint.messages.setText(caught.getMessage());
 	}
 	
 	
