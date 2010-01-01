@@ -372,51 +372,33 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	
 	
 	public void service_eventCreateEventSuccessful() {
-          // showMessage("Event was successfully created");
-	        this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
-		
-		
+		this.eventService.getEvents(entryPoint.getUserAndFriendsIds());		
 	}
 
 	public void service_eventUpdateEventSuccessful() {
-		//showMessage("Event was successfully updated");
-		 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
-		
-		
+		 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());		
 	}
 
 	public void service_eventDeleteEventSuccessful() {
-//		showMessage("Event was successfully deleteded");
-	 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
-		
-		
+	     this.eventService.getEvents(entryPoint.getUserAndFriendsIds());				
 	}
-
-
-	
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
-//		Window.alert("Unable to get event list");
-		
-		
+		this.entryPoint.messages.setText(caught.getMessage());
 	}
 	
 	public void service_eventCreateEventFailed(Throwable caught) {
-	//	Window.alert("Unable to create new event");
-		
+		this.entryPoint.messages.setText(caught.getMessage());
 	}
 
 	public void service_eventUpdateEventFailed(Throwable caught) {
-	//	Window.alert("Unable to update event");
-		
+		this.entryPoint.messages.setText(caught.getMessage());
 	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-	//	Window.alert(caught.getMessage());
+		this.entryPoint.messages.setText(caught.getMessage());
 	}
 	
-
-
 
 	
 	public void wireEventGUIEvents(){

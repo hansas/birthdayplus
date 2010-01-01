@@ -94,11 +94,6 @@ public class WishListFriendsGUI  {
     private EventData currentEvent;
     private ArrayList<WishlistItemPolaniData> polaniItems;
  
-	
-
-	
-	 
-
 
 	 /**
 		 * This is the entry point method.
@@ -274,10 +269,6 @@ public class WishListFriendsGUI  {
 	}
 	
 	public void gui_eventCloseButtonClicked() {
-	//    wishlistBoxPanel.setVisible(false);
-	 //   parent.eventPanel.setVisible(true);
-	///	friendWishTable.clear(true);
-	//	polaniItems = null;
 		parent.showEventTab();
         
     }
@@ -285,7 +276,6 @@ public class WishListFriendsGUI  {
 
 	public void wireWishlistFriendGUIEvents() {
 
-		
 		this.friendWishTable.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
             	
@@ -295,10 +285,7 @@ public class WishListFriendsGUI  {
                     gui_eventItemGridClicked(cellForEvent);                
             }});
 		
-		
-		
 		this.moneyDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
-
 			public void onClose(CloseEvent<PopupPanel> event) {
 				if(event.isAutoClosed())
 					return;
@@ -315,8 +302,6 @@ public class WishListFriendsGUI  {
 		});
 	}
 	
-
-
 	
 	/*
 	 * friend's wishlist
@@ -395,18 +380,14 @@ public class WishListFriendsGUI  {
             
             row ++;
         }
-        
-       
-		
 	}
 
 	public void service_eventGetWishlistFailed(Throwable caught) {
-	//	Window.alert("Unable to get  wishlist");
-		
+		this.parent.entryPoint.messages.setText(caught.getMessage());
 	}
+	
 	public void service_eventBookItemForUserFailed(Throwable caught) {
-	//	Window.alert("You can't book this item");
-		
+		this.parent.entryPoint.messages.setText(caught.getMessage());		
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
@@ -416,8 +397,7 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-	//	Window.alert("add participator " +caught);
-		
+		this.parent.entryPoint.messages.setText(caught.getMessage());		
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
@@ -426,25 +406,14 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
-	//	Window.alert("get Polani failed");
-		
+		this.parent.entryPoint.messages.setText(caught.getMessage());		
 	}
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
-	//	Window.alert("get polani succesfull");
 		polaniItems = result;
 		showPolaniItems();	
 		
 	}
-
-	
-
-	
-	  
-	  
-
-
-	
 	
 }
 

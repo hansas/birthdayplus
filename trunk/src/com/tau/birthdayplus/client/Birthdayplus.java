@@ -61,6 +61,7 @@ import com.tau.birthdayplus.client.Services.ProfileService;
 import com.tau.birthdayplus.client.Services.ProfileServiceAsync;
 import com.tau.birthdayplus.client.Services.RequestProxy;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
+import com.tau.birthdayplus.client.widgets.MessageLabel;
 
 
 import com.tau.birthdayplus.dto.client.GuestData;
@@ -70,7 +71,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		title = "Birthday+", 
 		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
 		author_email = "yalo_niv@yahoo.com",
-		height = 400
+		height = 430
 )
 @Gadget.InjectModulePrefs(files = {"ModulePrefs.txt","MiniMessages.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {
@@ -90,6 +91,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	
 	protected  TabPanel tab ;
 	protected  PopupPanel loadingImagePopup ;
+	protected MessageLabel messages;
 
 	
 	
@@ -136,21 +138,16 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
  * This is the entry point method.
  */
  protected void init(UserPreferences preferences) {
-//	 if (tab == null)
-	//	 buildTab();
 	    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
 	    loadingImage.setStyleName("loading image");
-		
-
-		
+				
 	    loadingImagePopup = new PopupPanel(false,true);
-	   
 	    loadingImagePopup.setAnimationEnabled(false);
-	    
 	    loadingImagePopup.setStyleName(constants.cwLoadingPopupPanelStyle());
 	    loadingImagePopup.setWidget(loadingImage);
 	    loadingImagePopup.center();
 	    loadingImagePopup.show();
+	    
 	    getSocialInfo();
      
  }
@@ -160,16 +157,13 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
  private void buildTab(){
 	        Window.enableScrolling(false);
 	        Window.setMargin("0px");
-	        
+	         
+	        messages = new MessageLabel(5000);
+	        RootPanel.get().add(messages);
+	     //   messages.setSize("100%", "25px");
 	        
 		    tab = new TabPanel();
 		    RootPanel.get().add(tab);
-		    
-		    
-		//    HTML divHTML = new HTML();
-		//    divHTML.ensureDebugId("messadeBox");
-	    //    RootPanel.get().add(divHTML);
-	    //    divHTML.setSize("100%", "25px");
 	        
 		  //  tab.setSize("100%", "400px");
 		    tab.addStyleName("tabsPanel");
@@ -211,16 +205,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		
 	}
  
- private  native void createMiniMessage()/*-{
- 	var elem = $wnd.document.getElementById("messageBox");
- 	if(elem)
- 	   $wnd.alert("I found it");
- 	miniMessage =  new $wnd.gadgets.MiniMessage($wnd.document.getElementById("messageBox"));
- }-*/;
- 
- 
-	
-	
+
 	  
 	  private void wireTabGUIEvents(){
 		  
@@ -228,20 +213,15 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 
 			public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
 			
-				if(event.getItem()== 0){
-				//	if(eventGui.eventList == null){
-					//	ArrayList<String> temp=new ArrayList<String>();
-					//    temp = getUserAndFriendsIds();
-					//    eventDelegate.getEvents(temp);
+				if(event.getItem()== 0)
 					eventGui.showEventTab();
 					
-				}else{
-				     if(event.getItem()== 1){
+				else{
+				     if(event.getItem()== 1)
 				    	 myWishlistGUI.showMyWishlistTab();
-				     }
-				     else{
+				     
+				     else
 				    	 iBuyGUI.showIBuyTab();
-				     }
 				}	
 			}});
 		  

@@ -70,17 +70,13 @@ public class IBuyTabGUI {
 	private static final int CANCEL_LINK = 3;
 	private static final int UPDATE_LINK = 2;
 
-	
-
 	//////////////////GUI Widgets////////////////////////
-	private FlowPanel iBuyPanel;
-	
+	private FlowPanel iBuyPanel;	
     //items
 	private FlowPanelMenuTitle wishPanel;
 	private  ScrollPanel iBuyScrollPanel;
 	private  FlexTable iBuyTableHeader;
 	private  HoverTable wishTable;
-	
 	//text area for message to group
 	private  RichTextArea emailTextArea;
 	private  RichTextToolbar emailTextToolbar;
@@ -88,7 +84,6 @@ public class IBuyTabGUI {
 	private  PopupPanel emailPanel;
 	private  Anchor sendEmail;
 	private  Anchor cancelEmail;
-	
 	
 	private FlowPanelMenuTitle mainChatPanel;
 	private HorizontalPanel chatPanel;
@@ -105,11 +100,8 @@ public class IBuyTabGUI {
 	private FlexTable participatorsTableHeader;
 	private HoverTable participatorsTable;
 
-	
 	private MoneyDialogBox moneyDialogBox;
-
-	
-	
+		
 	//////////////////Model///////////////////////////////
 	private ArrayList<WishlistItemNewData> itemsToBuy = null;
 	private WishlistItemNewData currentItem;
@@ -117,9 +109,6 @@ public class IBuyTabGUI {
 	public Birthdayplus entryPoint;
 	private boolean closeGroup;
 	
-
-	
-
 	
 	/**
 	 * build the Tab
@@ -134,7 +123,6 @@ public class IBuyTabGUI {
 		iBuyPanel.add(wishPanel);
 		wishPanel.addStyleName("Panel");
 	
-	
 		buildWishlistTable();
 		
 		emailPanel = new PopupPanel(false,true); 
@@ -146,7 +134,6 @@ public class IBuyTabGUI {
 	    cancelEmail = new Anchor("cancel");
 	    
 	    
-
 	    // Add the components to a panel
 	    emailGrid = new FlexTable();
 	    emailGrid.setWidth("300px");
@@ -203,8 +190,6 @@ public class IBuyTabGUI {
 	
 	
 	
-	
-	
 	private void loadMoneyDialog(WishlistItemNewData item){
 		currentItem = item;
 		moneyDialogBox.center();
@@ -227,15 +212,9 @@ public class IBuyTabGUI {
 	//	rightSide.setSize("100%", "325px");
 		rightSide.addStyleName("chatPanel");
 		
-		
 		buildChatLeftSide();
     	buildChatRightSide();
-    	
-   
-		
 	}
-	
-	
 	
 	
 	/*
@@ -249,13 +228,8 @@ public class IBuyTabGUI {
 		
 		
 		iBuyTableHeader.getColumnFormatter().setWidth(0, "150px");
-	//	iBuyTableHeader.getColumnFormatter().setWidth(1, "70px");
-	//	iBuyTableHeader.getColumnFormatter().setWidth(2, "50px");
-	//	iBuyTableHeader.getColumnFormatter().setWidth(1, "90px");
 				
 		iBuyTableHeader.setText(0, 0, "What");
-	//	iBuyTableHeader.setText(0,1, "Item");
-	//	iBuyTableHeader.setText(0, 2, "Priority");
 		iBuyTableHeader.setText(0, 1, "Price");
 		iBuyTableHeader.getFlexCellFormatter().setColSpan(0, 1, 4);
 		
@@ -285,13 +259,9 @@ public class IBuyTabGUI {
 		chatScrollPanel.addStyleName("ShortScrollPanel");
 	//	chatScrollPanel.setSize("100%", "300px");
 		
-		    
 	    chatTable = new FlexTable();
         chatScrollPanel.add(chatTable);
         chatTable.addStyleName("Table");
-     //   chatTable.setWidth("100%");
-      //  chatTable.getColumnFormatter().setWidth(0, "50%");
-      //  chatTable.getColumnFormatter().setWidth(1, "50%");
 	        
 	    chatTextArea = new TextBox();
 	    leftSide.add(chatTextArea);
@@ -408,25 +378,15 @@ public class IBuyTabGUI {
 	    	emailPanel.center();
 		    emailPanel.show();
 	    	emailTextArea.setFocus(true);
-		
 	}
-		
-	
-		
-		
-		
-	
-	
-	  
-	  
+		 
 	  
 	  public void gui_eventItemGridClicked(Cell cellClicked) {
 	         int row = cellClicked.getRowIndex();
 	         int col = cellClicked.getCellIndex();
 	        
 	         WishlistItemNewData item = this.itemsToBuy.get(row);
-	        
-	         
+	           
 	        
 	        switch(col){
 	        case UPDATE_LINK  : if(item.getIsActive())
@@ -665,134 +625,73 @@ public class IBuyTabGUI {
 
 
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
-		//	Window.alert("CancelBookItemForUserFailed");
-		//	System.out.println(caught);
-			
+			this.entryPoint.messages.setText(caught.getMessage());
 		}
-
-
+		
 		public void service_eventCancelBookItemForUserSuccesfull() {
-		//	Window.alert("CancelBookItemForUserSuccesfull");
-			this.wishlistService.getBookedWishlist(entryPoint.userId);
-			
+			this.wishlistService.getBookedWishlist(entryPoint.userId);	
 		}
-
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
-		//	Window.alert("DeleteParticipatorFailed");
-		//	System.out.println(caught);
-			
+			this.entryPoint.messages.setText(caught.getMessage());
 		}
-
 
 		public void service_eventDeleteParticipatorSuccesfull() {
-		//	Window.alert("DeleteParticipatorSuccesfull");
-			this.wishlistService.getBookedWishlist(entryPoint.userId);
-			
+			this.wishlistService.getBookedWishlist(entryPoint.userId);			
 		}
-
 
 		public void service_eventDeleteItemFromTabFailed(Throwable caught) {
-		//	Window.alert("DeleteItemFromTabFailed");
-			
+			this.entryPoint.messages.setText(caught.getMessage());
 		}
-
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
-		//	Window.alert("DeleteItemFromTabSuccesfull");
-			this.wishlistService.getBookedWishlist(entryPoint.userId);
-			
+			this.wishlistService.getBookedWishlist(entryPoint.userId);			
 		}
-
 
 		public void service_eventUpdateParticipatorFailed(Throwable caught) {
-		//	Window.alert("UpdateParticipatorFailed");
-			
+			this.entryPoint.messages.setText(caught.getMessage());
 		}
-
 
 		public void service_eventUpdateParticipatorSuccesfull() {
-		//	Window.alert("UpdateParticipatorSuccesfull");
-			this.wishlistService.getBookedWishlist(entryPoint.userId);
-			
+			this.wishlistService.getBookedWishlist(entryPoint.userId);	
 		}
-
 
 		public void service_getBookedWishlistFailed(Throwable caught) {
-		//	Window.alert("BookedWishlistFailed");
-			
-			
+			this.entryPoint.messages.setText(caught.getMessage());			
 		}
-
-
-
 
 		public void service_addChatMessageFailed(Throwable caught) {
-		//	Window.alert("addChatMessageFailed");
-			
-			
+			this.entryPoint.messages.setText(caught.getMessage());
 		}
-
-
-
 
 		public void service_addChatMessageSuccesfull() {
-		//	Window.alert("addChatMessageSuccesfull");
 			this.chatTextArea.setText("");
 			this.wishlistService.getWishlistItem(currentItem.getWishlistItemId());
-			
 		}
-
-
-
 
 		public void service_getWishlistItemFailed(Throwable caught) {
-		//	Window.alert("getWishlistItemFailed");
-			
-			
+		    this.entryPoint.messages.setText(caught.getMessage());
 		}
-
-
-
 
 		public void service_getWishlistItemSuccesfull(WishlistItemNewData result) {
-		//	Window.alert("getWishlistItemSuccesfull");
-			this.loadChat(result);
-			
+			this.loadChat(result);			
 		}
-
-
-
 
 		public void service_cancelBookItemForGroupFailed(Throwable caught) {
-		//	Window.alert("cancelBookItemForGroupFailed");
-			
+			this.entryPoint.messages.setText(caught.getMessage());
 		}
-
-
-
 
 		public void service_cancelBookItemForGroupSuccesfull() {
-		//	Window.alert("cancelBookItemForGroupSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 		}
-
-
-
 
 		public void service_bookItemForGroupFailed(Throwable caught) {
-		//	Window.alert("bookItemForGroupFailed");
-			
+			this.entryPoint.messages.setText(caught.getMessage());
 		}
 
-
-
-
 		public void service_bookItemForGroupSuccesfull() {
-		//	Window.alert("bookItemForGroupSuccesfull");
 			this.wishlistService.getBookedWishlist(entryPoint.userId);
 			
 		}
 
-	  
 }
