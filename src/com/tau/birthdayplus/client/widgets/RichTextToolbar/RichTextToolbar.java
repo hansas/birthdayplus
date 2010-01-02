@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets.RichTextToolbar;
+package com.client.RichTextToolbar;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.core.client.GWT;
@@ -341,11 +341,11 @@ public class RichTextToolbar extends Composite{
 	    this.basic = richText.getBasicFormatter();
 	    this.extended = richText.getExtendedFormatter();
          
-	    outer.setWidth("300px");
+	//    outer.setWidth("300px");
 	    outer.add(topPanel);
 	    outer.add(bottomPanel);
-	    topPanel.setWidth("300px");
-	    bottomPanel.setWidth("300px");
+	 //   topPanel.setWidth("300px");
+	 //   bottomPanel.setWidth("300px");
 
 	    initWidget(outer);
 	    setStyleName("gwt-RichTextToolbar");
@@ -418,14 +418,14 @@ public class RichTextToolbar extends Composite{
 
 	  private ListBox createFontList() {
 	    ListBox lb = new ListBox();
-	    lb.setWidth("137px");
+	    lb.setWidth("100px");
 	    lb.addChangeHandler(handler);
 	    lb.setVisibleItemCount(1);
 	    
 
 	    lb.addItem(strings.font(), "");
 	    lb.addItem(strings.normal(), "");
-	    lb.addItem("Times New Roman", "Times New Roman");
+	//    lb.addItem("Times New Roman", "Times New Roman");
 	    lb.addItem("Arial", "Arial");
 	    lb.addItem("Courier New", "Courier New");
 	    lb.addItem("Georgia", "Georgia");

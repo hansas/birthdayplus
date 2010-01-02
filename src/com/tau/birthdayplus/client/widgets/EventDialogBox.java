@@ -1,5 +1,7 @@
 package com.tau.birthdayplus.client.widgets;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -130,10 +132,15 @@ private boolean checkIfValidEvent(){
 
 private void wireEvents(){
 	this.boxButton.addClickHandler(new ClickHandler(){
-        public void onClick(ClickEvent event) {
+        @SuppressWarnings("deprecation")
+		public void onClick(ClickEvent event) {
         	if(checkIfValidEvent()){
         		data.setEventName(txtName.getText());
-        		data.setEventDate(txtDate.getValue());
+        		Date dateStart = txtDate.getValue();
+                dateStart.setMinutes(0); // minute 0
+                dateStart.setHours(0);   // hour 0
+                dateStart.setSeconds(0); // second 0
+        		data.setEventDate(dateStart);
         	    data.setRecurrence(chkRecurrence.getValue());
         	    errorMsgLabel.setVisible(false);
         		hide();
