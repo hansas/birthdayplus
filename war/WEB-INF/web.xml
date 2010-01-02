@@ -85,6 +85,17 @@
 </servlet-mapping>
 
 
+<servlet>
+    <servlet-name>addItemServlet</servlet-name>
+    <servlet-class>com.tau.birthdayplus.server.AddItemServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>addItemServlet</servlet-name>
+    <url-pattern>/additem/addItemSite</url-pattern>
+  </servlet-mapping>
+
+
 <security-constraint>
   <web-resource-collection>
     <web-resource-name>All mail</web-resource-name>
