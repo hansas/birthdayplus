@@ -346,7 +346,7 @@ public class IBuyTabGUI {
         int row = 0;
         
         for (ChatMessageData message : currentItem.getChatMessages()) {
-            chatTable.setText(row, 0, message.getUserName()+" "+ "says :");
+            chatTable.setText(row, 0, message.getUserName()+" "+ "says:");
             rowFormatter.setStylePrimaryName(row, "chatLineDate");
             
             DateTimeFormat dateFormatter = 	DateTimeFormat.getMediumDateTimeFormat();
