@@ -204,13 +204,13 @@ public class IBuyTabGUI {
 		chatPanel.add(leftSide);
 		chatPanel.setCellWidth(leftSide,"70%");
 	//	leftSide.setSize("100%", "325px");
-		leftSide.addStyleName("chatPanel");
+		leftSide.addStyleName("leftChatPanel");
 		
 		rightSide = new FlowPanel();
 		chatPanel.add(rightSide);
 		chatPanel.setCellWidth(rightSide, "30%");
 	//	rightSide.setSize("100%", "325px");
-		rightSide.addStyleName("chatPanel");
+		rightSide.addStyleName("rightChatPanel");
 		
 		buildChatLeftSide();
     	buildChatRightSide();
@@ -280,7 +280,7 @@ public class IBuyTabGUI {
 	private void buildChatRightSide(){
 		participatorsLabel = new Label("Participators");
 		rightSide.add(participatorsLabel);
-		participatorsLabel.addStyleName("Label");
+		participatorsLabel.addStyleName("chatParticipators");
 //		participatorsLabel.setSize("100%", "25px");
 		
 		buildParticipatorsTable();
@@ -459,7 +459,7 @@ public class IBuyTabGUI {
 		
 	    	    }else{
 	    	    	Integer sum = 0;
-	    	    	String html =" <div style='background-color:#FFFFFF;border-style:inset;border-color:green;'><p style ='color:green'>Participators are :<p><UL style='list-style-type: square;'>";
+	    	    	String html =" <div style='background-color:#FFFFFF;border-style:solid;border-color:#D0E4F6;'><p style ='color:#D0E4F6'>Participators are :<p><UL style='list-style-type: square;'>";
 	    	    	for(ParticipatorData user : item.getParticipators()){
 	    	    		sum+=user.getMoney();
 	    	    		if(user.getUserId().equals(entryPoint.userId)){
