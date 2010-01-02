@@ -127,16 +127,16 @@ public class IBuyTabGUI {
 		
 		emailPanel = new PopupPanel(false,true); 
 		emailTextArea = new RichTextArea();
-	    emailTextArea.setSize("300px", "14em");
+	    emailTextArea.setSize("290px", "14em");
 	    emailTextToolbar = new RichTextToolbar(emailTextArea);
-	    emailTextToolbar.setWidth("300px");
+	    emailTextToolbar.setWidth("290px");
 	    sendEmail = new Anchor("send this message");
 	    cancelEmail = new Anchor("cancel");
 	    
 	    
 	    // Add the components to a panel
 	    emailGrid = new FlexTable();
-	    emailGrid.setWidth("300px");
+	    emailGrid.setWidth("290px");
 	    emailGrid.setText(0, 0, "We will send mail to the group on your behalf. Please enter the mail text below ");
 	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
 	    emailGrid.setWidget(1, 0, emailTextToolbar);
