@@ -17,7 +17,7 @@
   
    
   
-  <inherits name="com.tau.birthdayplus.dto.dto"/>
+ 
    <inherits name='org.gwtwidgets.WidgetLibrary'/>
   <inherits name="com.google.gwt.gadgets.Gadgets" />
   <define-linker name="gadget1"
@@ -26,6 +26,10 @@
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.tau.birthdayplus.client.Birthdayplus'/>
+  
+   <source path="dto"/>
+  <source path="client"/>
+  
   <stylesheet src='Birthdayplus.css'/>
   
 </module>
