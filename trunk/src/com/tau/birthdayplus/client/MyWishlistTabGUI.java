@@ -209,7 +209,7 @@ public class MyWishlistTabGUI {
 	        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
 	        			wishTable.setWidget(row,0,anchor);
 	        			TooltipListener listener  = new TooltipListener(
-	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'border-style:inset;border-color:green;'>", 5000 ,"yourcssclass");
+	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'border-style:solid;border-color:#D0E4F6;'>", 5000 ,"yourcssclass");
 	        			anchor.addMouseListener( listener);
 	        		}
 	        	    	
