@@ -2,22 +2,16 @@
 width : 100%;
 height : 400px;
 margin:0px;
-
 }
 
-
 .Panel{
-//position:relative;
-//border-style:solid;
-//border-width:1px;
-//border-color:#B0E0E6;
 width : 100%;
 height : 350px;
 }
 
 .buttonPanel{
 width : 100%;
-height : 25px;
+height : 22px;
 }
 .Button{
 width : 100px;
@@ -25,6 +19,7 @@ height : 25px;
 }
 
 .TableHeader{
+font-weight:bold;
 table-layout:fixed;
 width : 100%;
 height : 25px;
@@ -43,15 +38,13 @@ height : 275px;
 
 .Table{
 table-layout:fixed;
-width : 100%;
 text-align:left;
 }
 
 
 
 .Label{
-width : 100%;
-height : 25px;
+height:25px;
 text-align:center;
 }
 
@@ -59,9 +52,21 @@ text-align:center;
 width : 100%;
 height : 325px;
 }
+
+.rightChatPanel{
+background-color:#D8D8D8;
+height : 325px;
+}
+
 .chatTextArea{
 width : 70%;
-height : 25px;
+height : 22px;
+}
+
+.chatParticipators{
+height:22px;
+text-align:left;
+font-weight:bold;
 }
 
 .sendButton{
@@ -69,10 +74,10 @@ width : 25%;
 height : 25px;
 }
 
-.chatLineDate{
-background-color:#FFEFD5;
+.chatLineDate {
+background-color:#D8D8D8;
+font-weight:bold;
 }
-
 
 
 .gwt-Button 
@@ -90,24 +95,23 @@ cursor: hand;
 }
 
 .errorMessage {
-  color: Red;
+color: Red;
 }
 
 .gwt-DialogBox .Caption {
-        background: #00BFFF;
-        background-color: #00BFFF;
-        color: black;
-        font-weight: bold;
-        padding: 5px 10px 5px 10px;
-        cursor: move;
-        font-size: 14px;
+background: #00BFFF;
+background-color: #00BFFF;
+color: black;
+font-weight: bold;
+padding: 5px 10px 5px 10px;
+cursor: move;
+font-size: 14px;
 }
 
 body, table td, select {
 font-family:arial,sans-serif;
 font-size:small;
 }
-
 
 .inactiveRow {text-decoration:line-through;}
 .dueColumn{
@@ -125,20 +129,12 @@ background-color:#00BFFF;
 font-weight:bold;
 }
 
-
-
-
-
-
-
 .gwt-MenuItem {
-    cursor                      :   hand;
-    cursor                      :   pointer;
-    color                         :  #0000FF;
-    padding                     :   2px 10px;
+cursor:hand;
+cursor:pointer;
+color:#0000FF;
+padding:2px 10px;
 }
-
-
 
 .gwt-MenuItem-selected {
 background-color  : #AFEEEE;
@@ -146,40 +142,12 @@ background-color  : #AFEEEE;
 
 {
 border: 1px dashed red;
-
-
 }
 
 TD {
- border: 1px dashed green; 
+border: 1px dashed green; 
 }
 
 TABLE {
 border: 1px dashed blue; 
 }
-
-
-
-/*
-Event Tab
-Panel - > Buttons -> TableHeder->ScrollPanel ->Table
-*/
-
-/*
-Friend wishlist
-Panel -> title Label ->Button->Header->ShortScrollPanel
-*/
-
-/*
-MyWishlist tab
-Panel -> Button - > TableHeader - >ScrollPanel -> Table 
-*/
-
-/*
-I buy tab
-Panel : Panel -> TableHeader ->  ScrollPanel - >Table
-          Panel ->  Panel ->  Label -> ScrollPanel -> Table -> chatTextArea - >Button
-                       Panel ->  Label -> TableHeader -> ShortScrollPanel -> Table -> Button
-*/         
-
-
