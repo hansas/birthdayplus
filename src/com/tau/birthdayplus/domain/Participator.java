@@ -11,7 +11,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 
-
+ 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Participator
 {
