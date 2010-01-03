@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 
 import com.tau.birthdayplus.dto.client.EventData;
 
-
+ 
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Event  {

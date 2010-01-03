@@ -1,5 +1,5 @@
 package com.tau.birthdayplus.domain;
-
+ 
 import java.util.Date;
 
 import javax.jdo.annotations.IdGeneratorStrategy;

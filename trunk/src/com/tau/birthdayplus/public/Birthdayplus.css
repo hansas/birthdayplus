@@ -33,7 +33,7 @@ height : 300px;
 
 .ShortScrollPanel{
 width : 100%;
-height : 272px;
+height : 279px;
 }
 
 .Table{
@@ -44,8 +44,9 @@ text-align:left;
 
 
 .Label{
-height:25px;
-text-align:center;
+height: 19px;
+overflow: hidden;
+text-align: center;
 }
 
 .chatPanel{
