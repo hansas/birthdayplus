@@ -129,11 +129,32 @@ cursor: hand;
 
 .messageLabel {
 width : 100%;
-height : 25px;
-line-height: 90%;
-color: #000000;
-background-color:#00BFFF;
+height : 30px;
+
+background-color:#FFFFCC;
+border:1px solid #FFCC35;
+color:#000000;
+font-size:small;
 font-weight:bold;
+padding:3px 15px 3px 10px;
+text-align:center;
+overflow-y:auto;
+}
+
+.gwt-Anchor:link,.gwt-Anchor:visited{
+text-decoration:none; }
+
+.gwt-Anchor:hover{
+text-decoration:underline;
+color:#224499;
+}
+
+.gwt-Anchor:active{
+text-decoration:none;
+}
+
+.gwt-Anchor{
+color:#224499;
 }
 
 .gwt-MenuItem {
