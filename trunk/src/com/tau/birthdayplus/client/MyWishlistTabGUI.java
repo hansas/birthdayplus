@@ -9,16 +9,13 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
-import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
@@ -135,6 +132,7 @@ public class MyWishlistTabGUI {
 		wishTable = new HoverTable(0,5);
 		wishlistScrollPanel.add(wishTable);
 		wishTable.addStyleName("Table");
+		wishTable.setCellSpacing(0);
 	//	wishTable.setWidth("100%");
 		
 		wishTable.getColumnFormatter().setWidth(0, "100px");
@@ -209,7 +207,7 @@ public class MyWishlistTabGUI {
 	        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
 	        			wishTable.setWidget(row,0,anchor);
 	        			TooltipListener listener  = new TooltipListener(
-	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'border-style:solid;border-color:#D0E4F6;'>", 5000 ,"yourcssclass");
+	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
 	        			anchor.addMouseListener( listener);
 	        		}
 	        	    	

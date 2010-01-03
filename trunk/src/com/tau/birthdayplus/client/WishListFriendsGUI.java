@@ -6,46 +6,23 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.NumberFormat;
-
-
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
-
-
-
-
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
-
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -55,7 +32,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 
 public class WishListFriendsGUI  {
-	private static  NumberFormat format = NumberFormat.getFormat("\u20AA#,##0.00");
+	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0.00");
 	/*
 	 * constants
 	 */
@@ -216,6 +193,7 @@ public class WishListFriendsGUI  {
 		scrollWishlistPanel.add(friendWishTable);
 	//	friendWishTable.setWidth("100%");
 		friendWishTable.addStyleName("Table");
+		friendWishTable.setCellSpacing(0);
 		
 		friendWishTable.getColumnFormatter().setWidth(0, "100px");
 		friendWishTable.getColumnFormatter().setWidth(1, "50px");
@@ -324,7 +302,7 @@ public class WishListFriendsGUI  {
         			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
         			friendWishTable.setWidget(row,0,anchor);
         			TooltipListener listener  = new TooltipListener(
-     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'border-style:inset;border-color:green;'>", 5000 ,"yourcssclass");
+     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color: #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
         			anchor.addMouseListener( listener);
         		}
         	}
@@ -336,7 +314,7 @@ public class WishListFriendsGUI  {
         	
             if(item.getIsActive()){	
         	   if(item.getParticipators().isEmpty()){
-        	      friendWishTable.setWidget(row, 2,new Label(format.format(item.getPrice())) );
+        	      friendWishTable.setWidget(row, 2,new Label(shortMoneyFormat.format(item.getPrice())) );
         	      Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
 			      buyImage.setTitle("I'll buy");
         	      friendWishTable.setWidget(row, 3, buyImage);
@@ -348,19 +326,21 @@ public class WishListFriendsGUI  {
             	}else{
         	      Integer sum = 0;
         	      Boolean userInGroup = false;
-	    	      String html =" <div style='background-color:#FFFFFF;border-style:inset;border-color:green;'><p style ='color:green'>Participators are :<p><UL style='list-style-type: square;'>";
+	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;margin:0 1em 1em 1em;'>";
         	      
         	      for (ParticipatorData data : item.getParticipators()){
-        		      if(parent.entryPoint.userId.equals(data.getUserId()))
+        	    	  sum += data.getMoney();
+        		      if(parent.entryPoint.userId.equals(data.getUserId())){
         			     userInGroup = true;
-        		      sum += data.getMoney();
-        		      html+="<LI>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+format.format(data.getMoney());
+		        		 html+="<LI style='color:#224499'>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+shortMoneyFormat.format(data.getMoney());
+        		      }else
+        		         html+="<LI>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+shortMoneyFormat.format(data.getMoney());
         	      }
 	    	      html+="</UL></div>";
-        	      Label price = new Label (format.format(sum) +" / "+format.format(item.getPrice()));
+        	      Label price = new Label (shortMoneyFormat.format(sum) +" / "+shortMoneyFormat.format(item.getPrice()));
           	      friendWishTable.setWidget(row, 2,price );
           	      
-          	      TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
+          	      TooltipListener listener  = new TooltipListener(html, 10000 ,false);
           	      price.addMouseListener(listener);
 
         	   
@@ -374,7 +354,7 @@ public class WishListFriendsGUI  {
         	      }
             	}
             }else {
-            	friendWishTable.setWidget(row, 2,new Label(format.format(item.getPrice())));
+            	friendWishTable.setWidget(row, 2,new Label(shortMoneyFormat.format(item.getPrice())));
             	friendWishTable.getWidget(row, 0).addStyleName(constants.cwInactiveRowStyle());
             }
             

@@ -14,40 +14,29 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.HorizontalSplitPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.RootPanel;
+
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextArea;
+
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+
 
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
-import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
@@ -242,6 +231,7 @@ public class IBuyTabGUI {
 		wishTable = new HoverTable(0,6);
 		iBuyScrollPanel.add(wishTable);
 		wishTable.addStyleName("Table");
+		wishTable.setCellSpacing(0);
 	//	wishTable.setWidth("100%");
 		
 		wishTable.getColumnFormatter().setWidth(0, "150px");
@@ -459,13 +449,13 @@ public class IBuyTabGUI {
 		
 	    	    }else{
 	    	    	Integer sum = 0;
-	    	    	String html =" <div style='background-color:#FFFFFF;border-style:solid;border-color:#D0E4F6;'><p style ='color:#D0E4F6'>Participators are :<p><UL style='list-style-type: square;'>";
+	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;margin:0 1em 1em 1em;'>";
 	    	    	for(ParticipatorData user : item.getParticipators()){
 	    	    		sum+=user.getMoney();
 	    	    		if(user.getUserId().equals(entryPoint.userId)){
 	    	    			if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
 	    	    	    		countMoney+=user.getMoney();
-		        		    html+="<LI style='color:blue'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortMoneyFormat.format(user.getMoney());
+		        		    html+="<LI style='color:#224499'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortMoneyFormat.format(user.getMoney());
 
 	    	    		}else
 	        		        html+="<LI>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortMoneyFormat.format(user.getMoney());
@@ -475,7 +465,7 @@ public class IBuyTabGUI {
 	    	    	Label priceLabel = new Label(shortMoneyFormat.format(sum)+" / "+shortMoneyFormat.format(item.getPrice()));
 	    	        wishTable.setWidget(row, 1,priceLabel );
 	    	        
-	    	        TooltipListener listener  = new TooltipListener(html, 5000 ,"yourcssclass");
+	    	        TooltipListener listener  = new TooltipListener(html, 10000 ,false);
 	          	    priceLabel.addMouseListener(listener);
 	          	    
 	    	        if(item.getIsActive()){

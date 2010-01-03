@@ -8,21 +8,20 @@ import java.util.Date;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
+
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 
-import com.google.gwt.user.client.ui.DialogBox;
+
+
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
+
+
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -340,7 +339,7 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 				eventTable.setText(row, 1, "My"+ " "+event.getEventName());
 			}
 			else{
-				Hyperlink eventLink = new Hyperlink( entryPoint.userFriends.get(event.getUserId())+"'s"+ " "+event.getEventName(),null);
+				Anchor eventLink = new Anchor( entryPoint.userFriends.get(event.getUserId())+"'s"+ " "+event.getEventName());
 				eventLink.setTitle("Click to see wishlist");
 			    eventTable.setWidget(row, 1, eventLink);
 			   
