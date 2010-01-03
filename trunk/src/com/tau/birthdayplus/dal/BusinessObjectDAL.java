@@ -219,6 +219,7 @@ public class BusinessObjectDAL {
 		try{
 			for (WishlistItem item : items){
 				if (item.getBuyerKey()!=null){
+					log.info("There is buyer for this item");
 					result = false;
 				}
 				else{
@@ -232,8 +233,14 @@ public class BusinessObjectDAL {
 								item.removeParticipator(p);
 								pm.deletePersistent(p);
 							}
+							if(item.getParticipators()!=null){
+								for (Participator p : item.getParticipators()){
+									log.info(p.getId());
+								}
+							}
 							item.setEventKey(null);
 							pm.makePersistent(item);
+							log.info(item.getItemName()+" "+item.getEventKey());
 						}
 						catch (Exception ex) {
 							log.severe("Error in second part of mayIDeleteEvent in item "+item.getItemName());

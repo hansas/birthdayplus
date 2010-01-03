@@ -1,4 +1,4 @@
-package com.client.RichTextToolbar;
+package com.tau.birthdayplus.client.widgets.RichTextToolbar;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.core.client.GWT;
