@@ -274,7 +274,7 @@ public class AddItem implements EntryPoint{
 	    }
 	    
 	    private  native void closeWindow()/*-{
-	        
+	        $wnd.close();
 	    }-*/;
 		
 		

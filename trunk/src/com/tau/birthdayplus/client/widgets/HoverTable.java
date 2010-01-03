@@ -38,7 +38,7 @@ public class HoverTable extends Grid {
             Element body = getBodyElement();
            
             // Fire the event
-            DOM.setStyleAttribute(tr, "backgroundColor", "#AFEEEE");
+            DOM.setStyleAttribute(tr, "backgroundColor", "#D0E4F6");
             DOM.setStyleAttribute(tr, "cursor", "default");
             break;
         }
