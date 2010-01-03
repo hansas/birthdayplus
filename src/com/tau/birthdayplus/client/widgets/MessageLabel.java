@@ -16,16 +16,19 @@ public class MessageLabel extends Label{
 			}
 			
 		};
+		this.setVisible(false);
 		
 	}
 	
 	public void setText(String text){
 		super.setText(text);
 		timer.schedule(delay);
+		this.setVisible(true);
 	}
 	
 	private void cleanText(){
 		super.setText("");
+		this.setVisible(false);
 	}
 
 }

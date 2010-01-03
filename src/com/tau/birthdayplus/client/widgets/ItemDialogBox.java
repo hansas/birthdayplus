@@ -88,6 +88,8 @@ public class ItemDialogBox extends DialogBox{
         this.linkField.setText(item.getLink());
         this.priceField.setText(item.getPrice().toString());
         this.highPriorityButton.setValue(true);
+        if(item.getThumbnail()!=null)
+           this.thumbnailField.setText(item.getThumbnail());
         this.itemField.setFocus(true);
         super.show();
     }

@@ -73,7 +73,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		author_email = "yalo_niv@yahoo.com",
 		height = 430
 )
-@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt","MiniMessages.txt"})
+@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {
 	private static CwConstants constants = GWT.create(CwConstants.class);
 	
@@ -158,7 +158,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	        Window.enableScrolling(false);
 	        Window.setMargin("0px");
 	         
-	        messages = new MessageLabel(5000);
+	        messages = new MessageLabel(25000);
 	        RootPanel.get().add(messages);
 	     //   messages.setSize("100%", "25px");
 	        
@@ -168,6 +168,8 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		  //  tab.setSize("100%", "400px");
 		    tab.addStyleName("tabsPanel");
 		//	tab.setAnimationEnabled(true);
+		    
+		   
 			
 			
 			//initiate event tab
