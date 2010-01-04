@@ -166,6 +166,8 @@ public class AddItem implements EntryPoint{
 	        
 	        this.thumbnailField.setText(thumbnail);
 	        rightImage = new CheckBox("This is the image of the item");
+	        rightImage.setValue(true);
+	        
 	        if(!thumbnail.equals("")){
 	        	Image thumbImage = new Image(thumbnail);
 	        	formTable.setWidget(4, 0, thumbImage);
