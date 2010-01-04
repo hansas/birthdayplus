@@ -39,8 +39,10 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.ListItem;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
+import com.tau.birthdayplus.client.widgets.UnorderedList;
 import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -86,8 +88,9 @@ public class IBuyTabGUI {
 	private FlowPanel rightSide;
 	private Label participatorsLabel;
 	private ScrollPanel participatorsScrollPanel;
-	private FlexTable participatorsTableHeader;
-	private HoverTable participatorsTable;
+	private UnorderedList participatorsTable;
+//	private FlexTable participatorsTableHeader;
+//	private HoverTable participatorsTable;
 
 	private MoneyDialogBox moneyDialogBox;
 		
@@ -268,7 +271,7 @@ public class IBuyTabGUI {
 	
 	
 	private void buildChatRightSide(){
-		participatorsLabel = new Label("Participators");
+		participatorsLabel = new Label("Participators:");
 		rightSide.add(participatorsLabel);
 		participatorsLabel.addStyleName("chatParticipators");
 //		participatorsLabel.setSize("100%", "25px");
@@ -281,27 +284,13 @@ public class IBuyTabGUI {
 	
 	
 	private void buildParticipatorsTable(){
-		participatorsTableHeader = new FlexTable();
-		rightSide.add(participatorsTableHeader);
-		participatorsTableHeader.addStyleName("TableHeader");
-	//	participatorsTableHeader.setSize("100%", "25px");
-		
-		participatorsTableHeader.getColumnFormatter().setWidth(0, "50px");		
-		participatorsTableHeader.setText(0, 0, "Name");
-		participatorsTableHeader.setText(0,1, "Sum");
-		
-		
 		participatorsScrollPanel = new ScrollPanel();
 		rightSide.add(participatorsScrollPanel);
 		participatorsScrollPanel.setStyleName("ShortScrollPanel");
-	//	participatorsScrollPanel.setSize("100%", "275px");
-		
-		
-		participatorsTable = new HoverTable(0,2);
+
+		participatorsTable = new UnorderedList();
 		participatorsScrollPanel.add(participatorsTable);
-		participatorsTable.addStyleName("Table");
-	//	participatorsTable.setWidth("100%");
-		participatorsTable.getColumnFormatter().setWidth(0, "50px");
+		
 		
 	}
 	
@@ -314,15 +303,11 @@ public class IBuyTabGUI {
 	  }
 
 	private void fillParticipatorsTable(){
-		participatorsTable.clear(true);
-        participatorsTable.resizeRows(currentItem.getParticipators().size());
-		
-		int row = 0;
+		participatorsTable.clear();
 		
 		for (ParticipatorData user : currentItem.getParticipators()){
-			participatorsTable.setText(row, 0, user.getUserFirstName() + " " + user.getUserLastName() );
-			participatorsTable.setText(row, 1, shortMoneyFormat.format(user.getMoney()));
-			row++;
+			participatorsTable.add(new ListItem(user.getUserFirstName()+" "+user.getUserLastName()));
+
 		}
 		
 	}
@@ -365,9 +350,10 @@ public class IBuyTabGUI {
 	
 	private void showTextArea(WishlistItemNewData item){
 			currentItem = item;
+			emailTextArea.setFocus(true);
 	    	emailPanel.center();
 		    emailPanel.show();
-	    	emailTextArea.setFocus(true);
+	    	
 	}
 		 
 	  
@@ -449,7 +435,7 @@ public class IBuyTabGUI {
 		
 	    	    }else{
 	    	    	Integer sum = 0;
-	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;margin:0 1em 1em 1em;'>";
+	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 1px 1px 2px !important;margin:0px !important; list-style-position:inside;'>";
 	    	    	for(ParticipatorData user : item.getParticipators()){
 	    	    		sum+=user.getMoney();
 	    	    		if(user.getUserId().equals(entryPoint.userId)){
@@ -480,7 +466,7 @@ public class IBuyTabGUI {
 	    	        	wishTable.setWidget(row, 4, buyImage);
 	    	        }else{
 	    	        	if(item.getBuyer().getUserId().equals(entryPoint.userId)){
-	    	        	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
+	    	        	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "reload16.png");
 	    			       cancelImage.setTitle("reopen this group");
 	    			       wishTable.setWidget(row, 3, cancelImage);
 	    	        	}

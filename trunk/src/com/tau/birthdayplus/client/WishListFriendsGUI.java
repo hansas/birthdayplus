@@ -22,8 +22,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.ListItem;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
+import com.tau.birthdayplus.client.widgets.UnorderedList;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -48,7 +50,8 @@ public class WishListFriendsGUI  {
 	//polani
     private MenuItem polani ;
 	private PopupPanel polaniPanel;
-	private FlexTable polaniTable;
+//	private FlexTable polaniTable;
+	private UnorderedList polaniTable;
 	
 	//friend's wishlist table
 	private ScrollPanel scrollWishlistPanel;
@@ -118,7 +121,10 @@ public class WishListFriendsGUI  {
 		
 		protected void showDialogBox(EventData event){
 			  currentEvent = event;
-		      wishlistBoxPanel.setTitle("wishlist for " + parent.entryPoint.userFriends.get(currentEvent.getUserId())+ "'s "+event.getEventName());
+			  String friendName = parent.entryPoint.userFriends.get(currentEvent.getUserId());
+		      wishlistBoxPanel.setTitle("wishlist for " +friendName+ "'s "+event.getEventName());
+		      polani.setText(friendName+" bought you recently");
+		      polani.setTitle("Items that "+friendName+" bought you recently");
 		      wishlistBoxPanel.setVisible(true);
 		      this.wishlistService.getWishlist(event.getUserId() , event.getEventId());
 			
@@ -138,19 +144,25 @@ public class WishListFriendsGUI  {
 	
 	private void buildPolaniPanel(){
 		polaniPanel = new PopupPanel(true);
-		polaniTable = new FlexTable();
+	
+	//	polaniTable = new FlexTable();
+		polaniTable = new UnorderedList();
 		polaniPanel.add(polaniTable);
 	}
 		
 	private void showPolaniItems(){
-		if(polaniItems.isEmpty())
-			return;
-		
 		polaniTable.clear();
-		 int row = 0;
+		if(polaniItems.isEmpty()){
+			polaniTable.add(new ListItem( parent.entryPoint.userFriends.get(currentEvent.getUserId())+ " hasn't bought you anything yet"));
+			return;
+		}
+		
+		
+	//	 int row = 0;
 	        for(WishlistItemPolaniData item : polaniItems){
-	        	polaniTable.setWidget(row, 0, new Label(item.getItemName()+" for "+item.getEventName(),false));
-	        	row++;
+	      //  	polaniTable.setWidget(row, 0, new Label(item.getItemName()+" for "+item.getEventName(),false));
+	       // 	row++;
+	        	polaniTable.add(new ListItem(item.getItemName()+" for "+item.getEventName()));
 	        }   
 	     polaniPanel.showRelativeTo(polani);   
 		
