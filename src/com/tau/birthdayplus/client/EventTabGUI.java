@@ -48,6 +48,7 @@ import com.tau.birthdayplus.dto.client.EventData;
 public class EventTabGUI {
 	private static final DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
 	private static final long ONE_HOUR = 60 * 60 * 1000L;
+	private static final int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
 	
 	 /*
      * constants
@@ -122,7 +123,7 @@ public class EventTabGUI {
 		      }
 		    };
 		
-		eventPanel.addMenuItem("Remind Me",remindMeCommand).setTitle("Add event reminder to your Google Calendar");
+		eventPanel.addMenuItem("Remind Me",remindMeCommand).setTitle("Add event reminder to your Google Calendar by choosing the event and clicking on this button");
 		
 		Command addEventCommand = new Command() {
 			public void execute() {
@@ -279,6 +280,7 @@ public class EventTabGUI {
     	if(radioButtonList == null)
     		return;
     	
+    	
     	for(int i=0;i<radioButtonList.size();i++){
     		if(radioButtonList.get(i).getValue()){
     			row =i;
@@ -287,12 +289,13 @@ public class EventTabGUI {
     		}
     	}	
     	if(row == -1)
-    		System.out.println("You need to choose item");
+    		this.entryPoint.messages.setText("Please select the event you want to be reminded about");
     	else{
     		DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("yyyyMMdd");
-    		String date = dateFormatter.format(eventList.get(row).getEventDate());
+    		String eventDay = dateFormatter.format(eventList.get(row).getEventDate());
+    		String eventNextDay = dateFormatter.format(new Date(eventList.get(row).getEventDate().getTime() + MILLIS_IN_DAY));
     		String event = eventTable.getText(row, 1);
-    		String url = "http://www.google.com/calendar/event?action=TEMPLATE&text="+event+"&dates="+date+"/"+date+"&details=&location=&trp=false&sprop=&sprop=name:Birthdayplus";
+    		String url = "http://www.google.com/calendar/event?action=TEMPLATE&text="+event+"&dates="+eventDay+"/"+eventNextDay+"&details=&location=&trp=false&sprop=&sprop=name:Birthdayplus";
     		Window.open(url, "_blank" , "height=800,width=800");
     		
     	}
