@@ -158,9 +158,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	        Window.enableScrolling(false);
 	        Window.setMargin("0px");
 	         
-	        messages = new MessageLabel(25000);
-	        RootPanel.get().add(messages);
-	     //   messages.setSize("100%", "25px");
+	       
 	        
 		    tab = new TabPanel();
 		    RootPanel.get().add(tab);
@@ -169,6 +167,9 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		    tab.addStyleName("tabsPanel");
 		//	tab.setAnimationEnabled(true);
 		    
+		    messages = new MessageLabel(25000);
+	        RootPanel.get().add(messages);
+	     //   messages.setSize("100%", "25px");
 		   
 			
 			

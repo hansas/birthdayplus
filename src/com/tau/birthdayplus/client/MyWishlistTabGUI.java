@@ -28,8 +28,8 @@ public class MyWishlistTabGUI {
 	// CONSTANTS 
 	private static CwConstants constants = GWT.create(CwConstants.class);
 	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
-	private static final int UPDATE_LINK = 3;
-    private static final int DELETE_LINK = 4;
+	private static final int UPDATE_LINK = 4;
+    private static final int DELETE_LINK = 5;
 
 	/*GUI Widgets*/
     private FlowPanelMenuTitle wishlistPanel;
@@ -112,6 +112,7 @@ public class MyWishlistTabGUI {
 		wishTableHeader = new FlexTable();
 		wishlistPanel.add(wishTableHeader);
 		wishTableHeader.addStyleName("TableHeader");
+		wishTableHeader.setCellSpacing(0);
 	//	wishTableHeader.setSize("100%", "25px");
 		
 		wishTableHeader.getColumnFormatter().setWidth(0, "100px");
@@ -129,7 +130,7 @@ public class MyWishlistTabGUI {
 	//	wishlistScrollPanel.setSize("100%", "300px");
 		//create table for whishlistitems
 		
-		wishTable = new HoverTable(0,5);
+		wishTable = new HoverTable(0,6);
 		wishlistScrollPanel.add(wishTable);
 		wishTable.addStyleName("Table");
 		wishTable.setCellSpacing(0);
@@ -138,6 +139,9 @@ public class MyWishlistTabGUI {
 		wishTable.getColumnFormatter().setWidth(0, "100px");
 		wishTable.getColumnFormatter().setWidth(1, "50px");
 		wishTable.getColumnFormatter().setWidth(2, "80px");
+		wishTable.getColumnFormatter().setWidth(4,"20px");
+		wishTable.getColumnFormatter().setWidth(5,"20px");
+		
 
 	}
 	
@@ -225,8 +229,8 @@ public class MyWishlistTabGUI {
 			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
 			    deleteImage.setTitle("delete item");
 			    
-	    	    wishTable.setWidget(row, 3, updateImage);
-	    	    wishTable.setWidget(row,4,deleteImage); 
+	    	    wishTable.setWidget(row, UPDATE_LINK, updateImage);
+	    	    wishTable.setWidget(row,DELETE_LINK,deleteImage); 
 	    	    if(!item.getIsActive())
 	    	    {
 	    	        wishTable.getWidget(row, 0).addStyleName(constants.cwInactiveRowStyle());

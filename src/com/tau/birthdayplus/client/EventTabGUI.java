@@ -55,8 +55,8 @@ public class EventTabGUI {
      */
 	CwConstants constants = GWT.create(CwConstants.class);
 	private static final int EVENT_LINK = 1;
-	private static final int UPDATE_LINK = 3;
-    private static final int DELETE_LINK = 4;
+	private static final int UPDATE_LINK = 4;
+    private static final int DELETE_LINK = 5;
     
     /*GUI Widgets*/
     protected FlowPanel mainPanel;
@@ -191,7 +191,7 @@ public class EventTabGUI {
 //		eventScrollPanel.setSize("100%", "300px");
 		
 		
-		eventTable = new HoverTable(0,5);
+		eventTable = new HoverTable(0,6);
 		eventScrollPanel.add(eventTable);
 		eventTable.addStyleName("Table");
 	//	eventTable.setWidth("100%");
@@ -200,6 +200,8 @@ public class EventTabGUI {
 		eventTable.getColumnFormatter().setWidth(0, "22px");
 		eventTable.getColumnFormatter().setWidth(1, "178px");
 		eventTable.getColumnFormatter().setWidth(2, "40px");
+		eventTable.getColumnFormatter().setWidth(UPDATE_LINK, "20px");
+		eventTable.getColumnFormatter().setWidth(DELETE_LINK, "20px");
 		
 		eventTable.getColumnFormatter().addStyleName(2, "dueColumn");
 
@@ -359,8 +361,8 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 			    updateImage.setTitle("update event");
 			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
 			    deleteImage.setTitle("delete event");
-				eventTable.setWidget(row, 3, updateImage);
-	    	    eventTable.setWidget(row,4, deleteImage); 
+				eventTable.setWidget(row, UPDATE_LINK, updateImage);
+	    	    eventTable.setWidget(row,DELETE_LINK, deleteImage); 
 			}
 			row++;
 			

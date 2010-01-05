@@ -19,6 +19,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -56,10 +57,10 @@ public class IBuyTabGUI {
 //////////////////Constants///////////////////////////
 	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
 	private static 	DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
-	private static final int CHAT_LINK = 5;
-	private static final int BUY_LINK = 4;
-	private static final int CANCEL_LINK = 3;
-	private static final int UPDATE_LINK = 2;
+	private static final int CHAT_LINK = 6;
+	private static final int BUY_LINK = 5;
+	private static final int CANCEL_LINK = 4;
+	private static final int UPDATE_LINK = 3;
 
 	//////////////////GUI Widgets////////////////////////
 	private FlowPanel iBuyPanel;	
@@ -72,9 +73,10 @@ public class IBuyTabGUI {
 	private  RichTextArea emailTextArea;
 	private  RichTextToolbar emailTextToolbar;
 	private  FlexTable emailGrid;
-	private  PopupPanel emailPanel;
+	private  DialogBox emailPanel;
 	private  Anchor sendEmail;
 	private  Anchor cancelEmail;
+	private  TextBox actualPrice;
 	
 	private FlowPanelMenuTitle mainChatPanel;
 	private HorizontalPanel chatPanel;
@@ -117,27 +119,41 @@ public class IBuyTabGUI {
 	
 		buildWishlistTable();
 		
-		emailPanel = new PopupPanel(false,true); 
+		emailPanel = new DialogBox(false,true); 
 		emailTextArea = new RichTextArea();
-	    emailTextArea.setSize("290px", "14em");
+	    emailTextArea.setSize("290px", "9em");
 	    emailTextToolbar = new RichTextToolbar(emailTextArea);
 	    emailTextToolbar.setWidth("290px");
 	    sendEmail = new Anchor("send this message");
 	    cancelEmail = new Anchor("cancel");
+	    actualPrice = new TextBox();
+	    
+	    actualPrice.setVisibleLength(20);
+	    actualPrice.setMaxLength(9);
 	    
 	    
 	    // Add the components to a panel
 	    emailGrid = new FlexTable();
-	    emailGrid.setWidth("290px");
-	    emailGrid.setText(0, 0, "We will send mail to the group on your behalf. Please enter the mail text below ");
-	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
-	    emailGrid.setWidget(1, 0, emailTextToolbar);
-	    emailGrid.getFlexCellFormatter().setColSpan(1, 0, 2);
-	    emailGrid.setWidget(2, 0, emailTextArea);
-	    emailGrid.getFlexCellFormatter().setColSpan(2, 0, 2);
-	    emailGrid.setWidget(3, 0, sendEmail);
-	    emailGrid.setWidget(3, 1, cancelEmail);
 	    emailPanel.add(emailGrid);
+	    emailGrid.addStyleName("emailGrid");
+	    emailGrid.setWidth("290px");
+	    emailGrid.setCellSpacing(0);
+	    
+	    emailGrid.setHTML(0, 0, "<FONT color=red >You are responsible for buying this present.</FONT><br /> Please enter the actual price for the item and a short message for the group.We will send an email to the group.<br /><FONT color=red >You can reopen this group by clicking on the reopen button in IBuy tab.</FONT >");
+	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
+	    emailGrid.setHTML(1, 0, "<STRONG> Actual price in "+'\u20AA'+ ":</STRONG>");
+	    emailGrid.setWidget(1, 1,actualPrice);
+	    emailGrid.setWidget(2, 0, emailTextToolbar);
+	    emailGrid.getFlexCellFormatter().setColSpan(2, 0, 2);
+	    emailGrid.setWidget(3, 0, emailTextArea);
+	    emailGrid.getFlexCellFormatter().setColSpan(3, 0, 2);
+	    emailGrid.setWidget(4, 0, sendEmail);
+	    emailGrid.setWidget(4, 1, cancelEmail);
+	    
+	    emailGrid.getRowFormatter().addStyleName(1, "emailActualPrice");
+	    emailGrid.getRowFormatter().addStyleName(3, "emailTextArea");
+	    emailGrid.getFlexCellFormatter().setHorizontalAlignment(4, 1,HasHorizontalAlignment.ALIGN_RIGHT );
+
 	    
 	   
 		
@@ -216,6 +232,7 @@ public class IBuyTabGUI {
 		iBuyTableHeader = new FlexTable();
 		wishPanel.add(iBuyTableHeader);
 		iBuyTableHeader.addStyleName("TableHeader");
+		iBuyTableHeader.setCellSpacing(0);
 	//	iBuyTableHeader.setSize("100%", "25px");
 		
 		
@@ -231,7 +248,7 @@ public class IBuyTabGUI {
 		iBuyScrollPanel.addStyleName("ShortScrollPanel");
 	//	iBuyScrollPanel.setSize("100%", "300px");
 	
-		wishTable = new HoverTable(0,6);
+		wishTable = new HoverTable(0,7);
 		iBuyScrollPanel.add(wishTable);
 		wishTable.addStyleName("Table");
 		wishTable.setCellSpacing(0);
@@ -239,6 +256,12 @@ public class IBuyTabGUI {
 		
 		wishTable.getColumnFormatter().setWidth(0, "150px");
 		wishTable.getColumnFormatter().setWidth(1, "80px");
+		wishTable.getColumnFormatter().setWidth(UPDATE_LINK, "20px");
+		wishTable.getColumnFormatter().setWidth(CANCEL_LINK, "20px");
+		wishTable.getColumnFormatter().setWidth(BUY_LINK, "20px");
+		wishTable.getColumnFormatter().setWidth(CHAT_LINK, "20px");
+
+
 //		wishTable.getColumnFormatter().setWidth(2, "50px");
 	    
 	 
@@ -350,9 +373,24 @@ public class IBuyTabGUI {
 	
 	private void showTextArea(WishlistItemNewData item){
 			currentItem = item;
-			emailTextArea.setFocus(true);
-	    	emailPanel.center();
-		    emailPanel.show();
+			
+			emailGrid.clearCell(0, 0);
+			
+			if(closeGroup){
+				emailPanel.setText("Buy a present for the group");
+			    emailGrid.setHTML(0, 0, "<FONT color=red >You are responsible for buying this present.</FONT><br /> Please enter the actual price for the item and a short message for the group.We will send an email to the group.<br /><FONT color=red >You can reopen this group by clicking on the reopen button in IBuy tab.</FONT >");
+			    emailGrid.getRowFormatter().setVisible(1, true);
+				actualPrice.setFocus(true);
+			}else{
+				emailPanel.setText("Reopen this group");
+			    emailGrid.setHTML(0, 0," Please enter a short message for the group about reopening .We will send an email to the group.");
+			    emailGrid.getRowFormatter().setVisible(1, false);
+			    emailTextArea.setFocus(true);
+	    	    
+			}
+		
+			emailPanel.center();
+	        emailPanel.show();
 	    	
 	}
 		 
@@ -431,11 +469,11 @@ public class IBuyTabGUI {
 	    	    		countMoney+=item.getPrice();
 	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
 				    cancelImage.setTitle("cancel reservation");
-		    	    wishTable.setWidget(row, 3, cancelImage); 
+		    	    wishTable.setWidget(row, CANCEL_LINK, cancelImage); 
 		
 	    	    }else{
 	    	    	Integer sum = 0;
-	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 1px 1px 2px !important;margin:0px !important; list-style-position:inside;'>";
+	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 10px 1px 10px !important;margin:0px !important; list-style-position:inside;'>";
 	    	    	for(ParticipatorData user : item.getParticipators()){
 	    	    		sum+=user.getMoney();
 	    	    		if(user.getUserId().equals(entryPoint.userId)){
@@ -461,21 +499,21 @@ public class IBuyTabGUI {
 	    			    cancelImage.setTitle("leave this group");
 	    			    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
 	    			    buyImage.setTitle("We'll buy");
-	    	        	wishTable.setWidget(row, 2, updateImage);
-	    	        	wishTable.setWidget(row, 3, cancelImage);
-	    	        	wishTable.setWidget(row, 4, buyImage);
+	    	        	wishTable.setWidget(row, UPDATE_LINK, updateImage);
+	    	        	wishTable.setWidget(row, CANCEL_LINK, cancelImage);
+	    	        	wishTable.setWidget(row, BUY_LINK, buyImage);
 	    	        }else{
 	    	        	if(item.getBuyer().getUserId().equals(entryPoint.userId)){
 	    	        	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "reload16.png");
 	    			       cancelImage.setTitle("reopen this group");
-	    			       wishTable.setWidget(row, 3, cancelImage);
+	    			       wishTable.setWidget(row, CANCEL_LINK, cancelImage);
 	    	        	}
 	    	        	
 	    	        }
 	    	        
 	    	        Image chatImage = new Image(GWT.getModuleBaseURL()+"chat-icon.png");
 	    	        chatImage.setTitle("chat");
-	    	        wishTable.setWidget(row, 5, chatImage);
+	    	        wishTable.setWidget(row, CHAT_LINK, chatImage);
 
 	        }   
 	    	    row ++;
@@ -511,20 +549,32 @@ public class IBuyTabGUI {
 		
 		
 		private void gui_eventSendEmailButtomClicked(){
+			Double price = 0.0;
 			if(emailTextArea.getText().equals("")){
 				emailTextArea.setHTML("<FONT color=red>Please, enter the message for the group</FONT>");
 				return;
 			}
+			if(closeGroup){
+				try{
+				    price = Double.parseDouble(actualPrice.getText());
+				}catch(NumberFormatException e){
+					actualPrice.setText("enter a valid price");
+					actualPrice.setFocus(true);
+					return;
+				}
+			}
 			emailPanel.hide();
 			if(closeGroup)
-			   this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML());
+			   this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML(),price);
 			else
          	   this.wishlistService.cancelBookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML());
+			actualPrice.setText("");
 			emailTextArea.setText("");
 			
 		}
 		
 		private void gui_eventCanelEmailButtonClicked(){
+			actualPrice.setText("");
 			emailTextArea.setText("");
 		    emailPanel.hide();
 		}

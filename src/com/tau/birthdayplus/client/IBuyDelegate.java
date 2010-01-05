@@ -176,13 +176,13 @@ public class IBuyDelegate {
 		
 	}
 	
-	public void bookItemForGroup(String itemId,String userId,String message){
+	public void bookItemForGroup(String itemId,String userId,String message,Double actualPrice){
 		if(entryPoint.loadingImagePopup.isShowing())
 			entryPoint.loadingImagePopup.hide();
 		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
-		RequestBuilder requestBuilder = wishlistService.bookItemForGroup(itemId, userId,message, new AsyncCallback<Void>(){
+		RequestBuilder requestBuilder = wishlistService.bookItemForGroup(itemId, userId,message,actualPrice, new AsyncCallback<Void>(){
 
 			public void onFailure(Throwable caught) {
 				entryPoint.loadingImagePopup.hide();
