@@ -273,6 +273,7 @@ public class BusinessObjectDAL {
 				eDate.set(Calendar.YEAR, e.getEventDate().getYear()+1900);
 				eDate.set(Calendar.MONTH, eMonth);
 				eDate.set(Calendar.DATE, eDay);
+				eDate.add(Calendar.DATE, 1);
 				if ((cal.after(eDate))&&(e.getRecurrence()==false)&&mayIDeleteEvent(e,pm)){
 					log.info("event "+e.getEventName()+" was deleted by cron");
 					g.removeEvent(e);

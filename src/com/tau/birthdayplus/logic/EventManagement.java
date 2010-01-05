@@ -101,11 +101,19 @@ public class EventManagement {
 					eDate.set(Calendar.YEAR, event.getEventDate().getYear()+1900);
 					eDate.set(Calendar.MONTH, eMonth);
 					eDate.set(Calendar.DATE, eDay);
+
+//					log.info("event: "+ event.getEventName()+" eDate: "+eDate);
+//					log.info("cal: "+cal);
+//					if (eDate.after(cal)){
+//						log.info("eDate after cal");
+//					}
+
 					log.info("eDate: "+eDate.toString());
 					log.info("cal: "+cal.toString());
 					if (eDate.after(cal)){
 						log.info("eDate after cal");
 					}
+
 					if (eDate.after(cal)||(((eDate.get(Calendar.DATE)+1)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
 							&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))||((eDate.get(Calendar.DATE)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
 							&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))){
