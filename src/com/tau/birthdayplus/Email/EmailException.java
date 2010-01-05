@@ -1,6 +1,8 @@
 package com.tau.birthdayplus.Email;
 
-public class EmailException extends Exception{
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class EmailException extends Exception implements IsSerializable{
 
 	/**
 	 * 
@@ -11,6 +13,10 @@ public class EmailException extends Exception{
 	
 	public EmailException(String message){
 		this.message = message ;
+	}
+	
+	private EmailException(){
+		
 	}
 	
 	public String getMessage(){
