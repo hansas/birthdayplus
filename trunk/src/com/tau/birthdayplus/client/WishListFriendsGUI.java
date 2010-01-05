@@ -187,7 +187,7 @@ public class WishListFriendsGUI  {
 	
 		
 		headerFriendWishTable.getColumnFormatter().setWidth(0, "100px");
-		headerFriendWishTable.getColumnFormatter().setWidth(1, "50px");
+		headerFriendWishTable.getColumnFormatter().setWidth(1, "55px");
 	//	headerFriendWishTable.getColumnFormatter().setWidth(2, "80px");
 	
 		
@@ -210,7 +210,7 @@ public class WishListFriendsGUI  {
 		friendWishTable.setCellSpacing(0);
 		
 		friendWishTable.getColumnFormatter().setWidth(0, "100px");
-		friendWishTable.getColumnFormatter().setWidth(1, "50px");
+		friendWishTable.getColumnFormatter().setWidth(1, "55px");
 		friendWishTable.getColumnFormatter().setWidth(2, "80px");
 		friendWishTable.getColumnFormatter().setWidth(BUY_LINK, "20px");
 		friendWishTable.getColumnFormatter().setWidth(GROUP_BUY_LINK, "20px");
@@ -398,7 +398,8 @@ public class WishListFriendsGUI  {
 
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
-		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());		
+		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());	
+		this.parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
