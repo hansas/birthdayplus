@@ -265,14 +265,14 @@ public class WishlistManagement {
 		BusinessObjectDAL.cancelBookItemForUser(wishlistItemId, userId);
 	}
 	
-	public static void bookItemForGroup(String itemId, String userId,String message) throws UserException, Exception{
+	public static void bookItemForGroup(String itemId, String userId,String message,Double actualPrice) throws UserException, Exception{
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			wrapper.bookItemForGroup(itemId, userId);
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,true);
+			wrapper.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice);
 		}
 		finally{
 			wrapper.close();
@@ -286,7 +286,7 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE,false);
+			wrapper.sendEmailOpenGroup(itemId, userId, message, participatorsE);
 		}
 		finally{
 			wrapper.close();
