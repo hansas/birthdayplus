@@ -174,8 +174,8 @@ WishlistService  {
 	 * remove buyer from participators list and  update Buyer for this item
 	 * setActive = false
 	 */
-	public void bookItemForGroup(String itemId, String userId,String message) throws UserException, Exception {
-		WishlistManagement.bookItemForGroup(itemId, userId, message);
+	public void bookItemForGroup(String itemId, String userId,String message,Double actualPrice) throws UserException, Exception {
+		WishlistManagement.bookItemForGroup(itemId, userId, message,actualPrice);
 	}
 	/*
 	 * only the buyer can cancel the reservation of the item
