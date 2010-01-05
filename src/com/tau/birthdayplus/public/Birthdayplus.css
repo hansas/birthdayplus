@@ -51,6 +51,11 @@ overflow: hidden;
 text-align: center;
 }
 
+.polaniPanel{
+background-color:#FFFFCC;
+border:1px solid #FFCC35;
+}
+
 .chatPanel{
 width:100%;
 height:325px;
@@ -108,6 +113,24 @@ cursor: hand;
 color: Red;
 }
 
+
+
+
+.emailGrid{
+    background-color: #FFFFCC;
+    table-layout: fixed;
+   
+}
+
+.emailActualPrice{
+ background-color: #9FCBEF;
+}
+
+.emailTextArea{
+background-color: white;
+}
+
+
 .gwt-DialogBox .Caption {
 background: #00BFFF;
 background-color: #00BFFF;
@@ -123,7 +146,7 @@ font-family:arial,sans-serif;
 font-size: 13px;
 }
 
-.inactiveRow {text-decoration:line-through;}
+.inactiveRow {text-decoration:line-through !important;}
 .dueColumn{
 color : green;
 cursor: pointer;
@@ -131,13 +154,13 @@ cursor: hand;
 }
 
 .messageLabel {
-width : 99%;
+width : 92%;
 height : 30px;
 
 background-color:#FFFFCC;
 border:1px solid #FFCC35;
 color:#000000;
-font-size:small;
+font-size:13px;
 font-weight:bold;
 padding:3px 15px 3px 10px;
 text-align:center;
@@ -162,7 +185,7 @@ color:#224499;
 
 .gwt-UnorderedList{
 list-style-position:inside;
-padding:1px 1px 1px 2px !important;
+padding:1px 10px 1px 10px !important;
 margin:0px !important; 
 }
 
