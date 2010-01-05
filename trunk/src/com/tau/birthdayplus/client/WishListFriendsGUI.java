@@ -40,8 +40,8 @@ public class WishListFriendsGUI  {
 	 */
 	CwConstants constants = GWT.create(CwConstants.class);
 
-	private static final int BUY_LINK = 3;
-    private static final int GROUP_BUY_LINK = 4;
+	private static final int BUY_LINK = 4;
+    private static final int GROUP_BUY_LINK = 5;
 
 	/*GUI Widgets*/
     private FlowPanelMenuTitle wishlistBoxPanel;
@@ -144,6 +144,7 @@ public class WishListFriendsGUI  {
 	
 	private void buildPolaniPanel(){
 		polaniPanel = new PopupPanel(true);
+		polaniPanel.addStyleName("polaniPanel");
 	
 	//	polaniTable = new FlexTable();
 		polaniTable = new UnorderedList();
@@ -180,6 +181,7 @@ public class WishListFriendsGUI  {
 		headerFriendWishTable = new FlexTable();
 		wishlistBoxPanel.add(headerFriendWishTable);
 		headerFriendWishTable.addStyleName("TableHeader");
+		headerFriendWishTable.setCellSpacing(0);
 	//	headerFriendWishTable.setSize("100%", "25px");
 		 
 	
@@ -201,7 +203,7 @@ public class WishListFriendsGUI  {
 	//	scrollWishlistPanel.setSize("100%", "275px");
 
 	   
-		friendWishTable = new HoverTable(0,5);
+		friendWishTable = new HoverTable(0,6);
 		scrollWishlistPanel.add(friendWishTable);
 	//	friendWishTable.setWidth("100%");
 		friendWishTable.addStyleName("Table");
@@ -210,6 +212,8 @@ public class WishListFriendsGUI  {
 		friendWishTable.getColumnFormatter().setWidth(0, "100px");
 		friendWishTable.getColumnFormatter().setWidth(1, "50px");
 		friendWishTable.getColumnFormatter().setWidth(2, "80px");
+		friendWishTable.getColumnFormatter().setWidth(BUY_LINK, "20px");
+		friendWishTable.getColumnFormatter().setWidth(GROUP_BUY_LINK, "20px");
 		
 		
 		
@@ -329,16 +333,16 @@ public class WishListFriendsGUI  {
         	      friendWishTable.setWidget(row, 2,new Label(shortMoneyFormat.format(item.getPrice())) );
         	      Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
 			      buyImage.setTitle("I'll buy");
-        	      friendWishTable.setWidget(row, 3, buyImage);
+        	      friendWishTable.setWidget(row, BUY_LINK , buyImage);
         	      
         	      Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
 			      groupImage.setTitle("Start a group");
 			      groupImage.setPixelSize(16, 16);
-    	          friendWishTable.setWidget(row ,4, groupImage);
+    	          friendWishTable.setWidget(row ,GROUP_BUY_LINK, groupImage);
             	}else{
         	      Integer sum = 0;
         	      Boolean userInGroup = false;
-	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;margin:0 1em 1em 1em;'>";
+	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 10px 1px 10px !important;margin:0px !important; list-style-position:inside;'>";
         	      
         	      for (ParticipatorData data : item.getParticipators()){
         	    	  sum += data.getMoney();
@@ -362,7 +366,7 @@ public class WishListFriendsGUI  {
         		     
     			     groupImage.setTitle("Join the group");
     			     groupImage.setPixelSize(16, 16);
-        	         friendWishTable.setWidget(row, 4, groupImage);
+        	         friendWishTable.setWidget(row, GROUP_BUY_LINK, groupImage);
         	      }
             	}
             }else {
