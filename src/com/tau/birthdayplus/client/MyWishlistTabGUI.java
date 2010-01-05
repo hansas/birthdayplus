@@ -116,7 +116,7 @@ public class MyWishlistTabGUI {
 	//	wishTableHeader.setSize("100%", "25px");
 		
 		wishTableHeader.getColumnFormatter().setWidth(0, "100px");
-		wishTableHeader.getColumnFormatter().setWidth(1, "50px");
+		wishTableHeader.getColumnFormatter().setWidth(1, "55px");
 	
 				
 		wishTableHeader.setWidget(0, 0, new Label("Item"));
@@ -137,7 +137,7 @@ public class MyWishlistTabGUI {
 	//	wishTable.setWidth("100%");
 		
 		wishTable.getColumnFormatter().setWidth(0, "100px");
-		wishTable.getColumnFormatter().setWidth(1, "50px");
+		wishTable.getColumnFormatter().setWidth(1, "55px");
 		wishTable.getColumnFormatter().setWidth(2, "80px");
 		wishTable.getColumnFormatter().setWidth(4,"20px");
 		wishTable.getColumnFormatter().setWidth(5,"20px");
