@@ -155,18 +155,12 @@ public class WishListFriendsGUI  {
 		polaniTable.clear();
 		if(polaniItems.isEmpty()){
 			polaniTable.add(new ListItem( parent.entryPoint.userFriends.get(currentEvent.getUserId())+ " hasn't bought you anything yet"));
-			return;
-		}
-		
-		
-	//	 int row = 0;
+		}else{
 	        for(WishlistItemPolaniData item : polaniItems){
-	      //  	polaniTable.setWidget(row, 0, new Label(item.getItemName()+" for "+item.getEventName(),false));
-	       // 	row++;
 	        	polaniTable.add(new ListItem(item.getItemName()+" for "+item.getEventName()));
-	        }   
+	        }
+		}
 	     polaniPanel.showRelativeTo(polani);   
-		
 		
 	}
 	
@@ -379,11 +373,11 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventGetWishlistFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText(caught.getMessage());
+		this.parent.entryPoint.messages.setText("GetWishlistFailed"+caught.getMessage());
 	}
 	
 	public void service_eventBookItemForUserFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText(caught.getMessage());		
+		this.parent.entryPoint.messages.setText("BookItemForUserFailed"+caught.getMessage());		
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
@@ -394,7 +388,7 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText(caught.getMessage());		
+		this.parent.entryPoint.messages.setText("AddParticipatorFailed"+caught.getMessage());		
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
@@ -405,7 +399,7 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText(caught.getMessage());		
+		this.parent.entryPoint.messages.setText("GetPolaniItemsFailed"+caught.getMessage());		
 	}
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {

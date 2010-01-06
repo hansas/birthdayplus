@@ -70,8 +70,9 @@ import com.tau.birthdayplus.dto.client.GuestData;
 @com.google.gwt.gadgets.client.Gadget.ModulePrefs(
 		title = "Birthday+", 
 		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
-		author_email = "yalo_niv@yahoo.com",
-		height = 445   
+		author_email = "gadgetBirthdayPlus@gmail.com",
+		height = 445,
+		scrolling=true
 )
 @Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {

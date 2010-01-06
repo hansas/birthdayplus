@@ -20,8 +20,7 @@ public class EventTabDelegate {
 	public Birthdayplus entryPoint;
 
 	public void getEvents(final ArrayList<String> uIdlist) {
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
+		
 		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
@@ -40,8 +39,7 @@ public class EventTabDelegate {
 	}
 	
 	void createEvent(final EventData event){
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
+		
 		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
@@ -62,8 +60,7 @@ public class EventTabDelegate {
 	}
 	
 	void updateEvent(final EventData event){
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
+		
 		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
@@ -85,8 +82,7 @@ public class EventTabDelegate {
 	}
 	
 	void deleteEvent(final EventData event){
-		if(entryPoint.loadingImagePopup.isShowing())
-			entryPoint.loadingImagePopup.hide();
+		
 		
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
