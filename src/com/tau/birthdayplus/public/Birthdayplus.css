@@ -49,7 +49,7 @@ color:#224499;
 
 .gwt-UnorderedList{
 list-style-position:inside;
-padding:1px 10px 1px 10px !important;
+padding:5px 0px!important;
 margin:0px !important; 
 }
 
@@ -83,7 +83,7 @@ cursor: hand;
 
 .chatTextArea{
 width : 70%;
-height : 25px;
+height : 24px;
 }
 
 .messageLabel {
@@ -150,7 +150,7 @@ overflow:hidden;
 }
 
 .eventListRow{
-border-top: 1px solid #00BFFF;
+border-top: 1px solid #00BFFF !importent;
 }
 
 .changeSumMoneyBox{
