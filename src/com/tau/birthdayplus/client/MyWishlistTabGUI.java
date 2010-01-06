@@ -242,7 +242,6 @@ public class MyWishlistTabGUI {
 	        }
 	        
 	        wishlistPanel.setTitle("Your friends will give you "+countInactive+" presents soon");
-	        this.entryPoint.messages.setText(LocaleInfo.getCurrentLocale().getLocaleName());
 	    }
 	
 	
