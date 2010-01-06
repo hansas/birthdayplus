@@ -61,13 +61,12 @@ padding:2px 10px;
 }
 
 .gwt-MenuBar-horizontal .gwt-MenuItem {
-padding:0px 5px;
+padding:3px 10px;
 }
 
-.gwt-MenuItem-selected {
-cursor: pointer;
+.gwt-MenuBar .gwt-MenuItem-selected {
+cursor:pointer;
 }
-
 
 body, table td, select {
 font-family:arial,sans-serif;
