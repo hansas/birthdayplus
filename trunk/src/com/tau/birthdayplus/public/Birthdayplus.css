@@ -81,7 +81,6 @@ cursor: pointer;
 cursor: hand;
 }
 
-
 .chatTextArea{
 width : 70%;
 height : 25px;
@@ -150,6 +149,9 @@ overflow:hidden;
                                        /* border-top: 1px solid #00BFFF; */
 }
 
+.eventListRow{
+border-top: 1px solid #00BFFF;
+}
 
 .changeSumMoneyBox{
 width: 50%;	
@@ -214,6 +216,8 @@ color: Red;
 background-color: white;
 }
 
+/*
 tr.row{
 border: 1px solid black;
 }
+*/
