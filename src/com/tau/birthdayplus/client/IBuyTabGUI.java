@@ -287,7 +287,7 @@ public class IBuyTabGUI {
 	   // chatTextArea.setSize("70%", "25px");
 	    chatTextArea.setMaxLength(25);
 			
-	    addMessageButton = new Button("send");
+	    addMessageButton = new Button("Send");
 	    leftSide.add(addMessageButton);
 	    addMessageButton.addStyleName("sendButton");
 	  //  addMessageButton.setSize("25%", "25px");

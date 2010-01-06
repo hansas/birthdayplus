@@ -34,7 +34,9 @@ public class MoneyDialogBox extends DialogBox {
 		
 		moneyVerticalPanel  = new VerticalPanel();
 		add(moneyVerticalPanel);
+		moneyVerticalPanel.addStyleName("moneyVerticalPanel");
 		moneyVerticalPanel.setWidth("100%");
+		moneyVerticalPanel.setHeight("40px");
 		
 		errorMsgLabel = new Label();
 		moneyVerticalPanel.add(errorMsgLabel);
