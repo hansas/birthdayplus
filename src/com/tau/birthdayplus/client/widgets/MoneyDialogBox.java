@@ -47,6 +47,7 @@ public class MoneyDialogBox extends DialogBox {
 		
 		
 		enterSumTextBox = new TextBox();
+		enterSumTextBox.addStyleName("changeSumMoneyBox");
 		moneyVerticalPanel.add(enterSumTextBox);
 		
 		moneyHorizontalPanel = new HorizontalPanel();
