@@ -1,3 +1,100 @@
+.gwt-TextBox {
+padding:4px;
+width: 85%;
+}
+
+.gwt-Button 
+{ 
+background-color: #3366CC; 
+color: black; 
+font-weight: bold; 
+border: 1px solid #AACCFF;
+font-family:arial,sans-serif;
+} 
+
+.gwt-Image { 
+cursor: pointer;
+cursor: hand;
+}
+
+.gwt-DialogBox .Caption {
+background: #00BFFF;
+background-color: #00BFFF;
+color: black;
+font-weight: bold;
+padding: 5px 10px 5px 10px;
+cursor: move;
+font-size: 14px;
+}
+.gwt-Anchor:link,.gwt-Anchor:visited{
+text-decoration:none; }
+
+.gwt-Anchor:hover{
+text-decoration:underline;
+color:#224499;
+}
+
+.gwt-Anchor:active{
+text-decoration:none;
+}
+
+.gwt-Anchor{
+color:#224499;
+}
+
+.gwt-UnorderedList{
+list-style-position:inside;
+padding:1px 10px 1px 10px !important;
+margin:0px !important; 
+}
+
+.gwt-MenuItem {
+cursor:hand;
+cursor:pointer;
+color:#0000FF;
+padding:2px 10px;
+}
+
+.gwt-MenuBar-horizontal .gwt-MenuItem {
+padding:0px 5px;
+}
+
+.gwt-MenuItem-selected {
+background-color  : #AFEEEE;
+}
+
+
+body, table td, select {
+font-family:arial,sans-serif;
+font-size: 13px;
+}
+
+.inactiveRow {text-decoration:line-through !important;}
+.dueColumn{
+color : green;
+cursor: pointer;
+cursor: hand;
+}
+
+
+.chatTextArea{
+width : 70%;
+height : 25px;
+}
+
+.messageLabel {
+width : 92%;
+height : 30px;
+background-color:#FFFFCC;
+border:1px solid #FFCC35;
+color:#000000;
+font-size:13px;
+font-weight:bold;
+padding:3px 15px 3px 10px;
+text-align:center;
+overflow-y:auto;
+}
+
 .tabsPanel{
 width : 100%;
 height : 400px;
@@ -43,7 +140,14 @@ text-align:left;
 width: 100%;
 }
 
+.Table td{
+overflow:hidden;
+border-top: 1px solid #00BFFF;
+}
 
+.changeSumMoneyBox{
+width: 50%;	
+}
 
 .Label{
 height: 19px;
@@ -69,15 +173,6 @@ padding:3px 4px;
 width:87%;
 }
 
-.chatTextArea{
-width : 70%;
-height : 25px;
-}
-
-.gwt-TextBox {
-padding:4px;
-width: 50%;
-}
 
 .chatParticipators{
 height:22px;
@@ -95,26 +190,9 @@ background-color:#D0E4F6;
 }
 
 
-.gwt-Button 
-{ 
-background-color: #3366CC; 
-color: black; 
-font-weight: bold; 
-border: 1px solid #AACCFF;
-font-family:arial,sans-serif;
-} 
-
-.gwt-Image { 
-cursor: pointer;
-cursor: hand;
-}
-
 .errorMessage {
 color: Red;
 }
-
-
-
 
 .emailGrid{
     background-color: #FFFFCC;
@@ -128,82 +206,4 @@ color: Red;
 
 .emailTextArea{
 background-color: white;
-}
-
-
-.gwt-DialogBox .Caption {
-background: #00BFFF;
-background-color: #00BFFF;
-color: black;
-font-weight: bold;
-padding: 5px 10px 5px 10px;
-cursor: move;
-font-size: 14px;
-}
-
-body, table td, select {
-font-family:arial,sans-serif;
-font-size: 13px;
-}
-
-.inactiveRow {text-decoration:line-through !important;}
-.dueColumn{
-color : green;
-cursor: pointer;
-cursor: hand;
-}
-
-.messageLabel {
-width : 92%;
-height : 30px;
-
-background-color:#FFFFCC;
-border:1px solid #FFCC35;
-color:#000000;
-font-size:13px;
-font-weight:bold;
-padding:3px 15px 3px 10px;
-text-align:center;
-overflow-y:auto;
-}
-
-.gwt-Anchor:link,.gwt-Anchor:visited{
-text-decoration:none; }
-
-.gwt-Anchor:hover{
-text-decoration:underline;
-color:#224499;
-}
-
-.gwt-Anchor:active{
-text-decoration:none;
-}
-
-.gwt-Anchor{
-color:#224499;
-}
-
-.gwt-UnorderedList{
-list-style-position:inside;
-padding:1px 10px 1px 10px !important;
-margin:0px !important; 
-}
-
-.gwt-MenuItem {
-cursor:hand;
-cursor:pointer;
-color:#0000FF;
-padding:2px 10px;
-}
-
-.gwt-MenuBar-horizontal .gwt-MenuItem {
-padding:0px 5px;
-}
-
-.gwt-MenuItem-selected {
-background-color  : #AFEEEE;
-}
-
-.Table td{
-border-top: 1px solid #00BFFF;	
 }

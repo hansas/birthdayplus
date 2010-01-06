@@ -139,7 +139,7 @@ public class ItemDialogBox extends DialogBox{
         
      //   formTable.setWidget(4, 0, updateButton);
         formTable.setWidget(4, 1, boxButton);
-        boxButton.setWidth("100%");
+        boxButton.setWidth("85%");
         formTable.setWidget(4, 2, cancelButton);
         
     }
