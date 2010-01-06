@@ -44,11 +44,13 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	   //key of the person that buys this item
 	   @Persistent 
 	   private Key buyerKey;
+	   @Persistent
+	   private Boolean isDeleted;
 	   @Persistent (defaultFetchGroup="true")
 	   ArrayList<ChatMessage> messages;
 	   
 	
-	public WishlistItem(String userId, String name, Boolean priority, String link, Double price,String thumbnail){
+	public WishlistItem(String userId, String name, Boolean priority, String link, Double price,String thumbnail,Boolean isDeleted){
 		this.itemName = name;
 		this.priority = priority;
 		this.link = link;
@@ -59,10 +61,11 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		this.thumbnail = thumbnail;
 		this.buyerKey=null; 
 		this.setEventKey(null);
+		this.isDeleted = isDeleted;
 	}
 	
 	public WishlistItem(WishlistItemData itemData){
-		this(itemData.getUserId(),itemData.getItemName(),itemData.getPriority(),itemData.getLink(),itemData.getPrice(),itemData.getThumbnail());
+		this(itemData.getUserId(),itemData.getItemName(),itemData.getPriority(),itemData.getLink(),itemData.getPrice(),itemData.getThumbnail(),itemData.getIsDeleted());
 	}
 	
 	public void copyFromWishlistItemData(WishlistItemData itemData){
@@ -71,6 +74,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 		setPriority(itemData.getPriority());
 		setPrice(itemData.getPrice());
 		setThumbnail(itemData.getThumbnail());
+		setIsDeleted(itemData.getIsDeleted());
 		//setBuyerKey(itemData.getBuyerKey());
 	}
 	
@@ -170,6 +174,14 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 	
 	public void setThumbnail(String thumbnail){
 		this.thumbnail = thumbnail;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
 	}
 	
 }

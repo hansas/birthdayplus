@@ -9,6 +9,7 @@ import com.google.appengine.api.datastore.Key;
 import com.tau.birthdayplus.Email.ParticipatorEmail;
 import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
+import com.tau.birthdayplus.dal.BusinessObjectDAL.GroupStatus;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
@@ -49,6 +50,10 @@ public class DALWrapper {
 	
 	public List<WishlistItem> getWishlist(String userId) throws UserNotFoundException{
 		return BusinessObjectDAL.getWishlist(userId, this.pm);
+	}
+	
+	public WishlistItem deleteWishlistItem(WishlistItemData itemD) throws UserException{
+		return BusinessObjectDAL.deleteWishlistItem(itemD, pm);
 	}
 	
 	public List<WishlistItem> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException{
@@ -100,13 +105,17 @@ public class DALWrapper {
 		BusinessObjectDAL.cancelBookItemForGroup(itemId, userId);
 	}
 	
-	public void sendEmailCloseGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice) throws Exception{
-		BusinessObjectDAL.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice, pm);
+//	public void sendEmailCloseGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice) throws Exception{
+//		BusinessObjectDAL.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice, pm);
+//	}
+	
+	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,GroupStatus status) throws Exception{
+		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm, actualPrice, status);
 	}
 	
-	public void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{
-		BusinessObjectDAL.sendEmailOpenGroup(itemId, userId, message, participatorsE, pm);
-	}
+//	public void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{
+//		BusinessObjectDAL.sendEmailOpenGroup(itemId, userId, message, participatorsE, pm);
+//	}
 	
 	
 }

@@ -11,29 +11,30 @@ public class EventData  implements IsSerializable{
 	   private String eventName;
 	   private Date eventDate;
 	   private Boolean recurrence;
-	   
+	   private Boolean isDeleted;
 	   /*
 	    * constructor for isSerializable
 	    */
 	   public EventData(){
-		   this(null,null,null,null,false);
+		   this(null,null,null,null,false,false);
 	   }
 	   
 	   /*
 	    * full constructor for the server side
 	    */
-	   public EventData(String eventId,String userId,String eventName,Date eventDate,Boolean recurrence){
+	   public EventData(String eventId,String userId,String eventName,Date eventDate,Boolean recurrence,Boolean isDeleted){
 		   this.eventId = eventId;
 		   this.userId = userId;
 		   this.eventName = eventName;
 		   this.eventDate = eventDate;
 		   this.recurrence = recurrence;
+		   this.isDeleted = isDeleted;
 	   }
 	   /*
 	    * constructor for client side , knows only user id
 	    */
 	   public EventData(String userId){
-		   this(null,userId,null,null,false);
+		   this(null,userId,null,null,false,false);
 		   
 	   }
 	   
@@ -73,6 +74,14 @@ public class EventData  implements IsSerializable{
 
 		public String getUserId() {
 			return userId;
+		}
+
+		public void setIsDeleted(Boolean isDeleted) {
+			this.isDeleted = isDeleted;
+		}
+
+		public Boolean getIsDeleted() {
+			return isDeleted;
 		}
 		
 		
