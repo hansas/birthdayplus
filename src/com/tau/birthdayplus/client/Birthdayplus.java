@@ -71,7 +71,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		title = "Birthday+", 
 		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
 		author_email = "yalo_niv@yahoo.com",
-		height = 430
+		height = 445
 )
 @Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {
@@ -375,7 +375,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 								    main.removeFromParent();
 								    loadingImagePopup.center();
 								    loadingImagePopup.show();
-								    openWindow("http://birthdayplus.appspot.com/birthdayplus/login?openSocialId="+userId+"&firstName="+firstName+"&lastName="+lastName+"&day="+day+"&month="+month+"&year="+year);
+								    openWindow("http://testrpcplus.appspot.com/birthdayplus/login?openSocialId="+userId+"&firstName="+firstName+"&lastName="+lastName+"&day="+day+"&month="+month+"&year="+year);
 								}
 							}
 						}
