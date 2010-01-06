@@ -33,7 +33,7 @@ public interface WishlistService extends RemoteService{
 	 * delete the item 
 	 * GUI - user can delete only his wishlist items
 	 */
-	void deleteWishlistItem(WishlistItemData item) throws UserException;
+	void deleteWishlistItem(WishlistItemData item) throws UserException, Exception;
 	/*
 	 * return user's wishlist
 	 */

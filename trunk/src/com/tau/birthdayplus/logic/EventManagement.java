@@ -73,7 +73,7 @@ public class EventManagement {
 	
 	public static EventData eventToEventData(Event event,DALWrapper wrapper){
 		Guest guest = wrapper.getGuestByKey(event.getKey().getParent());
-		return new EventData(KeyFactory.keyToString(event.getKey()),guest.getId(),event.getEventName(),event.getEventDate(),event.getRecurrence());
+		return new EventData(KeyFactory.keyToString(event.getKey()),guest.getId(),event.getEventName(),event.getEventDate(),event.getRecurrence(),event.getIsDeleted());
 	}
 	
 	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {

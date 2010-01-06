@@ -145,9 +145,9 @@ public class AddEventServlet extends HttpServlet {
 		    	int day = Integer.parseInt(eventAnnualyMatcher.matches() ? eventAnnualyMatcher.group(3) : eventOnceMatcher.group(3));
 		    	log.info("day : "+day);
 		    	if(eventAnnualyMatcher.matches())
-		    	   data = new EventData("","",event,buildDate(month,day),true);
+		    	   data = new EventData("","",event,buildDate(month,day),true,false);
 		    	else
-		    	   data = new EventData("","",event,buildDate(month,day),false);
+		    	   data = new EventData("","",event,buildDate(month,day),false,false);
 		    }
 		    return data;
     

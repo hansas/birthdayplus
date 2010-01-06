@@ -22,6 +22,7 @@ import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.DALWrapper;
+import com.tau.birthdayplus.dal.BusinessObjectDAL.GroupStatus;
 import com.tau.birthdayplus.domain.ChatMessage;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
@@ -75,8 +76,22 @@ public class WishlistManagement {
 		}	
 	}
 	
-	public static void deleteWishlistItem(WishlistItemData item) throws UserException {
-		WishlistItem i = BusinessObjectDAL.deleteWishlistItem(item);
+	public static void deleteWishlistItem(WishlistItemData itemD) throws Exception {
+		DALWrapper wrapper = new DALWrapper();
+		WishlistItem i = null;
+		try{
+			WishlistItem item = wrapper.getWishlistItem(itemD.getWishlistItemId());
+			ArrayList<Participator> participators = item.getParticipators();
+			if ((item.getBuyerKey()==null)&&(!participators.isEmpty())){
+				ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
+				GroupStatus status = GroupStatus.CANCEL;
+				wrapper.sendEmailToGroup(itemD.getWishlistItemId(), itemD.getUserId(), "", participatorsE, 0.0, status);
+			}
+			i = wrapper.deleteWishlistItem(itemD);
+		}
+		finally{
+			wrapper.close();
+		}
 		removeWishlistItemForEventFromCache(i);
 	}
 	
@@ -101,7 +116,7 @@ public class WishlistManagement {
 	}
 	
 	public static WishlistItemData itemToItemData(WishlistItem item,String userId){
-		return new WishlistItemData(KeyFactory.keyToString(item.getKey()),userId,item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail());
+		return new WishlistItemData(KeyFactory.keyToString(item.getKey()),userId,item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail(),item.getIsDeleted());
 	}
 	
 	public static ArrayList<WishlistItemData> getWishlist(String userId) throws UserNotFoundException {
@@ -138,12 +153,12 @@ public class WishlistManagement {
 		if (item.getEventKey()==null){
 			return new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
 			guest.getFirstName(),"","",null,
-			item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail());
+			item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail(),item.getIsDeleted());
 		}
 		else{
 			Event event = wrapper.getEventByKey(item.getEventKey());
 			WishlistItemNewData newItemData = new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
-					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),event.getEventDate(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail());
+					guest.getFirstName(),KeyFactory.keyToString(item.getEventKey()),event.getEventName(),event.getEventDate(),item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail(),item.getIsDeleted());
 			ArrayList<Participator> participators = item.getParticipators();
 			newItemData.setParticipators(getParticipatorDataList(participators,wrapper));
 			ParticipatorData pData=null;
@@ -272,7 +287,9 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			wrapper.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice);
+			//wrapper.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice);
+			GroupStatus status = GroupStatus.CLOSE;
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, actualPrice, status);
 		}
 		finally{
 			wrapper.close();
@@ -286,7 +303,9 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			wrapper.sendEmailOpenGroup(itemId, userId, message, participatorsE);
+			//wrapper.sendEmailOpenGroup(itemId, userId, message, participatorsE);
+			GroupStatus status = GroupStatus.OPEN;
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, 0.0, status);
 		}
 		finally{
 			wrapper.close();

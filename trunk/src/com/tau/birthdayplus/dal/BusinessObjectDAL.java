@@ -43,6 +43,8 @@ import java.util.logging.Logger;
 
 public class BusinessObjectDAL {
 	
+	public static enum GroupStatus {OPEN,CLOSE,CANCEL}
+	
 	private static final Logger log = Logger.getLogger(BusinessObjectDAL.class.getName());
 	
 	public static final Comparator<WishlistItemPolaniData> WISHLISTITEMPOLANI_DATA_ORDER =
@@ -178,6 +180,8 @@ public class BusinessObjectDAL {
 				pm.deletePersistent(event);
 			}
 			else{
+				event.setIsDeleted(true);
+				pm.makePersistent(event);
 				throw new UserException("You may not delete this event, because there are people that want to buy something to you for this event");
 			}
 			tx.commit();
@@ -213,14 +217,17 @@ public class BusinessObjectDAL {
 			throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
 		}
 		if (!items.isEmpty()){
-			log.info("There is items for this event");
+			log.info("There is items for this event "+event.getEventName());
 		}
 		Boolean result = true;
 		try{
 			for (WishlistItem item : items){
+				removeChatMessageData(KeyFactory.keyToString(item.getKey()),pm);
 				if (item.getBuyerKey()!=null){
-					log.info("There is buyer for this item");
+					log.info("There is buyer for this item "+item.getItemName());
 					result = false;
+					item.setIsDeleted(true);//don't sure if it's right
+					pm.makePersistent(item);
 				}
 				else{
 					List<Participator> participators = item.getParticipators();
@@ -238,9 +245,12 @@ public class BusinessObjectDAL {
 									log.info(p.getId());
 								}
 							}
+							else{
+								log.info("participators for item "+item.getItemName()+" were deleted");
+							}
 							item.setEventKey(null);
 							pm.makePersistent(item);
-							log.info(item.getItemName()+" "+item.getEventKey());
+							log.info("this item was freed: "+item.getItemName()+" "+item.getEventKey());
 						}
 						catch (Exception ex) {
 							log.severe("Error in second part of mayIDeleteEvent in item "+item.getItemName());
@@ -274,11 +284,19 @@ public class BusinessObjectDAL {
 				eDate.set(Calendar.MONTH, eMonth);
 				eDate.set(Calendar.DATE, eDay);
 				eDate.add(Calendar.DATE, 1);
-				if ((cal.after(eDate))&&(e.getRecurrence()==false)&&mayIDeleteEvent(e,pm)){
-					log.info("event "+e.getEventName()+" was deleted by cron");
-					g.removeEvent(e);
-					pm.makePersistent(g);
-					pm.deletePersistent(e);
+				if ((cal.after(eDate))&&(e.getRecurrence()==false)){
+					Boolean result = mayIDeleteEvent(e,pm);
+					if (result){
+						log.info("event "+e.getEventName()+" was deleted by cron");
+						g.removeEvent(e);
+						pm.makePersistent(g);
+						pm.deletePersistent(e);
+					}
+					else{
+						log.info("event "+e.getEventName()+" was signed deleted by cron");
+						e.setIsDeleted(true);
+						pm.makePersistent(e);
+					}
 				}
 				else if((e.getRecurrence()==true)&&(cal.after(eDate))){
 					log.info("event "+e.getEventName()+" was updated by cron");
@@ -419,15 +437,14 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static WishlistItem deleteWishlistItem(WishlistItemData itemD) throws UserException {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public static WishlistItem deleteWishlistItem(WishlistItemData itemD,PersistenceManager pm) throws UserException {
 		Transaction tx = (Transaction) pm.currentTransaction();
 		WishlistItem item = null;
 		try {
 			tx.begin();
 			Guest parent = BusinessObjectDAL.loadGuest(itemD.getUserId(), pm);
-			item = pm.getObjectById(WishlistItem.class, itemD
-					.getWishlistItemId());
+			item = pm.getObjectById(WishlistItem.class, itemD.getWishlistItemId());
+			removeChatMessageData(itemD.getWishlistItemId(), pm);
 			if (item.getBuyerKey()==null){ //User may delete item iff there is no buyers
 				if(!item.getParticipators().isEmpty()){
 					List<Participator> participators = item.getParticipators();
@@ -440,6 +457,8 @@ public class BusinessObjectDAL {
 				pm.deletePersistent(item);
 			}
 			else{
+				item.setIsDeleted(true);
+				pm.makePersistent(item);
 				throw new UserException("You may not delete this item, because there are people that want to buy it to you");
 			}
 			tx.commit();
@@ -458,7 +477,6 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
-			pm.close();
 		}
 		return item;
 	}
@@ -680,24 +698,41 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void sendEmailCloseGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,PersistenceManager pm) throws EmailException{
-		WishlistItem item = loadWishlistItem(itemId, pm);
-		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
-		Event event = pm.getObjectById(Event.class,item.getEventKey());
-		String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
-		GroupEmail group = new GroupEmail(item.getItemName(),fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
-		for (ParticipatorEmail p : participatorsE){
-			group.addParticipator(p);
-		}
-		try{
-			SendEmail.sendEmailCloseGroup(group, message,actualPrice);
-		}
-		catch(EmailException e){
-			throw new EmailException(e.getMessage());
-		}
-	}
+//	public static void sendEmailCloseGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,PersistenceManager pm) throws EmailException{
+//		WishlistItem item = loadWishlistItem(itemId, pm);
+//		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
+//		Event event = pm.getObjectById(Event.class,item.getEventKey());
+//		String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
+//		GroupEmail group = new GroupEmail(item.getItemName(),fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
+//		for (ParticipatorEmail p : participatorsE){
+//			group.addParticipator(p);
+//		}
+//		try{
+//			SendEmail.sendEmailCloseGroup(group, message,actualPrice);
+//		}
+//		catch(EmailException e){
+//			throw new EmailException(e.getMessage());
+//		}
+//	}
+//	
+//	public static void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm) throws EmailException{
+//		WishlistItem item = loadWishlistItem(itemId, pm);
+//		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
+//		Event event = pm.getObjectById(Event.class,item.getEventKey());
+//		String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
+//		GroupEmail group = new GroupEmail(item.getItemName(),fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
+//		for (ParticipatorEmail p : participatorsE){
+//			group.addParticipator(p);
+//		}
+//		try{
+//			SendEmail.sendEmailOpenGroup(group, message);
+//		}
+//		catch(EmailException e){
+//			throw new EmailException(e.getMessage());
+//		}
+//	}
 	
-	public static void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm) throws EmailException{
+	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status) throws EmailException{
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
 		Event event = pm.getObjectById(Event.class,item.getEventKey());
@@ -707,7 +742,17 @@ public class BusinessObjectDAL {
 			group.addParticipator(p);
 		}
 		try{
-			SendEmail.sendEmailOpenGroup(group, message);
+			switch(status){
+			case OPEN:
+				SendEmail.sendEmailOpenGroup(group, message);
+				break;
+			case CLOSE:
+				SendEmail.sendEmailCloseGroup(group, message,actualPrice);
+				break;
+			case CANCEL:
+				SendEmail.sendEmailCancelGroup(group);
+				break;
+			}
 		}
 		catch(EmailException e){
 			throw new EmailException(e.getMessage());
@@ -730,6 +775,7 @@ public class BusinessObjectDAL {
 				tx.begin();
 				item.setBuyerKey(null);
 				item.setIsActive(true);
+			//	removeChatMessageData(itemId,pm);
 				pm.makePersistent(item);
 				tx.commit();
 			}
@@ -881,7 +927,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new RuntimeException("error in data base: addParticipator", ex);
+				throw new RuntimeException("error in data base: deleteParticipator", ex);
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -908,6 +954,30 @@ public class BusinessObjectDAL {
 				tx.rollback();
 			}
 			pm.close();
+		}
+	}
+	
+	public static void removeChatMessageData(String itemId,PersistenceManager pm){
+		Transaction tx = (Transaction) pm.currentTransaction();
+		WishlistItem item = loadWishlistItem(itemId, pm);
+		try{
+			log.info("Trying to delete all chat messages for " + item.getItemName());
+			tx.begin();
+			ArrayList<ChatMessage> messages = item.getMessages();
+			if (!messages.isEmpty()){
+				for (ChatMessage m : messages){
+					item.removeChatMessage(m);
+					pm.deletePersistent(m);
+				}
+				pm.makePersistent(item);
+			}
+			tx.commit();
+		} catch (Exception ex) {
+			throw new RuntimeException("error in data base: removeChatMessageData", ex);
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
 		}
 	}
 

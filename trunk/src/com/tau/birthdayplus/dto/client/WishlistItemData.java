@@ -23,6 +23,8 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	   private Boolean isActive;
 	   //item thumbnail
 	   private String thumbnail;
+	   
+	   private Boolean isDeleted;
 
 	
 	/*
@@ -31,12 +33,12 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	 * (with any access modifier) or no constructor at all.
 	 */
 	public WishlistItemData(){	
-		this(null,null,null,true,null,null,true,null);
+		this(null,null,null,true,null,null,true,null,false);
 	}
 	/*
 	 * constructor for server side
 	 */
-	public WishlistItemData(String wishlistItemId,String userId,String name, Boolean priority, String link, Double price,Boolean isActive,String thumbnail){
+	public WishlistItemData(String wishlistItemId,String userId,String name, Boolean priority, String link, Double price,Boolean isActive,String thumbnail,Boolean isDeleted){
 		this.wishlistItemId=wishlistItemId;
 		this.userId = userId;
 		this.itemName = name;
@@ -45,6 +47,7 @@ public class WishlistItemData implements IsSerializable,Serializable{
 		this.price = price;
 		this.isActive = isActive;
 		this.thumbnail = thumbnail;
+		this.isDeleted = isDeleted;
 	}
 	
 
@@ -52,7 +55,7 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	 * constructor for client side - create new item 
 	 */
 	public WishlistItemData(String userId){
-		this(null,userId,null,true,null,0.0,false,null);
+		this(null,userId,null,true,null,0.0,false,null,false);
 	}
 	
 	public String getWishlistItemId(){
@@ -107,6 +110,12 @@ public class WishlistItemData implements IsSerializable,Serializable{
 	
 	public void setThumbnail(String thumbnail){
 		this.thumbnail = thumbnail;
+	}
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	public Boolean getIsDeleted() {
+		return isDeleted;
 	}
 
 }

@@ -27,6 +27,8 @@ public class Event  {
 	   private Date eventDate;
 	   @Persistent
 	   private Boolean recurrence;
+	   @Persistent
+	   private Boolean isDeleted;
 	   
 	/*
 	 * constructor for isSerializable
@@ -37,19 +39,22 @@ public class Event  {
 		
 	}
 	   
-	public Event(String eventName,String userId,Date eventDate,Boolean recurrence){
+	public Event(String eventName,String userId,Date eventDate,Boolean recurrence,Boolean isDeleted){
 		   this.eventName = eventName;
 		   this.eventDate = eventDate;
 		   this.recurrence = recurrence;
+		   this.isDeleted = isDeleted;
 	}
 	
 	public Event(EventData eventD){
-		this(eventD.getEventName(),eventD.getUserId(),eventD.getEventDate(),eventD.getRecurrence());
+		this(eventD.getEventName(),eventD.getUserId(),eventD.getEventDate(),eventD.getRecurrence(),eventD.getIsDeleted());
 	}
 	
 	public void copyFromEventData(EventData eventD){
 		setEventName(eventD.getEventName());
 		setEventDate(eventD.getEventDate());
+		setRecurrence(eventD.getRecurrence());
+		setIsDeleted(eventD.getIsDeleted());
 	}
 	/*
 	static Event getEventByKey(Key key){
@@ -90,6 +95,14 @@ public class Event  {
 	   public Boolean getRecurrence(){
 		   return this.recurrence;
 	   }
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
 
 
 	
