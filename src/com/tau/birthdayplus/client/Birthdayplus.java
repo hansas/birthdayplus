@@ -71,7 +71,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		title = "Birthday+", 
 		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
 		author_email = "yalo_niv@yahoo.com",
-		height = 445
+		height = 445   
 )
 @Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {
@@ -163,13 +163,13 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		    tab = new TabPanel();
 		    RootPanel.get().add(tab);
 	        
-		  //  tab.setSize("100%", "400px");
+		 
 		    tab.addStyleName("tabsPanel");
-		//	tab.setAnimationEnabled(true);
+		
 		    
 		    messages = new MessageLabel(25000);
 	        RootPanel.get().add(messages);
-	     //   messages.setSize("100%", "25px");
+	    
 		   
 			
 			
