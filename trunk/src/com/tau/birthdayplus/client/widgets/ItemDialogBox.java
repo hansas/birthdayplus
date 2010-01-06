@@ -117,7 +117,7 @@ public class ItemDialogBox extends DialogBox{
         
         thumbnailField=new TextBox();
         
-        boxButton=new Button("ok");
+        boxButton=new Button("Ok");
    
 	    cancelButton = new Button(constants.cwDialogBoxCancel());
         
