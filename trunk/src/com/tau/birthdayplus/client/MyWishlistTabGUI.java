@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -241,6 +242,7 @@ public class MyWishlistTabGUI {
 	        }
 	        
 	        wishlistPanel.setTitle("Your friends will give you "+countInactive+" presents soon");
+	        this.entryPoint.messages.setText(LocaleInfo.getCurrentLocale().getLocaleName());
 	    }
 	
 	
