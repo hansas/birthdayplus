@@ -226,8 +226,8 @@ public class BusinessObjectDAL {
 				if (item.getBuyerKey()!=null){
 					log.info("There is buyer for this item "+item.getItemName());
 					result = false;
-					item.setIsDeleted(true);//don't sure if it's right
-					pm.makePersistent(item);
+					//item.setIsDeleted(true);//don't sure if it's right
+					//pm.makePersistent(item);
 				}
 				else{
 					List<Participator> participators = item.getParticipators();
