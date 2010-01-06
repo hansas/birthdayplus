@@ -204,7 +204,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static Boolean mayIDeleteEvent(Event event,PersistenceManager pm){
+	public static Boolean mayIDeleteEvent(Event event,PersistenceManager pm) throws UserException{
 		List<WishlistItem> items = new ArrayList<WishlistItem>();
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
@@ -214,7 +214,7 @@ public class BusinessObjectDAL {
 			items = (List<WishlistItem>) query.execute(event.getKey());
 		} catch (Exception ex) {
 			log.severe("Error in mayIDeleteEvent");
-			throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
+			throw new UserException(ex);
 		}
 		if (!items.isEmpty()){
 			log.info("There is items for this event "+event.getEventName());
@@ -254,20 +254,26 @@ public class BusinessObjectDAL {
 						}
 						catch (Exception ex) {
 							log.severe("Error in second part of mayIDeleteEvent in item "+item.getItemName());
-							throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
+							throw new UserException(ex);
 						}
 					}
 				}
 			}
 		}
-		catch (Exception ex) {
+		catch (RuntimeException e)
+        {
+            log.severe(e.getMessage());
+            throw new UserException(e);
+        }
+		catch (Exception ex) 
+		{
 			log.severe("Error in second part of mayIDeleteEvent");
-			throw new RuntimeException("error in data base: mayIDeleteEvent", ex);
+			throw new UserException(ex);
 		}
 		return result;
 	}
 	
-	public static void cronDeleteEventAndUpdateRecurrent(){
+	public static void cronDeleteEventAndUpdateRecurrent() throws UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		List<Guest> guests = new ArrayList<Guest>();
 		Query query = pm.newQuery(Guest.class);
@@ -957,14 +963,14 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void removeChatMessageData(String itemId,PersistenceManager pm){
+	public static void removeChatMessageData(String itemId,PersistenceManager pm) throws UserException{
 		Transaction tx = (Transaction) pm.currentTransaction();
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		try{
 			log.info("Trying to delete all chat messages for " + item.getItemName());
 			tx.begin();
 			ArrayList<ChatMessage> messages = item.getMessages();
-			if (!messages.isEmpty()){
+			if (messages!=null){
 				for (ChatMessage m : messages){
 					item.removeChatMessage(m);
 					pm.deletePersistent(m);
@@ -973,7 +979,7 @@ public class BusinessObjectDAL {
 			}
 			tx.commit();
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: removeChatMessageData", ex);
+			throw new UserException(ex);
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
