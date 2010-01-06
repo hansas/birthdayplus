@@ -54,6 +54,7 @@ public class EventTabGUI {
      * constants
      */
 	CwConstants constants = GWT.create(CwConstants.class);
+	private static final int REMIND_LINK = 0;
 	private static final int EVENT_LINK = 1;
 	private static final int UPDATE_LINK = 4;
     private static final int DELETE_LINK = 5;
@@ -107,7 +108,7 @@ public class EventTabGUI {
 	//	eventList = new ArrayList<EventData>(); 
 
 		mainPanel = new FlowPanel();
-		entryPoint.tab.add(mainPanel, "Events");
+		entryPoint.tab.add(mainPanel, "Events and Wish Lists");
 		mainPanel.setStyleName("Panel");
 	//	mainPanel.setSize("100%","350px");
 	
@@ -117,20 +118,20 @@ public class EventTabGUI {
 		eventPanel.setStyleName("Panel");
 	//	eventPanel.setSize("100%", "350px");
 		
-		Command remindMeCommand = new Command(){
-			public void execute() {
-				gui_eventGoogleButtonClicked();
-		      }
-		    };
+	//	Command remindMeCommand = new Command(){
+	//		public void execute() {
+	//			gui_eventGoogleButtonClicked();
+	//	      }
+	//	    };
 		
-		eventPanel.addMenuItem("Remind Me",remindMeCommand).setTitle("Add event reminder to your Google Calendar by choosing the event and clicking on this button");
+	//	eventPanel.addMenuItem("Remind Me",remindMeCommand).setTitle("Add event reminder to your Google Calendar by choosing the event and clicking on this button");
 		
 		Command addEventCommand = new Command() {
 			public void execute() {
 				gui_eventAddEventButtonClicked();
 		      }
 		    };
-		eventPanel.addMenuItem("Create Event", addEventCommand).setTitle("Add your event");
+		eventPanel.addMenuItem("Add Event", addEventCommand).setTitle("Add your event");
 		
 		Command addCalendarGadget = new Command(){
 
@@ -140,7 +141,7 @@ public class EventTabGUI {
 		};
 		
 	
-	    eventPanel.addMenuItem("Calendar",addCalendarGadget).setTitle("Add small gagdet to your Google Calendar and share you events from the calendar through Birthday+");
+	    eventPanel.addMenuItem("Events from Google Calendar",addCalendarGadget).setTitle("Add small gagdet to your Google Calendar and share you events from the calendar through Birthday+");
 	 
 		buildEventTable();
 		eventDialogBox = new EventDialogBox();
@@ -246,6 +247,9 @@ public class EventTabGUI {
         
         
         switch(col){
+        case REMIND_LINK : gui_eventRemindButtonClicked(event,eventTable.getText(row, 1));
+                           break;
+                           
         case UPDATE_LINK : if(event.getUserId().equals(entryPoint.userId)){
                               this.addEvent = false;
                               loadForm(event,Actions.UPDATE);
@@ -302,6 +306,19 @@ public class EventTabGUI {
     		
     	}
     }
+    
+    private void gui_eventRemindButtonClicked(EventData eventData,String eventName ){
+    	
+    		DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("yyyyMMdd");
+    		String eventDay = dateFormatter.format(eventData.getEventDate());
+    		String eventNextDay = dateFormatter.format(new Date(eventData.getEventDate().getTime() + MILLIS_IN_DAY));
+    		
+    	
+    		String url = "http://www.google.com/calendar/event?action=TEMPLATE&text="+eventName+"&dates="+eventDay+"/"+eventNextDay+"&details=&location=&trp=false&sprop=&sprop=name:Birthdayplus";
+    		Window.open(url, "_blank" , "height=800,width=800");
+    		
+    	
+    }
 	
     
     
@@ -335,10 +352,21 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	
 		for (EventData event : eventList) {
 			Boolean myEvent = event.getUserId().equals(entryPoint.userId);
-			RadioButton radioButton = new RadioButton("event");
-			eventTable.setWidget(row, 0, radioButton);
-			radioButtonList.add(radioButton);
-			radioButton.setTitle("add reminder to Google Calendar");
+			Image alarmImage = new Image(GWT.getModuleBaseURL() + "alarm-icon.png");
+			eventTable.setWidget(row, 0, alarmImage);
+			alarmImage.setTitle("Remind me with Google Calendar");
+		//	RadioButton radioButton = new RadioButton("event");
+		//	eventTable.setWidget(row, 0, radioButton);
+		//	radioButtonList.add(radioButton);
+		//	radioButton.setTitle("add reminder to Google Calendar");
+		//	radioButton.addClickHandler(new ClickHandler(){
+
+		//		public void onClick(ClickEvent event) {
+		//			gui_eventGoogleButtonClicked();
+		//		}
+				
+		//	});
+			
 			
 			if(myEvent){
 				eventTable.setText(row, 1, "My"+ " "+event.getEventName());

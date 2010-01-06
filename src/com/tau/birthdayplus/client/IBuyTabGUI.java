@@ -127,6 +127,8 @@ public class IBuyTabGUI {
 	    sendEmail = new Anchor("send this message");
 	    cancelEmail = new Anchor("cancel");
 	    actualPrice = new TextBox();
+	    actualPrice.setTabIndex(0);
+	    emailTextArea.setTabIndex(1);
 	    
 	    actualPrice.setVisibleLength(20);
 	    actualPrice.setMaxLength(9);
@@ -494,11 +496,11 @@ public class IBuyTabGUI {
 	          	    
 	    	        if(item.getIsActive()){
 	    	        	Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
-	    			    updateImage.setTitle("update ");
+	    			    updateImage.setTitle("update my sum");
 	    			    Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
 	    			    cancelImage.setTitle("leave this group");
 	    			    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
-	    			    buyImage.setTitle("We'll buy");
+	    			    buyImage.setTitle("There is enough money to buy the present. \n I'll buy a present on behalf of the group.");
 	    	        	wishTable.setWidget(row, UPDATE_LINK, updateImage);
 	    	        	wishTable.setWidget(row, CANCEL_LINK, cancelImage);
 	    	        	wishTable.setWidget(row, BUY_LINK, buyImage);

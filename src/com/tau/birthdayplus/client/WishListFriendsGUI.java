@@ -388,7 +388,8 @@ public class WishListFriendsGUI  {
 
 	public void service_eventBookItemForUserSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
-		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
+		parent.entryPoint.tab.selectTab(2);
+	//	this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
 		
 	}
 
@@ -398,8 +399,9 @@ public class WishListFriendsGUI  {
 
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
-		this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());	
-		this.parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
+		parent.entryPoint.tab.selectTab(2);
+	//	this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());	
+	//	this.parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
