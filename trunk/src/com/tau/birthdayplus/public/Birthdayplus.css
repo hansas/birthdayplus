@@ -65,7 +65,7 @@ padding:0px 5px;
 }
 
 .gwt-MenuItem-selected {
-background-color  : #AFEEEE;
+cursor: pointer;
 }
 
 
@@ -150,9 +150,6 @@ overflow:hidden;
                                        /* border-top: 1px solid #00BFFF; */
 }
 
-.eventlistRow{
-border-top: 1px solid #00BFFF;
-}
 
 .changeSumMoneyBox{
 width: 50%;	
@@ -215,4 +212,8 @@ color: Red;
 
 .emailTextArea{
 background-color: white;
+}
+
+tr.row{
+border: 1px solid black;
 }

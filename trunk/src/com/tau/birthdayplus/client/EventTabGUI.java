@@ -393,7 +393,6 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	    	    eventTable.setWidget(row,DELETE_LINK, deleteImage); 
 			}
 			row++;
-			eventTable.getRowFormatter().addStyleName(row,"eventListRow");
 			
 			if((event.getEventDate().getYear() == today.getYear()) && (event.getEventDate().getMonth()== today.getMonth()))
 				countEvents+=1;
