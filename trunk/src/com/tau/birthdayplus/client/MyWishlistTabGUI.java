@@ -263,20 +263,20 @@ public class MyWishlistTabGUI {
 	}
 	
 	public void service_eventGetWishlistFailed(Throwable caught){
-	   this.entryPoint.messages.setText(caught.getMessage());
+	   this.entryPoint.messages.setText("GetWishlistFailed"+caught.getMessage());
 
 	}
 	
 	public void service_eventCreateWishlistItemFailed(Throwable caught){
-	   this.entryPoint.messages.setText(caught.getMessage());
+	   this.entryPoint.messages.setText("CreateWishlistItemFailed"+caught.getMessage());
 	}
 	
 	public void service_eventUpdateWishlistItemFailed(Throwable caught){
-		this.entryPoint.messages.setText(caught.getMessage());
+		this.entryPoint.messages.setText("UpdateWishlistItemFailed"+caught.getMessage());
 	}
 	
 	public void service_deleteWishlistItemFailed(Throwable caught){
-	    this.entryPoint.messages.setText(caught.getMessage());
+	    this.entryPoint.messages.setText("WishlistItemFailed"+caught.getMessage());
 	}
 	
 	

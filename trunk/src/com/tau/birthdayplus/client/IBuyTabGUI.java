@@ -657,7 +657,7 @@ public class IBuyTabGUI {
 
 
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());
+			this.entryPoint.messages.setText("CancelBookItemForUserFailed"+caught.getMessage());
 		}
 		
 		public void service_eventCancelBookItemForUserSuccesfull() {
@@ -665,7 +665,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());
+			this.entryPoint.messages.setText("DeleteParticipatorFailed"+caught.getMessage());
 		}
 
 		public void service_eventDeleteParticipatorSuccesfull() {
@@ -673,7 +673,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteItemFromTabFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());
+			this.entryPoint.messages.setText("DeleteItemFromTabFailed"+caught.getMessage());
 		}
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
@@ -681,7 +681,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventUpdateParticipatorFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());
+			this.entryPoint.messages.setText("UpdateParticipatorFailed"+caught.getMessage());
 		}
 
 		public void service_eventUpdateParticipatorSuccesfull() {
@@ -689,11 +689,11 @@ public class IBuyTabGUI {
 		}
 
 		public void service_getBookedWishlistFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());			
+			this.entryPoint.messages.setText("BookedWishlistFailed"+caught.getMessage());			
 		}
 
 		public void service_addChatMessageFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());
+			this.entryPoint.messages.setText("ChatMessageFailed"+caught.getMessage());
 		}
 
 		public void service_addChatMessageSuccesfull() {
@@ -702,7 +702,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_getWishlistItemFailed(Throwable caught) {
-		    this.entryPoint.messages.setText(caught.getMessage());
+		    this.entryPoint.messages.setText("WishlistItemFailed"+caught.getMessage());
 		}
 
 		public void service_getWishlistItemSuccesfull(WishlistItemNewData result) {
@@ -710,7 +710,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_cancelBookItemForGroupFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());
+			this.entryPoint.messages.setText("BookItemForGroupFailed"+caught.getMessage());
 		}
 
 		public void service_cancelBookItemForGroupSuccesfull() {
@@ -718,7 +718,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_bookItemForGroupFailed(Throwable caught) {
-			this.entryPoint.messages.setText(caught.getMessage());
+			this.entryPoint.messages.setText("ItemForGroupFailed"+caught.getMessage());
 		}
 
 		public void service_bookItemForGroupSuccesfull() {

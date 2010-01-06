@@ -39,6 +39,8 @@ import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.Services.UserException;
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.client.widgets.EventDialogBox;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
@@ -161,8 +163,10 @@ public class EventTabGUI {
 	}
 	
 	protected void showEventTab(){
+	
 		if (eventList == null)
 			 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
+		
 		wishlistFriendGUI.closeTab();
 		eventPanel.setVisible(true);
 	}
@@ -279,7 +283,7 @@ public class EventTabGUI {
     
    
     
-    
+   /* 
     private void gui_eventGoogleButtonClicked(){
     	int row = -1;
     
@@ -306,7 +310,7 @@ public class EventTabGUI {
     		
     	}
     }
-    
+    */
     private void gui_eventRemindButtonClicked(EventData eventData,String eventName ){
     	
     		DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("yyyyMMdd");
@@ -392,8 +396,9 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 				eventTable.setWidget(row, UPDATE_LINK, updateImage);
 	    	    eventTable.setWidget(row,DELETE_LINK, deleteImage); 
 			}
-			row++;
 			eventTable.getRowFormatter().addStyleName(row,"eventListRow");
+			row++;
+			
 			
 			if((event.getEventDate().getYear() == today.getYear()) && (event.getEventDate().getMonth()== today.getMonth()))
 				countEvents+=1;
@@ -405,31 +410,35 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	
 	
 	public void service_eventCreateEventSuccessful() {
+	
 		this.eventService.getEvents(entryPoint.getUserAndFriendsIds());		
 	}
 
 	public void service_eventUpdateEventSuccessful() {
+	
 		 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());		
 	}
 
 	public void service_eventDeleteEventSuccessful() {
+		
 	     this.eventService.getEvents(entryPoint.getUserAndFriendsIds());				
 	}
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
-		this.entryPoint.messages.setText(caught.getMessage());
+		
+		this.entryPoint.messages.setText("GetEventsFailed"+caught.getMessage());
 	}
 	
 	public void service_eventCreateEventFailed(Throwable caught) {
-		this.entryPoint.messages.setText(caught.getMessage());
+		this.entryPoint.messages.setText("CreateEventFAiled"+caught.getMessage());
 	}
 
 	public void service_eventUpdateEventFailed(Throwable caught) {
-		this.entryPoint.messages.setText(caught.getMessage());
+		this.entryPoint.messages.setText("UpdateEventFailed"+caught.getMessage());
 	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-		this.entryPoint.messages.setText(caught.getMessage());
+		this.entryPoint.messages.setText("DeleteEventFailed"+caught.getMessage());
 	}
 	
 
