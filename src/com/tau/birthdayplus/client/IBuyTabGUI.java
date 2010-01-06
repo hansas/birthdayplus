@@ -196,6 +196,8 @@ public class IBuyTabGUI {
 	
 	protected void makeDirtyIBuyItems(){
 		this.itemsToBuy = null;
+		this.wishTable.clear(true);
+	    wishTable.resizeRows(0);
 	}
 	
 	
@@ -527,6 +529,8 @@ public class IBuyTabGUI {
 		private void closeChat(){
 			if(mainChatPanel.isVisible()){
 				this.itemsToBuy = null;
+				this.wishTable.clear(true);
+			    wishTable.resizeRows(0);
 				mainChatPanel.setVisible(false);
 			}
 		}
