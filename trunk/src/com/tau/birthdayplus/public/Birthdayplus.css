@@ -5,6 +5,7 @@ width: 85%;
 
 .gwt-Button 
 { 
+font-size: 13px;
 background-color: #3366CC; 
 color: black; 
 font-weight: bold; 
@@ -83,7 +84,7 @@ height : 25px;
 }
 
 .messageLabel {
-width : 92%;
+width : 90%;
 height : 30px;
 background-color:#FFFFCC;
 border:1px solid #FFCC35;
