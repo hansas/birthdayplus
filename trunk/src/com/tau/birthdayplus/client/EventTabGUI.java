@@ -108,7 +108,7 @@ public class EventTabGUI {
 	//	eventList = new ArrayList<EventData>(); 
 
 		mainPanel = new FlowPanel();
-		entryPoint.tab.add(mainPanel, "Events and Wish Lists");
+		entryPoint.tab.add(mainPanel, "Events");
 		mainPanel.setStyleName("Panel");
 	//	mainPanel.setSize("100%","350px");
 	
