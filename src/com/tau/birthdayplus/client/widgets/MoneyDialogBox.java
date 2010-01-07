@@ -5,11 +5,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
+
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -18,63 +21,73 @@ import com.google.gwt.user.client.ui.Widget;
 public class MoneyDialogBox extends DialogBox {
 	//private DialogBox moneyDialogBox;
 	private VerticalPanel moneyVerticalPanel;
+	private FlexTable layout;
+	private HTML helpMessage;
 	private Label errorMsgLabel ;
 	private TextBox   enterSumTextBox;
-	private HorizontalPanel moneyHorizontalPanel;
 	private Button    okMoneyButton;
 	private Button    cancelMoneyButton;
 	private Integer sum ;
 	
 	
-	public MoneyDialogBox(){
-	//	moneyDialogBox = new DialogBox(false,true);
-	    setText("Enter the amount you're willing to spend on this present : ");
-	    setWidth("300px");
-	
+	public MoneyDialogBox(String help){
 		
+	
 		moneyVerticalPanel  = new VerticalPanel();
 		add(moneyVerticalPanel);
-		moneyVerticalPanel.addStyleName("moneyVerticalPanel");
-		moneyVerticalPanel.setWidth("100%");
-		moneyVerticalPanel.setHeight("40px");
+		moneyVerticalPanel.setWidth("220px");
+	
+		
+		helpMessage = new HTML(help);
+		moneyVerticalPanel.add(helpMessage);
+		helpMessage.addStyleName("helpMessage");
 		
 		errorMsgLabel = new Label();
 		moneyVerticalPanel.add(errorMsgLabel);
-		errorMsgLabel.setWidth("100%");
+	//	errorMsgLabel.setWidth("100%");
+	
 		errorMsgLabel.setStyleName("errorMessage");
-		errorMsgLabel.setVisible(false);
+	
 		
 		
 		
 		enterSumTextBox = new TextBox();
-		enterSumTextBox.addStyleName("changeSumMoneyBox");
-		moneyVerticalPanel.add(enterSumTextBox);
+		enterSumTextBox.setVisibleLength(12);
+		enterSumTextBox.setMaxLength(10);
+	
+	
+		okMoneyButton = new Button("Ok");
+	
+		cancelMoneyButton = new Button("Cancel");
 		
-		moneyHorizontalPanel = new HorizontalPanel();
-		moneyVerticalPanel.add(moneyHorizontalPanel);
-		moneyHorizontalPanel.setWidth("100%");
-		moneyHorizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-	//	moneyHorizontalPanel.setSpacing(20);
+		layout = new FlexTable();
+	
 		
-		okMoneyButton = new Button();
-		moneyHorizontalPanel.add(okMoneyButton);
-		moneyHorizontalPanel.setCellWidth(okMoneyButton, "50%");
+		layout.setCellSpacing(0);
+		layout.setCellPadding(5);
+	   
+		moneyVerticalPanel.add(layout);
 		
-		okMoneyButton.setText("Ok");
-		okMoneyButton.setWidth("90%");
-	//	okMoneyButton.setWidth("100%");
+		layout.setWidget(0, 0, errorMsgLabel);
+		layout.getFlexCellFormatter().setColSpan(0, 0, 1);
 		
-		cancelMoneyButton = new Button();
-		moneyHorizontalPanel.add(cancelMoneyButton);
-		moneyHorizontalPanel.setCellWidth(cancelMoneyButton, "50%");
-		cancelMoneyButton.setText("Cancel");
-		cancelMoneyButton.setWidth("90%");
+		layout.setText(1,0, "Amount you are willing to spend in "+'\u20AA' );
+        layout.setWidget(1, 1, enterSumTextBox);
+        layout.getCellFormatter().addStyleName(1,0, "amountLabel");
+		layout.getCellFormatter().addStyleName(1,1, "amount");
 		
-	//	initWidget(moneyDialogBox);
+		layout.setWidget(2, 0, okMoneyButton);
+		layout.setWidget(2, 1, cancelMoneyButton);
+		layout.getFlexCellFormatter().setHorizontalAlignment(2, 1,HasHorizontalAlignment.ALIGN_LEFT );
+		layout.getFlexCellFormatter().setHorizontalAlignment(2, 1,HasHorizontalAlignment.ALIGN_RIGHT );
+		
+
 	    sum = null;
 		
 		wireEvents();
 	}
+	
+	
 	
 
 	public void show(){
@@ -90,6 +103,11 @@ public class MoneyDialogBox extends DialogBox {
 		enterSumTextBox.setEnabled(true);
 	    super.showRelativeTo(widget);
         enterSumTextBox.setFocus(true);
+	}
+	
+	public void setText(String title,String buttonText){
+		this.setText(title);
+		okMoneyButton.setText(buttonText);
 	}
 	
 	

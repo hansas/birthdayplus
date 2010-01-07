@@ -181,7 +181,7 @@ public class IBuyTabGUI {
 		
 	    buildChat();
 		
-	    moneyDialogBox = new MoneyDialogBox();
+	    moneyDialogBox = new MoneyDialogBox("Update the amount you're willing to spend on this present");
 	//	buildMoneyDialogBox();
 	
 		    
@@ -407,8 +407,10 @@ public class IBuyTabGUI {
 	           
 	        
 	        switch(col){
-	        case UPDATE_LINK  : if(item.getIsActive())
-	        	                   loadMoneyDialog(item);    
+	        case UPDATE_LINK  : if(item.getIsActive()){
+	        	                   moneyDialogBox.setText("Update the amount", "Update");
+	        	                   loadMoneyDialog(item);
+	                            }
 	                            break;
 	                            
 	        case CANCEL_LINK  : if(item.getParticipators().isEmpty())
