@@ -111,7 +111,7 @@ public class WishListFriendsGUI  {
 		   polani = wishlistBoxPanel.addMenuItem("Polani",polaniCommand);
 			
 			buildFriendWishlistTable();
-			moneyDialogBox = new MoneyDialogBox();
+			moneyDialogBox = new MoneyDialogBox("When there is enough money to buy this present someone (it can be you) should close this group and buy the present.<br/>We will send an email when someone closes this group. <br/>You can close the group in IBuy tab.");
 			buildPolaniPanel();
 			 
 			 
@@ -240,8 +240,13 @@ public class WishListFriendsGUI  {
     	                       wishlistService.bookItemForUser(item.getWishlistItemId(), currentEvent.getEventId(),parent.entryPoint.userId);
                             break;
                           
-       case GROUP_BUY_LINK :if(item.getIsActive()&& !userInGroup(item))
+       case GROUP_BUY_LINK :if(item.getIsActive()&& !userInGroup(item)){
+    	                       if(item.getParticipators().isEmpty())
+    	                    	   moneyDialogBox.setText("Start a group", "Participate");
+    	                       else
+    	                    	   moneyDialogBox.setText("Join to the group", "Participate");
     	                       loadMoneyDialog(item , widgetClicked);
+                            }
                             break;
        }      
        
