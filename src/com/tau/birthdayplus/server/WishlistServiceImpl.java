@@ -24,6 +24,7 @@ import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.client.Services.WishlistService;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.PMF;
+import com.tau.birthdayplus.domain.ChatMessage;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
 import com.tau.birthdayplus.domain.Participator;
@@ -203,6 +204,18 @@ WishlistService  {
 		return WishlistManagement.getLastItemsForUser(myUserId, anotherUserId);
 	}
 	
+	
+	/*
+	 * get chat messages for the item
+	 */
+	public ArrayList<ChatMessage> getChatMessages(String itemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+	
 	protected String readContent(HttpServletRequest request)
 	throws ServletException, IOException {
 		String content = RPCServletUtils.readContentAsUtf8(request, false);
@@ -210,6 +223,7 @@ WishlistService  {
 		return content;
 }
 
+	
 
 
 	
