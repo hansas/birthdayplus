@@ -23,7 +23,6 @@ cursor: hand;
 }
 
 .gwt-DialogBox .Caption {
-
 color: black;
 font-weight: bold;
 padding: 5px 10px 5px 10px;
@@ -82,33 +81,46 @@ cursor: pointer;
 cursor: hand;
 }
 
-.chatTextArea{
-width : 70%;
+
+.messagePanel{
+width : 100%;
 height : 24px;
+border:1px solid #FFCC35 ;
+padding:0px; 
 }
 
+
 .messageLabel {
-width : 90%;
+width : 95%;
 height : 35px;
 background-color:#FFFFCC;
 border:1px solid #FFCC35;
 color:#000000;
 font-size:13px;
 font-weight:bold;
-padding:3px 15px 3px 10px;
+padding:3px 5px 3px 5px;
 text-align:center;
 overflow-y:auto;
+margin : 0px;
 }
 
 .tabsPanel{
 width : 100%;
-height : 400px;
+height : 445px;
 margin:0px;
 }
 
+
+.mainPanel {
+width : 100%;
+height : 410px !important;
+
+}
 .Panel{
 width : 100%;
 height : 350px;
+margin:0px;
+padding :0px;
 }
 /*
 													.buttonPanel{
@@ -138,7 +150,7 @@ height : 300px;
 
 .ShortScrollPanel{
 width : 100%;
-height : 279px;
+height : 275px;
 }
 
 
@@ -201,25 +213,8 @@ width:100%;
 height:325px;
 }
 
-.rightChatPanel {
-border-color:#D0E4F6;
-border-style:solid;
-height:264px;
-padding:3px 4px;
-width:87%;
-}
 
 
-.chatParticipators{
-height:22px;
-text-align:left;
-font-weight:bold;
-}
-
-.sendButton{
-width : 25%;
-height : 25px;
-}
 
 .chatLineDate {
 background-color:#D0E4F6;
@@ -252,7 +247,7 @@ background-color: white;
     margin                      :   0 auto;
     background-color            :   #eee;
     font-size                   :   70%;
-    padding                     :   3px;
+    padding                     :   0px;
 }
 .buttonPanel table
 {
@@ -278,4 +273,22 @@ background-color: white;
 .gwt-MenuBar-horizontal
 {
     background: white;
+}
+
+/*Wellcome panel*/
+
+.wellcomePanel{
+padding:4px 2px 4px 2px;
+}
+
+
+
+.wellcomePanelPart{
+
+background-color: #DDEEFF;
+margin :0px;
+padding-bottom:2px;
+padding-left:2px;
+padding-right:2px;
+padding-top:2px;
 }
