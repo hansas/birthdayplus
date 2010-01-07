@@ -44,6 +44,7 @@ import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.client.widgets.EventDialogBox;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.MessageLabel;
 import com.tau.birthdayplus.dto.client.EventData;
 
 
@@ -68,10 +69,12 @@ public class EventTabGUI {
 	private ScrollPanel eventScrollPanel;
 	private FlexTable eventTableHeader;
 	private HoverTable eventTable;
-	private ArrayList<RadioButton> radioButtonList;
+
 	
 	private EventDialogBox eventDialogBox;
     private Boolean addEvent;
+    
+   
     
    
     
@@ -83,7 +86,7 @@ public class EventTabGUI {
 	private EventData currentEvent;
 	protected Birthdayplus entryPoint;
 	
-//	private Label errorMsgLabel ;
+
 	
 	
 	private enum Actions {
@@ -114,6 +117,7 @@ public class EventTabGUI {
 		mainPanel.setStyleName("Panel");
 	//	mainPanel.setSize("100%","350px");
 	
+		
 	//	eventPanel = new FlowPanel();
 		eventPanel = new FlowPanelMenuTitle();
 		mainPanel.add(eventPanel);
@@ -159,6 +163,8 @@ public class EventTabGUI {
 	    wishlistFriendGUI.parent = this;
 	    wishlistFriendGUI.init();
 		wishlistFriendGUI.wireWishlistFriendGUIEvents();
+		
+	
 		
 	}
 	
@@ -283,34 +289,7 @@ public class EventTabGUI {
     
    
     
-   /* 
-    private void gui_eventGoogleButtonClicked(){
-    	int row = -1;
-    
-    	if(radioButtonList == null)
-    		return;
-    	
-    	
-    	for(int i=0;i<radioButtonList.size();i++){
-    		if(radioButtonList.get(i).getValue()){
-    			row =i;
-    			radioButtonList.get(i).setValue(false);
-    			break;
-    		}
-    	}	
-    	if(row == -1)
-    		this.entryPoint.messages.setText("Please select the event you want to be reminded about");
-    	else{
-    		DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("yyyyMMdd");
-    		String eventDay = dateFormatter.format(eventList.get(row).getEventDate());
-    		String eventNextDay = dateFormatter.format(new Date(eventList.get(row).getEventDate().getTime() + MILLIS_IN_DAY));
-    		String event = eventTable.getText(row, 1);
-    		String url = "http://www.google.com/calendar/event?action=TEMPLATE&text="+event+"&dates="+eventDay+"/"+eventNextDay+"&details=&location=&trp=false&sprop=&sprop=name:Birthdayplus";
-    		Window.open(url, "_blank" , "height=800,width=800");
-    		
-    	}
-    }
-    */
+   
     private void gui_eventRemindButtonClicked(EventData eventData,String eventName ){
     	
     		DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("yyyyMMdd");
@@ -348,7 +327,7 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 		this.eventList = result;
 		this.eventTable.clear(true);
 		eventTable.resizeRows(result.size());
-		radioButtonList = new ArrayList<RadioButton>();
+		
 		int countEvents = 0;
 		Date today = new Date();
 		
@@ -359,17 +338,6 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 			Image alarmImage = new Image(GWT.getModuleBaseURL() + "alarm-icon.png");
 			eventTable.setWidget(row, 0, alarmImage);
 			alarmImage.setTitle("Remind me with Google Calendar");
-		//	RadioButton radioButton = new RadioButton("event");
-		//	eventTable.setWidget(row, 0, radioButton);
-		//	radioButtonList.add(radioButton);
-		//	radioButton.setTitle("add reminder to Google Calendar");
-		//	radioButton.addClickHandler(new ClickHandler(){
-
-		//		public void onClick(ClickEvent event) {
-		//			gui_eventGoogleButtonClicked();
-		//		}
-				
-		//	});
 			
 			
 			if(myEvent){
