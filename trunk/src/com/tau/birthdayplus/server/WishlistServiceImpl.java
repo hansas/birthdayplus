@@ -208,7 +208,7 @@ WishlistService  {
 	/*
 	 * get chat messages for the item
 	 */
-	public ArrayList<ChatMessage> getChatMessages(String itemId) {
+	public ArrayList<ChatMessageData> getChatMessages(String itemId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
