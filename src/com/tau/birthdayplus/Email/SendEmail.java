@@ -2,13 +2,9 @@ package com.tau.birthdayplus.Email;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -48,6 +44,31 @@ public class SendEmail {
 	}
 	
 	public static void sendEmailCancelGroup(GroupEmail group)throws EmailException{
+		int groupSize = group.getParticipators().size();
+		InternetAddress[] addresses = new InternetAddress[groupSize];
+		
+		int i=0;
+		try{
+		    for(ParticipatorEmail participator:group.getParticipators()){
+            	String name = participator.getUserFirstName()+" "+participator.getUserLastName();
+                addresses[i++] = new InternetAddress(participator.getEmail(),name);
+			}
+        }catch (UnsupportedEncodingException e) {
+	    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
+			throw new EmailException(" a problem occured while sending an email");
+		}
+        
+        String message = "You are participating in the group that wants to buy a" +group.getItemName()+" for "+group.getUserName()+" .<br /><br />";
+        message+="The group has been canceled because "+group.getUserName()+"has deleted this event.";
+        
+        try {
+			sendMails(new InternetAddress(emailAddress, "Birthday+") ,null,addresses,null,"A present for "+group.getUserName()+"'s "+group.getEventName(),message);
+		} catch (UnsupportedEncodingException e) {
+			log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
+			throw new EmailException(" A problem occured while sending an email");
+		}
+        
+		
 	
 	}
 	
@@ -98,7 +119,7 @@ public class SendEmail {
 			sendMails(new InternetAddress(emailAddress, "Birthday+") ,replyTo,addresses,replyTo,"A present for "+group.getUserName()+"'s "+group.getEventName(),message);
 		} catch (UnsupportedEncodingException e) {
 			log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
-			throw new EmailException(" a problem occured while sending an email");
+			throw new EmailException(" A problem occured while sending an email");
 		}
 		
 		
@@ -125,7 +146,7 @@ public class SendEmail {
 		}
 	    } catch (UnsupportedEncodingException e) {
 	    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
-			throw new EmailException(" a problem occured while sending an email");
+			throw new EmailException(" A problem occured while sending an email");
 			
 		}
 		
@@ -141,9 +162,11 @@ public class SendEmail {
 		        
 		        Message msg = new MimeMessage(session);
 		        msg.setFrom(from);
-		        msg.setReplyTo(replyTo);
+		        if(replyTo!=null)
+		           msg.setReplyTo(replyTo);
 		        msg.addRecipients(Message.RecipientType.TO, recipients);
-		        msg.addRecipients(Message.RecipientType.CC,sendCopyTo);
+		        if(sendCopyTo!=null)
+		           msg.addRecipients(Message.RecipientType.CC,sendCopyTo);
 		        msg.setSubject(subject);
 		        
 		        Multipart mp = new MimeMultipart();
@@ -156,15 +179,15 @@ public class SendEmail {
 
 		    } catch (AddressException e) {
 		    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);  	
-				throw new EmailException(" a problem occured while sending an email");
+				throw new EmailException(" A problem occured while sending an email");
 
 		    } catch (MessagingException e) {
 		    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
-				throw new EmailException(" a problem occured while sending an email");
+				throw new EmailException(" A problem occured while sending an email");
 
 		    }catch (Exception e){
 		    	log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
-				throw new EmailException(" a problem occured while sending an email");
+				throw new EmailException(" A problem occured while sending an email");
 			}
 		
 		
