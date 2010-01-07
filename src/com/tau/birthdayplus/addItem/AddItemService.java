@@ -8,4 +8,4 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 public interface AddItemService extends RemoteService{
 	void createWishlistItemSite(WishlistItemData item)throws UserNotFoundException;
 
-}
+} 
