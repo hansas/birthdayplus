@@ -128,6 +128,10 @@ font-family:arial,sans-serif;
 font-size:small;
 }
 
+table { border-collapse:collapse; }
+td { border-bottom:1px solid #00BFFF; }
+
+
 
 /*  tables scrollable */
 .gwt-TabPanelBottom {
