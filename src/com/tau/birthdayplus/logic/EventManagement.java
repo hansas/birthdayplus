@@ -95,16 +95,18 @@ public class EventManagement {
 				Calendar cal = Calendar.getInstance();
 				Calendar eDate = Calendar.getInstance();
 				for (Event event: guestEvents){
-					int eMonth = event.getEventDate().getMonth();
-					int eDay = event.getEventDate().getDate();
-					eDate.clear();
-					eDate.set(Calendar.YEAR, event.getEventDate().getYear()+1900);
-					eDate.set(Calendar.MONTH, eMonth);
-					eDate.set(Calendar.DATE, eDay);
-					if (eDate.after(cal)||(((eDate.get(Calendar.DATE)+1)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
-							&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))||((eDate.get(Calendar.DATE)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
-							&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))){
-						events.add(EventManagement.eventToEventData(event,wrapper));
+					if (!event.getIsDeleted()){
+						int eMonth = event.getEventDate().getMonth();
+						int eDay = event.getEventDate().getDate();
+						eDate.clear();
+						eDate.set(Calendar.YEAR, event.getEventDate().getYear()+1900);
+						eDate.set(Calendar.MONTH, eMonth);
+						eDate.set(Calendar.DATE, eDay);
+						if (eDate.after(cal)||(((eDate.get(Calendar.DATE)+1)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
+								&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))||((eDate.get(Calendar.DATE)==cal.get(Calendar.DATE))&&(eDate.get(Calendar.MONTH)==cal.get(Calendar.MONTH))
+								&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))){
+							events.add(EventManagement.eventToEventData(event,wrapper));
+						}
 					}
 				}
 			}

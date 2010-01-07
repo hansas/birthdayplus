@@ -82,7 +82,7 @@ public class WishlistManagement {
 		try{
 			WishlistItem item = wrapper.getWishlistItem(itemD.getWishlistItemId());
 			ArrayList<Participator> participators = item.getParticipators();
-			if ((item.getBuyerKey()==null)&&(participators!=null)){
+			if ((item.getBuyerKey()==null)&&(participators!=null)&&(!participators.isEmpty())){
 				ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
 				GroupStatus status = GroupStatus.CANCEL;
 				wrapper.sendEmailToGroup(itemD.getWishlistItemId(), itemD.getUserId(), "", participatorsE, 0.0, status);
