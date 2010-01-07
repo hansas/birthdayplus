@@ -25,14 +25,14 @@ public class MessageLabel extends Label{
 	
 	public void setText(String text){
 		super.setText(text);
-		if(setTimer)
-		   timer.schedule(delay);
+		timer.schedule(delay);
 		this.setVisible(true);
 	}
 	
 	private void cleanText(){
 		super.setText("");
-		this.setVisible(false);
+		if(setTimer)
+		   this.setVisible(false);
 	}
 
 }
