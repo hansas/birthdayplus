@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.tau.birthdayplus.domain.ChatMessage;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
@@ -118,6 +119,10 @@ public interface WishlistService extends RemoteService{
 	 * 
 	 */
 	ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,String anotherUserId ) throws UserNotFoundException;
+	/*
+	 * get chat messages for the item
+	 */
+	ArrayList<ChatMessage> getChatMessages(String itemId);
 	
 	
 
