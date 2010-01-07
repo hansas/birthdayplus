@@ -24,6 +24,7 @@ import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.ListItem;
+import com.tau.birthdayplus.client.widgets.MessageLabel;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.client.widgets.UnorderedList;
@@ -62,6 +63,7 @@ public class WishListFriendsGUI  {
 	
 	
 	private MoneyDialogBox moneyDialogBox;
+	private MessageLabel messages;
 	
 	
 	/*  
@@ -85,7 +87,7 @@ public class WishListFriendsGUI  {
 			wishlistBoxPanel = new FlowPanelMenuTitle();
 		//	wishlistBoxPanel = new FlowPanel();
 			parent.mainPanel.add(wishlistBoxPanel);
-			wishlistBoxPanel.addStyleName("Panel");
+			wishlistBoxPanel.addStyleName("mainPanel");
 		//	wishlistBoxPanel.setSize("100%", "350px");
 			wishlistBoxPanel.setVisible(false);
 			
@@ -108,7 +110,9 @@ public class WishListFriendsGUI  {
 			
 			buildFriendWishlistTable();
 			moneyDialogBox = new MoneyDialogBox("When there is enough money to buy this present someone (it can be you) should close this group and buy the present.<br/>We will send an email when someone closes this group. <br/>You can close the group in IBuy tab.");
-			 
+			
+			 messages = new MessageLabel(25000,false);
+			 wishlistBoxPanel.add(messages);
 			 
 			
 			   
@@ -219,7 +223,7 @@ public class WishListFriendsGUI  {
         Widget widgetClicked = friendWishTable.getWidget(row, col);
          
        switch(col){   	                                       
-       case BUY_LINK :      if(item.getIsActive())
+       case BUY_LINK :      if(item.getIsActive()&& item.getParticipators().isEmpty())
     	                       wishlistService.bookItemForUser(item.getWishlistItemId(), currentEvent.getEventId(),parent.entryPoint.userId);
                             break;
                           
@@ -363,32 +367,32 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventGetWishlistFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText("GetWishlistFailed"+caught.getMessage());
+		messages.setText("GetWishlistFailed"+caught.getMessage());
 	}
 	
 	public void service_eventBookItemForUserFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText("BookItemForUserFailed"+caught.getMessage());		
+		messages.setText("BookItemForUserFailed"+caught.getMessage());		
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		this.parent.entryPoint.messages.setText("In IBuy tab you can cancel the reservation for the item.");	
+		messages.setText("In IBuy tab you can cancel the reservation for the item.");	
 		
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText("AddParticipatorFailed"+caught.getMessage());		
+		messages.setText("AddParticipatorFailed"+caught.getMessage());		
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		this.parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
+		messages.setText("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
-		this.parent.entryPoint.messages.setText("GetPolaniItemsFailed"+caught.getMessage());		
+		messages.setText("GetPolaniItemsFailed"+caught.getMessage());		
 	}
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {

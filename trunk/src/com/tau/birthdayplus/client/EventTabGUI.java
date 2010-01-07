@@ -73,6 +73,8 @@ public class EventTabGUI {
 	
 	private EventDialogBox eventDialogBox;
     private Boolean addEvent;
+    private MessageLabel messages;
+
     
    
     
@@ -114,7 +116,7 @@ public class EventTabGUI {
 
 		mainPanel = new FlowPanel();
 		entryPoint.tab.add(mainPanel, "Events");
-		mainPanel.setStyleName("Panel");
+		mainPanel.setStyleName("mainPanel");
 	//	mainPanel.setSize("100%","350px");
 	
 		
@@ -163,6 +165,9 @@ public class EventTabGUI {
 	    wishlistFriendGUI.parent = this;
 	    wishlistFriendGUI.init();
 		wishlistFriendGUI.wireWishlistFriendGUIEvents();
+		
+		 messages = new MessageLabel(25000,false);
+		 mainPanel.add(messages);
 		
 	
 		
@@ -393,19 +398,19 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
 		
-		this.entryPoint.messages.setText("GetEventsFailed"+caught.getMessage());
+		messages.setText("GetEventsFailed"+caught.getMessage());
 	}
 	
 	public void service_eventCreateEventFailed(Throwable caught) {
-		this.entryPoint.messages.setText("CreateEventFAiled"+caught.getMessage());
+		messages.setText("CreateEventFAiled"+caught.getMessage());
 	}
 
 	public void service_eventUpdateEventFailed(Throwable caught) {
-		this.entryPoint.messages.setText("UpdateEventFailed"+caught.getMessage());
+		messages.setText("UpdateEventFailed"+caught.getMessage());
 	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-		this.entryPoint.messages.setText("DeleteEventFailed"+caught.getMessage());
+		messages.setText("DeleteEventFailed"+caught.getMessage());
 	}
 	
 

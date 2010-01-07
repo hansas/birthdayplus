@@ -13,6 +13,7 @@ import java.util.Set;
 
 
 
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -62,6 +63,8 @@ import com.tau.birthdayplus.client.Services.ProfileServiceAsync;
 import com.tau.birthdayplus.client.Services.RequestProxy;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.client.widgets.MessageLabel;
+import com.tau.birthdayplus.client.widgets.SignInEventHandler;
+import com.tau.birthdayplus.client.widgets.WellcomePanel;
 
 
 import com.tau.birthdayplus.dto.client.GuestData;
@@ -92,7 +95,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	
 	protected  TabPanel tab ;
 	protected  PopupPanel loadingImagePopup ;
-	protected MessageLabel messages;
+//	protected MessageLabel messages;
 
 	
 	
@@ -168,8 +171,8 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		    tab.addStyleName("tabsPanel");
 		
 		    
-		    messages = new MessageLabel(25000);
-	        RootPanel.get().add(messages);
+		 //   messages = new MessageLabel(25000,true);
+	    //    RootPanel.get().add(messages);
 	    
 		   
 			
@@ -308,7 +311,21 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 					loadingImagePopup.hide();
 			//		Window.alert("creating new profile" +caught);
 					if (caught instanceof UserNotFoundException) {
+						final WellcomePanel panel = new WellcomePanel(firstName);
+				        RootPanel.get().add(panel);
+				        panel.setWidth("100%");
+				        
+				        panel.addSignInEvent(new SignInEventHandler(){
 
+							public void onSignIn(int day, int month, int year) {
+								panel.removeFromParent();
+							    loadingImagePopup.center();
+							    loadingImagePopup.show();
+					            openWindow("http://birthdayplus.appspot.com/birthdayplus/login?openSocialId="+userId+"&firstName="+firstName+"&lastName="+lastName+"&day="+day+"&month="+month+"&year="+year);
+							}
+				        	
+				        });
+                        /*
 						final FlowPanel main= new FlowPanel();
 						RootPanel.get().add(main);
 						main.setWidth("100%");
@@ -381,6 +398,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 							}
 						}
 				       });
+				       */
 					}else{
 						
 					}
