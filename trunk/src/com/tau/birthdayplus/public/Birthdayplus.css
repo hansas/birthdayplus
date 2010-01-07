@@ -248,7 +248,7 @@ td { border-bottom:1px solid #00BFFF; }
 
 .buttonPanel
 {
-    border                      :   1px solid #666;
+    border                      :   1px solid #FFFFFF;
     margin                      :   0 auto;
     background-color            :   #eee;
     font-size                   :   70%;
@@ -273,4 +273,9 @@ td { border-bottom:1px solid #00BFFF; }
 .buttonPanel .gwt-MenuItem-selected
 {
     background-color            :   #fff;
+}
+
+.gwt-MenuBar-horizontal
+{
+    background: white;
 }
