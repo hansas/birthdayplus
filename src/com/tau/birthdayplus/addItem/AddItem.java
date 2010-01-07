@@ -17,6 +17,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -67,10 +68,13 @@ public class AddItem implements EntryPoint{
 		String thumbnail = decode(Window.Location.getParameter("thumbnail"));
 		String price = Window.Location.getParameter("price");
 		
+		DecoratorPanel	 decPanel = new DecoratorPanel();
+		RootPanel.get().add(decPanel);
+		decPanel.addStyleName("mainPanel");
 		
 	    mainPanel = new VerticalPanel();
-    	RootPanel.get().add(mainPanel);
-    	mainPanel.addStyleName("mainPanel");
+    	decPanel.setWidget(mainPanel);
+    	
     	mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     	
 
@@ -78,8 +82,6 @@ public class AddItem implements EntryPoint{
     	
     	Image logo = new Image(GWT.getModuleBaseURL()+"Birthday+.gif");
 		mainPanel.add(logo);
-		logo.addStyleName("logo");
-		
 	
     
 	    errorMsgLabel = new Label();
@@ -116,14 +118,19 @@ public class AddItem implements EntryPoint{
 	
 	
 	  private void buildForm(String link,String wish,String thumbnail,String price) {
-	        formTable = new FlexTable();
+		  formTable = new FlexTable();
 	        mainPanel.add(formTable);
 	        formTable.addStyleName("table");
+	        formTable.setCellPadding(10);
+	        formTable.setCellSpacing(0);
+	      
 	        
-	    //    formTable.getColumnFormatter().setWidth(1, "100px");
+	  
 	      
 	        
 	        itemField=new TextBox();
+	        itemField.setMaxLength(22);
+	        itemField.setVisibleLength(30);
 	   	 
 	        priorityPanel = new HorizontalPanel();
 	        highPriorityButton = new RadioButton("priority", "High");
@@ -132,8 +139,11 @@ public class AddItem implements EntryPoint{
 	        priorityPanel.add(lowPriorityButton);
 	        
 	        linkField=new TextBox();
+	        linkField.setVisibleLength(30);
 	        
 	        priceField=new TextBox();
+	        priceField.setMaxLength(10);
+	        priceField.setVisibleLength(30);
 	        
 	        thumbnailField=new TextBox();
 	        
@@ -141,12 +151,17 @@ public class AddItem implements EntryPoint{
 	   
 		    cancelButton = new Button("Close ");
 	        
-	
+
 	   
 	        formTable.setText(0, 0, "Item name");
 	        formTable.setWidget(0, 1, itemField);
 	        formTable.getFlexCellFormatter().setColSpan(0, 1, 2);
+	        if(wish.length()> 22)
+	        	wish = wish.substring(0, 21);
 	        this.itemField.setText(wish);
+	       
+
+	        
 
 	        formTable.setText(1, 0, "Priority");
 	        formTable.setWidget(1, 1, priorityPanel);
@@ -158,11 +173,13 @@ public class AddItem implements EntryPoint{
 	        formTable.setWidget(2, 1, linkField);
 	        formTable.getFlexCellFormatter().setColSpan(2, 1, 2);
 	        this.linkField.setText(link);
+
 	        
 	        formTable.setText(3, 0, "Price in "+currancy);
 	        formTable.setWidget(3, 1, priceField);
 	        formTable.getFlexCellFormatter().setColSpan(3, 1, 2);
 	        this.priceField.setText(price);
+
 	        
 	        this.thumbnailField.setText(thumbnail);
 	        rightImage = new CheckBox("This is the image of the item");
@@ -172,16 +189,19 @@ public class AddItem implements EntryPoint{
 	        	Image thumbImage = new Image(thumbnail);
 	        	formTable.setWidget(4, 0, thumbImage);
 	        	thumbImage.setSize("120px", "120px");
+	        	formTable.getCellFormatter().setStyleName(4,0,"image");
 	        	
 		        formTable.setWidget(4, 1, rightImage);
 		        formTable.getFlexCellFormatter().setColSpan(4, 1, 2);
+		        formTable.getRowFormatter().addStyleName(4, "row");
 	        }
 	        
 	        
 	     //   formTable.setWidget(4, 0, updateButton);
 	        formTable.setWidget(5, 1, boxButton);
-	        boxButton.setWidth("100%");
+	        formTable.getCellFormatter().setHorizontalAlignment(5, 1, HasHorizontalAlignment.ALIGN_LEFT);
 	        formTable.setWidget(5, 2, cancelButton);
+	        formTable.getCellFormatter().setHorizontalAlignment(5, 2, HasHorizontalAlignment.ALIGN_RIGHT);
 	        
 	    }
 	    
@@ -240,15 +260,20 @@ public class AddItem implements EntryPoint{
 	            public void onClick(ClickEvent event) {
 	            	if(checkIfValid()){
 	                    WishlistItemData data = copyFields();
+	                    loadingImagePopup.center();
+	            		loadingImagePopup.show();
 	                    wishlistService.createWishlistItemSite(data,  new AsyncCallback<Void>(){
 
 							public void onFailure(Throwable caught) {
-								errorMsgLabel.setText(caught.getMessage());
+								mainPanel.remove(formTable);
+								loadingImagePopup.hide();
+								mainPanel.add(new HTML("<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' ><b><br />"+caught.getMessage()+"<br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>Click here to close the window</u></a></b></td></tr></table></div></div>"));
 								
 							}
 
 							public void onSuccess(Void result) {
 								mainPanel.remove(formTable);
+								loadingImagePopup.hide();
 								mainPanel.add(new HTML("<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' ><b><br />The item was successfully added <br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>Click here to close the window</u></a></b></td></tr></table></div></div>"));
 								
 							}
