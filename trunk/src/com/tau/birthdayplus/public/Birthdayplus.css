@@ -158,6 +158,14 @@ color:#224499;
 
 }
 
+.amount{
+border-width: 1px 1px 1px 0px;
+  border-style: solid;
+  border-color: #FFCC35 ;
+ background-color: #FFFFCC;
+color:#224499;
+}
+
 .Table{
 table-layout:fixed;
 text-align:left;
