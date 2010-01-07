@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
 
@@ -79,20 +80,21 @@ public class IBuyTabGUI {
 	private  TextBox actualPrice;
 	
 	private FlowPanelMenuTitle mainChatPanel;
-	private HorizontalPanel chatPanel;
-	private FlowPanel leftSide;
+//	private HorizontalPanel chatPanel;
+//	private FlowPanel leftSide;
 	
 	private ScrollPanel chatScrollPanel;
 	private FlexTable chatTable;
     private TextBox chatTextArea ;
 	private Button addMessageButton;
 	
-	private FlowPanel rightSide;
-	private Label participatorsLabel;
-	private ScrollPanel participatorsScrollPanel;
-	private UnorderedList participatorsTable;
-//	private FlexTable participatorsTableHeader;
-//	private HoverTable participatorsTable;
+	//private FlowPanel rightSide;
+//	private Label participatorsLabel;
+//	private ScrollPanel participatorsScrollPanel;
+	private MenuBar participators;
+	private Command emptyCommand;
+//	private UnorderedList participatorsTable;
+
 
 	private MoneyDialogBox moneyDialogBox;
 		
@@ -173,10 +175,16 @@ public class IBuyTabGUI {
 		
 		    mainChatPanel.addMenuItem("<img src='http://birthdayplus.googlecode.com/svn/trunk/src/com/tau/birthdayplus/public/left_16.png' alt='Return to IBuy tab' title= 'Return' />",true,closeChatCommand);
 	
+	    participators= new MenuBar(true);
+	    emptyCommand = new Command(){
+			public void execute() {	
+			}	
+	    };
 	    
-		chatPanel = new HorizontalPanel();
-		mainChatPanel.add(chatPanel);
-		chatPanel.addStyleName("chatPanel");
+	    mainChatPanel.addMenuItem("Participators", participators);
+	//	chatPanel = new HorizontalPanel();
+	//	mainChatPanel.add(chatPanel);
+	//	chatPanel.addStyleName("chatPanel");
 	//	chatPanel.setSize("100%", "350px");
 		
 	    buildChat();
@@ -212,20 +220,20 @@ public class IBuyTabGUI {
 	private void buildChat(){
 		
 //	    closeChatButton.setSize("100%", "25px");
-		leftSide = new FlowPanel();
-		chatPanel.add(leftSide);
-		chatPanel.setCellWidth(leftSide,"70%");
+	//	leftSide = new FlowPanel();
+	//	chatPanel.add(leftSide);
+	//	chatPanel.setCellWidth(leftSide,"70%");
 	//	leftSide.setSize("100%", "325px");
-		leftSide.addStyleName("leftChatPanel");
+	//	leftSide.addStyleName("leftChatPanel");
 		
-		rightSide = new FlowPanel();
-		chatPanel.add(rightSide);
-		chatPanel.setCellWidth(rightSide, "30%");
+	//	rightSide = new FlowPanel();
+	//	chatPanel.add(rightSide);
+	//	chatPanel.setCellWidth(rightSide, "30%");
 	//	rightSide.setSize("100%", "325px");
-		rightSide.addStyleName("rightChatPanel");
+	//	rightSide.addStyleName("rightChatPanel");
 		
 		buildChatLeftSide();
-    	buildChatRightSide();
+    //	buildChatRightSide();
 	}
 	
 	
@@ -275,7 +283,8 @@ public class IBuyTabGUI {
 	
 	private void buildChatLeftSide(){
 		chatScrollPanel = new ScrollPanel();
-		leftSide.add(chatScrollPanel);
+	//	leftSide.add(chatScrollPanel);
+		mainChatPanel.add(chatScrollPanel);
 		chatScrollPanel.addStyleName("ShortScrollPanel");
 	//	chatScrollPanel.setSize("100%", "300px");
 		
@@ -284,19 +293,21 @@ public class IBuyTabGUI {
         chatTable.addStyleName("Table");
 	        
 	    chatTextArea = new TextBox();
-	    leftSide.add(chatTextArea);
+	//    leftSide.add(chatTextArea);
+	    mainChatPanel.add(chatTextArea);
 	    chatTextArea.addStyleName("chatTextArea");
 	   // chatTextArea.setSize("70%", "25px");
 	    chatTextArea.setMaxLength(25);
 			
 	    addMessageButton = new Button("Send");
-	    leftSide.add(addMessageButton);
+	   // leftSide.add(addMessageButton);
+	    mainChatPanel.add(addMessageButton);
 	    addMessageButton.addStyleName("sendButton");
 	  //  addMessageButton.setSize("25%", "25px");
 		
 	}
 	
-	
+	/*
 	private void buildChatRightSide(){
 		participatorsLabel = new Label("Participators:");
 		rightSide.add(participatorsLabel);
@@ -307,9 +318,9 @@ public class IBuyTabGUI {
 		
 		
 	}
+	*/
 	
-	
-	
+	/*
 	private void buildParticipatorsTable(){
 		participatorsScrollPanel = new ScrollPanel();
 		rightSide.add(participatorsScrollPanel);
@@ -320,7 +331,7 @@ public class IBuyTabGUI {
 		
 		
 	}
-	
+	*/
 	
 	public static void removeAllRows(FlexTable table) {
 	    int numRows = table.getRowCount();
@@ -330,10 +341,12 @@ public class IBuyTabGUI {
 	  }
 
 	private void fillParticipatorsTable(){
-		participatorsTable.clear();
+		participators.clearItems();
+	//	participatorsTable.clear();
 		
 		for (ParticipatorData user : currentItem.getParticipators()){
-			participatorsTable.add(new ListItem(user.getUserFirstName()+" "+user.getUserLastName()));
+			participators.addItem(user.getUserFirstName()+" "+user.getUserLastName(),emptyCommand);
+	//		participatorsTable.add(new ListItem(user.getUserFirstName()+" "+user.getUserLastName()));
 
 		}
 		

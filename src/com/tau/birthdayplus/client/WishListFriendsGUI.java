@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -48,10 +49,10 @@ public class WishListFriendsGUI  {
 
 	
 	//polani
+    private MenuBar polaniTable ;
+    private Command emptyCommand;
     private MenuItem polani ;
-	private PopupPanel polaniPanel;
-//	private FlexTable polaniTable;
-	private UnorderedList polaniTable;
+
 	
 	//friend's wishlist table
 	private ScrollPanel scrollWishlistPanel;
@@ -98,21 +99,15 @@ public class WishListFriendsGUI  {
 			wishlistBoxPanel.addMenuItem("<img src='"+GWT.getModuleBaseURL()+"left_16.png"+"' alt='Return to IBuy tab' title= 'Return' />",true,closeFriendWishlistCommand);
 
 			
-			Command polaniCommand = new Command(){
-
+			polaniTable = new MenuBar(true);
+			emptyCommand = new Command(){
 				public void execute() {
-					if(polaniItems == null){
-						wishlistService.getPolaniItems(parent.entryPoint.userId, currentEvent.getUserId());
-					}else
-						showPolaniItems();	
 				}
 			};
-			
-		   polani = wishlistBoxPanel.addMenuItem("Polani",polaniCommand);
+			polani = wishlistBoxPanel.addMenuItem("Polani",polaniTable);
 			
 			buildFriendWishlistTable();
 			moneyDialogBox = new MoneyDialogBox("When there is enough money to buy this present someone (it can be you) should close this group and buy the present.<br/>We will send an email when someone closes this group. <br/>You can close the group in IBuy tab.");
-			buildPolaniPanel();
 			 
 			 
 			
@@ -127,6 +122,7 @@ public class WishListFriendsGUI  {
 		      polani.setTitle("Items that "+friendName+" bought you recently");
 		      wishlistBoxPanel.setVisible(true);
 		      this.wishlistService.getWishlist(event.getUserId() , event.getEventId());
+
 			
 		}
 		
@@ -140,28 +136,15 @@ public class WishListFriendsGUI  {
 	}
 	
 	
-	
-	
-	private void buildPolaniPanel(){
-		polaniPanel = new PopupPanel(true);
-		polaniPanel.addStyleName("polaniPanel");
-	
-	//	polaniTable = new FlexTable();
-		polaniTable = new UnorderedList();
-		polaniPanel.add(polaniTable);
-	}
-		
-	private void showPolaniItems(){
-		polaniTable.clear();
-		if(polaniItems.isEmpty()){
-			polaniTable.add(new ListItem( parent.entryPoint.userFriends.get(currentEvent.getUserId())+ " hasn't bought you anything yet"));
-		}else{
-	        for(WishlistItemPolaniData item : polaniItems){
-	        	polaniTable.add(new ListItem(item.getItemName()+" for "+item.getEventName()));
+	private void showPolaniItems(ArrayList<WishlistItemPolaniData> result){
+		polaniTable.clearItems();
+		if(polaniItems.isEmpty())
+			polaniTable.addItem( parent.entryPoint.userFriends.get(currentEvent.getUserId())+ " hasn't bought you anything yet", emptyCommand);
+		else{
+	        for(WishlistItemPolaniData item : result){
+	        	polaniTable.addItem(item.getItemName()+" for "+item.getEventName(), emptyCommand);
 	        }
-		}
-	     polaniPanel.showRelativeTo(polani);   
-		
+		}		
 	}
 	
 	
@@ -301,6 +284,8 @@ public class WishListFriendsGUI  {
 	 */
 	@SuppressWarnings("deprecation")
 	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemNewData> result) {
+		//go to get polani items
+		this.wishlistService.getPolaniItems(parent.entryPoint.userId, currentEvent.getUserId());
 		this.items = result;
         friendWishTable.clear(true);
         friendWishTable.resizeRows(result.size());
@@ -388,7 +373,7 @@ public class WishListFriendsGUI  {
 	public void service_eventBookItemForUserSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-	//	this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());
+		this.parent.entryPoint.messages.setText("In IBuy tab you can cancel the reservation for the item.");	
 		
 	}
 
@@ -399,8 +384,7 @@ public class WishListFriendsGUI  {
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-	//	this.wishlistService.getWishlist(currentEvent.getUserId(), currentEvent.getEventId());	
-	//	this.parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
+		this.parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
@@ -409,7 +393,7 @@ public class WishListFriendsGUI  {
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
 		polaniItems = result;
-		showPolaniItems();	
+		showPolaniItems(result);	
 		
 	}
 	
