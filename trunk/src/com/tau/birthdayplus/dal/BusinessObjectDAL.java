@@ -182,7 +182,7 @@ public class BusinessObjectDAL {
 			else{
 				event.setIsDeleted(true);
 				pm.makePersistent(event);
-				throw new UserException("You may not delete this event, because there are people that want to buy something to you for this event");
+				//throw new UserException("You may not delete this event, because there are people that want to buy something to you for this event");
 			}
 			tx.commit();
 		} 
@@ -222,12 +222,9 @@ public class BusinessObjectDAL {
 		Boolean result = true;
 		try{
 			for (WishlistItem item : items){
-				removeChatMessageData(KeyFactory.keyToString(item.getKey()),pm);
 				if (item.getBuyerKey()!=null){
 					log.info("There is buyer for this item "+item.getItemName());
 					result = false;
-					//item.setIsDeleted(true);//don't sure if it's right
-					//pm.makePersistent(item);
 				}
 				else{
 					List<Participator> participators = item.getParticipators();
@@ -235,6 +232,7 @@ public class BusinessObjectDAL {
 						log.info("There is no participators at "+ item.getItemName()+" "+event.getEventName());
 					}
 					else{
+						removeChatMessageData(KeyFactory.keyToString(item.getKey()),pm);
 						try{
 							for (Participator p : participators){
 								item.removeParticipator(p);
@@ -243,6 +241,9 @@ public class BusinessObjectDAL {
 							if(item.getParticipators()!=null){
 								for (Participator p : item.getParticipators()){
 									log.info(p.getId());
+								}
+								if (item.getParticipators().isEmpty()){
+									log.info("participators for item "+item.getItemName()+" were deleted");
 								}
 							}
 							else{
@@ -450,9 +451,8 @@ public class BusinessObjectDAL {
 			tx.begin();
 			Guest parent = BusinessObjectDAL.loadGuest(itemD.getUserId(), pm);
 			item = pm.getObjectById(WishlistItem.class, itemD.getWishlistItemId());
-			removeChatMessageData(itemD.getWishlistItemId(), pm);
 			if (item.getBuyerKey()==null){ //User may delete item iff there is no buyers
-				if(!item.getParticipators().isEmpty()){
+				if((item.getParticipators()!=null)&&(!item.getParticipators().isEmpty())){
 					List<Participator> participators = item.getParticipators();
 					for (Participator p : participators){
 						pm.deletePersistent(p);
@@ -460,12 +460,13 @@ public class BusinessObjectDAL {
 				}
 				parent.removeWishlistItem(item);
 				pm.makePersistent(parent);
+				removeChatMessageData(itemD.getWishlistItemId(), pm);
 				pm.deletePersistent(item);
 			}
 			else{
 				item.setIsDeleted(true);
 				pm.makePersistent(item);
-				throw new UserException("You may not delete this item, because there are people that want to buy it to you");
+				//throw new UserException("You may not delete this item, because there are people that want to buy it to you");
 			}
 			tx.commit();
 		} 
@@ -491,7 +492,11 @@ public class BusinessObjectDAL {
 		List<WishlistItem> itemList = new ArrayList<WishlistItem>();
 		Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 		try {
-			itemList = user.getWishlistItems();
+			for (WishlistItem item : user.getWishlistItems()){
+				if (!item.getIsDeleted()){
+					itemList.add(item);
+				}
+			}
 		} catch (Exception ex) {
 			throw new RuntimeException("error in data base: getWishlist");
 		}
@@ -501,7 +506,6 @@ public class BusinessObjectDAL {
 	public static List<WishlistItem> getWishlistItemById(List<Key> keys,PersistenceManager pm) {
 		List<WishlistItem> items = new ArrayList<WishlistItem>();
 		try {
-
 			Query query = pm.newQuery(WishlistItem.class);
 			query.setFilter("key == :keyList");
 			items = (List<WishlistItem>) query.execute(keys);
@@ -555,9 +559,13 @@ public class BusinessObjectDAL {
 				log.info(buyer.getItemName());
 			}
 		}
+		Calendar cal = Calendar.getInstance();
 		for (WishlistItem buyer : buyers){
+			Event e = pm.getObjectById(Event.class, buyer.getEventKey());
 			if (!wishlistItems.contains(buyer)){
-				wishlistItems.add(buyer);
+				if (!buyer.getIsDeleted()||(buyer.getIsDeleted()&&(e.getEventDate().getMonth()==cal.get(Calendar.MONTH)))){
+					wishlistItems.add(buyer);
+				}
 			}
 		}
 		return wishlistItems;
@@ -839,7 +847,6 @@ public class BusinessObjectDAL {
 		List<WishlistItem> itemsForEvent = new ArrayList<WishlistItem>();
 		for(WishlistItem item: items){
 			if ((item.getEventKey()==null)||item.getEventKey().equals(eventKey)){
-					//&&(item.getIsActive()==true)){
 				itemsForEvent.add(item);
 			}
 		}

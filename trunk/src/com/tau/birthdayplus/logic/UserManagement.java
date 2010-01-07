@@ -51,7 +51,7 @@ public class UserManagement {
 	 public static void createProfile(Guest guest) {
          int guestDom = guest.getBirthday().getDate();
          log.info("user's day of month: "+guestDom);
-         int guestMonth = guest.getBirthday().getMonth();
+         int guestMonth = guest.getBirthday().getMonth()+1;
          log.info("user's month: "+guestMonth);
          Calendar cal = Calendar.getInstance();
          Date birthday = new Date(cal.get(Calendar.YEAR)-1900, guestMonth, guestDom);
