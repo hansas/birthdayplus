@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.tau.birthdayplus.domain.ChatMessage;
+
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
@@ -83,7 +83,7 @@ public interface WishlistServiceAsync {
 			AsyncCallback<ArrayList<WishlistItemPolaniData>> callback);
 
 	void getChatMessages(String itemId,
-			AsyncCallback<ArrayList<ChatMessage>> callback);
+			AsyncCallback<ArrayList<ChatMessageData>> callback);
 
 	
 	
