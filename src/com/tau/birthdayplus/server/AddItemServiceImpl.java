@@ -7,6 +7,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.tau.birthdayplus.addItem.AddItemException;
 import com.tau.birthdayplus.addItem.AddItemService;
 
 
@@ -20,7 +21,7 @@ AddItemService{
 	private static final Logger log = Logger.getLogger(AddItemServiceImpl.class.getName());
 
 
-	public void createWishlistItemSite(WishlistItemData item) throws com.tau.birthdayplus.addItem.UserNotFoundException {
+	public void createWishlistItemSite(WishlistItemData item) throws AddItemException {
 
 		UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
@@ -29,11 +30,14 @@ AddItemService{
 			try {
 				WishlistManagement.createWishlistItem(item, user.getUserId());
 			} catch (UserNotFoundException e) {
-				throw new com.tau.birthdayplus.addItem.UserNotFoundException();
-				
+				throw new AddItemException("Can't get your profile");
+			}catch(Exception e){
+				throw new AddItemException("Can't add this item");
 			}
-		else
+		else{
         	log.info("user not found");
+        	throw new AddItemException("Can't get your profile");
+		}
         	
         	
  
