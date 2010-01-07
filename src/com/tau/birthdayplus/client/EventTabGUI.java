@@ -396,7 +396,6 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 				eventTable.setWidget(row, UPDATE_LINK, updateImage);
 	    	    eventTable.setWidget(row,DELETE_LINK, deleteImage); 
 			}
-			eventTable.getRowFormatter().addStyleName(row,"eventListRow");
 			row++;
 			
 			

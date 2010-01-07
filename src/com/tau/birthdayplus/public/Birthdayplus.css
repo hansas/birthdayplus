@@ -65,6 +65,7 @@ padding:3px 10px;
 
 .gwt-MenuBar .gwt-MenuItem-selected {
 cursor:pointer;
+font-weight: bold;
 }
 
 body, table td, select {
@@ -174,11 +175,6 @@ width: 100%;
 
 .Table td{
 overflow:hidden;
-                                       /* border-top: 1px solid #00BFFF; */
-}
-
-.eventListRow{
-border-top: 1px solid #00BFFF !importent;
 }
 
 .changeSumMoneyBox{
@@ -247,8 +243,3 @@ background-color: white;
 table { border-collapse:collapse; }
 td { border-bottom:1px solid #00BFFF; }
 
-/*
-tr.row{
-border: 1px solid black;
-}
-*/
