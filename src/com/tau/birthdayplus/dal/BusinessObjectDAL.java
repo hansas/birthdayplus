@@ -493,9 +493,10 @@ public class BusinessObjectDAL {
 		Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 		try {
 			for (WishlistItem item : user.getWishlistItems()){
-				if (!item.getIsDeleted()){
+				log.info(item.getItemName()+" "+item.getIsDeleted());
+			//	if (!item.getIsDeleted()){
 					itemList.add(item);
-				}
+			//	}
 			}
 		} catch (Exception ex) {
 			throw new RuntimeException("error in data base: getWishlist");
@@ -563,9 +564,9 @@ public class BusinessObjectDAL {
 		for (WishlistItem buyer : buyers){
 			Event e = pm.getObjectById(Event.class, buyer.getEventKey());
 			if (!wishlistItems.contains(buyer)){
-				if (!buyer.getIsDeleted()||(buyer.getIsDeleted()&&(e.getEventDate().getMonth()==cal.get(Calendar.MONTH)))){
+				//if (!buyer.getIsDeleted()||(buyer.getIsDeleted()&&(e.getEventDate().getMonth()==cal.get(Calendar.MONTH)))){
 					wishlistItems.add(buyer);
-				}
+				//}
 			}
 		}
 		return wishlistItems;
