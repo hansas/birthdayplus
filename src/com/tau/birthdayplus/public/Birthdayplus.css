@@ -178,6 +178,7 @@ width: 100%;
 
 .Table td{
 overflow:hidden;
+ border-bottom:1px solid #00BFFF;    
 }
 
 .changeSumMoneyBox{
@@ -243,8 +244,7 @@ color: Red;
 background-color: white;
 }
 
-table { border-collapse:collapse; }
-td { border-bottom:1px solid #00BFFF; }
+
 
 .buttonPanel
 {
