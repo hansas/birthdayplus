@@ -22,6 +22,7 @@ import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.ItemDialogBox;
+import com.tau.birthdayplus.client.widgets.MessageLabel;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
@@ -39,6 +40,7 @@ public class MyWishlistTabGUI {
 	private ScrollPanel wishlistScrollPanel;
 	private ItemDialogBox addItemBox;
     private Boolean addItem;
+    private MessageLabel messages;
     
     
     private enum Actions {
@@ -75,7 +77,7 @@ public class MyWishlistTabGUI {
 	public void init() {
 		wishlistPanel = new FlowPanelMenuTitle();
 		entryPoint.tab.add(wishlistPanel, "My Wishlist");
-		wishlistPanel.addStyleName("Panel");
+		wishlistPanel.addStyleName("mainPanel");
 	//	wishlistPanel.setSize("100%", "350px");
 		
 		
@@ -96,6 +98,9 @@ public class MyWishlistTabGUI {
 		buildWishlistTable();
 	//	buildAddItemBox();
 		addItemBox = new ItemDialogBox();   
+		
+		 messages = new MessageLabel(25000,false);
+		 wishlistPanel.add(messages);
 		
 	}
 	
@@ -263,20 +268,20 @@ public class MyWishlistTabGUI {
 	}
 	
 	public void service_eventGetWishlistFailed(Throwable caught){
-	   this.entryPoint.messages.setText("GetWishlistFailed"+caught.getMessage());
+	   messages.setText("GetWishlistFailed"+caught.getMessage());
 
 	}
 	
 	public void service_eventCreateWishlistItemFailed(Throwable caught){
-	   this.entryPoint.messages.setText("CreateWishlistItemFailed"+caught.getMessage());
+	   messages.setText("CreateWishlistItemFailed"+caught.getMessage());
 	}
 	
 	public void service_eventUpdateWishlistItemFailed(Throwable caught){
-		this.entryPoint.messages.setText("UpdateWishlistItemFailed"+caught.getMessage());
+		messages.setText("UpdateWishlistItemFailed"+caught.getMessage());
 	}
 	
 	public void service_deleteWishlistItemFailed(Throwable caught){
-	    this.entryPoint.messages.setText("WishlistItemFailed"+caught.getMessage());
+	    messages.setText("WishlistItemFailed"+caught.getMessage());
 	}
 	
 	
