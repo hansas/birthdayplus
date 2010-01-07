@@ -79,7 +79,7 @@ public class EventManagement {
 	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
 		DALWrapper wrapper = new DALWrapper();
 		try{
-		return getEventsByGuests(wrapper.getGuestsById(UserIdList),wrapper);
+			return getEventsByGuests(wrapper.getGuestsById(UserIdList),wrapper);
 		}
 		finally{
 			wrapper.close();
@@ -95,7 +95,7 @@ public class EventManagement {
 				Calendar cal = Calendar.getInstance();
 				Calendar eDate = Calendar.getInstance();
 				for (Event event: guestEvents){
-					if (!event.getIsDeleted()){
+				//	if (!event.getIsDeleted()){
 						int eMonth = event.getEventDate().getMonth();
 						int eDay = event.getEventDate().getDate();
 						eDate.clear();
@@ -107,7 +107,7 @@ public class EventManagement {
 								&&(cal.get(Calendar.YEAR)==eDate.get(Calendar.YEAR)))){
 							events.add(EventManagement.eventToEventData(event,wrapper));
 						}
-					}
+				//	}
 				}
 			}
 		}
