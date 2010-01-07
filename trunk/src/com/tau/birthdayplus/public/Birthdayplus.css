@@ -236,6 +236,9 @@ color: Red;
 background-color: white;
 }
 
+table { border-collapse:collapse; }
+td { border-bottom:1px solid #00BFFF; }
+
 /*
 tr.row{
 border: 1px solid black;
