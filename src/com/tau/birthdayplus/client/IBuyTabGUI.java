@@ -67,7 +67,6 @@ public class IBuyTabGUI {
 	//////////////////GUI Widgets////////////////////////
 	private FlowPanel iBuyPanel;	
 	
-	private  MessagePanel messages; 
     //items
 	private FlowPanelMenuTitle wishPanel;
 	private  ScrollPanel iBuyScrollPanel;
@@ -123,7 +122,7 @@ public class IBuyTabGUI {
 		
 		emailPanel = new DialogBox(false,true); 
 		emailTextArea = new RichTextArea();
-	    emailTextArea.setSize("290px", "9em");
+	    emailTextArea.setSize("288px", "9em");
 	    emailTextToolbar = new RichTextToolbar(emailTextArea);
 	    emailTextToolbar.setWidth("290px");
 	    sendEmail = new Anchor("send this message");
@@ -132,7 +131,7 @@ public class IBuyTabGUI {
 	    actualPrice.setTabIndex(0);
 	    emailTextArea.setTabIndex(1);
 	    
-	    actualPrice.setVisibleLength(20);
+	    actualPrice.setVisibleLength(18);
 	    actualPrice.setMaxLength(9);
 	    
 	    
@@ -142,6 +141,7 @@ public class IBuyTabGUI {
 	    emailGrid.addStyleName("emailGrid");
 	    emailGrid.setWidth("290px");
 	    emailGrid.setCellSpacing(0);
+	    emailGrid.setCellPadding(2);
 	    
 	    emailGrid.setHTML(0, 0, "<FONT color=red >You are responsible for buying this present.</FONT><br /> Please enter the actual price for the item and a short message for the group.We will send an email to the group.<br /><FONT color=red >You can reopen this group by clicking on the reopen button in IBuy tab.</FONT >");
 	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
@@ -164,7 +164,7 @@ public class IBuyTabGUI {
 		mainChatPanel = new FlowPanelMenuTitle();
 		iBuyPanel.add(mainChatPanel);
 		mainChatPanel.setStyleName("Panel");
-		mainChatPanel.addStyleName("chatPanel");
+		
 		mainChatPanel.setVisible(false);
 		
 		
@@ -188,7 +188,7 @@ public class IBuyTabGUI {
 	    buildChat();
 		
 	    moneyDialogBox = new MoneyDialogBox("Update the amount you're willing to spend on this present");
-	    messages = new MessagePanel(25000,false);
+	   
 	 
 	
 		    
@@ -203,8 +203,7 @@ public class IBuyTabGUI {
 	
 	protected void makeDirtyIBuyItems(){
 		this.itemsToBuy = null;
-		this.wishTable.clear(true);
-	    wishTable.resizeRows(0);
+		
 	}
 	
 	
@@ -240,6 +239,7 @@ public class IBuyTabGUI {
 		iBuyScrollPanel = new ScrollPanel();
 		wishPanel.add(iBuyScrollPanel);
 		iBuyScrollPanel.addStyleName("ShortScrollPanel");
+		iBuyScrollPanel.addStyleName("chatPanel");
 	//	iBuyScrollPanel.setSize("100%", "300px");
 	
 		wishTable = new HoverTable(0,7);
@@ -505,8 +505,6 @@ public class IBuyTabGUI {
 		private void closeChat(){
 			if(mainChatPanel.isVisible()){
 				this.itemsToBuy = null;
-				this.wishTable.clear(true);
-			    wishTable.resizeRows(0);
 				mainChatPanel.setVisible(false);
 			}
 		}
@@ -633,7 +631,7 @@ public class IBuyTabGUI {
 
 
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
-			messages.setText("CancelBookItemForUserFailed"+caught.getMessage());
+			entryPoint.messages.setText("CancelBookItemForUserFailed"+caught.getMessage());
 		}
 		
 		public void service_eventCancelBookItemForUserSuccesfull() {
@@ -641,7 +639,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
-			messages.setText("DeleteParticipatorFailed"+caught.getMessage());
+			entryPoint.messages.setText("DeleteParticipatorFailed"+caught.getMessage());
 		}
 
 		public void service_eventDeleteParticipatorSuccesfull() {
@@ -649,7 +647,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteItemFromTabFailed(Throwable caught) {
-			messages.setText("DeleteItemFromTabFailed"+caught.getMessage());
+			entryPoint.messages.setText("DeleteItemFromTabFailed"+caught.getMessage());
 		}
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
@@ -657,7 +655,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventUpdateParticipatorFailed(Throwable caught) {
-			messages.setText("UpdateParticipatorFailed"+caught.getMessage());
+			entryPoint.messages.setText("UpdateParticipatorFailed"+caught.getMessage());
 		}
 
 		public void service_eventUpdateParticipatorSuccesfull() {
@@ -665,11 +663,13 @@ public class IBuyTabGUI {
 		}
 
 		public void service_getBookedWishlistFailed(Throwable caught) {
-			messages.setText("BookedWishlistFailed"+caught.getMessage());			
+			this.wishTable.clear(true);
+		    wishTable.resizeRows(0);
+			entryPoint.messages.setText("BookedWishlistFailed"+caught.getMessage());			
 		}
 
 		public void service_addChatMessageFailed(Throwable caught) {
-			messages.setText("ChatMessageFailed"+caught.getMessage());
+			entryPoint.messages.setText("ChatMessageFailed"+caught.getMessage());
 		}
 
 		public void service_addChatMessageSuccesfull() {
@@ -678,7 +678,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_getWishlistItemFailed(Throwable caught) {
-		    messages.setText("WishlistItemFailed"+caught.getMessage());
+		    entryPoint.messages.setText("WishlistItemFailed"+caught.getMessage());
 		}
 
 		public void service_getWishlistItemSuccesfull(WishlistItemNewData result) {
@@ -686,7 +686,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_cancelBookItemForGroupFailed(Throwable caught) {
-			messages.setText("BookItemForGroupFailed"+caught.getMessage());
+			entryPoint.messages.setText("BookItemForGroupFailed"+caught.getMessage());
 		}
 
 		public void service_cancelBookItemForGroupSuccesfull() {
@@ -694,7 +694,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_bookItemForGroupFailed(Throwable caught) {
-			messages.setText("ItemForGroupFailed"+caught.getMessage());
+			entryPoint.messages.setText("ItemForGroupFailed"+caught.getMessage());
 		}
 
 		public void service_bookItemForGroupSuccesfull() {

@@ -63,6 +63,7 @@ import com.tau.birthdayplus.client.Services.ProfileServiceAsync;
 import com.tau.birthdayplus.client.Services.RequestProxy;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 
+import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.SignInEventHandler;
 import com.tau.birthdayplus.client.widgets.WellcomePanel;
 
@@ -95,7 +96,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	
 	protected  TabPanel tab ;
 	protected  PopupPanel loadingImagePopup ;
-//	protected MessageLabel messages;
+	protected MessagePanel messages;
 
 	
 	
@@ -171,8 +172,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		    tab.addStyleName("tabsPanel");
 		
 		    
-		 //   messages = new MessageLabel(25000,true);
-	    //    RootPanel.get().add(messages);
+		    messages = new MessagePanel(25000);
 	    
 		   
 			
@@ -208,7 +208,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		    iBuyDelegate.entryPoint=this;
 		    iBuyGUI.init();
 	         
-		//    createMiniMessage();
+		
 		
 	}
  
@@ -325,81 +325,10 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 							}
 				        	
 				        });
-                        /*
-						final FlowPanel main= new FlowPanel();
-						RootPanel.get().add(main);
-						main.setWidth("100%");
-						
-						Label title1 = new Label(firstName+", wellcome to Birthdayplus!");
-						main.add(title1);
-						title1.setWidth("100%");
-						Label title2 = new Label("We just need you to confirm a few things before you start using Birthdayplus:");
-						main.add(title2);
-						title2.setWidth("100%");
-						Label questionLabel= new Label("Sorry if we're being rude, but when were you born?");
-						main.add(questionLabel);
-						questionLabel.setWidth("100%");
-						
-						final ListBox days = new ListBox(false);
-						main.add(days);
-						
-						
-					    String[] listDayTypes = constants.cwListBoxDays();
-					    for (int i = 0; i < listDayTypes.length; i++) {
-					      days.addItem(listDayTypes[i]);
-					    }
-						
-						final ListBox months= new ListBox(false);
-						main.add(months);
-						String[] listTypes = constants.cwListBoxMonths();
-					    for (int i = 0; i < listTypes.length; i++) {
-					      months.addItem(listTypes[i]);
-					    }
-					    final TextBox yearTextBox = new TextBox();
-					    main.add(yearTextBox);
-					    yearTextBox.setWidth("4em");
-					    yearTextBox.setMaxLength(4);
-					    
-					 
-						
-						Label text = new Label("(your birth year, such as  1985)");
-				       main.add(text);
-				       
-				      final  Label errorMessage= new Label();
-				       main.add(errorMessage);
-				       errorMessage.setVisible(false);
-				       errorMessage.addStyleName("errorMessage");
-				       
-				       Anchor submit = new Anchor("all done, create my account!");
-				       main.add(submit);
-				       submit.addClickHandler(new ClickHandler(){
-
-						public void onClick(ClickEvent event) {
-							if(yearTextBox.getText().equals("")){
-								errorMessage.setText(" please enter your birth year (you want people to give you birthday presents,right?)");
-								errorMessage.setVisible(true);
-							}else{	
-								boolean valid = true;
-								int day = days.getSelectedIndex()+1;
-								int month = months.getSelectedIndex()+1;
-								int year = 0;
-								try{
-								   year = Integer.parseInt(yearTextBox.getText());
-								}catch( NumberFormatException ex){
-									errorMessage.setText("please enter valid year");
-									valid= false;
-								}
-								if(valid){
-								    main.removeFromParent();
-								    loadingImagePopup.center();
-								    loadingImagePopup.show();
-								    openWindow("http://testrpcplus.appspot.com/birthdayplus/login?openSocialId="+userId+"&firstName="+firstName+"&lastName="+lastName+"&day="+day+"&month="+month+"&year="+year);
-								}
-							}
-						}
-				       });
-				       */
 					}else{
+						Label label = new Label(caught.getMessage());
+						RootPanel.get().add(label);
+						label.setWidth("100%");
 						
 					}
 				}

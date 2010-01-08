@@ -6,12 +6,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 public class MessagePanel extends PopupPanel{
-	Label message ;
+	private Label message ;
 	private int delay;
 	private Timer timer;
-	boolean setTimer;
 	
-	public MessagePanel(int delay,boolean setTimer){
+	
+	public MessagePanel(int delay){
 		super(false,false);
 		this.setStyleName("none");
 		this.setAnimationEnabled(true);
@@ -20,18 +20,21 @@ public class MessagePanel extends PopupPanel{
 		this.add(message);
 		message.addStyleName("messageLabel");
 		
+		int width = Window.getClientWidth()-10;
+		message.setWidth(width+"px");
+		
 		this.delay = delay;
-		this.setTimer = setTimer;
+		
+		
 		timer = new Timer(){
 			public void run() {
 				MessagePanel.this.cleanText();
 			}
 			
 		};
-		message.setText("this is a popup, it won't be here everytime");
-	//	int height=Window.getClientHeight();
-		this.setPopupPosition(0, 400);
-		this.show();
+		
+		this.setPopupPosition(0, 390);
+		
 		
 	}
 	
@@ -43,8 +46,7 @@ public class MessagePanel extends PopupPanel{
 	
 	private void cleanText(){
 		message.setText("");
-		if(setTimer)
-		   this.hide();
+		this.hide();
 	}
 
 }

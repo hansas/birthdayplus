@@ -64,7 +64,6 @@ public class WishListFriendsGUI  {
 	
 	
 	private MoneyDialogBox moneyDialogBox;
-	private MessagePanel messages;
 	
 	
 	/*  
@@ -112,7 +111,7 @@ public class WishListFriendsGUI  {
 			buildFriendWishlistTable();
 			moneyDialogBox = new MoneyDialogBox("When there is enough money to buy this present someone (it can be you) should close this group and buy the present.<br/>We will send an email when someone closes this group. <br/>You can close the group in IBuy tab.");
 			
-			 messages = new MessagePanel(25000,false);
+			
 			
 			 
 			
@@ -368,32 +367,34 @@ public class WishListFriendsGUI  {
 	}
 
 	public void service_eventGetWishlistFailed(Throwable caught) {
-		messages.setText("GetWishlistFailed"+caught.getMessage());
+		friendWishTable.clear(true);
+        friendWishTable.resizeRows(0);
+		parent.entryPoint.messages.setText("GetWishlistFailed"+caught.getMessage());
 	}
 	
 	public void service_eventBookItemForUserFailed(Throwable caught) {
-		messages.setText("BookItemForUserFailed"+caught.getMessage());		
+		parent.entryPoint.messages.setText("BookItemForUserFailed"+caught.getMessage());		
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		messages.setText("In IBuy tab you can cancel the reservation for the item.");	
+		parent.entryPoint.messages.setText("In IBuy tab you can cancel the reservation for the item.");	
 		
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-		messages.setText("AddParticipatorFailed"+caught.getMessage());		
+		parent.entryPoint.messages.setText("AddParticipatorFailed"+caught.getMessage());		
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		messages.setText("In IBuy tab you can see the progress and chat with your group.");	
+		parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
-		messages.setText("GetPolaniItemsFailed"+caught.getMessage());		
+		parent.entryPoint.messages.setText("GetPolaniItemsFailed"+caught.getMessage());		
 	}
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
