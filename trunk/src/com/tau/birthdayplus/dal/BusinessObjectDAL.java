@@ -167,14 +167,14 @@ public class BusinessObjectDAL {
 		}
 	}
 		
-	public static void deleteEvent(EventData eventD) throws UserException {
+	public static void deleteEvent(EventData eventD,ArrayList<WishlistItem> itemParticipatorDelete) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
 			tx.begin();
 			Guest parent = BusinessObjectDAL.loadGuest(eventD.getUserId(), pm);
 			Event event = pm.getObjectById(Event.class, eventD.getEventId());
-			if (mayIDeleteEvent(event,pm)){
+			if (mayIDeleteEvent(event,pm,itemParticipatorDelete)){
 				parent.removeEvent(event);
 				pm.makePersistent(parent);
 				pm.deletePersistent(event);
@@ -204,7 +204,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static Boolean mayIDeleteEvent(Event event,PersistenceManager pm) throws UserException{
+	public static Boolean mayIDeleteEvent(Event event,PersistenceManager pm,ArrayList<WishlistItem> itemParticipatorDelete) throws UserException{
 		List<WishlistItem> items = new ArrayList<WishlistItem>();
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
@@ -234,21 +234,22 @@ public class BusinessObjectDAL {
 					else{
 						removeChatMessageData(KeyFactory.keyToString(item.getKey()),pm);
 						try{
-							for (Participator p : participators){
-								item.removeParticipator(p);
-								pm.deletePersistent(p);
-							}
-							if(item.getParticipators()!=null){
-								for (Participator p : item.getParticipators()){
-									log.info(p.getId());
-								}
-								if (item.getParticipators().isEmpty()){
-									log.info("participators for item "+item.getItemName()+" were deleted");
-								}
-							}
-							else{
-								log.info("participators for item "+item.getItemName()+" were deleted");
-							}
+							itemParticipatorDelete.add(item);
+//							for (Participator p : participators){
+//								item.removeParticipator(p);
+//								pm.deletePersistent(p);
+//							}
+//							if(item.getParticipators()!=null){
+//								for (Participator p : item.getParticipators()){
+//									log.info(p.getId());
+//								}
+//								if (item.getParticipators().isEmpty()){
+//									log.info("participators for item "+item.getItemName()+" were deleted");
+//								}
+//							}
+//							else{
+//								log.info("participators for item "+item.getItemName()+" were deleted");
+//							}
 							item.setEventKey(null);
 							pm.makePersistent(item);
 							log.info("this item was freed: "+item.getItemName()+" "+item.getEventKey());
@@ -274,7 +275,7 @@ public class BusinessObjectDAL {
 		return result;
 	}
 	
-	public static void cronDeleteEventAndUpdateRecurrent() throws UserException{
+	public static void cronDeleteEventAndUpdateRecurrent(ArrayList<WishlistItem> itemParticipatorDelete) throws UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		List<Guest> guests = new ArrayList<Guest>();
 		Query query = pm.newQuery(Guest.class);
@@ -292,7 +293,7 @@ public class BusinessObjectDAL {
 				eDate.set(Calendar.DATE, eDay);
 				eDate.add(Calendar.DATE, 1);
 				if ((cal.after(eDate))&&(e.getRecurrence()==false)){
-					Boolean result = mayIDeleteEvent(e,pm);
+					Boolean result = mayIDeleteEvent(e,pm,itemParticipatorDelete);
 					if (result){
 						log.info("event "+e.getEventName()+" was deleted by cron");
 						g.removeEvent(e);

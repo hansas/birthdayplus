@@ -78,7 +78,7 @@ public class WishlistManagement {
 	
 	public static void deleteWishlistItem(WishlistItemData itemD) throws Exception {
 		DALWrapper wrapper = new DALWrapper();
-		WishlistItem i = null;
+	//	WishlistItem i = null;
 		try{
 			WishlistItem item = wrapper.getWishlistItem(itemD.getWishlistItemId());
 			ArrayList<Participator> participators = item.getParticipators();
@@ -87,7 +87,7 @@ public class WishlistManagement {
 				GroupStatus status = GroupStatus.CANCEL;
 				wrapper.sendEmailToGroup(itemD.getWishlistItemId(), itemD.getUserId(), "", participatorsE, 0.0, status);
 			}
-			i = wrapper.deleteWishlistItem(itemD);
+			wrapper.deleteWishlistItem(itemD);
 		}
 		finally{
 			wrapper.close();

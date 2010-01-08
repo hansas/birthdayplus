@@ -40,7 +40,7 @@ EventService {
 	 * delete the event 
 	 * Client- give only to owner to delete event
 	 */
-	 public void deleteEvent(EventData eventD) throws UserException {
+	 public void deleteEvent(EventData eventD) throws Exception {
 		EventManagement.deleteEvent(eventD);
 		
 	}
