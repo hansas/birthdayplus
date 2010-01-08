@@ -125,7 +125,7 @@ public class IBuyDelegate {
 
 		
 	}
-	
+	/*
 	public void getWishlistItem(String itemId){
 		entryPoint.loadingImagePopup.center();
 		entryPoint.loadingImagePopup.show();
@@ -149,6 +149,28 @@ public class IBuyDelegate {
 		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
 		
 	}
+	*/
+	
+	public void getChatMessages(String itemId){
+		entryPoint.loadingImagePopup.center();
+		entryPoint.loadingImagePopup.show();
+		RequestBuilder requestBuilder = wishlistService.getChatMessages(itemId, new AsyncCallback<ArrayList<ChatMessageData>>(){
+
+			public void onFailure(Throwable caught) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_getChatMessagesFailed(caught);
+			}
+
+			public void onSuccess(ArrayList<ChatMessageData> result) {
+				entryPoint.loadingImagePopup.hide();
+				gui.service_getChatMessagesSuccesfull(result);	
+			}
+			
+		});
+		
+		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());		
+	}
+	
 	
 	public void cancelBookItemForGroup(String itemId,String userId,String message){
 		if(entryPoint.loadingImagePopup.isShowing())
