@@ -81,7 +81,7 @@ background-color:#FEE0C6;
 border:1px solid #EE7621;
 font-size:13px;
 text-align:center;
-overflow:hidden;
+overflow-y:auto;
 position: relative;
 top: 10px;
 											/*
@@ -183,8 +183,10 @@ width: 50%;
 }
 
 .Label{
-background-color: #DDF8CC;
-border:1px solid #A2CD5A;
+										/*
+										background-color: #DDF8CC;
+										border:1px solid #A2CD5A;
+										*/
 height: 18px;
 overflow: hidden;
 text-align: center;
