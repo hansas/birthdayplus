@@ -1,5 +1,8 @@
 .mainPanel{
+width :430px;
+height :450px;
 background-color: #F6F9FF;
+
 }
 
 .gwt-Button 
@@ -23,3 +26,4 @@ background-color:  #f7d8a9 !important;
 padding: 3px;
  border: 1px solid #6f3d29;
 }
+
