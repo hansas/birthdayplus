@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;  
 
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
+import com.tau.birthdayplus.logic.EventManagement;
 
 
 
@@ -17,7 +18,7 @@ public class cronJobs extends HttpServlet {
 
  public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {  
   try {  
-    BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent();
+    EventManagement.cronDeleteEventAndUpdateRecurrent();
     _logger.info("Cron Job has been executed");
  }  
 

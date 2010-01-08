@@ -29,7 +29,7 @@ public interface EventService extends RemoteService{
 	 * delete the event 
 	 * Client- give only to owner to delete event
 	 */
-	void deleteEvent( EventData event) throws UserException;
+	void deleteEvent( EventData event) throws UserException, Exception;
 	/*
 	 * get events by user id
 	 * Server - events should be sorted by date

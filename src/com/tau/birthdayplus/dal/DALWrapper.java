@@ -56,6 +56,10 @@ public class DALWrapper {
 		return BusinessObjectDAL.deleteWishlistItem(itemD, pm);
 	}
 	
+	public void makePersistantItem(WishlistItem item){
+		pm.makePersistent(item);
+	}
+	
 	public List<WishlistItem> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException{
 		return BusinessObjectDAL.getWishlistForEvent(userId,eventId,this.pm);
 	}
@@ -111,6 +115,10 @@ public class DALWrapper {
 	
 	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,GroupStatus status) throws Exception{
 		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm, actualPrice, status);
+	}
+	
+	public void deleteParticipator(Participator p){
+		pm.deletePersistent(p);
 	}
 	
 //	public void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{

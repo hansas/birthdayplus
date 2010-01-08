@@ -12,12 +12,16 @@ import org.mortbay.log.Log;
 
 import com.google.appengine.api.datastore.KeyFactory;
 
+import com.tau.birthdayplus.Email.ParticipatorEmail;
 import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
 import com.tau.birthdayplus.domain.Guest;
+import com.tau.birthdayplus.domain.Participator;
+import com.tau.birthdayplus.domain.WishlistItem;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.dal.DALWrapper;
+import com.tau.birthdayplus.dal.BusinessObjectDAL.GroupStatus;
 import com.tau.birthdayplus.dto.client.EventData;
 
 public class EventManagement {
@@ -63,8 +67,20 @@ public class EventManagement {
 		}
 	}
 	
-	public static void deleteEvent( EventData eventD) throws UserException {
-	    BusinessObjectDAL.deleteEvent(eventD);
+	public static void deleteEvent( EventData eventD) throws Exception {
+		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
+	    BusinessObjectDAL.deleteEvent(eventD,itemParticipatorDelete);
+	    DALWrapper wrapper = new DALWrapper();
+	    try{
+		    if (itemParticipatorDelete!=null){
+			    for (WishlistItem item : itemParticipatorDelete){
+			    	sendEmailAndDeleteParticipators(item, wrapper);
+			    }
+		    }
+	    }
+	    finally{
+			wrapper.close();
+		}
 	}
 
 	public static void updateEvent( EventData eventD){
@@ -113,6 +129,33 @@ public class EventManagement {
 		}
 		Collections.sort(events, EventManagement.EVENT_DATA_ORDER);
 		return events;
+	}
+	
+	public static void sendEmailAndDeleteParticipators(WishlistItem item, DALWrapper wrapper) throws Exception{
+		ArrayList<Participator> participators = item.getParticipators();
+	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
+		GroupStatus status = GroupStatus.CANCEL;
+		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status);
+		for (Participator p : participators){
+			item.removeParticipator(p);
+			wrapper.deleteParticipator(p);
+		}
+		wrapper.makePersistantItem(item);
+	}
+	
+	public static void cronDeleteEventAndUpdateRecurrent() throws Exception{
+		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
+		DALWrapper wrapper = new DALWrapper();
+	    try{
+		    if (itemParticipatorDelete!=null){
+		    	for (WishlistItem item : itemParticipatorDelete){
+			    	sendEmailAndDeleteParticipators(item, wrapper);
+			    }
+		    }
+	    }
+	    finally{
+			wrapper.close();
+		}
 	}
 	
 	
