@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-  <ModulePrefs title="Share events through Birthday+" height="40" author="Birthday+ Team"
-     author_email="gadgetBirthdayPlus@gmail.com ">
+  <ModulePrefs 
+    title="Birthday+" 
+    height="100" 
+    author="Birthday+ Team"
+    author_email="gadgetBirthdayPlus@gmail.com ">
    <Require feature="google.calendar-0.5" />
   </ModulePrefs>
   <Content type="html">
