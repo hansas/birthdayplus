@@ -13,15 +13,17 @@ public class FlowPanelMenuTitle extends FlowPanel{
     
     public FlowPanelMenuTitle(){
     	setStyleName("Panel");
-    	title = new Label("");
-		add(title);
-		title.addStyleName("Label");
+    	
 		
 		menu = new MenuBar();
 		add(menu);
 		menu.addStyleName("buttonPanel");
 		menu.setAutoOpen(true);
 		menu.setAnimationEnabled(true);
+		
+		title = new Label("");
+		add(title);
+		title.addStyleName("Label");
     	
     }
     
