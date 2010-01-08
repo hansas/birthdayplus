@@ -142,7 +142,7 @@ public class IBuyTabGUI {
 	    emailGrid.addStyleName("emailGrid");
 	    emailGrid.setWidth("290px");
 	    emailGrid.setCellSpacing(0);
-	    emailGrid.setCellPadding(2);
+	    emailGrid.setCellPadding(3);
 	    
 	    emailGrid.setHTML(0, 0, "<FONT color=red >You are responsible for buying this present.</FONT><br /> Please enter the actual price for the item and a short message for the group.We will send an email to the group.<br /><FONT color=red >You can reopen this group by clicking on the reopen button in IBuy tab.</FONT >");
 	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
@@ -240,7 +240,7 @@ public class IBuyTabGUI {
 		iBuyScrollPanel = new ScrollPanel();
 		wishPanel.add(iBuyScrollPanel);
 		iBuyScrollPanel.addStyleName("ShortScrollPanel");
-		iBuyScrollPanel.addStyleName("chatPanel");
+		
 	//	iBuyScrollPanel.setSize("100%", "300px");
 	
 		wishTable = new HoverTable(0,7);
@@ -269,6 +269,7 @@ public class IBuyTabGUI {
 	//	leftSide.add(chatScrollPanel);
 		mainChatPanel.add(chatScrollPanel);
 		chatScrollPanel.addStyleName("ShortScrollPanel");
+		chatScrollPanel.addStyleName("chatPanel");
 	//	chatScrollPanel.setSize("100%", "300px");
 		
 	    chatTable = new FlexTable();
@@ -285,13 +286,14 @@ public class IBuyTabGUI {
 	    messagePanel.add(chatTextArea);
 	    messagePanel.setCellWidth(chatTextArea, "80%");
 	    chatTextArea.setMaxLength(25);
-	    chatTextArea.setWidth("100%");
+	  //  chatTextArea.setWidth("100%");
 	    chatTextArea.addStyleName("chatTextArea");
 			
 	    addMessageButton = new Button("Send");
 	    messagePanel.add(addMessageButton);
 	    messagePanel.setCellWidth(addMessageButton,"20%");
-	    addMessageButton.setWidth("100%");
+	    addMessageButton.addStyleName("sendButton");
+	 //   addMessageButton.setWidth("100%");
 		
 	}
 	
@@ -523,10 +525,15 @@ public class IBuyTabGUI {
 		private void gui_eventAddMessageButtonClicked(){
 			if(chatTextArea.getText().equals("")){
 				chatTextArea.setText("please, type a message");
+				chatTextArea.setSelectionRange(0,22 );
 				chatTextArea.setFocus(true);
 				return;
 			}
 			
+			if(chatTextArea.getText().equals("please, type a message")){
+                chatTextArea.setFocus(true);
+				return;
+			}			
 			ChatMessageData message = new ChatMessageData(entryPoint.userId,entryPoint.firstName+" "+entryPoint.lastName,chatTextArea.getText());
 			this.wishlistService.addChatMessage(currentItem.getWishlistItemId(),message);
 		}
