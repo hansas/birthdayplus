@@ -54,7 +54,7 @@ public class UserManagement {
          int guestMonth = guest.getBirthday().getMonth()+1;
          log.info("user's month: "+guestMonth);
          Calendar cal = Calendar.getInstance();
-         Date birthday = new Date(cal.get(Calendar.YEAR)-1900, guestMonth, guestDom);
+         Date birthday = new Date(cal.get(Calendar.YEAR)-1900, guestMonth-1, guestDom);
          int currentDom = cal.get(Calendar.DAY_OF_MONTH);
          log.info("today's day of month: "+currentDom);
          int currentMonth = cal.get(Calendar.MONTH) + 1;
