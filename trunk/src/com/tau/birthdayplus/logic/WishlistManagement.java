@@ -1,6 +1,7 @@
 package com.tau.birthdayplus.logic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -37,6 +38,25 @@ import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 public class WishlistManagement {
 	private static final Logger log = Logger.getLogger(WishlistManagement.class.getName());
+	
+	public static final Comparator<WishlistItemNewData> WISHLISTITEM_NEWDATA_ORDER =
+        new Comparator<WishlistItemNewData>() {
+			public int compare(WishlistItemNewData w1, WishlistItemNewData w2) {
+					if ((w1.getEventDate() == null) || (w2.getEventDate()==null)){
+						return 0;
+					}
+					int result = w2.getEventDate().compareTo(w1.getEventDate());
+					if(result==-1){
+						return 1;
+					}
+					else if (result==1){
+						return -1;
+					}
+					else{
+						return 0;
+					}
+				}
+		};
 	
 	public static void createWishlistItem(WishlistItemData item) throws UserNotFoundException {
 		DALWrapper wrapper = new DALWrapper();
@@ -220,6 +240,7 @@ public class WishlistManagement {
 			try{
 				List<WishlistItem> items = wrapper.getBookedWishlistItems2(userId);
 				result = getBookedWishlistItemNewData(items,wrapper);
+				Collections.sort(result,WishlistManagement.WISHLISTITEM_NEWDATA_ORDER);
 			//	cache.put(key, result);
 			}
 			finally{
