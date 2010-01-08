@@ -66,9 +66,16 @@ cursor: pointer;
 cursor: hand;
 }
 
+/**********Chat********************/
+
+.chatPanel{
+border-top:1px solid #00BFFF; 
+}
 
 .messagePanel{
 width : 100%;
+border-top:1px solid #00BFFF; 
+border-buttom:1px solid #00BFFF;  
 						/*
 						height : 24px;
 						border:1px solid #FFCC35 ;
@@ -77,21 +84,30 @@ width : 100%;
 }
 
 
+.chatTextArea{
+border:1px solid #AACCFF;
+margin:0;
+padding:3px 5px;
+}
+
+
+.chatLineDate {
+background-color:#D0E4F6;
+}
+
+
+
+/*********************************************/
+
+
 .messageLabel {
 height : 35px;
 background-color:#FEE0C6;
 border:1px solid #EE7621;
 font-size:13px;
 text-align:center;
-overflow-y:auto;
-position: relative;
-top: 10px;
-margin : 10px 0px 3px 0px;
-											/*
-											margin : 0px;
-											width : 96%;
-											padding:3px 5px 3px 5px;
-											*/
+overflow-y:auto;	
+width :100%;							
 }
 
 .tabsPanel{
@@ -138,7 +154,7 @@ height : 270px;
 }
 
 
-/*money dialog box*/
+/**********money dialog box**********/
 .helpMessage{
 margin:0px 0px 10px 1px; 
 background-color: #FFFFCC;
@@ -165,6 +181,9 @@ border-width: 1px 1px 1px 0px;
  background-color: #FFFFCC;
 color:#224499;
 }
+
+
+/********************************/
 
 .Table{
 table-layout:fixed;
@@ -200,17 +219,12 @@ background-color:#FFFFCC;
 border:1px solid #FFCC35;
 }
 
-.chatPanel{
-width:100%;
-height:325px;
-}
 
 
 
 
-.chatLineDate {
-background-color:#D0E4F6;
-}
+
+
 
 
 .errorMessage {
