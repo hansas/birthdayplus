@@ -23,7 +23,7 @@ function compose() {
 
     // Note that attendees MUST be sent in contact format.
     attendees: [
-      {email: 'event@testrpcplus.appspotmail.com'}
+      {email: 'event@birthdayplus.appspotmail.com'}
     ]
 
 
@@ -34,7 +34,7 @@ function compose() {
 
 <center>
 <p style='font-family: sans-serif;font-size: small;text-align: center;color:#224499;'>Click on Create Event to share your event through Birthday+ gagdet. </p>
-<button onclick="compose()" style ='font-size: 13px;background-color: #3366CC; color: black; font-weight: bold; border: 1px solid #AACCFF;font-family:arial,sans-serif;'>Create Event</button>
+<button onclick="compose()" style ='font-size: 13px;background-color: transparent url(http://birthdayplus.appspot.com/birthdayplus/gwt/standard/images/hborder.png) repeat-x scroll 0 -27px; color: black; font-weight: bold; border: 1px solid #AACCFF;font-family:arial,sans-serif;'>Create Event</button>
 </center>
 
 </body>
