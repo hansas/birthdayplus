@@ -244,6 +244,7 @@ public class WishListFriendsGUI  {
 		if(wishlistBoxPanel.isVisible()){
 			wishlistBoxPanel.setVisible(false);
 			friendWishTable.clear(true);
+			friendWishTable.resizeRows(0);
 			polaniItems = null;
 		}
 	}
