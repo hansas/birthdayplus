@@ -62,7 +62,7 @@ import com.tau.birthdayplus.client.Services.ProfileService;
 import com.tau.birthdayplus.client.Services.ProfileServiceAsync;
 import com.tau.birthdayplus.client.Services.RequestProxy;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
-import com.tau.birthdayplus.client.widgets.MessageLabel;
+
 import com.tau.birthdayplus.client.widgets.SignInEventHandler;
 import com.tau.birthdayplus.client.widgets.WellcomePanel;
 

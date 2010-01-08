@@ -22,7 +22,8 @@ import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.ItemDialogBox;
-import com.tau.birthdayplus.client.widgets.MessageLabel;
+import com.tau.birthdayplus.client.widgets.MessagePanel;
+
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
@@ -40,7 +41,7 @@ public class MyWishlistTabGUI {
 	private ScrollPanel wishlistScrollPanel;
 	private ItemDialogBox addItemBox;
     private Boolean addItem;
-    private MessageLabel messages;
+    private MessagePanel messages;
     
     
     private enum Actions {
@@ -99,8 +100,8 @@ public class MyWishlistTabGUI {
 	//	buildAddItemBox();
 		addItemBox = new ItemDialogBox();   
 		
-		 messages = new MessageLabel(25000,false);
-		 wishlistPanel.add(messages);
+		 messages = new MessagePanel(25000,false);
+	
 		
 	}
 	
@@ -177,8 +178,8 @@ public class MyWishlistTabGUI {
 	  */
 	 private void loadForm(WishlistItemData item,Actions action) {
 		    currentItem = item; 
-		    addItemBox.setText(action.toString()+" item");
-		    addItemBox.setText(action.toString());
+		    addItemBox.setText(action.toString()+" Item");
+		    addItemBox.setButtonText(action.toString()+ " item");
 		    addItemBox.center();
    	        addItemBox.show(item);
 	    }

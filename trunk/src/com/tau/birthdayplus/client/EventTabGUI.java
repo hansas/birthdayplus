@@ -44,7 +44,7 @@ import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.client.widgets.EventDialogBox;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
-import com.tau.birthdayplus.client.widgets.MessageLabel;
+import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.dto.client.EventData;
 
 
@@ -73,7 +73,7 @@ public class EventTabGUI {
 	
 	private EventDialogBox eventDialogBox;
     private Boolean addEvent;
-    private MessageLabel messages;
+    private MessagePanel messages;
 
     
    
@@ -166,8 +166,8 @@ public class EventTabGUI {
 	    wishlistFriendGUI.init();
 		wishlistFriendGUI.wireWishlistFriendGUIEvents();
 		
-		 messages = new MessageLabel(25000,false);
-		 mainPanel.add(messages);
+		 messages = new MessagePanel(25000,false);
+		 
 		
 	
 		
