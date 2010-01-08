@@ -27,6 +27,22 @@ public class SendEmail {
 	private static final Logger log = Logger.getLogger(SendEmail.class.getName());
     private static String emailAddress = "gadgetBirthdayPlus@gmail.com ";	
 	private static  DecimalFormat shortMoneyFormat = new DecimalFormat("\u20AA#,##0");
+	
+	public static enum CancelFor{
+		ITEM("item"),
+		EVENT("event"),
+		NONE("NONE");
+		
+		private String description;
+		
+		private CancelFor(String description){
+			this.description = description ;
+		}
+		
+		public String toString(){
+			return this.description;
+		}
+		} 
 
     
     
@@ -43,7 +59,7 @@ public class SendEmail {
 		sendEmailAboutGroup(group,htmlMessage,group.getPrice(),false);
 	}
 	
-	public static void sendEmailCancelGroup(GroupEmail group)throws EmailException{
+	public static void sendEmailCancelGroup(GroupEmail group,CancelFor cancel)throws EmailException{
 		int groupSize = group.getParticipators().size();
 		InternetAddress[] addresses = new InternetAddress[groupSize];
 		
@@ -58,8 +74,8 @@ public class SendEmail {
 			throw new EmailException(" a problem occured while sending an email");
 		}
         
-        String message = "You are participating in the group that wants to buy a" +group.getItemName()+" for "+group.getUserName()+" .<br /><br />";
-        message+="The group has been canceled because "+group.getUserName()+"has deleted this event.";
+        String message = "You are participating in the group that wants to buy a " +group.getItemName()+" for "+group.getUserName()+" .<br /><br />";
+        message+="The group has been canceled because "+group.getUserName()+"has deleted this "+cancel.toString()+".";
         
         try {
 			sendMails(new InternetAddress(emailAddress, "Birthday+") ,null,addresses,null,"A present for "+group.getUserName()+"'s "+group.getEventName(),message);
