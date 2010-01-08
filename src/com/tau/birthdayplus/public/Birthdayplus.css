@@ -3,10 +3,12 @@ padding: 1px;
 width: 98%;
 }
 
-.gwt-TextBox {
-padding:4px;
-width: 85%;
-}
+													/*
+													.gwt-TextBox {
+													padding:4px;
+													width: 85%;
+													}
+													*/
 
 .gwt-Button 
 { 
