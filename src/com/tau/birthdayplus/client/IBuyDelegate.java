@@ -125,31 +125,7 @@ public class IBuyDelegate {
 
 		
 	}
-	/*
-	public void getWishlistItem(String itemId){
-		entryPoint.loadingImagePopup.center();
-		entryPoint.loadingImagePopup.show();
-		RequestBuilder requestBuilder = wishlistService.getWishlistItem(itemId, new AsyncCallback<WishlistItemNewData>(){
-
-			public void onFailure(Throwable caught) {
-				
-				entryPoint.loadingImagePopup.hide();
-				gui.service_getWishlistItemFailed(caught);
-				
-			}
-
-			public void onSuccess(WishlistItemNewData result) {
-				entryPoint.loadingImagePopup.hide();
-				gui.service_getWishlistItemSuccesfull(result);
-				
-			}
-			
-		});
-		
-		RequestProxy.makePostRequest(requestBuilder.getUrl(), requestBuilder.getRequestData(), requestBuilder.getCallback());
-		
-	}
-	*/
+	
 	
 	public void getChatMessages(String itemId){
 		entryPoint.loadingImagePopup.center();

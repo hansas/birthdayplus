@@ -43,10 +43,13 @@ import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 
+import com.tau.birthdayplus.client.widgets.EmailDialogBox;
+import com.tau.birthdayplus.client.widgets.GroupEventHandler;
 import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.client.widgets.UnorderedList;
+import com.tau.birthdayplus.client.widgets.EmailDialogBox.Status;
 import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
@@ -74,17 +77,9 @@ public class IBuyTabGUI {
 	private  FlexTable iBuyTableHeader;
 	private  HoverTable wishTable;
 	//text area for message to group
-	private  RichTextArea emailTextArea;
-	private  RichTextToolbar emailTextToolbar;
-	private  FlexTable emailGrid;
-	private  DialogBox emailPanel;
-	private  Anchor sendEmail;
-	private  Anchor cancelEmail;
-	private  TextBox actualPrice;
-	private Label errorMessage;
+	private EmailDialogBox emailDialogBox;
 	
 	private FlowPanelMenuTitle mainChatPanel;
-	
 	private ScrollPanel chatScrollPanel;
 	private FlexTable chatTable;
 	private HorizontalPanel messagePanel;
@@ -104,7 +99,8 @@ public class IBuyTabGUI {
 	private WishlistItemNewData currentItem;
 	public IBuyDelegate wishlistService;
 	public Birthdayplus entryPoint;
-	private boolean closeGroup;
+	private Status groupStatus ;
+//	private boolean closeGroup;
 	
 	
 	/**
@@ -122,56 +118,7 @@ public class IBuyTabGUI {
 	
 		buildWishlistTable();
 		
-		emailPanel = new DialogBox(false,true); 
-		emailTextArea = new RichTextArea();
-	    emailTextArea.setSize("288px", "9em");
-	    emailTextToolbar = new RichTextToolbar(emailTextArea);
-	    emailTextToolbar.setWidth("290px");
-	    sendEmail = new Anchor("send this message");
-	    cancelEmail = new Anchor("cancel");
-	    actualPrice = new TextBox();
-	    errorMessage = new Label();
-	    actualPrice.setTabIndex(1);
-	    emailTextArea.setTabIndex(2);
-	    
-	    actualPrice.setVisibleLength(18);
-	    actualPrice.setMaxLength(9);
-	    
-	    
-	    // Add the components to a panel
-	    emailGrid = new FlexTable();
-	    emailPanel.add(emailGrid);
-	    emailGrid.addStyleName("emailGrid");
-	    emailGrid.setWidth("290px");
-	    emailGrid.setCellSpacing(0);
-	    emailGrid.setCellPadding(3);
-	    
-	    emailGrid.setHTML(0, 0, "<FONT color=red >You are responsible for buying this present.</FONT><br /> Please enter the actual price for the item and a short message for the group.We will send an email to the group.<br /><FONT color=red >You can reopen this group by clicking on the reopen button in IBuy tab.</FONT >");
-	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
-	    emailGrid.setHTML(1, 0, "<STRONG> Actual price in "+'\u20AA'+ ":</STRONG>");
-	    emailGrid.setWidget(1, 1,actualPrice);
-	    
-	    emailGrid.setWidget(2, 0, errorMessage);
-	    emailGrid.getFlexCellFormatter().setColSpan(2, 0, 2);
-	    emailGrid.getRowFormatter().setVisible(2, false);
-
-	    
-	    emailGrid.setWidget(3, 0, emailTextToolbar);
-	    emailGrid.getFlexCellFormatter().setColSpan(3, 0, 2);
-	    
-	    emailGrid.setWidget(4, 0, emailTextArea);
-	    emailGrid.getFlexCellFormatter().setColSpan(4, 0, 2);
-	    
-	    emailGrid.setWidget(5, 0, sendEmail);
-	    emailGrid.setWidget(5, 1, cancelEmail);
-	    
-	    errorMessage.setStyleName("errorMessage");
-	    emailGrid.getRowFormatter().addStyleName(1, "emailActualPrice");
-	    emailGrid.getRowFormatter().addStyleName(4, "emailTextArea");
-	    emailGrid.getFlexCellFormatter().setHorizontalAlignment(5, 1,HasHorizontalAlignment.ALIGN_RIGHT );
-
-	    
-	   
+		emailDialogBox = new EmailDialogBox();
 		
 		mainChatPanel = new FlowPanelMenuTitle();
 		iBuyPanel.add(mainChatPanel);
@@ -369,27 +316,8 @@ public class IBuyTabGUI {
 	
 	private void showTextArea(WishlistItemNewData item){
 			currentItem = item;
+			emailDialogBox.show(groupStatus, item.getParticipators());
 			
-			emailGrid.clearCell(0, 0);
-			
-			if(closeGroup){
-				emailPanel.setText("Buy a present for the group");
-			    emailGrid.setHTML(0, 0, "<FONT color=red >You are responsible for buying this present.</FONT><br /> Please enter the actual price for the item and a short message for the group.We will send an email to the group.<br /><FONT color=red >You can reopen this group by clicking on the reopen button in IBuy tab.</FONT >");
-			    emailGrid.getRowFormatter().setVisible(1, true);
-				actualPrice.setFocus(true);
-			}else{
-				emailPanel.setText("Reopen this group");
-			    emailGrid.setHTML(0, 0," Please enter a short message for the group about reopening .We will send an email to the group.");
-			    emailGrid.getRowFormatter().setVisible(1, false);
-			    emailTextArea.setFocus(true);
-	    	    
-			}
-		    emailGrid.getRowFormatter().setVisible(2, false);
-
-		
-			emailPanel.center();
-	        emailPanel.show();
-	    	
 	}
 		 
 	  
@@ -414,7 +342,8 @@ public class IBuyTabGUI {
 	                                 this.wishlistService.deleteParticipator(item.getWishlistItemId(), entryPoint.userId);
 	                               else
 	                               { if(item.getBuyer().getUserId().equals(entryPoint.userId)){
-	                            	   closeGroup = false;
+	                            	//   closeGroup = false;
+	                            	   groupStatus = Status.REOPEN_GROUP;
 	                            	   showTextArea(item);
 	                               }
 	                               }
@@ -422,7 +351,8 @@ public class IBuyTabGUI {
 	                            break;
 	                            
 	        case BUY_LINK     : if(item.getIsActive()){
-	        	                   closeGroup = true;
+	        	                //   closeGroup = true;
+	        	                   groupStatus = Status.CLOSE_GROUP;
 	        	                   showTextArea(item);
 	                             }
                                 break;
@@ -530,7 +460,6 @@ public class IBuyTabGUI {
 		
 		private void closeChat(){
 			if(mainChatPanel.isVisible()){
-			//	this.itemsToBuy = null;
 				mainChatPanel.setVisible(false);
 			}
 		}
@@ -540,13 +469,7 @@ public class IBuyTabGUI {
 		}
 		
 		
-		private Double getTotal(){
-			Double sum = 0.0;
-			for(ParticipatorData user : currentItem.getParticipators()){
-	    		sum+=user.getMoney();
-			}
-			return sum;
-		}
+		
 		
 		private void gui_eventAddMessageButtonClicked(){
 			if(chatTextArea.getText().equals("")){
@@ -563,53 +486,6 @@ public class IBuyTabGUI {
 			ChatMessageData message = new ChatMessageData(entryPoint.userId,entryPoint.firstName+" "+entryPoint.lastName,chatTextArea.getText());
 			this.wishlistService.addChatMessage(currentItem.getWishlistItemId(),message);
 		}
-		
-		
-		private void gui_eventSendEmailButtomClicked(){
-			Double price = 0.0;
-			if(emailTextArea.getText().equals("")){
-			//	emailTextArea.setHTML("<FONT color=red>Please, enter the message for the group</FONT>");
-				errorMessage.setText("Please, enter the message for the group");
-				emailGrid.getRowFormatter().setVisible(2, true);
-				return;
-			}
-			if(closeGroup){
-				try{
-				    price = Double.parseDouble(actualPrice.getText());
-				    Double total = this.getTotal();
-				    if(price > total){
-				    	errorMessage.setText("Actual price greater than the group total :"+shortMoneyFormat.format(total));
-						emailGrid.getRowFormatter().setVisible(2, true);
-						actualPrice.setFocus(true);
-						return;
-				    }
-				}catch(NumberFormatException e){
-					errorMessage.setText("Please enter a valid price");
-					emailGrid.getRowFormatter().setVisible(2, true);
-					actualPrice.setFocus(true);
-					return;
-				}
-			}
-			emailPanel.hide();
-			if(closeGroup)
-			   this.wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML(),price);
-			else
-         	   this.wishlistService.cancelBookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,emailTextArea.getHTML());
-			actualPrice.setText("");
-			emailTextArea.setText("");
-			
-		}
-		
-		private void gui_eventCanelEmailButtonClicked(){
-			actualPrice.setText("");
-			emailTextArea.setText("");
-		    emailPanel.hide();
-		}
-		
-		
-	
-
-		
 		
 		
 		protected void wireIBuyGUIEvents(){
@@ -657,22 +533,16 @@ public class IBuyTabGUI {
 				
 			});
 			
-			this.sendEmail.addClickHandler(new ClickHandler(){
-
-				public void onClick(ClickEvent event) {
-					gui_eventSendEmailButtomClicked();
-					
-				}
-				
-			});
 			
-			this.cancelEmail.addClickHandler(new ClickHandler(){
+			this.emailDialogBox.addGroupEvent(new GroupEventHandler(){
 
-				public void onClick(ClickEvent event) {
-					gui_eventCanelEmailButtonClicked();
-					
+				public void onCloseGroup(Double actualPrice, String htmlMessage) {
+					   wishlistService.bookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,htmlMessage,actualPrice);
 				}
-				
+
+				public void onReopenGroup(String htmlMessage) {
+		         	   wishlistService.cancelBookItemForGroup(currentItem.getWishlistItemId(), entryPoint.userId,htmlMessage);
+				}
 			});
 		}
 
@@ -724,13 +594,6 @@ public class IBuyTabGUI {
 			this.wishlistService.getChatMessages(currentItem.getWishlistItemId());
 		}
 
-	//	public void service_getWishlistItemFailed(Throwable caught) {
-	//	    entryPoint.messages.setText("WishlistItemFailed"+caught.getMessage());
-	//	}
-
-	//	public void service_getWishlistItemSuccesfull(WishlistItemNewData result) {
-		//	this.loadChat(result);			
-		//}
 
 		public void service_cancelBookItemForGroupFailed(Throwable caught) {
 			entryPoint.messages.setText("BookItemForGroupFailed"+caught.getMessage());
