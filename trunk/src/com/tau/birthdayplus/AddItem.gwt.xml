@@ -17,5 +17,6 @@
   <public path="path"/>
   
   <public path="addItemPublic"/>
+   <stylesheet src='addItem.css'/>
   
 </module>
