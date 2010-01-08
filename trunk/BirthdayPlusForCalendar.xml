@@ -33,7 +33,7 @@ function compose() {
 </script>
 
 <center>
-<p style='font-family: sans-serif;font-size: small;line-height: 2em;text-align: center;'>Share your events through Birthday+ gadget.</br>By clicking on Create Event button, your event will be added to the gagdet. </p>
+<p style='font-family: sans-serif;font-size: small;text-align: center;'>Click on Create Event to share your event through Birthday+ gagdet. </p>
 <button onclick="compose() style ='font-size: 13px;background-color: #3366CC; color: black; font-weight: bold; border: 1px solid #AACCFF;font-family:arial,sans-serif;'">Create Event</button>
 </center>
 
