@@ -41,8 +41,8 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
-import com.tau.birthdayplus.client.widgets.ListItem;
-import com.tau.birthdayplus.client.widgets.MessageLabel;
+
+import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.client.widgets.UnorderedList;
@@ -67,7 +67,7 @@ public class IBuyTabGUI {
 	//////////////////GUI Widgets////////////////////////
 	private FlowPanel iBuyPanel;	
 	
-	private  MessageLabel messages; 
+	private  MessagePanel messages; 
     //items
 	private FlowPanelMenuTitle wishPanel;
 	private  ScrollPanel iBuyScrollPanel;
@@ -164,6 +164,7 @@ public class IBuyTabGUI {
 		mainChatPanel = new FlowPanelMenuTitle();
 		iBuyPanel.add(mainChatPanel);
 		mainChatPanel.setStyleName("Panel");
+		mainChatPanel.addStyleName("chatPanel");
 		mainChatPanel.setVisible(false);
 		
 		
@@ -187,8 +188,8 @@ public class IBuyTabGUI {
 	    buildChat();
 		
 	    moneyDialogBox = new MoneyDialogBox("Update the amount you're willing to spend on this present");
-	    messages = new MessageLabel(25000,false);
-	    iBuyPanel.add(messages);
+	    messages = new MessagePanel(25000,false);
+	 
 	
 		    
 	}
@@ -284,6 +285,7 @@ public class IBuyTabGUI {
 	    messagePanel.setCellWidth(chatTextArea, "80%");
 	    chatTextArea.setMaxLength(25);
 	    chatTextArea.setWidth("100%");
+	    chatTextArea.addStyleName("chatTextArea");
 			
 	    addMessageButton = new Button("Send");
 	    messagePanel.add(addMessageButton);

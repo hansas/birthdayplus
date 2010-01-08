@@ -24,7 +24,8 @@ import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.ListItem;
-import com.tau.birthdayplus.client.widgets.MessageLabel;
+import com.tau.birthdayplus.client.widgets.MessagePanel;
+
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.client.widgets.UnorderedList;
@@ -63,7 +64,7 @@ public class WishListFriendsGUI  {
 	
 	
 	private MoneyDialogBox moneyDialogBox;
-	private MessageLabel messages;
+	private MessagePanel messages;
 	
 	
 	/*  
@@ -111,8 +112,8 @@ public class WishListFriendsGUI  {
 			buildFriendWishlistTable();
 			moneyDialogBox = new MoneyDialogBox("When there is enough money to buy this present someone (it can be you) should close this group and buy the present.<br/>We will send an email when someone closes this group. <br/>You can close the group in IBuy tab.");
 			
-			 messages = new MessageLabel(25000,false);
-			 wishlistBoxPanel.add(messages);
+			 messages = new MessagePanel(25000,false);
+			
 			 
 			
 			   

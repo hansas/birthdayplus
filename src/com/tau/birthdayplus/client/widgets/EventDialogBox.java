@@ -83,6 +83,7 @@ public class EventDialogBox extends DialogBox{
 	    }
 	    
 	    txtName =new SuggestBox(oracle);
+	    
 	
     	txtDate = new DateBox();
 	    DateTimeFormat fmt = DateTimeFormat.getFormat("dd/MM/yyyy");
@@ -106,6 +107,7 @@ public class EventDialogBox extends DialogBox{
 	    
 	 
         layout.setWidget(3, 1, boxButton);
+        boxButton.setWidth("50px");
         layout.setWidget(3, 2, cancelButton);
 	    
         wireEvents();

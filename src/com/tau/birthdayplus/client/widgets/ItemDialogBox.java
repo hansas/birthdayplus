@@ -104,6 +104,8 @@ public class ItemDialogBox extends DialogBox{
         itemDialogBoxVerticalPanel.add(formTable);
         
         itemField=new TextBox();
+        itemField.setMaxLength(25);
+        itemField.setVisibleLength(25);
    	 
         priorityPanel = new HorizontalPanel();
         highPriorityButton = new RadioButton("priority", "High");
@@ -112,8 +114,11 @@ public class ItemDialogBox extends DialogBox{
         priorityPanel.add(lowPriorityButton);
         
         linkField=new TextBox();
+        linkField.setVisibleLength(25);
         
         priceField=new TextBox();
+        priceField.setMaxLength(10);
+        priceField.setVisibleLength(25);
         
         thumbnailField=new TextBox();
         
@@ -129,6 +134,7 @@ public class ItemDialogBox extends DialogBox{
         formTable.setText(1, 0, "priority");
         formTable.setWidget(1, 1, priorityPanel);
         
+        
         formTable.setText(2, 0, "link");
         formTable.setWidget(2, 1, linkField);
         
@@ -138,10 +144,10 @@ public class ItemDialogBox extends DialogBox{
      
         
      //   formTable.setWidget(4, 0, updateButton);
-        formTable.setWidget(4, 1, boxButton);
-        boxButton.setWidth("85%");
-        formTable.setWidget(4, 2, cancelButton);
+        formTable.setWidget(4, 0, boxButton);
         
+        formTable.setWidget(4, 2, cancelButton);
+       
     }
     
     
