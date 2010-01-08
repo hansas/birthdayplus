@@ -13,6 +13,7 @@ import org.mortbay.log.Log;
 import com.google.appengine.api.datastore.KeyFactory;
 
 import com.tau.birthdayplus.Email.ParticipatorEmail;
+import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
@@ -136,7 +137,7 @@ public class EventManagement {
 		ArrayList<Participator> participators = item.getParticipators();
 	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
 		GroupStatus status = GroupStatus.CANCEL;
-		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status);
+		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.EVENT);
 		log.info("email was sent to group of item "+item.getItemName());
 		for (Participator p : participators){
 			item.removeParticipator(p);

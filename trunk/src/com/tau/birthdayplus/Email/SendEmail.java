@@ -17,12 +17,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-
-
-
-
-
-
 public class SendEmail {
 	private static final Logger log = Logger.getLogger(SendEmail.class.getName());
     private static String emailAddress = "gadgetBirthdayPlus@gmail.com ";	
@@ -42,7 +36,7 @@ public class SendEmail {
 		public String toString(){
 			return this.description;
 		}
-		} 
+	} 
 
     
     
