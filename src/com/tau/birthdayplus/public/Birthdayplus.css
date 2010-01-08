@@ -51,24 +51,6 @@ padding:5px 0px!important;
 margin:0px !important; 
 }
 
-/*
-										.gwt-MenuItem {
-										cursor:hand;
-										cursor:pointer;
-										color:#0000FF;
-										padding:2px 10px;
-										}
-										
-										.gwt-MenuBar-horizontal .gwt-MenuItem {
-										padding:3px 10px;
-										}
-										
-										.gwt-MenuBar .gwt-MenuItem-selected {
-										cursor:pointer;
-										font-weight: bold;
-										}
-*/
-
 body, table td, select {
 font-family:arial,sans-serif;
 font-size: 13px;
@@ -91,7 +73,7 @@ padding:0px;
 
 
 .messageLabel {
-width : 95%;
+width : 96%;
 height : 35px;
 background-color:#FFFFCC;
 border:1px solid #FFCC35;
@@ -114,20 +96,14 @@ margin:0px;
 .mainPanel {
 width : 100%;
 height : 410px !important;
-
 }
+
 .Panel{
 width : 100%;
 height : 350px;
 margin:0px;
 padding :0px;
 }
-/*
-													.buttonPanel{
-													width : 99%;
-													height : 25px;
-													}
-*/
 
 .Button{
 width : 100px;
@@ -150,7 +126,7 @@ height : 300px;
 
 .ShortScrollPanel{
 width : 100%;
-height : 275px;
+height : 270px;
 }
 
 
@@ -190,7 +166,7 @@ width: 100%;
 
 .Table td{
 overflow:hidden;
- border-bottom:1px solid #00BFFF;    
+border-top:1px solid #00BFFF;    
 }
 
 .changeSumMoneyBox{
@@ -225,10 +201,10 @@ background-color:#D0E4F6;
 color: Red;
 }
 
-.emailGrid{
-    background-color: #FFFFCC;
-    table-layout: fixed;
-   
+.emailGrid {
+background-color: #FFFFCC;
+table-layout: fixed;
+
 }
 
 .emailActualPrice{
@@ -239,56 +215,53 @@ color: Red;
 background-color: white;
 }
 
+/***********MenuBar****************/
 
-
-.buttonPanel
-{
-    border                      :   1px solid #FFFFFF;
-    margin                      :   0 auto;
-    background-color            :   #eee;
-    font-size                   :   70%;
-    padding                     :   0px;
-}
-.buttonPanel table
-{
-    border-collapse             :   separate;
-    border                      :   1px solid #00f;
-    background-color            :   #ddd;
-}
-.buttonPanel .gwt-MenuItem
-{
-
-    cursor                      :   hand;
-    cursor                      :   pointer;
-
-    border                      :   1px solid #999;
-    background-color            :   #eee;
-    padding                     :   2px 10px;
-}
-.buttonPanel .gwt-MenuItem-selected
-{
-    background-color            :   #fff;
+.buttonPanel {
+border: 1px solid #FFFFFF;
+margin: 0 auto;
+background-color: #eee;
+font-size: 70%;
+padding: 0px;
 }
 
-.gwt-MenuBar-horizontal
-{
-    background: white;
+.buttonPanel table {
+border-collapse: separate;
+                                         /* border: 1px solid #00f; */
+background-color: #00BFFF;
+margin-left: auto;
+margin-right: auto;
 }
 
-/*Wellcome panel*/
+.buttonPanel .gwt-MenuItem {
+cursor: hand;
+cursor: pointer;
+border: 1px solid #999;
+background-color: #eee;
+padding: 2px 10px;
+vertical-align:middle;
+}
 
-.wellcomePanel{
-padding:4px 2px 4px 2px;
+.buttonPanel .gwt-MenuItem-selected {
+background-color: #D0E4F6 ;
+}
+
+.gwt-MenuBar-horizontal {
+background: white;
 }
 
 
+/***********Wellcome panel**************/
 
-.wellcomePanelPart{
+.wellcomePanel {
+padding: 4px 2px 4px 2px;
+}
 
+.wellcomePanelPart {
 background-color: #DDEEFF;
-margin :0px;
-padding-bottom:2px;
-padding-left:2px;
-padding-right:2px;
-padding-top:2px;
+margin : 0px;
+padding-bottom: 2px;
+padding-left: 2px;
+padding-right: 2px;
+padding-top: 2px;
 }
