@@ -208,9 +208,8 @@ WishlistService  {
 	/*
 	 * get chat messages for the item
 	 */
-	public ArrayList<ChatMessageData> getChatMessages(String itemId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<ChatMessageData> getChatMessages(String itemId) throws UserNotFoundException {
+		return WishlistManagement.getChatMessagesByItem(itemId);
 	}
 
 	

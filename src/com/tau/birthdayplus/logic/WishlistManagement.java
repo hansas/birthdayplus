@@ -333,6 +333,22 @@ public class WishlistManagement {
 		return new ChatMessageData(guest.getId(),guest.getFirstName(),message.getTimeStamp(),message.getMessage());
 	}
 	
+	public static ArrayList<ChatMessageData> getChatMessagesByItem(String itemId) throws UserNotFoundException{
+		ArrayList<ChatMessageData> messagesD = new ArrayList<ChatMessageData>();
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			WishlistItem item = wrapper.getWishlistItem(itemId);
+			ArrayList<ChatMessage> messages = item.getMessages();
+			for (ChatMessage m:messages){
+				messagesD.add(chatMessageToChatMessageData(m,wrapper));
+			}
+		}
+		finally{
+			wrapper.close();
+		}
+		return messagesD;
+	}
+	
 	
 //	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
 //		BusinessObjectDAL.deleteBookedWishlistItem(userId,wishlistItemId);

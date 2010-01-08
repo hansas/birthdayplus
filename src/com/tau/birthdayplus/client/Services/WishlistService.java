@@ -121,7 +121,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * get chat messages for the item
 	 */
-	ArrayList<ChatMessageData> getChatMessages(String itemId);
+	ArrayList<ChatMessageData> getChatMessages(String itemId) throws UserNotFoundException;
 	
 	
 

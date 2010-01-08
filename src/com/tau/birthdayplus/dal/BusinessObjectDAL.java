@@ -235,6 +235,7 @@ public class BusinessObjectDAL {
 						removeChatMessageData(KeyFactory.keyToString(item.getKey()),pm);
 						try{
 							itemParticipatorDelete.add(item);
+							log.info("from item "+item.getItemName()+" participators should be deleted");
 //							for (Participator p : participators){
 //								item.removeParticipator(p);
 //								pm.deletePersistent(p);
@@ -973,11 +974,11 @@ public class BusinessObjectDAL {
 	}
 	
 	public static void removeChatMessageData(String itemId,PersistenceManager pm) throws UserException{
-		Transaction tx = (Transaction) pm.currentTransaction();
+		//Transaction tx = (Transaction) pm.currentTransaction();
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		try{
 			log.info("Trying to delete all chat messages for " + item.getItemName());
-			tx.begin();
+		//	tx.begin();
 			ArrayList<ChatMessage> messages = item.getMessages();
 			if (messages!=null){
 				for (ChatMessage m : messages){
@@ -986,13 +987,13 @@ public class BusinessObjectDAL {
 				}
 				pm.makePersistent(item);
 			}
-			tx.commit();
+		//	tx.commit();
 		} catch (Exception ex) {
 			throw new UserException(ex);
 		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
+		//	if (tx.isActive()) {
+		//		tx.rollback();
+		//	}
 		}
 	}
 
