@@ -17,6 +17,7 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -333,6 +334,9 @@ public class IBuyTabGUI {
             cellFormatter.setHorizontalAlignment(row+1, 0, HasHorizontalAlignment.ALIGN_LEFT);
             row+=2;
         }
+        
+        chatScrollPanel.scrollToBottom();
+        
 
 	}
 	
