@@ -94,7 +94,7 @@ public class GroupEmail {
 		this.participators.add(p);
 	}
 	
-	public void removeParticipator(Participator p){
+	public void removeParticipator(ParticipatorEmail p){
 		if ((participators!=null) && (participators.contains(p))){
 			this.participators.remove(p);
 		}
