@@ -62,11 +62,14 @@ public class AddItem implements EntryPoint{
 
 	public void onModuleLoad() {
 	
-        
+		 Window.enableScrolling(false);
+	        Window.setMargin("0px");
 		String link = decode(Window.Location.getParameter("link")); 
 		String wish = decode(Window.Location.getParameter("wish"));
 		String thumbnail = decode(Window.Location.getParameter("thumbnail"));
 		String price = Window.Location.getParameter("price");
+		
+		 
 		
 		DecoratorPanel	 decPanel = new DecoratorPanel();
 		RootPanel.get().add(decPanel);
@@ -101,10 +104,11 @@ public class AddItem implements EntryPoint{
 
 		
 	    loadingImagePopup = new PopupPanel(false,true);
-	   
 	    loadingImagePopup.setAnimationEnabled(true);
-	   
 	    loadingImagePopup.setWidget(loadingImage);
+	    loadingImagePopup.setStyleName("loading");
+	    
+	 //   resize(430,450);
 	    
 	    wireEvents();
 		
@@ -260,7 +264,7 @@ public class AddItem implements EntryPoint{
 	            public void onClick(ClickEvent event) {
 	            	if(checkIfValid()){
 	                    WishlistItemData data = copyFields();
-	                    loadingImagePopup.center();
+	              //      loadingImagePopup.center();
 	            		loadingImagePopup.show();
 	                    wishlistService.createWishlistItemSite(data,  new AsyncCallback<Void>(){
 
@@ -303,6 +307,10 @@ public class AddItem implements EntryPoint{
 	    private  native void closeWindow()/*-{
 	        $wnd.close();
 	    }-*/;
+	    
+	    private  native String resize(int width, int height)/*-{
+		 $wnd.resizeTo(width,height);
+	}-*/;
 		
 		
 		
