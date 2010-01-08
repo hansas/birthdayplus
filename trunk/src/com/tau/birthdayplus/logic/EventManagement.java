@@ -73,6 +73,7 @@ public class EventManagement {
 	    DALWrapper wrapper = new DALWrapper();
 	    try{
 		    if (itemParticipatorDelete!=null){
+		    	log.info("there is participators in items that should be deleted");
 			    for (WishlistItem item : itemParticipatorDelete){
 			    	sendEmailAndDeleteParticipators(item, wrapper);
 			    }
@@ -136,11 +137,15 @@ public class EventManagement {
 	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
 		GroupStatus status = GroupStatus.CANCEL;
 		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status);
+		log.info("email was sent to group of item "+item.getItemName());
 		for (Participator p : participators){
 			item.removeParticipator(p);
 			wrapper.deleteParticipator(p);
 		}
 		wrapper.makePersistantItem(item);
+		if (item.getParticipators()==null||item.getParticipators().isEmpty()){
+			log.info("participators of item "+item.getItemName() +" were deleted");
+		}
 	}
 	
 	public static void cronDeleteEventAndUpdateRecurrent() throws Exception{
