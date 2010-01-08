@@ -749,7 +749,7 @@ public class BusinessObjectDAL {
 //		}
 //	}
 	
-	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status) throws EmailException{
+	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor) throws EmailException{
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
 		Event event = pm.getObjectById(Event.class,item.getEventKey());
@@ -767,7 +767,7 @@ public class BusinessObjectDAL {
 				SendEmail.sendEmailCloseGroup(group, message,actualPrice);
 				break;
 			case CANCEL:
-				SendEmail.sendEmailCancelGroup(group);
+				SendEmail.sendEmailCancelGroup(group,cancelFor);
 				break;
 			}
 		}

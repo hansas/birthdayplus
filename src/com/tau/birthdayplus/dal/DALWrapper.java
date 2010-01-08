@@ -7,6 +7,7 @@ import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.datastore.Key;
 import com.tau.birthdayplus.Email.ParticipatorEmail;
+import com.tau.birthdayplus.Email.SendEmail;
 import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL.GroupStatus;
@@ -113,8 +114,8 @@ public class DALWrapper {
 //		BusinessObjectDAL.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice, pm);
 //	}
 	
-	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,GroupStatus status) throws Exception{
-		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm, actualPrice, status);
+	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor) throws Exception{
+		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm, actualPrice, status,cancelFor);
 	}
 	
 	public void deleteParticipator(Participator p){
