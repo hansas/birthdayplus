@@ -75,11 +75,12 @@ padding:0px;
 .messageLabel {
 height : 35px;
 background-color:#FEE0C6;
-                                            /*border:1px solid #FFCC35;*/
+border:1px solid #EE7621;
 font-size:13px;
-font-weight:bold;
 text-align:center;
-overflow-y:auto;
+overflow:hidden;
+position: relative;
+top: 10px;
 											/*
 											margin : 0px;
 											width : 96%;
@@ -170,13 +171,17 @@ overflow:hidden;
 border-top:1px solid #00BFFF;    
 }
 
+table {
+border-collapse:collapse;
+}
+
 .changeSumMoneyBox{
 width: 50%;	
 }
 
 .Label{
 background-color: #DDF8CC;
-padding: 5px;
+border:1px solid #A2CD5A;
 height: 18px;
 overflow: hidden;
 text-align: center;
