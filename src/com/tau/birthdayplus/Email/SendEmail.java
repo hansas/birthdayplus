@@ -110,23 +110,45 @@ public class SendEmail {
         	htmlTable+="</div></div></td></tr>";
         }
         htmlTable+="</table></div></p>";
+        
+        String buyerMessage = message;
        
         if(closeGroup)
+        {
             message+="<p style='line-height: 150%;'>You are participating in the group that will buy a "+group.getItemName()+" for "+group.getUserName()+" .<br /> "+"The actual price of the "+group.getItemName()+" is "+shortMoneyFormat.format(actualPrice)+".<br /><br />"+buyerName+" will buy a present and here is a short message from  "+buyerName.split(" ")[0]+": "+"</p>";
-        else 
+            buyerMessage+="<p style='line-height: 150%;'>You are buying a group present "+group.getItemName()+" for "+group.getUserName()+" .<br /> "+"The actual price of the "+group.getItemName()+" is "+shortMoneyFormat.format(actualPrice)+".<br /><br />"+"You can reopen this group in IBuy tab in Birthday+ gadget."+"</p>";
+        }
+        else
+        {
             message+="<p style='line-height: 150%;'>You are participating in the group that wants to buy a "+group.getItemName()+" for "+group.getUserName()+" .<br /><br /> "+buyerName+" reopened this group and here is a short message from  "+buyerName.split(" ")[0]+": "+"</p>";
+            buyerMessage+="<p style='line-height: 150%;'>You have reopened the group that wants to buy a "+group.getItemName()+" for "+group.getUserName()+" .</p>";
+
+        }
+        
+       
 
         message+=htmlMessage;
        
         message+=htmlTable;
         message+="</body>";
         
+        buyerMessage+=htmlTable;
+        buyerMessage+="</body>";
+        
         Address[]  replyTo = {buyerAddress};
         
       
         
         try {
-			sendMails(new InternetAddress(emailAddress, "Birthday+") ,replyTo,addresses,replyTo,"A present for "+group.getUserName()+"'s "+group.getEventName(),message);
+        	if(group.getParticipators().size()>1)
+			   sendMails(new InternetAddress(emailAddress, "Birthday+") ,replyTo,addresses,null,"A present for "+group.getUserName()+"'s "+group.getEventName(),message);
+		} catch (UnsupportedEncodingException e) {
+			log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
+			throw new EmailException(" A problem occured while sending an email");
+		}
+		
+		try{
+			sendMails(new InternetAddress(emailAddress, "Birthday+"),null,replyTo,null,"A present for "+group.getUserName()+"'s "+group.getEventName(),buyerMessage );
 		} catch (UnsupportedEncodingException e) {
 			log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
 			throw new EmailException(" A problem occured while sending an email");
@@ -172,11 +194,16 @@ public class SendEmail {
 		        
 		        Message msg = new MimeMessage(session);
 		        msg.setFrom(from);
+		        
 		        if(replyTo!=null)
 		           msg.setReplyTo(replyTo);
+		        
 		        msg.addRecipients(Message.RecipientType.TO, recipients);
-		        if(sendCopyTo!=null)
+		        
+		        if(sendCopyTo!=null){
+		        	log.info("send copy to null");
 		           msg.addRecipients(Message.RecipientType.CC,sendCopyTo);
+		        }
 		        msg.setSubject(subject);
 		        
 		        Multipart mp = new MimeMultipart();
