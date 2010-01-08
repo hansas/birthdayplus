@@ -30,7 +30,8 @@ function compose() {
 </script>
 
 <center>
-<button onclick="compose()">Compose Event</button>
+<p>Share your events through Birthday+ gadget.</br>By clicking on Create Event button, your event will be added to the gagdet. </p>
+<button onclick="compose()">Create Event</button>
 </center>
 
 </body>
