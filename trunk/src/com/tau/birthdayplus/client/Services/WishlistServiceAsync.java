@@ -82,7 +82,7 @@ public interface WishlistServiceAsync {
 	RequestBuilder getLastItemsForUser(String myUserId, String anotherUserId,
 			AsyncCallback<ArrayList<WishlistItemPolaniData>> callback);
 
-	void getChatMessages(String itemId,
+	RequestBuilder getChatMessages(String itemId,
 			AsyncCallback<ArrayList<ChatMessageData>> callback);
 
 	
