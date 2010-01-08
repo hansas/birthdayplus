@@ -1,5 +1,6 @@
 .gwt-TabPanelBottom {
-padding:1px;
+padding: 1px;
+width: 98%;
 }
 
 .gwt-TextBox {
@@ -66,9 +67,11 @@ cursor: hand;
 
 .messagePanel{
 width : 100%;
-height : 24px;
-border:1px solid #FFCC35 ;
-padding:0px; 
+						/*
+						height : 24px;
+						border:1px solid #FFCC35 ;
+						padding:0px;
+						*/ 
 }
 
 
