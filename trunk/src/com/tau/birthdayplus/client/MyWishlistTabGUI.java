@@ -41,7 +41,6 @@ public class MyWishlistTabGUI {
 	private ScrollPanel wishlistScrollPanel;
 	private ItemDialogBox addItemBox;
     private Boolean addItem;
-    private MessagePanel messages;
     
     
     private enum Actions {
@@ -100,7 +99,7 @@ public class MyWishlistTabGUI {
 	//	buildAddItemBox();
 		addItemBox = new ItemDialogBox();   
 		
-		 messages = new MessagePanel(25000,false);
+	
 	
 		
 	}
@@ -269,20 +268,22 @@ public class MyWishlistTabGUI {
 	}
 	
 	public void service_eventGetWishlistFailed(Throwable caught){
-	   messages.setText("GetWishlistFailed"+caught.getMessage());
+		this.wishTable.clear(true);
+        wishTable.resizeRows(0);
+	   entryPoint.messages.setText("GetWishlistFailed"+caught.getMessage());
 
 	}
 	
 	public void service_eventCreateWishlistItemFailed(Throwable caught){
-	   messages.setText("CreateWishlistItemFailed"+caught.getMessage());
+	   entryPoint.messages.setText("CreateWishlistItemFailed"+caught.getMessage());
 	}
 	
 	public void service_eventUpdateWishlistItemFailed(Throwable caught){
-		messages.setText("UpdateWishlistItemFailed"+caught.getMessage());
+		entryPoint.messages.setText("UpdateWishlistItemFailed"+caught.getMessage());
 	}
 	
 	public void service_deleteWishlistItemFailed(Throwable caught){
-	    messages.setText("WishlistItemFailed"+caught.getMessage());
+	    entryPoint.messages.setText("WishlistItemFailed"+caught.getMessage());
 	}
 	
 	

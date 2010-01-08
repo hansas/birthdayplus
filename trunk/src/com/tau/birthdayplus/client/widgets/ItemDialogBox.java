@@ -145,7 +145,7 @@ public class ItemDialogBox extends DialogBox{
         
      //   formTable.setWidget(4, 0, updateButton);
         formTable.setWidget(4, 0, boxButton);
-        
+        formTable.getFlexCellFormatter().setColSpan(4, 0, 2);
         formTable.setWidget(4, 2, cancelButton);
        
     }

@@ -35,7 +35,7 @@ public class MoneyDialogBox extends DialogBox {
 	
 		moneyVerticalPanel  = new VerticalPanel();
 		add(moneyVerticalPanel);
-		moneyVerticalPanel.setWidth("220px");
+		moneyVerticalPanel.setWidth("240px");
 	
 		
 		helpMessage = new HTML(help);

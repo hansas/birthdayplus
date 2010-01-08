@@ -73,7 +73,7 @@ public class EventTabGUI {
 	
 	private EventDialogBox eventDialogBox;
     private Boolean addEvent;
-    private MessagePanel messages;
+
 
     
    
@@ -126,13 +126,7 @@ public class EventTabGUI {
 		eventPanel.setStyleName("Panel");
 	//	eventPanel.setSize("100%", "350px");
 		
-	//	Command remindMeCommand = new Command(){
-	//		public void execute() {
-	//			gui_eventGoogleButtonClicked();
-	//	      }
-	//	    };
-		
-	//	eventPanel.addMenuItem("Remind Me",remindMeCommand).setTitle("Add event reminder to your Google Calendar by choosing the event and clicking on this button");
+	
 		
 		Command addEventCommand = new Command() {
 			public void execute() {
@@ -166,7 +160,6 @@ public class EventTabGUI {
 	    wishlistFriendGUI.init();
 		wishlistFriendGUI.wireWishlistFriendGUIEvents();
 		
-		 messages = new MessagePanel(25000,false);
 		 
 		
 	
@@ -397,20 +390,21 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	}
 	
 	public void service_eventGetEventsFailed(Throwable caught) {
-		
-		messages.setText("GetEventsFailed"+caught.getMessage());
+		this.eventTable.clear(true);
+		eventTable.resizeRows(0);
+		entryPoint.messages.setText("GetEventsFailed"+caught.getMessage());
 	}
 	
 	public void service_eventCreateEventFailed(Throwable caught) {
-		messages.setText("CreateEventFAiled"+caught.getMessage());
+		entryPoint.messages.setText("CreateEventFAiled"+caught.getMessage());
 	}
 
 	public void service_eventUpdateEventFailed(Throwable caught) {
-		messages.setText("UpdateEventFailed"+caught.getMessage());
+		entryPoint.messages.setText("UpdateEventFailed"+caught.getMessage());
 	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-		messages.setText("DeleteEventFailed"+caught.getMessage());
+		entryPoint.messages.setText("DeleteEventFailed"+caught.getMessage());
 	}
 	
 
