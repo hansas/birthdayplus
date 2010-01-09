@@ -122,6 +122,10 @@ public class DALWrapper {
 		pm.deletePersistent(p);
 	}
 	
+	public void cronDeleteEventAndUpdateRecurrent(ArrayList<WishlistItem> itemParticipatorDelete) throws UserException{
+		BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete,pm);
+	}
+	
 //	public void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{
 //		BusinessObjectDAL.sendEmailOpenGroup(itemId, userId, message, participatorsE, pm);
 //	}

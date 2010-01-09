@@ -151,8 +151,8 @@ public class EventManagement {
 	
 	public static void cronDeleteEventAndUpdateRecurrent() throws Exception{
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
-		BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete);
 		DALWrapper wrapper = new DALWrapper();
+		wrapper.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete);
 	    try{
 		    if (itemParticipatorDelete!=null){
 		    	for (WishlistItem item : itemParticipatorDelete){
