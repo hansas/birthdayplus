@@ -536,12 +536,14 @@ public class BusinessObjectDAL {
 		if (partisipators==null){
 			log.info("getBookedWishlistItems2: there is no partisipators");
 		}
-		for (Participator p : partisipators){
-			WishlistItem item = loadWishlistItem(KeyFactory.keyToString(p.getIdKey().getParent()),pm);
-			wishlistItems.add(item);
+		else{
+			for (Participator p : partisipators){
+				WishlistItem item = loadWishlistItem(KeyFactory.keyToString(p.getIdKey().getParent()),pm);
+				wishlistItems.add(item);
+			}
 		}
 		for (WishlistItem i : wishlistItems){
-			log.info(i.getItemName());
+			log.info("I participate in "+i.getItemName());
 		}
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
@@ -557,16 +559,14 @@ public class BusinessObjectDAL {
 			log.info("getBookedWishlistItems2: there is no buyers");
 		}
 		else{
+			Calendar cal = Calendar.getInstance();
 			for (WishlistItem buyer : buyers){
-				log.info(buyer.getItemName());
-			}
-		}
-		Calendar cal = Calendar.getInstance();
-		for (WishlistItem buyer : buyers){
-			Event e = pm.getObjectById(Event.class, buyer.getEventKey());
-			if (!wishlistItems.contains(buyer)){
-				if (!buyer.getIsDeleted()||(buyer.getIsDeleted()&&(e.getEventDate().getMonth()==cal.get(Calendar.MONTH)))){
-					wishlistItems.add(buyer);
+				log.info("I buy "+buyer.getItemName());
+				Event e = pm.getObjectById(Event.class, buyer.getEventKey());
+				if (!wishlistItems.contains(buyer)){
+					if (!buyer.getIsDeleted()||(buyer.getIsDeleted()&&(e.getEventDate().getMonth()==cal.get(Calendar.MONTH)))){
+						wishlistItems.add(buyer);
+					}
 				}
 			}
 		}

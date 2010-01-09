@@ -153,9 +153,11 @@ public class WishlistManagement {
 	public static ArrayList<WishlistItemNewData> getBookedWishlistItemNewData(List<WishlistItem> itemList,
 			DALWrapper wrapper) throws UserNotFoundException{
 		ArrayList<WishlistItemNewData> itemDataList = new ArrayList<WishlistItemNewData>();
-		for (WishlistItem item : itemList){
-			Guest guest = wrapper.getGuestByKey(item.getKey().getParent());
-			itemDataList.add(itemToItemNewData(item,guest,wrapper));
+		if (itemList!=null){
+			for (WishlistItem item : itemList){
+				Guest guest = wrapper.getGuestByKey(item.getKey().getParent());
+				itemDataList.add(itemToItemNewData(item,guest,wrapper));
+			}
 		}
 		return itemDataList;
 	}
