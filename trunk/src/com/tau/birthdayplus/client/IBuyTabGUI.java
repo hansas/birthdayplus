@@ -189,7 +189,7 @@ public class IBuyTabGUI {
 		iBuyTableHeader.setCellSpacing(0);
 	//	iBuyTableHeader.setSize("100%", "25px");
 		
-		iBuyTableHeader.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(65, 80) +"px");
+		iBuyTableHeader.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(60, 80) +"px");
 	//	iBuyTableHeader.getColumnFormatter().setWidth(0, "150px");
 				
 		iBuyTableHeader.setText(0, 0, "What");
@@ -209,7 +209,7 @@ public class IBuyTabGUI {
 		wishTable.setCellSpacing(0);
 	//	wishTable.setWidth("100%");
 		
-		wishTable.getColumnFormatter().setWidth(0,  StaticFunctions.getPercentWidthPixels(65, 80) +"px");
+		wishTable.getColumnFormatter().setWidth(0,  StaticFunctions.getPercentWidthPixels(60, 80) +"px");
 		wishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(30, 80) +"px");
 	//	wishTable.getColumnFormatter().setWidth(1, "80px");
 		wishTable.getColumnFormatter().setWidth(UPDATE_LINK, "20px");
@@ -390,7 +390,7 @@ public class IBuyTabGUI {
 	        	else{
 	        		Anchor link;
 	        		if((item.getThumbnail()!= null) && (!item.getThumbnail().equals("")) ){
-	        			link = StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail());
+	        			link = StaticFunctions.getAnchorWithThumbnail(item.getLink(), what, item.getThumbnail());
 	        		//	TooltipListener listener  = new TooltipListener(
 	     		     //   		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
 	        		//	link.addMouseListener( listener);	
