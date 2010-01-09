@@ -58,6 +58,11 @@ public class SendEmail {
 		InternetAddress[] addresses = new InternetAddress[groupSize];
 		
 		int i=0;
+		
+		if(group.getParticipators().isEmpty()){
+			log.info("can't send email to empty group - cancel group)");
+			return;
+		}
 		try{
 		    for(ParticipatorEmail participator:group.getParticipators()){
             	String name = participator.getUserFirstName()+" "+participator.getUserLastName();
@@ -69,7 +74,8 @@ public class SendEmail {
 		}
         
         String message = "You are participating in the group that wants to buy a " +group.getItemName()+" for "+group.getUserName()+" .<br /><br />";
-        message+="The group has been canceled because "+group.getUserName()+"has deleted this "+cancel.toString()+".";
+        message+="The group has been canceled because "+group.getUserName()+" has deleted this "+cancel.toString()+".";
+        
         
         try {
 			sendMails(new InternetAddress(emailAddress, "Birthday+") ,null,addresses,null,"A present for "+group.getUserName()+"'s "+group.getEventName(),message);
@@ -89,6 +95,11 @@ public class SendEmail {
 		InternetAddress buyerAddress = new InternetAddress();
 		String[] names = new String[groupSize];
 		double[] participation = new double[groupSize]; 
+		
+		if(group.getParticipators().isEmpty()){
+			log.info("can't send email to empty group - cancel group)");
+			return;
+		}
     	
         String message = "<body style='font-size:13px;color:#222;font-family:Arial,Sans-serif'>";
         
