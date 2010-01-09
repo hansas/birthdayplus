@@ -78,19 +78,22 @@ public class AddItem implements EntryPoint{
 	    mainPanel = new VerticalPanel();
     	decPanel.setWidget(mainPanel);
     	
-    	mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+  //  	mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     	
 
     
     	
     	Image logo = new Image(GWT.getModuleBaseURL()+"Birthday+.gif");
 		mainPanel.add(logo);
+		mainPanel.setCellHorizontalAlignment(logo,HasHorizontalAlignment.ALIGN_CENTER);
+		mainPanel.setCellHeight(logo, "20%");
 	
     
 	    errorMsgLabel = new Label();
 	    mainPanel.add(errorMsgLabel);
 		errorMsgLabel.setStyleName("errorMessage");
 		errorMsgLabel.setVisible(false);
+		
 		
 		
 		if(thumbnail.equals("null"))
@@ -124,6 +127,7 @@ public class AddItem implements EntryPoint{
 	  private void buildForm(String link,String wish,String thumbnail,String price) {
 		  formTable = new FlexTable();
 	        mainPanel.add(formTable);
+	        mainPanel.setCellHeight(formTable, "75%");
 	        formTable.addStyleName("table");
 	        formTable.setCellPadding(10);
 	        formTable.setCellSpacing(0);
