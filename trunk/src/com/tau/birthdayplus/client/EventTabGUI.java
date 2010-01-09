@@ -45,6 +45,7 @@ import com.tau.birthdayplus.client.widgets.EventDialogBox;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.MessagePanel;
+import com.tau.birthdayplus.client.widgets.StaticFunctions;
 import com.tau.birthdayplus.dto.client.EventData;
 
 
@@ -75,9 +76,7 @@ public class EventTabGUI {
     private Boolean addEvent;
 
 
-    
    
-    
    
     
     //Data Model\\
@@ -112,27 +111,21 @@ public class EventTabGUI {
 
 	
 	public void init(){
-	//	eventList = new ArrayList<EventData>(); 
-
 		mainPanel = new FlowPanel();
 		entryPoint.tab.add(mainPanel, "Events");
 		mainPanel.setStyleName("mainPanel");
-	//	mainPanel.setSize("100%","350px");
 	
-		
-	//	eventPanel = new FlowPanel();
 		eventPanel = new FlowPanelMenuTitle();
 		mainPanel.add(eventPanel);
 		eventPanel.setStyleName("Panel");
-	//	eventPanel.setSize("100%", "350px");
 		
 	
-		
 		Command addEventCommand = new Command() {
 			public void execute() {
 				gui_eventAddEventButtonClicked();
 		      }
 		    };
+		    
 		eventPanel.addMenuItem("Add Event", addEventCommand).setTitle("Add your event");
 		
 		Command addCalendarGadget = new Command(){
@@ -142,13 +135,11 @@ public class EventTabGUI {
 			}
 		};
 		
-	
 	    eventPanel.addMenuItem("Events from Google Calendar",addCalendarGadget).setTitle("Add small gagdet to your Google Calendar and share you events from the calendar through Birthday+");
 	 
 		buildEventTable();
 		eventDialogBox = new EventDialogBox();
 	
-		//create DialogBox for user's friend wishlist
 		wishlistFriendGUI = new WishListFriendsGUI();
 	    wishlistFriendService = new WishListFriendsDelegate();
 	    
@@ -167,13 +158,15 @@ public class EventTabGUI {
 	}
 	
 	protected void showEventTab(){
-	
 		if (eventList == null)
 			 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
 		
 		wishlistFriendGUI.closeTab();
 		eventPanel.setVisible(true);
 	}
+	
+	
+	
 	
 	/*
 	* create flex table for wishlist items
@@ -186,7 +179,8 @@ public class EventTabGUI {
 		eventTableHeader.setCellSpacing(0);
 		
 		eventTableHeader.getColumnFormatter().setWidth(0, "22px");
-		eventTableHeader.getColumnFormatter().setWidth(1, "178px");
+		eventTableHeader.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(65,62)+"px");
+	//	eventTableHeader.getColumnFormatter().setWidth(1, "178px");
 			
 		eventTableHeader.setText(0, 0, "");
 		eventTableHeader.setText(0, 1, "Event");
@@ -207,8 +201,10 @@ public class EventTabGUI {
 		eventTable.setCellSpacing(0);
 		
 		eventTable.getColumnFormatter().setWidth(0, "22px");
-		eventTable.getColumnFormatter().setWidth(1, "178px");
-		eventTable.getColumnFormatter().setWidth(2, "40px");
+	//	eventTable.getColumnFormatter().setWidth(1, "178px");
+	//	eventTable.getColumnFormatter().setWidth(2, "40px");
+		eventTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(65,62)+"px");
+		eventTable.getColumnFormatter().setWidth(2, StaticFunctions.getPercentWidthPixels(20,62)+"px");
 		eventTable.getColumnFormatter().setWidth(UPDATE_LINK, "20px");
 		eventTable.getColumnFormatter().setWidth(DELETE_LINK, "20px");
 		
@@ -307,14 +303,11 @@ public class EventTabGUI {
 	   String title = "";
 	   switch(numEvents){
 	   case 0: title = "In this month there are no events";
-	           break;
-	           
+	           break;	           
 	   case 1: title = "In this month there is one event";
-	           break;
-	           
+	           break;	           
 	   default : title = "In this month there are "+numEvents+" events"; 
-	   }
-	   
+	   }   
 		eventPanel.setTitle(title);
 
 	   

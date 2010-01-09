@@ -10,6 +10,7 @@ import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
@@ -23,6 +24,7 @@ import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.ItemDialogBox;
 import com.tau.birthdayplus.client.widgets.MessagePanel;
+import com.tau.birthdayplus.client.widgets.StaticFunctions;
 
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
@@ -78,8 +80,6 @@ public class MyWishlistTabGUI {
 		wishlistPanel = new FlowPanelMenuTitle();
 		entryPoint.tab.add(wishlistPanel, "My Wishlist");
 		wishlistPanel.addStyleName("mainPanel");
-	//	wishlistPanel.setSize("100%", "350px");
-		
 		
 		Command addItemCommand = new Command(){
 			public void execute() {
@@ -93,10 +93,8 @@ public class MyWishlistTabGUI {
 		 public void execute() {
 			}		
 		}).setTitle("Add this button to the bookmarks and add items to the gadget from any site by clicking on this button from the site.");
-	   
-		
+	   	
 		buildWishlistTable();
-	//	buildAddItemBox();
 		addItemBox = new ItemDialogBox();   
 		
 	
@@ -121,8 +119,10 @@ public class MyWishlistTabGUI {
 		wishTableHeader.setCellSpacing(0);
 	//	wishTableHeader.setSize("100%", "25px");
 		
-		wishTableHeader.getColumnFormatter().setWidth(0, "100px");
-		wishTableHeader.getColumnFormatter().setWidth(1, "55px");
+		wishTableHeader.getColumnFormatter().setWidth(0,StaticFunctions.getPercentWidthPixels(35, 40) +"px");
+		wishTableHeader.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40)+"px");
+	//	wishTableHeader.getColumnFormatter().setWidth(0, "100px");
+	//	wishTableHeader.getColumnFormatter().setWidth(1, "55px");
 	
 				
 		wishTableHeader.setWidget(0, 0, new Label("Item"));
@@ -142,9 +142,9 @@ public class MyWishlistTabGUI {
 		wishTable.setCellSpacing(0);
 	//	wishTable.setWidth("100%");
 		
-		wishTable.getColumnFormatter().setWidth(0, "100px");
-		wishTable.getColumnFormatter().setWidth(1, "55px");
-		wishTable.getColumnFormatter().setWidth(2, "80px");
+		wishTable.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(35, 40) +"px");
+		wishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40)+"px");
+		wishTable.getColumnFormatter().setWidth(2, StaticFunctions.getPercentWidthPixels(30, 40)+"px");
 		wishTable.getColumnFormatter().setWidth(4,"20px");
 		wishTable.getColumnFormatter().setWidth(5,"20px");
 		
@@ -188,7 +188,6 @@ public class MyWishlistTabGUI {
      * on click on add item
      */
     public void gui_eventAddItemButtonClicked() {
-       // this.addItemButton.setVisible(false);
         this.addItem = true;
         loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
     }
@@ -214,11 +213,12 @@ public class MyWishlistTabGUI {
 	        		if((item.getThumbnail() == null) || (item.getThumbnail().equals(""))  )
 	        	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
 	        		else{
-	        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
-	        			wishTable.setWidget(row,0,anchor);
-	        			TooltipListener listener  = new TooltipListener(
-	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
-	        			anchor.addMouseListener( listener);
+	        		//	Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
+	        		
+	        			wishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
+	        		//	TooltipListener listener  = new TooltipListener(
+	     		   ///     		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
+	        		//	anchor.addMouseListener( listener);
 	        		}
 	        	    	
 	        	}
