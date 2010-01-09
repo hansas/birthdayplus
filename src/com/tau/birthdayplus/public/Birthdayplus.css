@@ -1,8 +1,9 @@
 .gwt-TabPanelBottom {
 padding: 0px;
-width: 100%;
-border: medium none;
-
+													/*
+													width: 100%;
+													border: medium none;
+													*/
 }
 
 													/*
@@ -276,13 +277,13 @@ margin-right: auto;
 cursor: hand;
 cursor: pointer;
                                           /* border: 1px solid #999; */
-background-color: white;
+background-color: #D0E4F6;
 padding: 2px 10px;
 vertical-align:middle;
 }
 
 .buttonPanel .gwt-MenuItem-selected {
-background-color: #D0E4F6 ;
+background-color: white ;
 }
 
 .gwt-MenuBar-horizontal {
