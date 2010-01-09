@@ -25,6 +25,8 @@ import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.ListItem;
 import com.tau.birthdayplus.client.widgets.MessagePanel;
+import com.tau.birthdayplus.client.widgets.ParticipatorList;
+import com.tau.birthdayplus.client.widgets.StaticFunctions;
 
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
@@ -166,9 +168,10 @@ public class WishListFriendsGUI  {
 	//	headerFriendWishTable.setSize("100%", "25px");
 		 
 	
-		
-		headerFriendWishTable.getColumnFormatter().setWidth(0, "100px");
-		headerFriendWishTable.getColumnFormatter().setWidth(1, "55px");
+		headerFriendWishTable.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(35, 40) +"px");
+		headerFriendWishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40) +"px");
+	//	headerFriendWishTable.getColumnFormatter().setWidth(0, "100px");
+	//	headerFriendWishTable.getColumnFormatter().setWidth(1, "55px");
 	//	headerFriendWishTable.getColumnFormatter().setWidth(2, "80px");
 	
 		
@@ -190,9 +193,10 @@ public class WishListFriendsGUI  {
 		friendWishTable.addStyleName("Table");
 		friendWishTable.setCellSpacing(0);
 		
-		friendWishTable.getColumnFormatter().setWidth(0, "100px");
-		friendWishTable.getColumnFormatter().setWidth(1, "55px");
-		friendWishTable.getColumnFormatter().setWidth(2, "80px");
+		friendWishTable.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(35, 40) +"px");
+		friendWishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40) +"px");
+		friendWishTable.getColumnFormatter().setWidth(2,  StaticFunctions.getPercentWidthPixels(30, 40) +"px");
+//		friendWishTable.getColumnFormatter().setWidth(2, "80px");
 		friendWishTable.getColumnFormatter().setWidth(BUY_LINK, "20px");
 		friendWishTable.getColumnFormatter().setWidth(GROUP_BUY_LINK, "20px");
 		
@@ -304,11 +308,11 @@ public class WishListFriendsGUI  {
         		if((item.getThumbnail() == null)||(item.getThumbnail().equals(""))  )
             		friendWishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
         		else{
-        			Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
-        			friendWishTable.setWidget(row,0,anchor);
-        			TooltipListener listener  = new TooltipListener(
-     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color: #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
-        			anchor.addMouseListener( listener);
+        		//	Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
+        			friendWishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
+        		//	TooltipListener listener  = new TooltipListener(
+     		    //    		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color: #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
+        		//	anchor.addMouseListener( listener);
         		}
         	}
         	//priority
@@ -329,23 +333,26 @@ public class WishListFriendsGUI  {
 			      groupImage.setPixelSize(16, 16);
     	          friendWishTable.setWidget(row ,GROUP_BUY_LINK, groupImage);
             	}else{
-        	      Integer sum = 0;
+        	    //  Integer sum = 0;
         	      Boolean userInGroup = false;
-	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 10px 1px 10px !important;margin:0px !important; list-style-position:inside;'>";
+	    		//	 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 10px 1px 10px !important;margin:0px !important; list-style-position:inside;'>";
         	      
-        	      for (ParticipatorData data : item.getParticipators()){
-        	    	  sum += data.getMoney();
-        		      if(parent.entryPoint.userId.equals(data.getUserId())){
-        			     userInGroup = true;
-		        		 html+="<LI style='color:#224499'>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+shortMoneyFormat.format(data.getMoney());
-        		      }else
-        		         html+="<LI>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+shortMoneyFormat.format(data.getMoney());
-        	      }
-	    	      html+="</UL></div>";
-        	      Label price = new Label (shortMoneyFormat.format(sum) +" / "+shortMoneyFormat.format(item.getPrice()));
+        	  //    for (ParticipatorData data : item.getParticipators()){
+        	   // 	  sum += data.getMoney();
+        		//      if(parent.entryPoint.userId.equals(data.getUserId())){
+        		//	     userInGroup = true;
+		       // 		 html+="<LI style='color:#224499'>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+shortMoneyFormat.format(data.getMoney());
+        		//      }else
+        		//         html+="<LI>"+data.getUserFirstName()+" "+data.getUserLastName()+" - "+shortMoneyFormat.format(data.getMoney());
+        	   //   }
+	    	  //    html+="</UL></div>";
+        	     ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), parent.entryPoint.userId);
+        	     if(list.getUserPart() > 0)
+        	    	 userInGroup = true;
+        	      Label price = new Label (shortMoneyFormat.format(list.getTotalAmount()) +" / "+shortMoneyFormat.format(item.getPrice()));
           	      friendWishTable.setWidget(row, 2,price );
           	      
-          	      TooltipListener listener  = new TooltipListener(html, 10000 ,false);
+          	      TooltipListener listener  = new TooltipListener(list.getHtmlList(), 10000 ,false);
           	      price.addMouseListener(listener);
 
         	   

@@ -47,6 +47,8 @@ import com.tau.birthdayplus.client.widgets.EmailDialogBox;
 import com.tau.birthdayplus.client.widgets.GroupEventHandler;
 import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
+import com.tau.birthdayplus.client.widgets.ParticipatorList;
+import com.tau.birthdayplus.client.widgets.StaticFunctions;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
 import com.tau.birthdayplus.client.widgets.UnorderedList;
 import com.tau.birthdayplus.client.widgets.EmailDialogBox.Status;
@@ -187,8 +189,8 @@ public class IBuyTabGUI {
 		iBuyTableHeader.setCellSpacing(0);
 	//	iBuyTableHeader.setSize("100%", "25px");
 		
-		
-		iBuyTableHeader.getColumnFormatter().setWidth(0, "150px");
+		iBuyTableHeader.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(65, 80) +"px");
+	//	iBuyTableHeader.getColumnFormatter().setWidth(0, "150px");
 				
 		iBuyTableHeader.setText(0, 0, "What");
 		iBuyTableHeader.setText(0, 1, "Price");
@@ -207,8 +209,9 @@ public class IBuyTabGUI {
 		wishTable.setCellSpacing(0);
 	//	wishTable.setWidth("100%");
 		
-		wishTable.getColumnFormatter().setWidth(0, "150px");
-		wishTable.getColumnFormatter().setWidth(1, "80px");
+		wishTable.getColumnFormatter().setWidth(0,  StaticFunctions.getPercentWidthPixels(65, 80) +"px");
+		wishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(30, 80) +"px");
+	//	wishTable.getColumnFormatter().setWidth(1, "80px");
 		wishTable.getColumnFormatter().setWidth(UPDATE_LINK, "20px");
 		wishTable.getColumnFormatter().setWidth(CANCEL_LINK, "20px");
 		wishTable.getColumnFormatter().setWidth(BUY_LINK, "20px");
@@ -342,7 +345,6 @@ public class IBuyTabGUI {
 	                                 this.wishlistService.deleteParticipator(item.getWishlistItemId(), entryPoint.userId);
 	                               else
 	                               { if(item.getBuyer().getUserId().equals(entryPoint.userId)){
-	                            	//   closeGroup = false;
 	                            	   groupStatus = Status.REOPEN_GROUP;
 	                            	   showTextArea(item);
 	                               }
@@ -351,7 +353,6 @@ public class IBuyTabGUI {
 	                            break;
 	                            
 	        case BUY_LINK     : if(item.getIsActive()){
-	        	                //   closeGroup = true;
 	        	                   groupStatus = Status.CLOSE_GROUP;
 	        	                   showTextArea(item);
 	                             }
@@ -387,14 +388,15 @@ public class IBuyTabGUI {
 	        		wishTable.setWidget(row, 0,link);
 	        	}
 	        	else{
-	        		Anchor link = new Anchor(what,item.getLink(),"_blank");
-	        		link.setTitle(dateFormatter.format(item.getEventDate()));
+	        		Anchor link;
 	        		if((item.getThumbnail()!= null) && (!item.getThumbnail().equals("")) ){
-	        			TooltipListener listener  = new TooltipListener(
-	     		        		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
-	        			link.addMouseListener( listener);	
-	        		}
-	        		
+	        			link = StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail());
+	        		//	TooltipListener listener  = new TooltipListener(
+	     		     //   		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
+	        		//	link.addMouseListener( listener);	
+	        		}else
+	        			link = new Anchor(what,item.getLink(),"_blank");
+	        		link.setTitle(dateFormatter.format(item.getEventDate()));
 	        		wishTable.setWidget(row, 0,link);
 	        	}
 	        
@@ -408,6 +410,7 @@ public class IBuyTabGUI {
 		    	    wishTable.setWidget(row, CANCEL_LINK, cancelImage); 
 		
 	    	    }else{
+	    	    	/*
 	    	    	Integer sum = 0;
 	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 10px 1px 10px !important;margin:0px !important; list-style-position:inside;'>";
 	    	    	for(ParticipatorData user : item.getParticipators()){
@@ -422,10 +425,13 @@ public class IBuyTabGUI {
 
 	    	    	}
 	    	    	html+="</UL></div>";
-	    	    	Label priceLabel = new Label(shortMoneyFormat.format(sum)+" / "+shortMoneyFormat.format(item.getPrice()));
+	    	    	*/
+	    	    	ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), entryPoint.userId);
+	    	    	countMoney+=list.getUserPart();
+	    	    	Label priceLabel = new Label(shortMoneyFormat.format(list.getTotalAmount())+" / "+shortMoneyFormat.format(item.getPrice()));
 	    	        wishTable.setWidget(row, 1,priceLabel );
 	    	        
-	    	        TooltipListener listener  = new TooltipListener(html, 10000 ,false);
+	    	        TooltipListener listener  = new TooltipListener(list.getHtmlList(), 10000 ,false);
 	          	    priceLabel.addMouseListener(listener);
 	          	    
 	    	        if(item.getIsActive()){
@@ -461,6 +467,7 @@ public class IBuyTabGUI {
 		private void closeChat(){
 			if(mainChatPanel.isVisible()){
 				mainChatPanel.setVisible(false);
+				removeAllRows(chatTable);
 			}
 		}
 		
