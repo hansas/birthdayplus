@@ -276,8 +276,8 @@ public class BusinessObjectDAL {
 		return result;
 	}
 	
-	public static void cronDeleteEventAndUpdateRecurrent(ArrayList<WishlistItem> itemParticipatorDelete) throws UserException{
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public static void cronDeleteEventAndUpdateRecurrent(ArrayList<WishlistItem> itemParticipatorDelete,PersistenceManager pm) throws UserException{
+		//PersistenceManager pm = PMF.get().getPersistenceManager();
 		List<Guest> guests = new ArrayList<Guest>();
 		Query query = pm.newQuery(Guest.class);
 		guests = (List<Guest>)query.execute();
