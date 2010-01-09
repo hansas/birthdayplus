@@ -586,10 +586,19 @@ public class BusinessObjectDAL {
 		for(Event e : myEvents){
 			events.put(e.getKey(),e);
 		}
+		Calendar cal = Calendar.getInstance();
 		for (WishlistItem item : myItems){
 			if (item.getBuyerKey()!=null){
 				if (item.getBuyerKey().equals(buyer)){
-					addThreeSortedItems(item,events.get(item.getEventKey()),item.getPrice(), results);
+					Date eventDate = events.get(item.getEventKey()).getEventDate();
+					Calendar eDate = Calendar.getInstance();
+					eDate.clear();
+					eDate.set(Calendar.YEAR, eventDate.getYear()+1900);
+					eDate.set(Calendar.MONTH, eventDate.getMonth());
+					eDate.set(Calendar.DATE, eventDate.getDate());
+					if (cal.after(eDate)){
+						addThreeSortedItems(item,events.get(item.getEventKey()),item.getPrice(), results);
+					}
 				}
 				else{
 					List<Participator> participators = item.getParticipators();
