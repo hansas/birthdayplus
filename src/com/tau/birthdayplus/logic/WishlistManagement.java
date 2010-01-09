@@ -58,7 +58,7 @@ public class WishlistManagement {
 				}
 		};
 	
-	public static void createWishlistItem(WishlistItemData item) throws UserNotFoundException {
+	public static void createWishlistItem(WishlistItemData item) throws UserNotFoundException, UserException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			BusinessObjectDAL.createWishlistItem(item, wrapper);
@@ -68,7 +68,7 @@ public class WishlistManagement {
 		}
 	}
 	
-	public static void createWishlistItem(WishlistItemData item,String googleId) throws UserNotFoundException{
+	public static void createWishlistItem(WishlistItemData item,String googleId) throws UserNotFoundException, UserException{
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			Guest guest = wrapper.loadGuestByGoogleId(googleId);
@@ -123,7 +123,7 @@ public class WishlistManagement {
 		return itemDataList;
 	}
 	
-	public static WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException {
+	public static WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException, UserException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			WishlistItem item = wrapper.getWishlistItem(itemId);
@@ -139,7 +139,7 @@ public class WishlistManagement {
 		return new WishlistItemData(KeyFactory.keyToString(item.getKey()),userId,item.getItemName(),item.getPriority(),item.getLink(),item.getPrice(),item.getIsActive(),item.getThumbnail(),item.getIsDeleted());
 	}
 	
-	public static ArrayList<WishlistItemData> getWishlist(String userId) throws UserNotFoundException {
+	public static ArrayList<WishlistItemData> getWishlist(String userId) throws UserNotFoundException, UserException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			List<WishlistItem> itemList = wrapper.getWishlist(userId);
@@ -231,7 +231,7 @@ public class WishlistManagement {
 //	}
 	
 	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId)
-	throws UserNotFoundException{
+	throws UserNotFoundException, UserException{
 	//	Cache cache = Caching.getBookedWishlistItemsCache();
 	//	String key = Caching.generateBookedWishlistItemsId(userId);
 		ArrayList<WishlistItemNewData> result = null;//(ArrayList<WishlistItemNewData>)cache.get(key);
@@ -282,7 +282,7 @@ public class WishlistManagement {
 		BusinessObjectDAL.bookItemForUser(wishlistItemId,eventId,userId);
 	}
 	
-	public static void cancelBookItemForUser(String wishlistItemId, String userId) {
+	public static void cancelBookItemForUser(String wishlistItemId, String userId) throws UserException {
 		BusinessObjectDAL.cancelBookItemForUser(wishlistItemId, userId);
 	}
 	
@@ -354,7 +354,7 @@ public class WishlistManagement {
 		return new ChatMessageData(guest.getId(),guest.getFirstName(),message.getTimeStamp(),message.getMessage());
 	}
 	
-	public static ArrayList<ChatMessageData> getChatMessagesByItem(String itemId) throws UserNotFoundException{
+	public static ArrayList<ChatMessageData> getChatMessagesByItem(String itemId) throws UserNotFoundException, UserException{
 		ArrayList<ChatMessageData> messagesD = new ArrayList<ChatMessageData>();
 		DALWrapper wrapper = new DALWrapper();
 		try{
@@ -380,21 +380,21 @@ public class WishlistManagement {
 		return new ParticipatorData(participator.getId(),guest.getFirstName(),guest.getLastName(),participator.getMoney());
 	}
 	
-	public static void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) throws UserNotFoundException {
+	public static void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) throws UserNotFoundException, UserException {
 		BusinessObjectDAL.addParticipator(wishlistItemId,eventId,participator);
 	}
 	
-	public static void updateParticipator(String wishlistItemId,ParticipatorData participator){
+	public static void updateParticipator(String wishlistItemId,ParticipatorData participator) throws UserException{
 		BusinessObjectDAL.updateParticipator(wishlistItemId,participator);
 	}
 	
-	public static void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException {
+	public static void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException, UserException {
 		BusinessObjectDAL.deleteParticipator(wishlistItemId, userId);
 	}
 	
 	
 	
-	public static void addChatMessageData(String itemId, ChatMessageData messageData){
+	public static void addChatMessageData(String itemId, ChatMessageData messageData) throws UserException{
 		ChatMessage message = new ChatMessage(messageData.getUserId(),messageData.getTimeStamp(),messageData.getMesssage());
 		BusinessObjectDAL.addChatMessageData(itemId, message);
 	}

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.gwt.user.server.rpc.RPCServletUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.tau.birthdayplus.client.Services.ProfileService;
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dto.client.GuestData;
 import com.tau.birthdayplus.logic.UserManagement;
@@ -37,7 +38,7 @@ ProfileService {
 		return UserManagement.loadGuestDataCached(userId);
 	}
 
-	public void updateProfile(GuestData profile) throws UserNotFoundException {
+	public void updateProfile(GuestData profile) throws UserNotFoundException, UserException {
 		UserManagement.updateProfile(profile);
 	}
 	

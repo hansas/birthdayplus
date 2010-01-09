@@ -23,7 +23,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * creates new item for the user
 	 */
-	void createWishlistItem(WishlistItemData item) throws UserNotFoundException;
+	void createWishlistItem(WishlistItemData item) throws UserNotFoundException, UserException;
 	/*
 	 * update the item, don't update isActive
 	 * GUI-user can update only his wishlist
@@ -37,7 +37,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * return user's wishlist
 	 */
-	ArrayList<WishlistItemData> getMyWishlist(String userId) throws UserNotFoundException;
+	ArrayList<WishlistItemData> getMyWishlist(String userId) throws UserNotFoundException, UserException;
 	/////////////////////////////////////////////////////////////////
 	/*
 	 * user will buy this item
@@ -53,7 +53,7 @@ public interface WishlistService extends RemoteService{
 	 * "I buy" list 
 	 * check that in db "buyer" for this item has userId == userId(?)
 	 */
-	void cancelBookItemForUser(String wishlistItemId,String userId);
+	void cancelBookItemForUser(String wishlistItemId,String userId) throws UserException;
 	/*
 	 *  return wishlist for this user , for the event
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
@@ -69,19 +69,19 @@ public interface WishlistService extends RemoteService{
 	 * check that user doesn't participate already in this group
 	 * add this item to user's "I buy " items
 	 */
-	void addParticipator(String wishlistItemId,String eventId,ParticipatorData participator) throws UserNotFoundException;
+	void addParticipator(String wishlistItemId,String eventId,ParticipatorData participator) throws UserNotFoundException, UserException;
 	/*
 	 * update participator (update money only)
 	 * Server - check if the item is active (group is not closed yet) 
 	 */
-	void updateParticipator(String wishlistItemId,ParticipatorData participator);
+	void updateParticipator(String wishlistItemId,ParticipatorData participator) throws UserException;
 	
-	void deleteParticipator(String wishlistItemId ,String userId) throws UserNotFoundException;
+	void deleteParticipator(String wishlistItemId ,String userId) throws UserNotFoundException, UserException;
 	
 	/*
 	 * return all the items this user has booked
 	 */
-	ArrayList<WishlistItemNewData> getBookedWishlistItems(String usetId) throws UserNotFoundException;
+	ArrayList<WishlistItemNewData> getBookedWishlistItems(String usetId) throws UserNotFoundException, UserException;
 	/*
 	 * remove this item from this user's "I buy " list , check if item isActive == false
 	 * (won't remove item with open group)
@@ -108,11 +108,11 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * add new message to the chat 
 	 */
-	void addChatMessageData(String itemId,ChatMessageData message);
+	void addChatMessageData(String itemId,ChatMessageData message) throws UserException;
 	/*
 	 * return item by id
 	 */
-	WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException;
+	WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException, UserException;
 	/*
 	 * Three last items that this person bought for me
 	 * 
@@ -121,7 +121,7 @@ public interface WishlistService extends RemoteService{
 	/*
 	 * get chat messages for the item
 	 */
-	ArrayList<ChatMessageData> getChatMessages(String itemId) throws UserNotFoundException;
+	ArrayList<ChatMessageData> getChatMessages(String itemId) throws UserNotFoundException, UserException;
 	
 	
 

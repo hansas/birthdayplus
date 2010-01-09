@@ -24,7 +24,7 @@ public class Caching {
 		    try {
 		    	CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
 		        Map props = new HashMap();
-		        props.put(GCacheFactory.EXPIRATION_DELTA, 600);
+		        props.put(GCacheFactory.EXPIRATION_DELTA, 7200);
 		        guestCache = cacheFactory.createCache(props);
 		    }
 		    catch (Exception ex){

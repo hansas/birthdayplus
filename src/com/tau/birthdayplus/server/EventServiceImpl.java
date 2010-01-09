@@ -33,7 +33,7 @@ EventService {
 		
 	}
 
-	public void createEvent(EventData eventD) throws UserNotFoundException {
+	public void createEvent(EventData eventD) throws UserNotFoundException, UserException {
 		EventManagement.createEvent(eventD);
 	}
 	/*
@@ -48,7 +48,7 @@ EventService {
 	 * get events by user id
 	 * Server - events should be sorted by date
 	 */
-	public ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
+	public ArrayList<EventData> getEvents(ArrayList<String> UserIdList) throws UserException {
 		if(UserIdList==null)
 			throw new RuntimeException("empty key list");
 		return EventManagement.getEvents(UserIdList);
@@ -58,7 +58,7 @@ EventService {
 	 * update the event
 	 * Client - give only to owner to update event
 	 */
-	public void updateEvent(EventData eventD) {
+	public void updateEvent(EventData eventD) throws UserException {
 		EventManagement.updateEvent(eventD);
 		
 	}

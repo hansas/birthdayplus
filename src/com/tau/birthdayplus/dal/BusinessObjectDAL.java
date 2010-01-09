@@ -103,7 +103,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static Guest loadGuestByGmail(String gmail,PersistenceManager pm){
+	public static Guest loadGuestByGmail(String gmail,PersistenceManager pm) throws UserException{
 		List<Guest> guest = new ArrayList<Guest>();
 		try{
 			Query query = pm.newQuery(Guest.class);
@@ -112,7 +112,7 @@ public class BusinessObjectDAL {
 			guest =(List<Guest>)query.execute(gmail);
 			return guest.get(0);
 		} catch (Exception ex) {
-			throw new RuntimeException("error in loadGuestByGmail"+ex.getMessage());
+			throw new UserException(ex);
 		}
 	}
 
@@ -135,20 +135,20 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void updateGuest(GuestData guestData) throws UserNotFoundException {
+	public static void updateGuest(GuestData guestData) throws UserNotFoundException, UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Guest guest = loadGuest(guestData.getId(), pm);
 		guest.copyFromGuestData(guestData);
 		try {
 			pm.makePersistent(guest);
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: updateGuest");
+			throw new UserException(ex);
 		} finally {
 			pm.close();
 		}
 	}
 
-	public static void updateEvent(EventData eventD) {
+	public static void updateEvent(EventData eventD) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
@@ -158,7 +158,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(e);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: updateEvent");
+			throw new UserException(ex);
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -317,13 +317,13 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void createEvent(EventData eventD,DALWrapper wrapper) throws UserNotFoundException {
+	public static void createEvent(EventData eventD,DALWrapper wrapper) throws UserNotFoundException, UserException {
 		String userId = eventD.getUserId();
 		Guest user = wrapper.getGuestById(userId);
 		wrapper.newCreateEvent(eventD,user);
 	}
 		
-	public static void newCreateEvent(EventData eventD,Guest user,PersistenceManager pm){
+	public static void newCreateEvent(EventData eventD,Guest user,PersistenceManager pm) throws UserException{
 		Transaction tx = (Transaction) pm.currentTransaction();
 		Event event = new Event(eventD);
 		try {
@@ -334,7 +334,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(event);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: createEvent", ex);
+			throw new UserException(ex);
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -342,26 +342,26 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static Event loadEvent(String eventId, PersistenceManager pm) {
+	public static Event loadEvent(String eventId, PersistenceManager pm) throws UserException {
 		Event event = null;
 		try {
 			Key key = KeyFactory.stringToKey(eventId);
 			event = pm.getObjectById(Event.class, key);
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: loadEvent", ex);
+			throw new UserException(ex);
 		}
 		return event;
 	}
 
 	// Automatically open and close PMF
-	public static Event loadEvent(String eventId) {
+	public static Event loadEvent(String eventId) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Event event = loadEvent(eventId, pm);
 		pm.close();
 		return event;
 	}
 
-	public static List<Guest> getGuestsById(ArrayList<String> UserIdList,PersistenceManager pm) {
+	public static List<Guest> getGuestsById(ArrayList<String> UserIdList,PersistenceManager pm) throws UserException {
 		List<Guest> guests = new ArrayList<Guest>();
 		List<Key> keys = new ArrayList<Key>();
 		for (String userId : UserIdList) {
@@ -374,18 +374,18 @@ public class BusinessObjectDAL {
 			query.setFilter("idKey == :keyList");
 			guests = (List<Guest>) query.execute(keys);
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: getGuestsById", ex);
+			throw new UserException(ex);
 		}
 		return guests;
 	}
 
-	public static void createWishlistItem(WishlistItemData itemData,DALWrapper wrapper) throws UserNotFoundException {
+	public static void createWishlistItem(WishlistItemData itemData,DALWrapper wrapper) throws UserNotFoundException, UserException {
 		String userId = itemData.getUserId();
 		Guest user = wrapper.getGuestById(userId);
 		wrapper.newCreateWishlistItem(itemData,user);
 	}
 	
-	public static void newCreateWishlistItem(WishlistItemData itemData,Guest user,PersistenceManager pm){
+	public static void newCreateWishlistItem(WishlistItemData itemData,Guest user,PersistenceManager pm) throws UserException{
 		Transaction tx = (Transaction) pm.currentTransaction();
 		WishlistItem item = new WishlistItem(itemData);
 		try {
@@ -396,8 +396,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(item);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new RuntimeException(
-					"error in data base: createWishlistItem", ex);
+			throw new UserException(ex);
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -406,26 +405,26 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static WishlistItem loadWishlistItem(String wishlistItemId, PersistenceManager pm) {
+	public static WishlistItem loadWishlistItem(String wishlistItemId, PersistenceManager pm) throws UserException {
 		WishlistItem item = null;
 		try {
 			Key key = KeyFactory.stringToKey(wishlistItemId);
 			item = pm.getObjectById(WishlistItem.class, key);
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: loadWishlistItem", ex);
+			throw new UserException(ex);
 		}
 		return item;
 	}
 
 	// Automatically open and close PMF
-	public static WishlistItem loadWishlistItem(String wishlistItemId) {
+	public static WishlistItem loadWishlistItem(String wishlistItemId) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		pm.close();
 		return item;
 	}	
 
-	public static WishlistItem updateWishlistItem(WishlistItemData itemD) {
+	public static WishlistItem updateWishlistItem(WishlistItemData itemD) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
@@ -437,7 +436,7 @@ public class BusinessObjectDAL {
 			tx.commit();
 			return item;
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: updateWishlistItem");
+			throw new UserException(ex);
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -490,7 +489,7 @@ public class BusinessObjectDAL {
 		return item;
 	}
 	
-	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) throws UserNotFoundException {
+	public static List<WishlistItem> getWishlist(String userId,PersistenceManager pm) throws UserNotFoundException, UserException {
 		List<WishlistItem> itemList = new ArrayList<WishlistItem>();
 		Guest user = BusinessObjectDAL.loadGuest(userId, pm);
 		try {
@@ -501,25 +500,25 @@ public class BusinessObjectDAL {
 				}
 			}
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: getWishlist");
+			throw new UserException(ex);
 		}
 		return itemList;
 	}
 	
-	public static List<WishlistItem> getWishlistItemById(List<Key> keys,PersistenceManager pm) {
+	public static List<WishlistItem> getWishlistItemById(List<Key> keys,PersistenceManager pm) throws UserException {
 		List<WishlistItem> items = new ArrayList<WishlistItem>();
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
 			query.setFilter("key == :keyList");
 			items = (List<WishlistItem>) query.execute(keys);
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: getWishlistItemById");
+			throw new UserException(ex);
 		}
 		return items;
 	}
 	
 	public static List<WishlistItem> getBookedWishlistItems2(String userId,PersistenceManager pm)
-	throws UserNotFoundException{
+	throws UserNotFoundException, UserException{
 		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
 		List<Participator> partisipators = new ArrayList<Participator>();
 		List<WishlistItem> buyers = new ArrayList<WishlistItem>();
@@ -552,7 +551,7 @@ public class BusinessObjectDAL {
 			buyers = (List<WishlistItem>) query.execute(g.getIdKey());
 		} catch (Exception ex) {
 			log.severe("Error in getBookedWishlistItems2's second query"+ex.getMessage());
-			throw new RuntimeException("error in data base: getBookedWishlistItems2");
+			throw new UserException(ex);
 		}
 		if (buyers==null){
 			log.info("getBookedWishlistItems2: there is no buyers");
@@ -654,7 +653,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void cancelBookItemForUser(String wishlistItemId, String userId) {
+	public static void cancelBookItemForUser(String wishlistItemId, String userId) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		Guest guest = pm.getObjectById(Guest.class, item.getBuyerKey());
@@ -669,7 +668,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new RuntimeException("error in data base: cancelBookItemForUser");
+				throw new UserException(ex);
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -749,7 +748,7 @@ public class BusinessObjectDAL {
 //		}
 //	}
 	
-	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor) throws EmailException{
+	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor) throws EmailException, UserException{
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
 		Event event = pm.getObjectById(Event.class,item.getEventKey());
@@ -857,7 +856,7 @@ public class BusinessObjectDAL {
 	}
 	
 	public static void addParticipator(String wishlistItemId, String eventId,
-			ParticipatorData participatorD) throws UserNotFoundException {
+			ParticipatorData participatorD) throws UserNotFoundException, UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();
@@ -883,7 +882,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(participator);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new RuntimeException("error in data base: addParticipator", ex);
+				throw new UserException(ex);
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -893,7 +892,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void updateParticipator(String wishlistItemId,ParticipatorData participator){
+	public static void updateParticipator(String wishlistItemId,ParticipatorData participator) throws UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();
@@ -911,7 +910,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new RuntimeException("error in data base: updateParticipator", ex);
+				throw new UserException(ex);
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -921,7 +920,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException {
+	public static void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException, UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();
@@ -943,7 +942,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new RuntimeException("error in data base: deleteParticipator", ex);
+				throw new UserException(ex);
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -953,7 +952,7 @@ public class BusinessObjectDAL {
 		}
 	}
 	
-	public static void addChatMessageData(String itemId, ChatMessage message){
+	public static void addChatMessageData(String itemId, ChatMessage message) throws UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		Transaction tx = (Transaction) pm.currentTransaction();
@@ -964,7 +963,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(item);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new RuntimeException("error in data base: addChatMessageData", ex);
+			throw new UserException(ex);
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();

@@ -16,6 +16,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.tau.birthdayplus.cache.Caching;
+import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dal.BusinessObjectDAL;
 import com.tau.birthdayplus.domain.Event;
@@ -73,7 +74,7 @@ public class UserManagement {
 		return BusinessObjectDAL.loadGuest(guestId);
 	}
 	
-	public static void updateProfile(GuestData profile) throws UserNotFoundException {
+	public static void updateProfile(GuestData profile) throws UserNotFoundException, UserException {
 		BusinessObjectDAL.updateGuest(profile);
 		Cache guestCache = Caching.getGuestCache();
 		String guestKey = Caching.generateGuestIDKey(profile.getId());

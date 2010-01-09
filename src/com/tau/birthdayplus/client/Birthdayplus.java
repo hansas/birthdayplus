@@ -256,9 +256,6 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 			
 		}-*/;
 		
-		
-
-
 		/*
 		 * when the open social information is ready call this function
 		 */

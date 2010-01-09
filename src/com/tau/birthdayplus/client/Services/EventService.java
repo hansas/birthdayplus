@@ -19,12 +19,12 @@ public interface EventService extends RemoteService{
 	/*
 	 * creates new event for the user
 	 */
-	void createEvent(EventData event) throws UserNotFoundException;
+	void createEvent(EventData event) throws UserNotFoundException, UserException;
 	/*
 	 * update the event
 	 * Client - give only to owner to update event
 	 */
-	void updateEvent( EventData event);
+	void updateEvent( EventData event) throws UserException;
 	/*
 	 * delete the event 
 	 * Client- give only to owner to delete event
@@ -34,6 +34,6 @@ public interface EventService extends RemoteService{
 	 * get events by user id
 	 * Server - events should be sorted by date
 	 */
-	ArrayList<EventData> getEvents(ArrayList<String> uIdlist);
+	ArrayList<EventData> getEvents(ArrayList<String> uIdlist) throws UserException;
 
 }
