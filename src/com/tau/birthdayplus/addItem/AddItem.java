@@ -77,6 +77,7 @@ public class AddItem implements EntryPoint{
 		
 	    mainPanel = new VerticalPanel();
     	decPanel.setWidget(mainPanel);
+    	mainPanel.setSize("100%", "100%");
     	
   //  	mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
     	
