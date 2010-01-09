@@ -97,7 +97,7 @@ public class SendEmail {
 		double[] participation = new double[groupSize]; 
 		
 		if(group.getParticipators().isEmpty()){
-			log.info("can't send email to empty group - cancel group)");
+			log.info("can't send email to empty group - sendEmailAboutGroup)");
 			return;
 		}
     	
