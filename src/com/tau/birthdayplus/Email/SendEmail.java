@@ -73,9 +73,11 @@ public class SendEmail {
 			throw new EmailException(" a problem occured while sending an email");
 		}
         
-        String message = "You are participating in the group that wants to buy a " +group.getItemName()+" for "+group.getUserName()+" .<br /><br />";
+        String message = "<body style='font-size:13px;color:#222;font-family:Arial,Sans-serif'>";
+        message+= "<img src=\"http://birthdayplus.googlecode.com/svn/trunk/logo.gif\" align='center'/>"; 
+        message += "<p>You are participating in the group that wants to buy a " +group.getItemName()+" for "+group.getUserName()+" .<br /><br />";
         message+="The group has been canceled because "+group.getUserName()+" has deleted this "+cancel.toString()+".";
-        
+        message+="</p></body>";
         
         try {
 			sendMails(new InternetAddress(emailAddress, "Birthday+") ,null,addresses,null,"A present for "+group.getUserName()+"'s "+group.getEventName(),message);
