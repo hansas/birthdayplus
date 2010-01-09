@@ -47,7 +47,7 @@ public class EventManagement {
 				}
 		};
 
-	public static void createEvent(EventData event) throws UserNotFoundException{
+	public static void createEvent(EventData event) throws UserNotFoundException, UserException{
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			BusinessObjectDAL.createEvent(event,wrapper);
@@ -57,7 +57,7 @@ public class EventManagement {
 		}
 	}
 	
-	public static void createEvent(EventData event,String gmail){
+	public static void createEvent(EventData event,String gmail) throws UserException{
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			Guest guest = wrapper.loadGuestByGmail(gmail);
@@ -85,7 +85,7 @@ public class EventManagement {
 		}
 	}
 
-	public static void updateEvent( EventData eventD){
+	public static void updateEvent( EventData eventD) throws UserException{
 		BusinessObjectDAL.updateEvent(eventD);
 	}
 	
@@ -94,7 +94,7 @@ public class EventManagement {
 		return new EventData(KeyFactory.keyToString(event.getKey()),guest.getId(),event.getEventName(),event.getEventDate(),event.getRecurrence(),event.getIsDeleted());
 	}
 	
-	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) {
+	public static ArrayList<EventData> getEvents(ArrayList<String> UserIdList) throws UserException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			return getEventsByGuests(wrapper.getGuestsById(UserIdList),wrapper);
@@ -151,6 +151,7 @@ public class EventManagement {
 	
 	public static void cronDeleteEventAndUpdateRecurrent() throws Exception{
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
+		BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete);
 		DALWrapper wrapper = new DALWrapper();
 	    try{
 		    if (itemParticipatorDelete!=null){

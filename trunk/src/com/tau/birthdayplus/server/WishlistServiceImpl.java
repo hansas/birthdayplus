@@ -55,7 +55,7 @@ WishlistService  {
 	/*
 	 * creates new item for the user
 	 */
-	public void createWishlistItem(WishlistItemData item) throws UserNotFoundException {
+	public void createWishlistItem(WishlistItemData item) throws UserNotFoundException, UserException {
 		WishlistManagement.createWishlistItem(item);
 	}
 	
@@ -78,7 +78,7 @@ WishlistService  {
 	/*
 	 * return user's wishlist
 	 */
-	public ArrayList<WishlistItemData> getMyWishlist(String userId) throws UserNotFoundException {
+	public ArrayList<WishlistItemData> getMyWishlist(String userId) throws UserNotFoundException, UserException {
 		return WishlistManagement.getWishlist(userId);
 	}
 	
@@ -99,7 +99,7 @@ WishlistService  {
 	 * "I buy" list 
 	 * check that in db "buyer" for this item has userId == userId(?)
 	 */
-	public void cancelBookItemForUser(String wishlistItemId, String userId) {
+	public void cancelBookItemForUser(String wishlistItemId, String userId) throws UserException {
 		WishlistManagement.cancelBookItemForUser(wishlistItemId, userId);
 		
 	}
@@ -116,7 +116,7 @@ WishlistService  {
 	/*
 	 * return all the items this user has booked
 	 */
-	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException {
+	public ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException, UserException {
 		return WishlistManagement.getBookedWishlistItems(userId);
 	}
 	
@@ -129,7 +129,7 @@ WishlistService  {
 	 * check that user doesn't participate already in this group
 	 * add this item to user's "I buy " items
 	 */
-	public void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) throws UserNotFoundException {
+	public void addParticipator(String wishlistItemId, String eventId,ParticipatorData participator) throws UserNotFoundException, UserException {
 		WishlistManagement.addParticipator(wishlistItemId,eventId,participator);
 		
 	}
@@ -139,7 +139,7 @@ WishlistService  {
 	 * if this participator is the only one - free this item(eventId == null)
 	 * remove this item from user's "I buy " list
 	 */
-	public void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException {
+	public void deleteParticipator(String wishlistItemId, String userId) throws UserNotFoundException, UserException {
 		WishlistManagement.deleteParticipator(wishlistItemId, userId);
 		
 	}
@@ -156,7 +156,7 @@ WishlistService  {
 	 * update participator (update money only)
 	 * Server - check if the item is active (group is not closed yet) 
 	 */
-	public void updateParticipator(String wishlistItemId,ParticipatorData participator) {
+	public void updateParticipator(String wishlistItemId,ParticipatorData participator) throws UserException {
 		WishlistManagement.updateParticipator(wishlistItemId,participator);
 		
 	}
@@ -164,7 +164,7 @@ WishlistService  {
 	/*
 	 * add new message to the chat 
 	 */
-	public void addChatMessageData(String itemId, ChatMessageData message){
+	public void addChatMessageData(String itemId, ChatMessageData message) throws UserException{
 		WishlistManagement.addChatMessageData(itemId, message);
 	}
 	/*
@@ -191,7 +191,7 @@ WishlistService  {
 	/*
 	 * return item by id
 	 */
-	public WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException {
+	public WishlistItemNewData getWishlistItem(String itemId) throws UserNotFoundException, UserException {
 		return WishlistManagement.getWishlistItem(itemId);
 	}
 	
@@ -208,7 +208,7 @@ WishlistService  {
 	/*
 	 * get chat messages for the item
 	 */
-	public ArrayList<ChatMessageData> getChatMessages(String itemId) throws UserNotFoundException {
+	public ArrayList<ChatMessageData> getChatMessages(String itemId) throws UserNotFoundException, UserException {
 		return WishlistManagement.getChatMessagesByItem(itemId);
 	}
 

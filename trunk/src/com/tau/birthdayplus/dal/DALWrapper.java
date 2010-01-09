@@ -33,7 +33,7 @@ public class DALWrapper {
 		pm=null;
 	}
 	
-	public List<Guest> getGuestsById(ArrayList<String> UserIdList){
+	public List<Guest> getGuestsById(ArrayList<String> UserIdList) throws UserException{
 		return BusinessObjectDAL.getGuestsById(UserIdList, this.pm);
 	}
 	
@@ -45,11 +45,11 @@ public class DALWrapper {
 		return pm.getObjectById(Participator.class, pKey);
 	}
 	
-	public WishlistItem getWishlistItem(String itemId){
+	public WishlistItem getWishlistItem(String itemId) throws UserException{
 		return BusinessObjectDAL.loadWishlistItem(itemId, pm);
 	}
 	
-	public List<WishlistItem> getWishlist(String userId) throws UserNotFoundException{
+	public List<WishlistItem> getWishlist(String userId) throws UserNotFoundException, UserException{
 		return BusinessObjectDAL.getWishlist(userId, this.pm);
 	}
 	
@@ -69,7 +69,7 @@ public class DALWrapper {
 		return BusinessObjectDAL.loadGuest(userId, pm);
 	}
 	
-	public Guest loadGuestByGmail(String gmail){
+	public Guest loadGuestByGmail(String gmail) throws UserException{
 		return BusinessObjectDAL.loadGuestByGmail(gmail, pm);
 	}
 	
@@ -81,19 +81,19 @@ public class DALWrapper {
 		return pm.getObjectById(Event.class, eventKey);
 	}
 	
-	public void newCreateEvent(EventData eventD,Guest user){
+	public void newCreateEvent(EventData eventD,Guest user) throws UserException{
 		BusinessObjectDAL.newCreateEvent(eventD, user, pm);
 	}
 	
-	public void newCreateWishlistItem(WishlistItemData itemData,Guest user){
+	public void newCreateWishlistItem(WishlistItemData itemData,Guest user) throws UserException{
 		BusinessObjectDAL.newCreateWishlistItem(itemData, user, pm);
 	}
 	
-	public List<WishlistItem> getWishlistItemById(List<Key> keys){
+	public List<WishlistItem> getWishlistItemById(List<Key> keys) throws UserException{
 		return  BusinessObjectDAL.getWishlistItemById(keys, pm);
 	}
 	
-	public List<WishlistItem> getBookedWishlistItems2(String userId) throws UserNotFoundException{
+	public List<WishlistItem> getBookedWishlistItems2(String userId) throws UserNotFoundException, UserException{
 		return BusinessObjectDAL.getBookedWishlistItems2(userId, pm);
 	}
 	
