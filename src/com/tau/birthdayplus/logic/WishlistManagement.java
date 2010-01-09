@@ -330,8 +330,10 @@ public class WishlistManagement {
 	public static ArrayList<ParticipatorEmail> getParticipatorEmailList(ArrayList<Participator> participators,
 			DALWrapper wrapper) throws UserNotFoundException{
 		ArrayList<ParticipatorEmail> participatorsE = new ArrayList<ParticipatorEmail>();
-		for (Participator p: participators){
-			participatorsE.add(participatorToParticipatorEmail(p,wrapper));
+		if (participators!=null){
+			for (Participator p: participators){
+				participatorsE.add(participatorToParticipatorEmail(p,wrapper));
+			}
 		}
 		return participatorsE;
 	}
