@@ -749,26 +749,28 @@ public class BusinessObjectDAL {
 //	}
 	
 	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor) throws EmailException, UserException{
-		WishlistItem item = loadWishlistItem(itemId, pm);
-		Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
-		Event event = pm.getObjectById(Event.class,item.getEventKey());
-		String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
-		GroupEmail group = new GroupEmail(item.getItemName(),fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
-		for (ParticipatorEmail p : participatorsE){
-			group.addParticipator(p);
-		}
 		try{
-			switch(status){
-			case OPEN:
-				SendEmail.sendEmailOpenGroup(group, message);
-				break;
-			case CLOSE:
-				SendEmail.sendEmailCloseGroup(group, message,actualPrice);
-				break;
-			case CANCEL:
-				SendEmail.sendEmailCancelGroup(group,cancelFor);
-				break;
-			}
+			if (participatorsE!=null){
+				WishlistItem item = loadWishlistItem(itemId, pm);
+				Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
+				Event event = pm.getObjectById(Event.class,item.getEventKey());
+				String fullName = itemUser.getFirstName()+" "+itemUser.getLastName();
+				GroupEmail group = new GroupEmail(item.getItemName(),fullName,event.getEventName(),event.getEventDate(),item.getPrice(),userId);
+				for (ParticipatorEmail p : participatorsE){
+					group.addParticipator(p);
+				}
+				switch(status){
+					case OPEN:
+						SendEmail.sendEmailOpenGroup(group, message);
+						break;
+					case CLOSE:
+						SendEmail.sendEmailCloseGroup(group, message,actualPrice);
+						break;
+					case CANCEL:
+						SendEmail.sendEmailCancelGroup(group,cancelFor);
+						break;
+					}
+				}
 		}
 		catch(EmailException e){
 			throw new EmailException(e.getMessage());

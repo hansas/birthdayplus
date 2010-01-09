@@ -138,7 +138,7 @@ public class EventManagement {
 	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
 		GroupStatus status = GroupStatus.CANCEL;
 		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.EVENT);
-		log.info("email was sent to group of item "+item.getItemName());
+		log.info("cancel email was sent to group of item "+item.getItemName());
 		for (Participator p : participators){
 			item.removeParticipator(p);
 			wrapper.deleteParticipator(p);
