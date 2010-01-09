@@ -78,18 +78,20 @@ border-top:1px solid #00BFFF;
 width : 100%;
 border-top:1px solid #00BFFF; 
 border-bottom:1px solid #00BFFF;  
-						/*
-						height : 24px;
-						border:1px solid #FFCC35 ;
-						padding:0px;
-						*/ 
+height : 27px;						
 }
 
 
 .chatTextArea{
+width :100%;
+height:100%;
 border:1px solid #AACCFF;
 margin:0;
 padding:3px 5px;
+}
+
+.sendButton{
+width:100%;
 }
 
 
@@ -163,7 +165,7 @@ background-color: #F6F9FF;
 border:1px solid #999 ;
 padding:5px 5px 5px 5px; 
 text-align:left;
-color : #224499;
+color : black;
 
 }
 
@@ -172,7 +174,7 @@ border-width: 1px 0px 1px 1px;
   border-style: solid;
   border-color: #999 ;
  background-color: #F6F9FF;
-color:#224499;
+color:black;
 
 }
 
@@ -181,7 +183,7 @@ border-width: 1px 1px 1px 0px;
   border-style: solid;
   border-color: #999;
  background-color: #F6F9FF;
-color:#224499;
+color:black;
 }
 
 
@@ -207,13 +209,15 @@ width: 50%;
 }
 
 .Label{
-										/*
-										background-color: #DDF8CC;
-										border:1px solid #A2CD5A;
-										*/
+background-image:url('http://birthdayplus.googlecode.com/svn/trunk/bar.gif');
+background-repeat:no-repeat;
+background-position:top center;
+color:#224499;									
 height: 24px;
 overflow: hidden;
 text-align: center;
+padding : 1px;
+										
 }
 
 .polaniPanel{
