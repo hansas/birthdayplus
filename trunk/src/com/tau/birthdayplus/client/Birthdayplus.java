@@ -219,7 +219,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 		  tab.addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>(){
 
 			public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
-			
+				messages.hide();
 				if(event.getItem()== 0)
 					eventGui.showEventTab();
 					
