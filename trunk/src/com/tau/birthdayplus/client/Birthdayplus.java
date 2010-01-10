@@ -76,7 +76,9 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		author = "Irena Letuchaya,Eugene Rozenberg,Jenia Zilber,Olga Vingurt", 
 		author_email = "gadgetBirthdayPlus@gmail.com",
 		height = 445,
-		scrolling=true
+		scrolling=true,
+		screenshot  ="http://birthdayplus.googlecode.com/svn/trunk/screenshot.gif",
+		thumbnail="http://birthdayplus.googlecode.com/svn/trunk/thumbnail.gif"
 )
 @Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
 public class Birthdayplus extends Gadget<UserPreferences>   {
