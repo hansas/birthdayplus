@@ -250,6 +250,8 @@ public class WishListFriendsGUI  {
 			friendWishTable.clear(true);
 			friendWishTable.resizeRows(0);
 			polaniItems = null;
+			parent.entryPoint.messages.hide();
+			
 		}
 	}
 	
