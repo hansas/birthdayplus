@@ -123,15 +123,13 @@ margin:0px;
 
 
 .mainPanel {
-width : 316px;
+													/* width : 316px; */
 height : 415px !important;
 }
 
-													
-.Panel{
-width : 316px;
-}
 													/*
+													.Panel{
+													width : 316px;
 													height : 100%;
 													margin:0px;
 													padding :0px;
@@ -160,7 +158,7 @@ height : 300px;
 .ShortScrollPanel{
 width : 100%;
 height : 325px;
-top: 4px;
+top: 8px;
 }
 
 
