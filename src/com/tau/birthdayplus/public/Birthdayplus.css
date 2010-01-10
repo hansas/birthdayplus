@@ -115,12 +115,13 @@ overflow-y:auto;
 padding: 3px;						
 }
 
-.tabsPanel{
-width : 100%;
-height : 445px;
-margin:0px;
-}
-
+													/*
+													.tabsPanel{
+													width : 100%;
+													height : 445px;
+													margin:0px;
+													}
+													*/
 
 .mainPanel {
 													/* width : 316px; */
