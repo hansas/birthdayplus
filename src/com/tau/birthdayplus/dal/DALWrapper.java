@@ -114,16 +114,16 @@ public class DALWrapper {
 //		BusinessObjectDAL.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice, pm);
 //	}
 	
-	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor) throws Exception{
-		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm, actualPrice, status,cancelFor);
+	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor,Event e) throws Exception{
+		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm, actualPrice, status,cancelFor,e);
 	}
 	
 	public void deleteParticipator(Participator p){
 		pm.deletePersistent(p);
 	}
 	
-	public void cronDeleteEventAndUpdateRecurrent(ArrayList<WishlistItem> itemParticipatorDelete) throws UserException{
-		BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete,pm);
+	public void cronDeleteEventAndUpdateRecurrent(ArrayList<WishlistItem> itemParticipatorDelete,Event e) throws UserException{
+		BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete,e,pm);
 	}
 	
 //	public void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{
