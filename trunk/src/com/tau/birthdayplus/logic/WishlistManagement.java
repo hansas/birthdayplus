@@ -105,7 +105,7 @@ public class WishlistManagement {
 			if ((item.getBuyerKey()==null)&&(participators!=null)&&(!participators.isEmpty())){
 				ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
 				GroupStatus status = GroupStatus.CANCEL;
-				wrapper.sendEmailToGroup(itemD.getWishlistItemId(), itemD.getUserId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.ITEM);
+				wrapper.sendEmailToGroup(itemD.getWishlistItemId(), itemD.getUserId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.ITEM,null);
 			}
 			wrapper.deleteWishlistItem(itemD);
 		}
@@ -297,7 +297,7 @@ public class WishlistManagement {
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
 			//wrapper.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice);
 			GroupStatus status = GroupStatus.CLOSE;
-			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, actualPrice, status,SendEmail.CancelFor.NONE);
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, actualPrice, status,SendEmail.CancelFor.NONE,null);
 		}
 		finally{
 			wrapper.close();
@@ -313,7 +313,7 @@ public class WishlistManagement {
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
 			//wrapper.sendEmailOpenGroup(itemId, userId, message, participatorsE);
 			GroupStatus status = GroupStatus.OPEN;
-			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, 0.0, status,SendEmail.CancelFor.NONE);
+			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, 0.0, status,SendEmail.CancelFor.NONE,null);
 		}
 		finally{
 			wrapper.close();

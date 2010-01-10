@@ -70,13 +70,14 @@ public class EventManagement {
 	
 	public static void deleteEvent( EventData eventD) throws Exception {
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
-	    BusinessObjectDAL.deleteEvent(eventD,itemParticipatorDelete);
+		Event e = null;
+	    BusinessObjectDAL.deleteEvent(eventD,itemParticipatorDelete,e);
 	    DALWrapper wrapper = new DALWrapper();
 	    try{
 		    if (itemParticipatorDelete!=null){
 		    	log.info("there is participators in items that should be deleted");
 			    for (WishlistItem item : itemParticipatorDelete){
-			    	sendEmailAndDeleteParticipators(item, wrapper);
+			    	sendEmailAndDeleteParticipators(item,e,wrapper);
 			    }
 		    }
 	    }
@@ -133,11 +134,14 @@ public class EventManagement {
 		return events;
 	}
 	
-	public static void sendEmailAndDeleteParticipators(WishlistItem item, DALWrapper wrapper) throws Exception{
+	public static void sendEmailAndDeleteParticipators(WishlistItem item,Event e,DALWrapper wrapper) throws Exception{
 		ArrayList<Participator> participators = item.getParticipators();
+		if (participators!=null||!participators.isEmpty()){
+			log.info("There is participators in item "+item.getItemName());
+		}
 	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
 		GroupStatus status = GroupStatus.CANCEL;
-		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.EVENT);
+		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.EVENT,e);
 		log.info("cancel email was sent to group of item "+item.getItemName()+" because event was deleted");
 		for (Participator p : participators){
 			item.removeParticipator(p);
@@ -152,11 +156,12 @@ public class EventManagement {
 	public static void cronDeleteEventAndUpdateRecurrent() throws Exception{
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
 		DALWrapper wrapper = new DALWrapper();
-		wrapper.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete);
+		Event e = null;
+		wrapper.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete,e);
 	    try{
 		    if (itemParticipatorDelete!=null){
 		    	for (WishlistItem item : itemParticipatorDelete){
-			    	sendEmailAndDeleteParticipators(item, wrapper);
+			    	sendEmailAndDeleteParticipators(item,e,wrapper);
 			    }
 		    }
 	    }
