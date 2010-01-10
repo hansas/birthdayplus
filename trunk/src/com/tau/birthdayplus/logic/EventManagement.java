@@ -70,8 +70,9 @@ public class EventManagement {
 	
 	public static void deleteEvent( EventData eventD) throws Exception {
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
-		Event e = null;
+		Event e = new Event("Dummy from delete event", "", new Date(), false, false);
 	    BusinessObjectDAL.deleteEvent(eventD,itemParticipatorDelete,e);
+	    log.info("The event that was reterned by BusinessObjectDAL.deleteEvent is: "+e.getEventName());
 	    DALWrapper wrapper = new DALWrapper();
 	    try{
 		    if (itemParticipatorDelete!=null){
@@ -156,7 +157,7 @@ public class EventManagement {
 	public static void cronDeleteEventAndUpdateRecurrent() throws Exception{
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
 		DALWrapper wrapper = new DALWrapper();
-		Event e = null;
+		Event e = new Event("Dummy from cron", "", new Date(), false, false);
 		wrapper.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete,e);
 	    try{
 		    if (itemParticipatorDelete!=null){

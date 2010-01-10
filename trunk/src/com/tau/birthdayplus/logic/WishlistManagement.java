@@ -103,9 +103,19 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemD.getWishlistItemId());
 			ArrayList<Participator> participators = item.getParticipators();
 			if ((item.getBuyerKey()==null)&&(item.getEventKey()!=null)&&(participators!=null)&&(!participators.isEmpty())){
+				log.info("need to send email to participators of item: "+item.getItemName());
 				ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
 				GroupStatus status = GroupStatus.CANCEL;
 				wrapper.sendEmailToGroup(itemD.getWishlistItemId(), itemD.getUserId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.ITEM,null);
+			}
+			else if (item.getBuyerKey()!=null){
+				log.info("There is buyer for item: "+item.getItemName());
+			}
+			else if(item.getEventKey()==null){
+				log.info("There is no buyers and participators for item: "+item.getItemName());
+			}
+			else if((participators==null)||(participators.isEmpty())){
+				log.info("There is no participators for item: "+item.getItemName());
 			}
 			wrapper.deleteWishlistItem(itemD);
 		}
