@@ -84,12 +84,21 @@ public class ItemDialogBox extends DialogBox{
     
     public void show(WishlistItemData item){
     	this.item = item;
-    	this.itemField.setText(item.getItemName());
-        this.linkField.setText(item.getLink());
+    	if(item.getItemName()!=null)
+        	this.itemField.setText(item.getItemName());
+    	else
+    		this.itemField.setText("");
+    	if(item.getLink()!=null)
+           this.linkField.setText(item.getLink());
+    	else
+    		this.linkField.setText("");
+    	
         this.priceField.setText(item.getPrice().toString());
         this.highPriorityButton.setValue(true);
         if(item.getThumbnail()!=null)
            this.thumbnailField.setText(item.getThumbnail());
+        else
+           this.thumbnailField.setText("");
         this.itemField.setFocus(true);
         super.show();
     }
@@ -268,6 +277,7 @@ public class ItemDialogBox extends DialogBox{
 	
 	private void parse(){
 		Double price = 0.0;
+		
 		String[] prices = match(linkText,"([1-9]\\d*)(?:,(\\d+))?(?: ?₪)");
 		
 		if(prices.length != 0){
@@ -280,7 +290,7 @@ public class ItemDialogBox extends DialogBox{
 		}
 	    this.priceField.setText(price.toString());
 	    String[] thumbnail = match(linkText,"(?:href=\")([^\"]+\\.gif|jpg|jpeg|png|mng)(\")");
-	   
+	  
 	    if(thumbnail.length!= 0)
 	    	this.thumbnailField.setText(thumbnail[1]);
 	    else

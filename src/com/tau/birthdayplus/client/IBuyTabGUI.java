@@ -246,7 +246,7 @@ public class IBuyTabGUI {
 	    chatTextArea = new TextBox();
 	    messagePanel.add(chatTextArea);
 	    messagePanel.setCellWidth(chatTextArea, "80%");
-	    chatTextArea.setMaxLength(25);
+	    chatTextArea.setMaxLength(60);
 	  //  chatTextArea.setWidth("100%");
 	    chatTextArea.addStyleName("chatTextArea");
 			
