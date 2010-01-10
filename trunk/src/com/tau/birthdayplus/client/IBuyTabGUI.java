@@ -307,6 +307,7 @@ public class IBuyTabGUI {
 	private void loadChat(WishlistItemNewData item){
 	    	currentItem = item;
 	    	mainChatPanel.setTitle("Group chat for buying a "+item.getItemName()+" for "+item.getUserName());
+	    	entryPoint.messages.hide();
 	    	wishPanel.setVisible(false);
 	    	mainChatPanel.setVisible(true);
 	    	
