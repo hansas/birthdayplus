@@ -124,15 +124,19 @@ margin:0px;
 
 .mainPanel {
 width : 316px;
-height : 410px !important;
+height : 415px !important;
 }
 
+													
 .Panel{
-width : 100%;
-height : 405px;
-margin:0px;
-padding :0px;
+width : 316px;
 }
+													/*
+													height : 100%;
+													margin:0px;
+													padding :0px;
+													}
+													*/
 
 .Button{
 width : 100px;
@@ -155,8 +159,8 @@ height : 300px;
 
 .ShortScrollPanel{
 width : 100%;
-height : 330px;
-top: 1px;
+height : 325px;
+top: 4px;
 }
 
 
@@ -198,6 +202,7 @@ width: 100%;
 }
 
 .Table td{
+color: black;
 overflow:hidden;
 border-top:1px solid #00BFFF;    
 }
@@ -215,10 +220,10 @@ background-image:url('http://birthdayplus.googlecode.com/svn/trunk/bar.gif');
 background-repeat:no-repeat;
 background-position:top center;
 color:#224499;									
-height: 24px;
+height: 16px;
 overflow: hidden;
 text-align: center;
-padding : 1px;
+padding : 3px 25px;
 position: relative;
 top: 2px;
 										
