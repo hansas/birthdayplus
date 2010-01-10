@@ -167,8 +167,8 @@ public class BusinessObjectDAL {
 		}
 	}
 		
-	public static void deleteEvent(EventData eventD,ArrayList<WishlistItem> itemParticipatorDelete,Event ev) throws UserException {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	public static void deleteEvent(EventData eventD,ArrayList<WishlistItem> itemParticipatorDelete,Event ev,PersistenceManager pm) throws UserException {
+		//PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
 			tx.begin();
@@ -200,13 +200,17 @@ public class BusinessObjectDAL {
 			if (tx.isActive()) {
 				tx.rollback();
 			}
-			pm.close();
+			//pm.close();
 		}
 	}
 	
 	public static Boolean mayIDeleteEvent(Event event,PersistenceManager pm,ArrayList<WishlistItem> itemParticipatorDelete,Event ev) throws UserException{
 		List<WishlistItem> items = new ArrayList<WishlistItem>();
-		ev = new Event(event.getEventName(),KeyFactory.keyToString(event.getKey()),event.getEventDate(),event.getRecurrence(),event.getIsDeleted());
+		ev.setEventName(event.getEventName());
+		ev.setEventDate(ev.getEventDate());
+		ev.setIsDeleted(event.getIsDeleted());
+		ev.setRecurrence(event.getRecurrence());
+		ev.setKey(event.getKey());
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
 			query.declareImports("import com.google.appengine.api.datastore.Key");

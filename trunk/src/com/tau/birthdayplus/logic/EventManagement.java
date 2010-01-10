@@ -69,11 +69,11 @@ public class EventManagement {
 	}
 	
 	public static void deleteEvent( EventData eventD) throws Exception {
+		DALWrapper wrapper = new DALWrapper();
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
 		Event e = new Event("Dummy from delete event", "", new Date(), false, false);
-	    BusinessObjectDAL.deleteEvent(eventD,itemParticipatorDelete,e);
+	    wrapper.deleteEvent(eventD,itemParticipatorDelete,e);
 	    log.info("The event that was reterned by BusinessObjectDAL.deleteEvent is: "+e.getEventName());
-	    DALWrapper wrapper = new DALWrapper();
 	    try{
 		    if (itemParticipatorDelete!=null){
 		    	log.info("there is participators in items that should be deleted");
@@ -145,6 +145,7 @@ public class EventManagement {
 		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.EVENT,e);
 		log.info("cancel email was sent to group of item "+item.getItemName()+" because event was deleted");
 		for (Participator p : participators){
+			log.info("participator is: "+ p.getId());
 			item.removeParticipator(p);
 			wrapper.deleteParticipator(p);
 		}

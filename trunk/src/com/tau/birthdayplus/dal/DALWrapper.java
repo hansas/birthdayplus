@@ -85,6 +85,10 @@ public class DALWrapper {
 		BusinessObjectDAL.newCreateEvent(eventD, user, pm);
 	}
 	
+	public void deleteEvent(EventData eventD,ArrayList<WishlistItem> itemParticipatorDelete,Event ev) throws UserException{
+		BusinessObjectDAL.deleteEvent(eventD, itemParticipatorDelete, ev, pm);
+	}
+	
 	public void newCreateWishlistItem(WishlistItemData itemData,Guest user) throws UserException{
 		BusinessObjectDAL.newCreateWishlistItem(itemData, user, pm);
 	}
