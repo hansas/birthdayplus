@@ -44,7 +44,7 @@ public class ItemDialogBox extends DialogBox{
     private Label errorMsgLabel ;
     
     private WishlistItemData item;
-    private String linkText;
+    private String linkText="";
     
     
     
@@ -100,6 +100,7 @@ public class ItemDialogBox extends DialogBox{
         else
            this.thumbnailField.setText("");
         this.itemField.setFocus(true);
+        linkText="";
         super.show();
     }
     
@@ -224,6 +225,8 @@ public class ItemDialogBox extends DialogBox{
         	}
         });
 		
+		/*
+		
 		this.linkField.addChangeHandler(new ChangeHandler(){
 
 			public void onChange(ChangeEvent event) {
@@ -248,7 +251,7 @@ public class ItemDialogBox extends DialogBox{
 				}
 		});
 		
-	
+	*/
     }
     
     
@@ -256,7 +259,12 @@ public class ItemDialogBox extends DialogBox{
 		loadingImagePopup.center();
 	    loadingImagePopup.show();
 		
-		bringLink(linkField.getText());
+	    if(!linkField.getText().equals("")){
+	    	Window.alert(linkField.getText());
+		   bringLink(linkField.getText());
+	    }
+	    else
+	    	loadingImagePopup.hide();
 		
 		
 	}
@@ -267,8 +275,11 @@ public class ItemDialogBox extends DialogBox{
 		$wnd.gadgets.io.makeRequest(url, response, params); 
 
 	function response(obj) {
-		    var responseText = obj.text; 
-			thisTabGui.@com.tau.birthdayplus.client.widgets.ItemDialogBox::linkText=obj.text;
+		    if (obj.text === undefined) {
+                
+            }else
+		    	thisTabGui.@com.tau.birthdayplus.client.widgets.ItemDialogBox::linkText=obj.text;
+			
 			thisTabGui.@com.tau.birthdayplus.client.widgets.ItemDialogBox::parse()();
 	};
 }-*/;
@@ -277,9 +288,9 @@ public class ItemDialogBox extends DialogBox{
 	
 	private void parse(){
 		Double price = 0.0;
-		
+	    Window.alert("before text");
 		String[] prices = match(linkText,"([1-9]\\d*)(?:,(\\d+))?(?: ?₪)");
-		
+	
 		if(prices.length != 0){
 			price = Double.parseDouble(prices[1]+prices[2]);
 		}else{
@@ -303,15 +314,22 @@ public class ItemDialogBox extends DialogBox{
 	
 	
 	private native static  void _match(String text, List matches,String pattern)/*-{
+	  
 	   var regExp = new RegExp(pattern);
+	   
 	   var result = text.match(regExp);
 	   if (result == null) return;
-	   for (var i=0;i<result.length;i++)
+	   for (var i=0;i<result.length;i++){
+	   if(result[i]=="")
+	   		result[i]=" ";	
+	   
 	   matches.@java.util.ArrayList::add(Ljava/lang/Object;)(result[i]);
+	   }
 	   }-*/;
 	
 	public static String[] match(String text,String pattern) {
 	    List matches = new ArrayList();
+	    Window.alert("match");
 	    _match(text, matches,pattern);
 	    String arr[] = new String[matches.size()];
 	    for (int i = 0; i < matches.size(); i++)
