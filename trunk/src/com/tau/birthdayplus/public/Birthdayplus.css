@@ -112,7 +112,7 @@ border:2px solid #EE7621;
 font-size:13px;
 text-align:center;
 overflow-y:auto;	
-padding: 3px 1px 3px 1px;						
+padding: 3px;						
 }
 
 .tabsPanel{
@@ -123,13 +123,13 @@ margin:0px;
 
 
 .mainPanel {
-width : 100%;
-height : 415px !important;
+width : 316;
+height : 410px !important;
 }
 
 .Panel{
 width : 100%;
-height : 410px;
+height : 405px;
 margin:0px;
 padding :0px;
 }
