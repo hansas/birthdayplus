@@ -762,6 +762,12 @@ public class BusinessObjectDAL {
 	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor,Event ev) throws EmailException, UserException{
 		try{
 			if (participatorsE!=null){
+				if (ev==null){
+					log.info("The event you've passed is null");
+				}
+				else{
+					log.info("The event that was passed is: "+ev.getEventName());
+				}
 				WishlistItem item = loadWishlistItem(itemId, pm);
 				Guest itemUser = pm.getObjectById(Guest.class,item.getKey().getParent());
 				Event event;
