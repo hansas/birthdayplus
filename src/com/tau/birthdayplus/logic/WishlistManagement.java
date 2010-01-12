@@ -161,7 +161,7 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<WishlistItemNewData> getBookedWishlistItemNewData(List<WishlistItem> itemList,
-			DALWrapper wrapper) throws UserNotFoundException{
+			DALWrapper wrapper) throws UserNotFoundException, UserException{
 		ArrayList<WishlistItemNewData> itemDataList = new ArrayList<WishlistItemNewData>();
 		if (itemList!=null){
 			for (WishlistItem item : itemList){
@@ -173,7 +173,7 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<WishlistItemNewData> getWishlistItemNewDataForEvent(List<WishlistItem> itemList,Guest guest,
-			DALWrapper wrapper) throws UserNotFoundException{
+			DALWrapper wrapper) throws UserNotFoundException, UserException{
 		ArrayList<WishlistItemNewData> itemDataList = new ArrayList<WishlistItemNewData>();
 		for (WishlistItem item : itemList){
 			itemDataList.add(itemToItemNewData(item,guest,wrapper));
@@ -181,7 +181,7 @@ public class WishlistManagement {
 		return itemDataList;
 	}
 	
-	public static WishlistItemNewData itemToItemNewData(WishlistItem item,Guest guest,DALWrapper wrapper) throws UserNotFoundException{
+	public static WishlistItemNewData itemToItemNewData(WishlistItem item,Guest guest,DALWrapper wrapper) throws UserNotFoundException, UserException{
 		if (item.getEventKey()==null){
 			return new WishlistItemNewData(KeyFactory.keyToString(item.getKey()),guest.getId(),
 			guest.getFirstName(),"","",null,
@@ -210,7 +210,7 @@ public class WishlistManagement {
 		}
 	}
 	
-	public static ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException{
+	public static ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException, UserException{
 	//	Cache cache = Caching.getWishlistForEventCache();
 	//	String key = Caching.generateWishlistForEventId(eventId);
 		ArrayList<WishlistItemNewData> result = null;// (ArrayList<WishlistItemNewData>)cache.get(key);
@@ -263,7 +263,7 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,
-			String anotherUserId) throws UserNotFoundException {
+			String anotherUserId) throws UserNotFoundException, UserException {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			return wrapper.getLastItemsForUser(myUserId, anotherUserId);
@@ -331,7 +331,7 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<ParticipatorData> getParticipatorDataList(ArrayList<Participator> participators,
-			DALWrapper wrapper) throws UserNotFoundException{
+			DALWrapper wrapper) throws UserNotFoundException, UserException{
 		ArrayList<ParticipatorData> participatorsD = new ArrayList<ParticipatorData>();
 		for (Participator p: participators){
 			participatorsD.add(participatorToParticipatorData(p,wrapper));
@@ -340,7 +340,7 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<ParticipatorEmail> getParticipatorEmailList(ArrayList<Participator> participators,
-			DALWrapper wrapper) throws UserNotFoundException{
+			DALWrapper wrapper) throws UserNotFoundException, UserException{
 		ArrayList<ParticipatorEmail> participatorsE = new ArrayList<ParticipatorEmail>();
 		if (participators!=null){
 			for (Participator p: participators){
@@ -350,12 +350,12 @@ public class WishlistManagement {
 		return participatorsE;
 	}
 	
-	public static ParticipatorEmail participatorToParticipatorEmail(Participator participator,DALWrapper wrapper) throws UserNotFoundException{
+	public static ParticipatorEmail participatorToParticipatorEmail(Participator participator,DALWrapper wrapper) throws UserNotFoundException, UserException{
 		Guest guest = wrapper.getGuestById(participator.getId());
 		return new ParticipatorEmail(participator.getId(),guest.getFirstName(),guest.getLastName(),participator.getMoney(),guest.getEmail());
 	}
 	
-	public static ArrayList<ChatMessageData> getChatMessageDataList(ArrayList<ChatMessage> messages,DALWrapper wrapper) throws UserNotFoundException{
+	public static ArrayList<ChatMessageData> getChatMessageDataList(ArrayList<ChatMessage> messages,DALWrapper wrapper) throws UserNotFoundException, UserException{
 		ArrayList<ChatMessageData> messagesD = new ArrayList<ChatMessageData>();
 		for (ChatMessage m:messages){
 			messagesD.add(chatMessageToChatMessageData(m,wrapper));
@@ -363,7 +363,7 @@ public class WishlistManagement {
 		return messagesD;
 	}
 	
-	public static ChatMessageData chatMessageToChatMessageData(ChatMessage message,DALWrapper wrapper) throws UserNotFoundException{
+	public static ChatMessageData chatMessageToChatMessageData(ChatMessage message,DALWrapper wrapper) throws UserNotFoundException, UserException{
 		Guest guest = wrapper.getGuestById(message.getId());
 		return new ChatMessageData(guest.getId(),guest.getFirstName(),message.getTimeStamp(),message.getMessage());
 	}
@@ -389,7 +389,7 @@ public class WishlistManagement {
 //		BusinessObjectDAL.deleteBookedWishlistItem(userId,wishlistItemId);
 //	}
 	
-	public static ParticipatorData participatorToParticipatorData(Participator participator,DALWrapper wrapper) throws UserNotFoundException{
+	public static ParticipatorData participatorToParticipatorData(Participator participator,DALWrapper wrapper) throws UserNotFoundException, UserException{
 		Guest guest = wrapper.getGuestById(participator.getId());
 		return new ParticipatorData(participator.getId(),guest.getFirstName(),guest.getLastName(),participator.getMoney());
 	}
@@ -406,11 +406,13 @@ public class WishlistManagement {
 		BusinessObjectDAL.deleteParticipator(wishlistItemId, userId);
 	}
 	
-	
-	
 	public static void addChatMessageData(String itemId, ChatMessageData messageData) throws UserException{
 		ChatMessage message = new ChatMessage(messageData.getUserId(),messageData.getTimeStamp(),messageData.getMesssage());
 		BusinessObjectDAL.addChatMessageData(itemId, message);
+	}
+	
+	public static void cronItemJob(){
+		BusinessObjectDAL.cronItemJob();
 	}
 	
 }

@@ -34,7 +34,7 @@ ProfileService {
 		
 	//}
 
-	public GuestData getProfile(String userId) throws UserNotFoundException {
+	public GuestData getProfile(String userId) throws UserNotFoundException, UserException {
 		return UserManagement.loadGuestDataCached(userId);
 	}
 
