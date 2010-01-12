@@ -63,7 +63,7 @@ WishlistService  {
 	 * update the item, don't update isActive
 	 * GUI-user can update only his wishlist
 	 */
-	public void updateWishlistItem(WishlistItemData item) {
+	public void updateWishlistItem(WishlistItemData item) throws UserException {
 		System.out.println("updating item : "+item);
 		WishlistManagement.updateWishlistItem(item);
 	}

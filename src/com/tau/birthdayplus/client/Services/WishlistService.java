@@ -28,7 +28,7 @@ public interface WishlistService extends RemoteService{
 	 * update the item, don't update isActive
 	 * GUI-user can update only his wishlist
 	 */
-	void updateWishlistItem(WishlistItemData item);
+	void updateWishlistItem(WishlistItemData item) throws UserException;
 	/*
 	 * delete the item 
 	 * GUI - user can delete only his wishlist items

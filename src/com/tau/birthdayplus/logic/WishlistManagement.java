@@ -87,13 +87,8 @@ public class WishlistManagement {
 //		}
 //	}
 		
-	public static void updateWishlistItem(WishlistItemData item) {
-		try{
-			WishlistItem i = BusinessObjectDAL.updateWishlistItem(item);
-			//removeWishlistItemForEventFromCache(i);
-		}catch(Exception ex){
-			throw new RuntimeException("updateWishlistItem failed", ex);
-		}	
+	public static void updateWishlistItem(WishlistItemData item) throws UserException {
+		WishlistItem i = BusinessObjectDAL.updateWishlistItem(item);
 	}
 	
 	public static void deleteWishlistItem(WishlistItemData itemD) throws Exception {
