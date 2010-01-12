@@ -221,73 +221,61 @@ public class BusinessObjectDAL {
 		ev.setIsDeleted(event.getIsDeleted());
 		ev.setRecurrence(event.getRecurrence());
 		ev.setKey(event.getKey());
+		Boolean result = true;
 		try {
 			Query query = pm.newQuery(WishlistItem.class);
 			query.declareImports("import com.google.appengine.api.datastore.Key");
 			query.setFilter("eventKey == ekey");
 			query.declareParameters("Key ekey");
 			items = (List<WishlistItem>) query.execute(event.getKey());
-		} catch (Exception ex) {
-			log.severe("Error in mayIDeleteEvent");
-			throw new UserException(ex);
-		}
-		if (!items.isEmpty()){
-			log.info("There is items for this event "+event.getEventName());
-		}
-		Boolean result = true;
-		try{
-			for (WishlistItem item : items){
-				if (item.getBuyerKey()!=null){
-					log.info("There is buyer for this item "+item.getItemName());
-					result = false;
-				}
-				else{
-					List<Participator> participators = item.getParticipators();
-					if(participators==null){
-						log.info("There is no participators at "+ item.getItemName()+" "+event.getEventName());
+//		} catch (Exception ex) {
+//			log.severe("Error in mayIDeleteEvent");
+//			throw new UserException(ex);
+//		}
+		if (items!=null){
+			if (!items.isEmpty()){
+				log.info("There is items for this event "+event.getEventName());
+			}
+			//try{
+				for (WishlistItem item : items){
+					if (item.getBuyerKey()!=null){
+						log.info("There is buyer for this item "+item.getItemName());
+						result = false;
 					}
 					else{
-						removeChatMessageData(KeyFactory.keyToString(item.getKey()),pm);
-						try{
-							itemParticipatorDelete.add(item);
-							log.info("from item "+item.getItemName()+" participators should be deleted");
-//							for (Participator p : participators){
-//								item.removeParticipator(p);
-//								pm.deletePersistent(p);
-//							}
-//							if(item.getParticipators()!=null){
-//								for (Participator p : item.getParticipators()){
-//									log.info(p.getId());
-//								}
-//								if (item.getParticipators().isEmpty()){
-//									log.info("participators for item "+item.getItemName()+" were deleted");
-//								}
-//							}
-//							else{
-//								log.info("participators for item "+item.getItemName()+" were deleted");
-//							}
-							Key k = item.getEventKey();
-							item.setEventKey(null);
-							pm.makePersistent(item);
-							log.info("this item was freed: "+item.getItemName()+" "+k);
+						List<Participator> participators = item.getParticipators();
+						if(participators==null){
+							log.info("There is no participators at "+ item.getItemName()+" "+event.getEventName());
 						}
-						catch (Exception ex) {
-							log.severe("Error in second part of mayIDeleteEvent in item "+item.getItemName());
-							throw new UserException(ex);
+						else{
+							removeChatMessageData(KeyFactory.keyToString(item.getKey()),pm);
+							try{
+								itemParticipatorDelete.add(item);
+								log.info("from item "+item.getItemName()+" participators should be deleted");
+								Key k = item.getEventKey();
+								item.setEventKey(null);
+								pm.makePersistent(item);
+								log.info("this item was freed: "+item.getItemName()+" "+k);
+							}
+							catch (Exception ex) {
+								log.severe("Error in second part of mayIDeleteEvent in item "+item.getItemName());
+								throw new UserException("Error mayIDeleteEvent in item "+item.getItemName());
+							}
 						}
 					}
 				}
+			//}
 			}
 		}
 		catch (RuntimeException e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("Error mayIDeleteEvent");
         }
 		catch (Exception ex) 
 		{
 			log.severe("Error in second part of mayIDeleteEvent");
-			throw new UserException(ex);
+			throw new UserException("Error mayIDeleteEvent");
 		}
 		return result;
 	}
