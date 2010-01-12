@@ -31,13 +31,13 @@ public class UserManagement {
 		return new GuestData(guest.getId(), guest.getFirstName(), guest.getLastName(), guest.getBirthday(),guest.getEmail());
 	}
 	
-	 public static GuestData loadGuestData(String guestId) throws UserNotFoundException{
+	 public static GuestData loadGuestData(String guestId) throws UserNotFoundException, UserException{
          Guest guest = BusinessObjectDAL.loadGuest(guestId);
          GuestData guestData = GuestToGuestData(guest);
          return guestData;
  }
 	 
-	 public static GuestData loadGuestDataCached (String guestId) throws UserNotFoundException{
+	 public static GuestData loadGuestDataCached (String guestId) throws UserNotFoundException, UserException{
 		 Cache guestCache = Caching.getGuestCache();
 		 String guestKey = Caching.generateGuestIDKey(guestId);
 		 GuestData guest = (GuestData)guestCache.get(guestKey); 
@@ -49,7 +49,7 @@ public class UserManagement {
 	 }
 
 	 @SuppressWarnings("deprecation")
-	 public static void createProfile(Guest guest) {
+	 public static void createProfile(Guest guest) throws UserException {
          int guestDom = guest.getBirthday().getDate();
          log.info("user's day of month: "+guestDom);
          int guestMonth = guest.getBirthday().getMonth()+1;
@@ -70,7 +70,7 @@ public class UserManagement {
  }
 
 	
-	public static Guest loadGuest(String guestId) throws UserNotFoundException{
+	public static Guest loadGuest(String guestId) throws UserNotFoundException, UserException{
 		return BusinessObjectDAL.loadGuest(guestId);
 	}
 	

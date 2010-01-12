@@ -67,7 +67,7 @@ public class BusinessObjectDAL {
 		};
 
 	
-	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException {
+	public static Guest loadGuest(String guestId, PersistenceManager pm) throws UserNotFoundException, UserException {
 		Guest guest = null;
 		try{
 		Key key = KeyFactory.createKey(Guest.class.getSimpleName(), guestId);
@@ -76,13 +76,13 @@ public class BusinessObjectDAL {
 			throw new UserNotFoundException();
 		}catch(Exception ex){
 			log.severe("the error is: " + ex.getMessage());
-			throw new RuntimeException("can't get your profile");
+			throw new UserException("can't get your profile");
 		}
 		return guest;
 	}
 
 	// Automatically open and close PMF
-	public static Guest loadGuest(String guestId) throws UserNotFoundException {
+	public static Guest loadGuest(String guestId) throws UserNotFoundException, UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Guest g = null;
 		g = loadGuest(guestId, pm);
@@ -90,16 +90,21 @@ public class BusinessObjectDAL {
 		return g;
 	}
 	
-	public static Guest loadGuestByGoogleId(String id,PersistenceManager pm){
+	public static Guest loadGuestByGoogleId(String id,PersistenceManager pm) throws UserException{
 		List<Guest> guest = new ArrayList<Guest>();
 		try{
 			Query query = pm.newQuery(Guest.class);
 			query.setFilter("googleId == id");
 			query.declareParameters("String id");
 			guest = (List<Guest>)query.execute(id);
-			return guest.get(0);
+			if (guest!=null){
+				return guest.get(0);
+			}
+			else{
+				return null;
+			}
 		} catch (Exception ex) {
-			throw new RuntimeException("error in loadGuestByGoogleId"+ex.getMessage());
+			throw new UserException("cannot get your profile by google id");
 		}
 	}
 	
@@ -110,9 +115,14 @@ public class BusinessObjectDAL {
 			query.setFilter("email == gmail");
 			query.declareParameters("String gmail");
 			guest =(List<Guest>)query.execute(gmail);
-			return guest.get(0);
+			if (guest!=null){
+				return guest.get(0);
+			}
+			else{
+				return null;
+			}
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("cannot get your profile by gmail");
 		}
 	}
 
@@ -122,14 +132,14 @@ public class BusinessObjectDAL {
 	 * pm.getObjectById(Guest.class, guestId); pm.close(); return guest; }
 	 */
 
-	public static void createProfile(Guest guest,Event e) {
+	public static void createProfile(Guest guest,Event e) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			guest.addEvent(e);
 			pm.makePersistent(guest);
 			pm.makePersistent(e);
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			throw new UserException("failed to create profile, please try later");
 		} finally {
 			pm.close();
 		}
@@ -142,7 +152,7 @@ public class BusinessObjectDAL {
 		try {
 			pm.makePersistent(guest);
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while updating your profile, please try again later");
 		} finally {
 			pm.close();
 		}
@@ -158,7 +168,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(e);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while updating the event, please try again later");
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -189,12 +199,12 @@ public class BusinessObjectDAL {
 		catch (RuntimeException e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while deleting the event, please try again later");
         }
         catch (Exception e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while deleting the event, please try again later");
         } 
 		finally {
 			if (tx.isActive()) {
@@ -289,38 +299,64 @@ public class BusinessObjectDAL {
 		guests = (List<Guest>)query.execute();
 		Calendar cal = Calendar.getInstance();
 		Calendar eDate = Calendar.getInstance();
-		for (Guest g : guests){
-			List<Event> events = g.getEvents();
-			for (Event e : events){
-				int eMonth = e.getEventDate().getMonth();
-				int eDay = e.getEventDate().getDate();
-				eDate.clear();
-				eDate.set(Calendar.YEAR, e.getEventDate().getYear()+1900);
-				eDate.set(Calendar.MONTH, eMonth);
-				eDate.set(Calendar.DATE, eDay);
-				eDate.add(Calendar.DATE, 1);
-				if ((cal.after(eDate))&&(e.getRecurrence()==false)){
-					Boolean result = mayIDeleteEvent(e,pm,itemParticipatorDelete,event);
-					if (result){
-						log.info("event "+e.getEventName()+" was deleted by cron");
-						g.removeEvent(e);
-						pm.makePersistent(g);
-						pm.deletePersistent(e);
+		if (guests!=null){
+			for (Guest g : guests){
+				List<Event> events = g.getEvents();
+				if (events!=null){
+					for (Event e : events){
+						int eMonth = e.getEventDate().getMonth();
+						int eDay = e.getEventDate().getDate();
+						eDate.clear();
+						eDate.set(Calendar.YEAR, e.getEventDate().getYear()+1900);
+						eDate.set(Calendar.MONTH, eMonth);
+						eDate.set(Calendar.DATE, eDay);
+						eDate.add(Calendar.DATE, 1);
+						if ((cal.after(eDate))&&(e.getRecurrence()==false)){
+							Boolean result = mayIDeleteEvent(e,pm,itemParticipatorDelete,event);
+							if (result){
+								log.info("event "+e.getEventName()+" was deleted by cron");
+								g.removeEvent(e);
+								pm.makePersistent(g);
+								pm.deletePersistent(e);
+							}
+							else{
+								log.info("event "+e.getEventName()+" was signed deleted by cron");
+								e.setIsDeleted(true);
+								pm.makePersistent(e);
+							}
+						}
+						else if((e.getRecurrence()==true)&&(cal.after(eDate))){
+							log.info("event "+e.getEventName()+" was updated by cron");
+							Date newEDate = new Date(cal.get(Calendar.YEAR)-1900+1,eMonth,eDay);
+							e.setEventDate(newEDate);
+							pm.makePersistent(e);
+						}
 					}
-					else{
-						log.info("event "+e.getEventName()+" was signed deleted by cron");
-						e.setIsDeleted(true);
-						pm.makePersistent(e);
-					}
-				}
-				else if((e.getRecurrence()==true)&&(cal.after(eDate))){
-					log.info("event "+e.getEventName()+" was updated by cron");
-					Date newEDate = new Date(cal.get(Calendar.YEAR)-1900+1,eMonth,eDay);
-					e.setEventDate(newEDate);
-					pm.makePersistent(e);
 				}
 			}
 		}
+	}
+	
+	public static void cronItemJob(){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		List<Guest> guests = new ArrayList<Guest>();
+		Query query = pm.newQuery(Guest.class);
+		guests = (List<Guest>)query.execute();
+		if (guests!=null){
+			for (Guest g : guests){
+				List<WishlistItem> items = g.getWishlistItems();
+				if (items!=null){
+					for (WishlistItem item : items){
+						if ((item.getBuyerKey()==null)&&(item.getIsDeleted()==true)){
+							g.removeWishlistItem(item);
+							pm.makePersistent(g);
+							pm.deletePersistent(item);
+						}
+					}
+				}
+			}
+		}
+		pm.close();
 	}
 
 	public static void createEvent(EventData eventD,DALWrapper wrapper) throws UserNotFoundException, UserException {
@@ -340,7 +376,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(event);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while creating the event, please try again later");
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -354,7 +390,7 @@ public class BusinessObjectDAL {
 			Key key = KeyFactory.stringToKey(eventId);
 			event = pm.getObjectById(Event.class, key);
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while loading the event, please try again later");
 		}
 		return event;
 	}
@@ -380,7 +416,8 @@ public class BusinessObjectDAL {
 			query.setFilter("idKey == :keyList");
 			guests = (List<Guest>) query.execute(keys);
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			log.severe("error in getGuestsById");
+			throw new UserException("an error occured while getting your profile");
 		}
 		return guests;
 	}
@@ -402,7 +439,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(item);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while creating the wishlist item,please try again later");
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -417,7 +454,7 @@ public class BusinessObjectDAL {
 			Key key = KeyFactory.stringToKey(wishlistItemId);
 			item = pm.getObjectById(WishlistItem.class, key);
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while loading the wishlist item");
 		}
 		return item;
 	}
@@ -442,7 +479,7 @@ public class BusinessObjectDAL {
 			tx.commit();
 			return item;
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while updating the wishlist item,please try again later");
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -480,12 +517,12 @@ public class BusinessObjectDAL {
 		catch (RuntimeException e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while deleting the wishlist item,please try again later");
         }
         catch (Exception e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while deleting the wishlist item,please try again later");
         }
 		finally {
 			if (tx.isActive()) {
@@ -506,7 +543,7 @@ public class BusinessObjectDAL {
 				}
 			}
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("can't get your wishlist,please try again later");
 		}
 		return itemList;
 	}
@@ -518,7 +555,7 @@ public class BusinessObjectDAL {
 			query.setFilter("key == :keyList");
 			items = (List<WishlistItem>) query.execute(keys);
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("an error occured while getting the wishlist item");
 		}
 		return items;
 	}
@@ -537,7 +574,7 @@ public class BusinessObjectDAL {
 			partisipators = (List<Participator>) query.execute(g.getId());
 		} catch (Exception ex) {
 			log.severe("Error in getBookedWishlistItems2's first query");
-			throw new RuntimeException("error in data base: getBookedWishlistItems2");
+			throw new UserException("can't get your booked wishlist items, please try later");
 		}
 		if (partisipators==null){
 			log.info("getBookedWishlistItems2: there is no partisipators");
@@ -559,7 +596,7 @@ public class BusinessObjectDAL {
 			buyers = (List<WishlistItem>) query.execute(g.getIdKey());
 		} catch (Exception ex) {
 			log.severe("Error in getBookedWishlistItems2's second query"+ex.getMessage());
-			throw new UserException(ex);
+			throw new UserException("can't get your booked wishlist items, please try later");
 		}
 		if (buyers==null){
 			log.info("getBookedWishlistItems2: there is no buyers");
@@ -580,7 +617,7 @@ public class BusinessObjectDAL {
 	}
 	
 	public static ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,String anotherUserId,
-		PersistenceManager pm) throws UserNotFoundException {
+		PersistenceManager pm) throws UserNotFoundException, UserException {
 		Key buyer = KeyFactory.createKey(Guest.class.getSimpleName(), anotherUserId);
 		Key myKey = KeyFactory.createKey(Guest.class.getSimpleName(), myUserId);
 		Guest guest = loadGuest(myUserId, pm);
@@ -653,12 +690,12 @@ public class BusinessObjectDAL {
         catch (RuntimeException e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while booking the wishlist item for you,please try again later");
         }
         catch (Exception e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while booking the wishlist item for you,please try again later");
         }
         finally {
 			if (tx.isActive()) {
@@ -683,7 +720,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new UserException(ex);
+				throw new UserException("an error occured while canceling the booked wishlist item for you,please try again later");
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -715,12 +752,12 @@ public class BusinessObjectDAL {
 		catch (RuntimeException e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while booking the wishlist item for group,please try again later");
         }
         catch (Exception e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while booking the wishlist item for group,please try again later");
         }
         finally {
 			if (tx.isActive()) {
@@ -832,7 +869,7 @@ public class BusinessObjectDAL {
 		catch (RuntimeException e)
         {
             log.severe(e.getMessage());
-            throw new UserException(e);
+            throw new UserException("an error occured while canceling booked wishlist item for group,please try again later");
         }
         catch (Exception e)
         {
@@ -872,7 +909,7 @@ public class BusinessObjectDAL {
 //	}
 	
 	public static List<WishlistItem> getWishlistForEvent(String userId,String eventId,
-			PersistenceManager pm) throws UserNotFoundException{
+			PersistenceManager pm) throws UserNotFoundException, UserException{
 		Guest guest = loadGuest(userId, pm);
 		Key eventKey = KeyFactory.stringToKey(eventId);
 		List<WishlistItem> items = guest.getWishlistItems();
@@ -912,7 +949,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(participator);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new UserException(ex);
+				throw new UserException("an error occured while adding you to group,please try again later");
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -940,7 +977,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new UserException(ex);
+				throw new UserException("an error occured while updating yor participation details,please try again later");
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -972,7 +1009,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
-				throw new UserException(ex);
+				throw new UserException("an error occured while canceling your participation in group,please try again later");
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
@@ -993,7 +1030,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(item);
 			tx.commit();
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("can't add a message, please try again later");
 		} finally {
 			if (tx.isActive()) {
 				tx.rollback();
@@ -1018,7 +1055,7 @@ public class BusinessObjectDAL {
 			}
 		//	tx.commit();
 		} catch (Exception ex) {
-			throw new UserException(ex);
+			throw new UserException("can't remove a messages, please try again later");
 		} finally {
 		//	if (tx.isActive()) {
 		//		tx.rollback();

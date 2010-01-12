@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 
 import com.tau.birthdayplus.Email.ParticipatorEmail;
 import com.tau.birthdayplus.Email.SendEmail;
+import com.tau.birthdayplus.Email.SendEmail.CancelFor;
 import com.tau.birthdayplus.client.Services.UserException;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.domain.Event;
@@ -78,7 +79,7 @@ public class EventManagement {
 		    if (itemParticipatorDelete!=null){
 		    	log.info("there is participators in items that should be deleted");
 			    for (WishlistItem item : itemParticipatorDelete){
-			    	sendEmailAndDeleteParticipators(item,e,wrapper);
+			    	sendEmailAndDeleteParticipators(item,e,wrapper,false);
 			    }
 		    }
 	    }
@@ -135,14 +136,21 @@ public class EventManagement {
 		return events;
 	}
 	
-	public static void sendEmailAndDeleteParticipators(WishlistItem item,Event e,DALWrapper wrapper) throws Exception{
+	public static void sendEmailAndDeleteParticipators(WishlistItem item,Event e,DALWrapper wrapper,Boolean isCron) throws Exception{
 		ArrayList<Participator> participators = item.getParticipators();
 		if (participators!=null||!participators.isEmpty()){
 			log.info("There is participators in item "+item.getItemName());
 		}
 	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
 		GroupStatus status = GroupStatus.CANCEL;
-		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.EVENT,e);
+		CancelFor cancel;
+		if (isCron){
+			cancel = CancelFor.CRON;
+		}
+		else{
+			cancel = CancelFor.EVENT;
+		}
+		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,cancel,e);
 		log.info("cancel email was sent to group of item "+item.getItemName()+" because event was deleted");
 		for (Participator p : participators){
 			log.info("participator is: "+ p.getId());
@@ -163,7 +171,7 @@ public class EventManagement {
 	    try{
 		    if (itemParticipatorDelete!=null){
 		    	for (WishlistItem item : itemParticipatorDelete){
-			    	sendEmailAndDeleteParticipators(item,e,wrapper);
+			    	sendEmailAndDeleteParticipators(item,e,wrapper,true);
 			    }
 		    }
 	    }

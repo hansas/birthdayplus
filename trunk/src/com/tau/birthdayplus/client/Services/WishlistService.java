@@ -59,7 +59,7 @@ public interface WishlistService extends RemoteService{
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
 	 *  eventId == null ) and isActive == true
 	 */
-	ArrayList<WishlistItemNewData> getWishlistForEvent(String uId,String eventId) throws UserNotFoundException;
+	ArrayList<WishlistItemNewData> getWishlistForEvent(String uId,String eventId) throws UserNotFoundException, UserException;
 
 	/*
 	 * add participator
@@ -117,7 +117,7 @@ public interface WishlistService extends RemoteService{
 	 * Three last items that this person bought for me
 	 * 
 	 */
-	ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,String anotherUserId ) throws UserNotFoundException;
+	ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,String anotherUserId ) throws UserNotFoundException, UserException;
 	/*
 	 * get chat messages for the item
 	 */

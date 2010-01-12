@@ -109,7 +109,7 @@ WishlistService  {
 	 *  server - all the items that belong to the user and their (eventId == eventId, or
 	 *  eventId == null ) and isActive == true
 	 */
-	public ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException {
+	public ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException, UserException {
 		return WishlistManagement.getWishlistForEvent(userId,eventId);
 	}
 	
@@ -200,7 +200,7 @@ WishlistService  {
 	 * 
 	 */
 	public ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,
-			String anotherUserId) throws UserNotFoundException {
+			String anotherUserId) throws UserNotFoundException, UserException {
 		return WishlistManagement.getLastItemsForUser(myUserId, anotherUserId);
 	}
 	

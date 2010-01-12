@@ -61,11 +61,11 @@ public class DALWrapper {
 		pm.makePersistent(item);
 	}
 	
-	public List<WishlistItem> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException{
+	public List<WishlistItem> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException, UserException{
 		return BusinessObjectDAL.getWishlistForEvent(userId,eventId,this.pm);
 	}
 	
-	public Guest getGuestById(String userId) throws UserNotFoundException{
+	public Guest getGuestById(String userId) throws UserNotFoundException, UserException{
 		return BusinessObjectDAL.loadGuest(userId, pm);
 	}
 	
@@ -73,7 +73,7 @@ public class DALWrapper {
 		return BusinessObjectDAL.loadGuestByGmail(gmail, pm);
 	}
 	
-	public Guest loadGuestByGoogleId(String googleId){
+	public Guest loadGuestByGoogleId(String googleId) throws UserException{
 		return BusinessObjectDAL.loadGuestByGoogleId(googleId, pm);
 	}
 	
@@ -102,7 +102,7 @@ public class DALWrapper {
 	}
 	
 	public ArrayList<WishlistItemPolaniData> getLastItemsForUser(String myUserId,
-			String anotherUserId) throws UserNotFoundException {
+			String anotherUserId) throws UserNotFoundException, UserException {
 		return BusinessObjectDAL.getLastItemsForUser(myUserId, anotherUserId, pm);
 	}
 	
