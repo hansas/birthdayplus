@@ -214,17 +214,24 @@ border-collapse:collapse;
 width: 50%;	
 }
 
-.Label{
-background-image:url('http://birthdayplus.googlecode.com/svn/trunk/bar.gif');
-background-repeat:no-repeat;
-background-position:top center;
-color:#224499;									
-height: 16px;
-overflow: hidden;
-text-align: center;
+/********************title after menu************/
+.titlePanel{
+width : 100%;
+height : 16px;
 padding : 3px 25px;
-position: relative;
 top: 2px;
+
+}
+
+.Label{
+background-image:url('http://birthdayplus.googlecode.com/svn/trunk/bar2.gif');
+background-repeat:repeat-x;
+color:#224499;									
+overflow: hidden;
+width : 100%;
+text-align: center;
+position: relative;
+
 										
 }
 
