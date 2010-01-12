@@ -225,7 +225,7 @@ public class ItemDialogBox extends DialogBox{
         	}
         });
 		
-		/*
+		
 		
 		this.linkField.addChangeHandler(new ChangeHandler(){
 
@@ -237,9 +237,6 @@ public class ItemDialogBox extends DialogBox{
 		});
 		this.priceField.addKeyUpHandler(new KeyUpHandler(){
 			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_TAB) 
-					gui_eventGetPriceByLink();
-				else
 					if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
 						if(checkIfValid()){
 							copyFields();
@@ -251,7 +248,7 @@ public class ItemDialogBox extends DialogBox{
 				}
 		});
 		
-	*/
+	
     }
     
     
@@ -260,7 +257,6 @@ public class ItemDialogBox extends DialogBox{
 	    loadingImagePopup.show();
 		
 	    if(!linkField.getText().equals("")){
-	    	Window.alert(linkField.getText());
 		   bringLink(linkField.getText());
 	    }
 	    else
@@ -287,31 +283,35 @@ public class ItemDialogBox extends DialogBox{
 	
 	
 	private void parse(){
-		Double price = 0.0;
-	    Window.alert("before text");
-		String[] prices = match(linkText,"([1-9]\\d*)(?:,(\\d+))?(?: ?₪)");
+		String price = match(linkText,"([1-9]\\d*)(?:,(\\d+))?(?: ?₪)");
 	
-		if(prices.length != 0){
-			price = Double.parseDouble(prices[1]+prices[2]);
-		}else{
-			prices = match(linkText,"(?:₪ ?)([1-9]\\d*)(?:,(\\d+))?()");
-			if(prices.length != 0)
-				price = Double.parseDouble(prices[1]+prices[2]);
-			
-		}
-	    this.priceField.setText(price.toString());
-	    String[] thumbnail = match(linkText,"(?:href=\")([^\"]+\\.gif|jpg|jpeg|png|mng)(\")");
-	  
-	    if(thumbnail.length!= 0)
-	    	this.thumbnailField.setText(thumbnail[1]);
-	    else
-	    	this.thumbnailField.setText("");
+		if(price.equals(""))
+			price = match(linkText,"(?:₪ ?)([1-9]\\d*)(?:,(\\d+))?()");
+	
+	    this.priceField.setText(price);
+	    
+	    String thumbnail = match(linkText,"(?:href=\")([^\"]+\\.gif|jpg|jpeg|png|mng)(?:\")");
+	    this.thumbnailField.setText(thumbnail);
 	    
 	    loadingImagePopup.hide();
 			
 		
 	}
 	
+	private native static  String match(String text,String pattern)/*-{
+	   var regExp = new RegExp(pattern);
+	   var result = text.match(regExp);
+	   if (result == null) return "";
+	   var temp = "";
+	   for (var i=1;i<result.length;i++){
+	    	if ((!(result[i]=== undefined))&&(/\S+/.test(result[i]))){
+	   	       temp+=result[i];
+	    	}
+	   }
+	   return temp;
+	   }-*/;
+	
+	/*
 	
 	private native static  void _match(String text, List matches,String pattern)/*-{
 	  
@@ -325,8 +325,9 @@ public class ItemDialogBox extends DialogBox{
 	   
 	   matches.@java.util.ArrayList::add(Ljava/lang/Object;)(result[i]);
 	   }
-	   }-*/;
-	
+	   }-*///;
+	   
+	/*
 	public static String[] match(String text,String pattern) {
 	    List matches = new ArrayList();
 	    Window.alert("match");
@@ -336,5 +337,5 @@ public class ItemDialogBox extends DialogBox{
 	      arr[i] = matches.get(i).toString();
 	    return arr;
 	  }
-
+*/
 }

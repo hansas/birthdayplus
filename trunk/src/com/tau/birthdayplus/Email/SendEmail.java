@@ -16,6 +16,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
 public class SendEmail {
 	private static final Logger log = Logger.getLogger(SendEmail.class.getName());
@@ -113,6 +114,8 @@ public class SendEmail {
         		         "<table cellspacing='0' cellpadding='0'> ";
         
         buyerName =  getGroupInfo(group,addresses,names,participation,buyerAddress);
+        
+        
       
         if(closeGroup)
         	calculateActualParticipation(actualPrice , participation);
@@ -162,6 +165,7 @@ public class SendEmail {
 		}
 		
 		try{
+			
 			sendMails(new InternetAddress(emailAddress, "Birthday+"),null,replyTo,null,"A present for "+group.getUserName()+"'s "+group.getEventName(),buyerMessage );
 		} catch (UnsupportedEncodingException e) {
 			log.log(Level.INFO, "the log from calling to  sendEmailToGroup", e);
@@ -217,6 +221,15 @@ public class SendEmail {
 		        if(sendCopyTo!=null){
 		        	log.info("send copy to null");
 		           msg.addRecipients(Message.RecipientType.CC,sendCopyTo);
+		        }
+		        
+		       
+		        if ((subject != null) && (subject.length() > 0)) {
+		            try { 
+		                 subject = MimeUtility.encodeText(subject,"utf-8",null);
+		            } catch (UnsupportedEncodingException e) {
+		            	log.log(Level.INFO, "the log from calling to encode subject", e);
+		            }         
 		        }
 		        msg.setSubject(subject);
 		        

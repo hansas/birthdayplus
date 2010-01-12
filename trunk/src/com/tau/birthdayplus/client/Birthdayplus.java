@@ -251,7 +251,8 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 			  req.add(req.newFetchPersonRequest('VIEWER'), 'viewer'); 
 			  var viewerFriends = $wnd.opensocial.newIdSpec({"userId" : "VIEWER", "groupId" : "FRIENDS"});
 			  var opt_params = {};
-			  opt_params[$wnd.opensocial.DataRequest.PeopleRequestFields.MAX]=100;
+			  opt_params[$wnd.opensocial.DataRequest.PeopleRequestFields.MAX]=50;
+			  opt_params[$wnd.opensocial.DataRequest.PeopleRequestFields.FILTER] = $wnd.opensocial.DataRequest.FilterType.HAS_APP;			  
 			  req.add(req.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
 			
 			  req.send(this.@com.tau.birthdayplus.client.Birthdayplus::onLoadInfo(Lcom/google/gwt/core/client/JavaScriptObject;));
