@@ -73,6 +73,17 @@
  <url-pattern>/birthdayplus/cron/delete</url-pattern>
  </servlet-mapping>
  
+  <servlet>
+ <servlet-name>cronItemJob</servlet-name>
+ <servlet-class>com.tau.birthdayplus.cron.cronItemJob</servlet-class>
+ </servlet>
+
+<servlet-mapping>
+ <servlet-name>cronItemJob</servlet-name>
+ <url-pattern>/birthdayplus/cron/deleteitem</url-pattern>
+ </servlet-mapping>
+ 
+ 
  
  <servlet>
   <servlet-name>addEventServlet</servlet-name>
