@@ -1,7 +1,7 @@
 (function(){function I(u)
 {var t=u.split('.'),e=t[t.length-1].toLowerCase();
 return{gif:1,jpg:1,jpeg:1,png:1,mng:1}[e]}
-wnd.alert("hello");
+
 var q,h,i;for(i=0;q=document.links[i];++i)
 {h=q.href;if(h&&I(h))
 {break;}
