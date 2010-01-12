@@ -3,6 +3,12 @@
  <cron>
  <url>/birthdayplus/cron/delete</url>
  <description>delete past events</description>
- <schedule>every 2 minutes</schedule>
+ <schedule>every day 00:01</schedule>
+ </cron>
+ 
+ <cron>
+ <url>/birthdayplus/cron/deleteitem</url>
+ <description>delete items</description>
+ <schedule>1st monday of month 00:03</schedule>
  </cron>
 </cronentries>
