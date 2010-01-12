@@ -25,6 +25,7 @@ public class SendEmail {
 	public static enum CancelFor{
 		ITEM("item"),
 		EVENT("event"),
+		CRON("cron"),
 		NONE("NONE");
 		
 		private String description;
