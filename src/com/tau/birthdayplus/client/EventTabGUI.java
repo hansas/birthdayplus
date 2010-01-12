@@ -158,9 +158,12 @@ public class EventTabGUI {
 	}
 	
 	protected void showEventTab(){
-		if (eventList == null)
+		if (eventList == null){
+			ArrayList<String> userAndFriends = entryPoint.getUserAndFriendsIds();
+			if(userAndFriends.size() == 1)
+				entryPoint.messages.setText("You can add friends by clicking on icon and share this gadget by clicking on the icon in the gadget panel");
 			 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
-		
+		}
 		wishlistFriendGUI.closeTab();
 		eventPanel.setVisible(true);
 	}
