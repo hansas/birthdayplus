@@ -78,7 +78,16 @@ public class SendEmail {
         String message = "<body style='font-size:13px;color:#222;font-family:Arial,Sans-serif'>";
         message+= "<img src=\"http://birthdayplus.googlecode.com/svn/trunk/logo.gif\" align='center'/>"; 
         message += "<p>You are participating in the group that wants to buy a " +group.getItemName()+" for "+group.getUserName()+" .<br /><br />";
-        message+="The group has been canceled because "+group.getUserName()+" has deleted this "+group.getEventName()+" "+cancel.toString()+".";
+        
+        switch(cancel){
+        	case ITEM :  message+="The group has been canceled because "+group.getUserName()+" has deleted this item.";
+                         break;
+        	case EVENT : message+="The group has been canceled because "+group.getUserName()+" has deleted this event.";
+                         break;
+        	case CRON  : message+="The group has been canceled becausse this event has passed";
+                         break;
+        	case NONE  : break;             
+        }
         message+="</p></body>";
         
         try {
