@@ -162,7 +162,7 @@ public class EventTabGUI {
 			ArrayList<String> userAndFriends = entryPoint.getUserAndFriendsIds();
 			if(userAndFriends.size() == 1)
 				entryPoint.messages.setText("You can add friends by clicking on icon and share this gadget by clicking on the icon in the gadget panel");
-			 this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
+			 this.eventService.getEvents(userAndFriends);
 		}
 		wishlistFriendGUI.closeTab();
 		eventPanel.setVisible(true);
