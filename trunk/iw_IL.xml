@@ -1,0 +1,12 @@
+<messagebundle>
+  <msg name="hello_world">
+    שלום
+  </msg>
+  <msg name="color">צבע</msg> 
+  <msg name="red">אדום</msg> 
+  <msg name="green">ירוק</msg> 
+  <msg name="blue">כחול</msg> 
+  <msg name="gray">אפור</msg> 
+  <msg name="purple">משהו</msg> 
+  <msg name="black">שחור</msg>
+</messagebundle>
