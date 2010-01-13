@@ -3,7 +3,7 @@
   <ModulePrefs title="i18n Example"> 
     <Require feature="opensocial-0.8"/>
     <Locale messages="http://birthdayplus.googlecode.com/svn/trunk/ALL_ALL.xml"/> 
-     <Locale lang="iw" country="il" messages="http://birthdayplus.googlecode.com/svn/trunk/iw_IL.xml"/>
+     <Locale lang="he" country="il" messages="http://birthdayplus.googlecode.com/svn/trunk/he_IL.xml"/>
     
  
   </ModulePrefs>
