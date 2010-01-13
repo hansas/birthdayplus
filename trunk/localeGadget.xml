@@ -33,6 +33,10 @@
         html += prefs.getMsg("hello_world");
         html +=  "</h1>"; 
         div.innerHTML = html;
+        
+         var prefs = new gadgets.Prefs();
+         alert(prefs.getCountry());
+        
       }
       gadgets.util.registerOnLoadHandler(displayMsg);
       
