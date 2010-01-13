@@ -12,7 +12,7 @@
       <msg name="purple">Purple</msg> 
       <msg name="black">Black</msg> 
     </Locale>
-    <Locale language=""iw">
+    <Locale language="iw">
       <msg name="hello_world">שלום</msg> 
       <msg name="color">צבע</msg> 
       <msg name="red">אדום</msg> 
