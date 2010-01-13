@@ -2,7 +2,7 @@
 <Module>
   <ModulePrefs title="i18n Example"> 
     <Require feature="opensocial-0.8"/>
-    <Locale country="all">
+    <Locale language="all">
       <msg name="hello_world">Hello World.</msg> 
       <msg name="color">Color</msg> 
       <msg name="red">Red</msg> 
@@ -12,7 +12,7 @@
       <msg name="purple">Purple</msg> 
       <msg name="black">Black</msg> 
     </Locale>
-    <Locale country="il">
+    <Locale language=""iw">
       <msg name="hello_world">שלום</msg> 
       <msg name="color">צבע</msg> 
       <msg name="red">אדום</msg> 
