@@ -36,7 +36,7 @@
         
          var prefs = new gadgets.Prefs();
          alert(prefs.getCountry());
-         alert(prefs.getLanguage());
+         alert(prefs.getLang());
         
       }
       gadgets.util.registerOnLoadHandler(displayMsg);
