@@ -32,7 +32,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 public class MyWishlistTabGUI {
 	// CONSTANTS 
 	private static CwConstants constants = GWT.create(CwConstants.class);
-	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
+	//private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
 	private static final int UPDATE_LINK = 4;
     private static final int DELETE_LINK = 5;
 
@@ -251,7 +251,7 @@ public class MyWishlistTabGUI {
 	        	else	
 	    	        wishTable.setText(row,1,"low");
 	        	        
-	    	    wishTable.setText(row, 2,shortMoneyFormat.format(item.getPrice()));
+	    	    wishTable.setText(row, 2,entryPoint.shortMoneyFormat.format(item.getPrice()));
 	    	    
 	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
 			    updateImage.setTitle("update item");

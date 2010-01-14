@@ -63,7 +63,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 public class IBuyTabGUI {
 //////////////////Constants///////////////////////////
-	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
+//	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
 	private static 	DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
 	private static final int CHAT_LINK = 6;
 	private static final int BUY_LINK = 5;
@@ -403,7 +403,7 @@ public class IBuyTabGUI {
 	        
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
-	    	    	wishTable.setWidget(row, 1,new Label(shortMoneyFormat.format(item.getPrice()))) ;
+	    	    	wishTable.setWidget(row, 1,new Label(entryPoint.shortMoneyFormat.format(item.getPrice()))) ;
 	    	    	if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
 	    	    		countMoney+=item.getPrice();
 	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
@@ -429,7 +429,7 @@ public class IBuyTabGUI {
 	    	    	*/
 	    	    	ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), entryPoint.userId);
 	    	    	countMoney+=list.getUserPart();
-	    	    	Label priceLabel = new Label(shortMoneyFormat.format(list.getTotalAmount())+" / "+shortMoneyFormat.format(item.getPrice()));
+	    	    	Label priceLabel = new Label(entryPoint.shortMoneyFormat.format(list.getTotalAmount())+" / "+entryPoint.shortMoneyFormat.format(item.getPrice()));
 	    	        wishTable.setWidget(row, 1,priceLabel );
 	    	        
 	    	        TooltipListener listener  = new TooltipListener(list.getHtmlList(), 10000 ,false);
@@ -461,7 +461,7 @@ public class IBuyTabGUI {
 	        }   
 	    	    row ++;
 	        }
-	        wishPanel.setTitle("In this month you're going to spend "+shortMoneyFormat.format(countMoney));
+	        wishPanel.setTitle("In this month you're going to spend "+entryPoint.shortMoneyFormat.format(countMoney));
 			    
 		}
 		
