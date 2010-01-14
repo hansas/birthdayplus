@@ -7,14 +7,16 @@
     
  
   </ModulePrefs>
-  <UserPref name="fontcolor" display_name="__MSG_color__" default_value="Red" datatype="enum">
-    <EnumValue value="Red" display_value="__MSG_red__" /> 
-    <EnumValue value="Green" display_value="__MSG_green__" /> 
-    <EnumValue value="Blue" display_value="__MSG_blue__" /> 
-    <EnumValue value="Gray" display_value="__MSG_gray__" /> 
-    <EnumValue value="Purple" display_value="__MSG_purple__" /> 
-    <EnumValue value="Black" display_value="__MSG_black__" /> 
-  </UserPref>
+  <UserPref name="lang" 
+     display_name="Language"
+     datatype="enum"
+     default_value="3">
+  <EnumValue value="3" display_value="ru"/>
+  <EnumValue value="4" display_value="he"/>
+  
+</UserPref>
+  
+  
   <Content type="html">
   <![CDATA[
     <div id="content_div"></div>
