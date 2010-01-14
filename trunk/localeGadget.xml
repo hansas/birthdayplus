@@ -2,19 +2,14 @@
 <Module>
   <ModulePrefs title="i18n Example"> 
     <Require feature="opensocial-0.8"/>
+    <Require feature="setprefs" /> 
+    
     <Locale messages="http://birthdayplus.googlecode.com/svn/trunk/ALL_ALL.xml"/> 
      <Locale lang="he" country="il" messages="http://birthdayplus.googlecode.com/svn/trunk/he_IL.xml"/>
     
  
   </ModulePrefs>
-  <UserPref name="lang" 
-     display_name="Language"
-     datatype="enum"
-     default_value="3">
-  <EnumValue value="3" display_value="ru"/>
-  <EnumValue value="4" display_value="he"/>
   
-</UserPref>
   
   
   <Content type="html">
@@ -37,6 +32,7 @@
         div.innerHTML = html;
         
          var prefs = new gadgets.Prefs();
+         prefs.set("lang","he");
          alert(prefs.getCountry());
          alert(prefs.getLang());
         
