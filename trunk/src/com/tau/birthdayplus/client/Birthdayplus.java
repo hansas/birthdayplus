@@ -81,7 +81,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		thumbnail="http://birthdayplus.googlecode.com/svn/trunk/thumbnail.gif"
 )
 @Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
-public class Birthdayplus extends Gadget<UserPreferences>   {
+public class Birthdayplus extends Gadget<CountryPreferences>   {
 	private static CwConstants constants = GWT.create(CwConstants.class);
 	
 	// Create a remote service proxy to talk to the server-side Profile service.
@@ -95,6 +95,8 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	protected String lastName;
 	protected HashMap<String,String> userFriends= new HashMap<String,String>();
 	protected GuestData user;
+	protected  NumberFormat shortMoneyFormat ;
+
 	
 	protected  TabPanel tab ;
 	protected  PopupPanel loadingImagePopup ;
@@ -144,7 +146,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 /**
  * This is the entry point method.
  */
- protected void init(UserPreferences preferences) {
+ protected void init(CountryPreferences preferences) {
 	    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
 	    loadingImage.setStyleName("loading image");
 				
@@ -155,6 +157,7 @@ public class Birthdayplus extends Gadget<UserPreferences>   {
 	    loadingImagePopup.center();
 	    loadingImagePopup.show();
 	    
+	    shortMoneyFormat = NumberFormat.getFormat(preferences.getCountry().getValue().getCurrency()+"#,##0");
 	    getSocialInfo();
      
  }

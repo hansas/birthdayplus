@@ -39,7 +39,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 
 
 public class WishListFriendsGUI  {
-	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0.00");
+//	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0.00");
 	/*
 	 * constants
 	 */
@@ -325,7 +325,7 @@ public class WishListFriendsGUI  {
         	
             if(item.getIsActive()){	
         	   if(item.getParticipators().isEmpty()){
-        	      friendWishTable.setWidget(row, 2,new Label(shortMoneyFormat.format(item.getPrice())) );
+        	      friendWishTable.setWidget(row, 2,new Label(parent.entryPoint.shortMoneyFormat.format(item.getPrice())) );
         	      Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
 			      buyImage.setTitle("I'll buy");
         	      friendWishTable.setWidget(row, BUY_LINK , buyImage);
@@ -351,7 +351,7 @@ public class WishListFriendsGUI  {
         	     ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), parent.entryPoint.userId);
         	     if(list.getUserPart() > 0)
         	    	 userInGroup = true;
-        	      Label price = new Label (shortMoneyFormat.format(list.getTotalAmount()) +" / "+shortMoneyFormat.format(item.getPrice()));
+        	      Label price = new Label (parent.entryPoint.shortMoneyFormat.format(list.getTotalAmount()) +" / "+parent.entryPoint.shortMoneyFormat.format(item.getPrice()));
           	      friendWishTable.setWidget(row, 2,price );
           	      
           	      TooltipListener listener  = new TooltipListener(list.getHtmlList(), 10000 ,false);
@@ -368,7 +368,7 @@ public class WishListFriendsGUI  {
         	      }
             	}
             }else {
-            	friendWishTable.setWidget(row, 2,new Label(shortMoneyFormat.format(item.getPrice())));
+            	friendWishTable.setWidget(row, 2,new Label(parent.entryPoint.shortMoneyFormat.format(item.getPrice())));
             	friendWishTable.getWidget(row, 0).addStyleName(constants.cwInactiveRowStyle());
             }
             
