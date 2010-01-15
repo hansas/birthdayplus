@@ -29,6 +29,8 @@ public class Event  {
 	   private Boolean recurrence;
 	   @Persistent
 	   private Boolean isDeleted;
+	   @Persistent
+	   private String googleUID;
 	   
 	/*
 	 * constructor for isSerializable
@@ -39,11 +41,16 @@ public class Event  {
 		
 	}
 	   
-	public Event(String eventName,String userId,Date eventDate,Boolean recurrence,Boolean isDeleted){
+	public Event(String eventName,String userId,Date eventDate,Boolean recurrence,Boolean isDeleted,String googleUID){
 		   this.eventName = eventName;
 		   this.eventDate = eventDate;
 		   this.recurrence = recurrence;
 		   this.isDeleted = isDeleted;
+		   this.googleUID = googleUID;
+	}
+	
+	public Event(String eventName,String userId,Date eventDate,Boolean recurrence,Boolean isDeleted){
+		this(eventName,userId,eventDate,recurrence,isDeleted,null);
 	}
 	
 	public Event(EventData eventD){
@@ -102,6 +109,14 @@ public class Event  {
 
 	public Boolean getIsDeleted() {
 		return isDeleted;
+	}
+	
+	public void setGoogleUID(String googleUID){
+		this.googleUID = googleUID;
+	}
+	
+	public String getGoogleUID(){
+		return this.googleUID;
 	}
 
 
