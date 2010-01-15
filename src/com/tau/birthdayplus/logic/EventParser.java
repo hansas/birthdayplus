@@ -1,32 +1,22 @@
 package com.tau.birthdayplus.logic;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
-
 import com.tau.birthdayplus.dto.client.EventData;
-
-
-import net.fortuna.ical4j.data.BuilderException;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.PropertyList;
-import net.fortuna.ical4j.model.Recur;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.property.DtStart;
 import net.fortuna.ical4j.model.property.Method;
-import net.fortuna.ical4j.model.property.RRule;
 import net.fortuna.ical4j.model.property.Summary;
 import net.fortuna.ical4j.model.property.Uid;
 
@@ -170,14 +160,22 @@ public class EventParser {
 			    		//cancel the event
 			    		if(method.getValue().equalsIgnoreCase("CANCEL")){
 			    			logger.info("cancel event for "+from+" uid :"+uid.toString());
+			    			try{
+			    		    	EventManagement.deleteEvent(from, uid.getValue());
+			    			}catch(Exception ex){
+			    				logger.log(Level.INFO, "the log from parsing event", ex);
+			    			}
 			    		}else
 			    			//add event or update event
 			    			if(method.getValue().equalsIgnoreCase("REQUEST")){
 			    			    data = getEvent(properties);
-			    			    if(data == null)
+			    			    if(data == null){
+			    			    	logger.info("can't parse this event");
 			    			    	return;
-			    			    logger.info("add or update event "+data.getEventName()+" "+data.getEventDate().toGMTString()+" "+data.getRecurrence());
-					    		
+			    			    }else{
+			    			        logger.info("add or update event "+data.getEventName()+" "+data.getEventDate().toGMTString()+" "+data.getRecurrence());
+			    			        EventManagement.createOrUpdateEvent(from, uid.getValue(), data);
+			    			    }
 			    			}
 
 			    	}
