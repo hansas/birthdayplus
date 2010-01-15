@@ -181,6 +181,21 @@ public class EventManagement {
 	}
 	
 	
+	/*
+	 * find guest by gmail and if he has event with googleUID == googleUID then delete this event
+	 */
+	public static void deleteEvent(String gmail,String googleUID){
+		
+	}
+	/*
+	 * find guest by gmail and if he has event with googleUID== googleUID then update this event 
+	 * with data from event , else create new event for this guest with given googleUID
+	 */
+	public static void createOrUpdateEvent(String gmail,String googleUID,EventData event){
+		
+	}
+	
+	
 	
 
 }

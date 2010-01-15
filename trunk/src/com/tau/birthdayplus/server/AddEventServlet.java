@@ -1,32 +1,43 @@
 package com.tau.birthdayplus.server;
+
 import java.io.IOException; 
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties; 
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Address;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.Session; 
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage; 
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.*; 
-
 import com.tau.birthdayplus.dto.client.EventData;
-import com.tau.birthdayplus.logic.EventManagement;
+import com.tau.birthdayplus.logic.EventParser;
 
 
 
 
 
 
+/*
+ * get the .ics attachment from the email with event details
+ */
 public class AddEventServlet extends HttpServlet { 
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(AddEventServlet.class.getName());
+	private static final Logger logger = Logger.getLogger(AddEventServlet.class.getName());
+	
+	 /**
+     * The default buffer size to use.
+     */
 	/*
 	 * Invitation: vcxv dgdg @ Annually on June 6 (event@testrpcplus.appspotmail.com)
 	 * Invitation: kkk kk skk @ Annually from 9pm to 10pm on June 26 (event@testrpcplus.appspotmail.com)
@@ -92,58 +103,78 @@ public class AddEventServlet extends HttpServlet {
          Session session = Session.getDefaultInstance(props, null); 
          try {
 			MimeMessage message = new MimeMessage(session, req.getInputStream());
+			
 			Address[] from = message.getFrom();
 			String fromAddress = "";
 			if (from.length > 0) {
-			    fromAddress = from[0].toString();
-			}
-            Matcher emailMatcher = emailPattern.matcher(fromAddress);
-            String email;
-            if (emailMatcher.matches()){
-    		    	email = emailMatcher.group(1);
-    		    	log.info("mail is : "+email);
-            }else{
-            	return;
-            }
-            log.info(message.getContentType());
-            log.info(message.getEncoding());
-			log.info("the subject is : "+message.getSubject());
-			EventData event = getEvent(message.getSubject());
-			if(event == null )
-				return;
-			else{ 
-				EventManagement.createEvent(event, email);
-			}
-		} catch (MessagingException e) {
-			log.info("exception : "+e.getMessage());
+		       fromAddress = from[0].toString();
+			        }
 			
-		}catch (Exception ex){
-        	log.log(Level.INFO, "the log from calling to createEvent with gmail", ex);
+			String contentType = message.getContentType();
+			InputStream inContent = null;
+			logger.info("Message ContentType: ["+contentType+"]");
+				 
+			if (contentType.indexOf("multipart") > -1) {
+			    DataHandler dataHandler = message.getDataHandler();
+			    DataSource dataSource = dataHandler.getDataSource();
+				MimeMultipart mimeMultipart = new MimeMultipart(dataSource);
+				logger.info("The number of parts :"+mimeMultipart.getCount());
+				
+				for(int i=0;i<mimeMultipart.getCount();i++){
+					Part part = mimeMultipart.getBodyPart(i);           
+				    contentType = part.getContentType();
+					logger.info("Part "+i+"ContentType: ["+contentType+"]");
+					if (part.getDisposition() == null) {
+						//Assume text/plain
+						
+                    } else if (part.getDisposition().equals("attachment")) { 
+                    	// Create a new ByteArrayDataSource with this part
+                        MimeBodyPart inboundMimeBodyPart = (MimeBodyPart)part;
+                        contentType = inboundMimeBodyPart.getContentType();
+                        logger.info("Attachment type :"+contentType);
+                        inContent = part.getInputStream();
+                        
+                        if(contentType.indexOf("application/ics")>-1){
+                        	logger.info("it's ics file,lets read it");
+                            EventParser.parseEvent(inContent, fromAddress);
+                        }	
+                    }
+				}
+			} else {
+			    //Assume text/plain
+			   
+			}
+			logger.info("Received email from=["+fromAddress+"] subject=["+message.getSubject()+"]");
+		
+         }catch (Exception ex){
+         	logger.log(Level.INFO, "the log from reading email for event", ex);
 
-		}
-
+ 		}
+		return ;
+		
     }
     
     
+   
     private EventData getEvent(String subject){
 		    Matcher eventAnnualyMatcher = eventAnnualyPattern.matcher( subject );
 		    Matcher eventOnceMatcher = eventOncePattern.matcher(subject);
 		    EventData data = null;
             
 		    //match  event
-		    log.info("match event");
-		    log.info(subject);
+		    logger.info("match event");
+		    logger.info(subject);
 		    
 		    if (eventAnnualyMatcher.matches() || eventOnceMatcher.matches()){
-		    	log.info("matching the subject");
+		    	logger.info("matching the subject");
 		    	String event = eventAnnualyMatcher.matches() ? eventAnnualyMatcher.group(1) : eventOnceMatcher.group(1);
-		    	log.info("event :" +event);
+		    	logger.info("event :" +event);
 		        int  month = eventAnnualyMatcher.matches() ? Month.getIndex(eventAnnualyMatcher.group(2)) : Month.getIndex(eventOnceMatcher.group(2));
-		        log.info("month :"+month);
+		        logger.info("month :"+month);
 		        if (month == -1 )
 		        	return data;
 		    	int day = Integer.parseInt(eventAnnualyMatcher.matches() ? eventAnnualyMatcher.group(3) : eventOnceMatcher.group(3));
-		    	log.info("day : "+day);
+		    	logger.info("day : "+day);
 		    	if(eventAnnualyMatcher.matches())
 		    	   data = new EventData("","",event,buildDate(month,day),true,false);
 		    	else
@@ -165,7 +196,7 @@ public class AddEventServlet extends HttpServlet {
     	else	
         	calendar.set(currentYear, month, day);
     	
-    	log.info("The date is : "+calendar.toString());
+    	logger.info("The date is : "+calendar.toString());
     	return calendar.getTime();
     }
 }
