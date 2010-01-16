@@ -65,7 +65,8 @@ import com.tau.birthdayplus.client.Services.UserNotFoundException;
 
 import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.SignInEventHandler;
-import com.tau.birthdayplus.client.widgets.WellcomePanel;
+import com.tau.birthdayplus.client.widgets.WelcomePanel;
+
 
 
 import com.tau.birthdayplus.dto.client.GuestData;
@@ -80,7 +81,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 		screenshot  ="http://birthdayplus.googlecode.com/svn/trunk/screenshot.gif",
 		thumbnail="http://birthdayplus.googlecode.com/svn/trunk/thumbnail.gif"
 )
-@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt"})
+@Gadget.InjectModulePrefs(files = {"ModulePrefs.txt","SetPrefs.txt"})
 public class Birthdayplus extends Gadget<CountryPreferences>   {
 	private static CwConstants constants = GWT.create(CwConstants.class);
 	
@@ -101,6 +102,8 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 	protected  TabPanel tab ;
 	protected  PopupPanel loadingImagePopup ;
 	protected MessagePanel messages;
+	protected CountryPreferences preferences;
+	
 
 	
 	
@@ -157,7 +160,8 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 	    loadingImagePopup.center();
 	    loadingImagePopup.show();
 	    
-	    shortMoneyFormat = NumberFormat.getFormat(preferences.getCountry().getValue().getCurrency()+"#,##0");
+	    this.preferences = preferences;
+	    
 	    getSocialInfo();
      
  }
@@ -169,7 +173,8 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 	        Window.setMargin("0px");
 	         
 	       
-	        
+		    shortMoneyFormat = NumberFormat.getFormat(preferences.getCountry().getValue().getCurrency()+"#,##0");
+
 		    tab = new TabPanel();
 		    RootPanel.get().add(tab);
 	        
@@ -300,7 +305,11 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 		}-*/;
 		
 
-		
+		private  native void setCountry(String country)/*-{
+			var prefs = new $wnd.gadgets.Prefs();
+			prefs.set("getCountry", country);
+			
+		}-*/;
 		
 		/*
 		 * function that is called after retrieving social information about the user
@@ -314,13 +323,14 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 					loadingImagePopup.hide();
 			//		Window.alert("creating new profile" +caught);
 					if (caught instanceof UserNotFoundException) {
-						final WellcomePanel panel = new WellcomePanel(firstName);
+						final WelcomePanel panel = new WelcomePanel(firstName);
 				        RootPanel.get().add(panel);
 				        panel.setWidth("100%");
 				        
 				        panel.addSignInEvent(new SignInEventHandler(){
 
-							public void onSignIn(int day, int month, int year) {
+							public void onSignIn(int day, int month, int year,CountryPreferences.Country country) {
+								setCountry(country.toString());
 								panel.removeFromParent();
 							    loadingImagePopup.center();
 							    loadingImagePopup.show();

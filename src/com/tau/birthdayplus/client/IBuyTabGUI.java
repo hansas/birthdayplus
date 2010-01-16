@@ -120,7 +120,7 @@ public class IBuyTabGUI {
 	
 		buildWishlistTable();
 		
-		emailDialogBox = new EmailDialogBox();
+		emailDialogBox = new EmailDialogBox(entryPoint.preferences.getCountry().getValue().getCurrency());
 		
 		mainChatPanel = new FlowPanelMenuTitle();
 		iBuyPanel.add(mainChatPanel);

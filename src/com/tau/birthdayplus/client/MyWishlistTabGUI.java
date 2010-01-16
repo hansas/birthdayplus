@@ -20,9 +20,11 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.Action;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.ItemDialogBox;
+import com.tau.birthdayplus.client.widgets.ItemEventHandler;
 import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
 
@@ -42,24 +44,10 @@ public class MyWishlistTabGUI {
 	private HoverTable wishTable;
 	private ScrollPanel wishlistScrollPanel;
 	private ItemDialogBox addItemBox;
-    private Boolean addItem;
+ 
     
     
-    private enum Actions {
-    	CREATE("Add"), 
-    	REMOVE("Delete"), 
-    	UPDATE("Update");
-    	
-    	private String description;
-    	
-    	private Actions(String description){
-    		this.description = description;
-    	}
-    	
-    	public String toString(){
-    		return description;
-    	}
-    }
+    
 
  
 	/*  
@@ -186,8 +174,7 @@ public class MyWishlistTabGUI {
          
        
          if (col==UPDATE_LINK) {
-        	 this.addItem = false;
-             loadForm(item,Actions.UPDATE);
+             loadForm(item,Action.UPDATE);
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item);
          }
@@ -198,12 +185,9 @@ public class MyWishlistTabGUI {
 	 /*
 	  * show the popup box with filled fields
 	  */
-	 private void loadForm(WishlistItemData item,Actions action) {
+	 private void loadForm(WishlistItemData item,Action action) {
 		    currentItem = item; 
-		    addItemBox.setText(action.toString()+" Item");
-		    addItemBox.setButtonText(action.toString()+ " item");
-		    addItemBox.center();
-   	        addItemBox.show(item);
+   	        addItemBox.show(item,action);
 	    }
 
 
@@ -211,8 +195,7 @@ public class MyWishlistTabGUI {
      * on click on add item
      */
     public void gui_eventAddItemButtonClicked() {
-        this.addItem = true;
-        loadForm(new WishlistItemData(entryPoint.userId),Actions.CREATE);
+        loadForm(new WishlistItemData(entryPoint.userId),Action.CREATE);
     }
     
    
@@ -235,16 +218,10 @@ public class MyWishlistTabGUI {
 	        	else{
 	        		if((item.getThumbnail() == null) || (item.getThumbnail().equals(""))  )
 	        	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
-	        		else{
-	        		//	Anchor anchor =new Anchor(item.getItemName(),item.getLink(),"_blank");
-	        		
-	        			wishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
-	        		//	TooltipListener listener  = new TooltipListener(
-	     		   ///     		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
-	        		//	anchor.addMouseListener( listener);
-	        		}
-	        	    	
+	        		else	        		
+	        			wishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));   	
 	        	}
+	        	
 	        	//priority
 	        	if(item.getPriority())
 	        		wishTable.setText(row,1,"high");
@@ -318,21 +295,21 @@ public class MyWishlistTabGUI {
                  gui_eventItemGridClicked(cellForEvent);                
             }});
 		
-		this.addItemBox.addCloseHandler(new CloseHandler<PopupPanel>(){
+		this.addItemBox.addItemEvent(new ItemEventHandler(){
 
-			public void onClose(CloseEvent<PopupPanel> event) {
-				if(event.isAutoClosed())
-					return;
-				WishlistItemData data = addItemBox.getInput();
-				if(data == null)
-					return;
-				if(addItem)
-					wishlistService.createWishlistItem(data);
-				else
-					wishlistService.updateWishlistItem(data);
+			public void onCreateItem(WishlistItemData item) {
+				wishlistService.createWishlistItem(item);
+				
 			}
-		
+
+			public void onUpdateItem(WishlistItemData item) {
+				wishlistService.updateWishlistItem(item);
+				
+			}
+			
 		});
+		
+		
         
 	}
 	
