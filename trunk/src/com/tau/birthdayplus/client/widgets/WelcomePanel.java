@@ -20,40 +20,43 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.CountryPreferences.Country;
 
 
-public class WellcomePanel extends Composite implements ClickHandler, ChangeHandler{
+public class WelcomePanel extends Composite implements ClickHandler, ChangeHandler{
 	
 	private static CwConstants constants = GWT.create(CwConstants.class);
 	private ArrayList<SignInEventHandler>   handlers = new ArrayList<SignInEventHandler>()  ;
-	private ListBox days;
-	private ListBox months;
+	private ListBox dayListBox;
+	private ListBox monthListBox;
 	private  TextBox yearTextBox ;
 	private  Label errorMessage;
+	private ListBox countryListBox;
 
 	
 	
-	public WellcomePanel(String firstName){	
+	public WelcomePanel(String firstName){	
     	DecoratorPanel	 decPanel = new DecoratorPanel();
         initWidget(decPanel);
+        decPanel.setSize("100%","95%" );
         
        
         VerticalPanel	 panel = new VerticalPanel();
         decPanel.setWidget(panel);
     	panel.setSpacing(10);
-    	panel.addStyleName("wellcomePanel");
+    	panel.addStyleName("welcomePanel");
 	
     	Image logo = new Image( GWT.getModuleBaseURL() + "logo.gif");
     	panel.add(logo);
     	panel.setCellHorizontalAlignment(logo, HasHorizontalAlignment.ALIGN_CENTER);
 	
-    	Label title1 = new Label(firstName+", wellcome to Birthdayplus!");
+    	Label title1 = new Label(firstName+", welcome to Birthdayplus!");
     	panel.add(title1);
     	panel.setCellHorizontalAlignment(title1, HasHorizontalAlignment.ALIGN_CENTER);
 
     	Label title2 = new Label("We just need you to confirm a few things before you start using Birthdayplus.");
     	panel.add(title2);
-    	title2.addStyleName("wellcomePanelPart");
+    	title2.addStyleName("welcomePanelPart");
 
     	Label questionLabel= new Label("Sorry if we're being rude, but when were you born?");
     	panel.add(questionLabel);
@@ -61,24 +64,24 @@ public class WellcomePanel extends Composite implements ClickHandler, ChangeHand
 	
     	HorizontalPanel datePanel = new HorizontalPanel();
     	panel.add(datePanel);
-    	datePanel.addStyleName("wellcomePanelPart");
+    	datePanel.addStyleName("welcomePanelPart");
     	panel.setCellHorizontalAlignment(datePanel, HasHorizontalAlignment.ALIGN_CENTER);
 
 	
-    	months= new ListBox(false);
-    	datePanel.add(months);
+    	monthListBox= new ListBox(false);
+    	datePanel.add(monthListBox);
     	String[] listTypes = constants.cwListBoxMonths();
         for (int i = 0; i < listTypes.length; i++) {
-            months.addItem(listTypes[i]);
+            monthListBox.addItem(listTypes[i]);
         }
         
-        months.addChangeHandler(this);
+        monthListBox.addChangeHandler(this);
         
-    	days = new ListBox(false);
-    	datePanel.add(days);
+    	dayListBox = new ListBox(false);
+    	datePanel.add(dayListBox);
     	String[] listDayTypes = constants.cwListBoxDays();
         for (int i = 0; i < listDayTypes.length; i++) {
-            days.addItem(listDayTypes[i]);
+            dayListBox.addItem(listDayTypes[i]);
          }
     	
 	
@@ -92,12 +95,32 @@ public class WellcomePanel extends Composite implements ClickHandler, ChangeHand
         Label text = new Label("(your birth year, such as  1985)");
         panel.add(text);
 	    panel.setCellHorizontalAlignment(text, HasHorizontalAlignment.ALIGN_CENTER);
+	    
 
     	errorMessage= new Label();
         panel.add(errorMessage);
         errorMessage.setVisible(false);
         errorMessage.addStyleName("errorMessage");
-   
+        
+        HorizontalPanel countryPanel = new HorizontalPanel();
+        panel.add(countryPanel);
+        countryPanel.addStyleName("welcomePanelPart");
+        countryPanel.setSpacing(10);
+        
+        Label countryLabel = new Label("country:");
+        countryPanel.add(countryLabel);
+        
+        countryListBox = new ListBox(false);
+        countryPanel.add(countryListBox); 
+        Country[] countries = Country.values();
+        int index =0;
+        for(int i = 0;i< countries.length; i++){
+        	countryListBox.addItem(countries[i].getName());
+        	if(countries[i] == Country.Israel)
+        		index =i;
+        }
+        countryListBox.setSelectedIndex(index);
+       
         Anchor submit = new Anchor("all done, create my account!");
         panel.add(submit);
     
@@ -116,11 +139,11 @@ public class WellcomePanel extends Composite implements ClickHandler, ChangeHand
 		handlers.remove(handler);
 	}
 	
-	private void onSignIn(int day,int month,int year){
+	private void onSignIn(int day,int month,int year,Country country){
 		 for(Iterator<SignInEventHandler> it = handlers.iterator(); it.hasNext();)
 	        {
 	            SignInEventHandler handler = it.next();
-	            handler.onSignIn(day, month, year);
+	            handler.onSignIn(day, month, year,country);
 	        }
 	    }
 	
@@ -130,9 +153,10 @@ public class WellcomePanel extends Composite implements ClickHandler, ChangeHand
 			errorMessage.setVisible(true);
 		}else{	
 			boolean valid = true;
-			int day = days.getSelectedIndex()+1;
-			int month = months.getSelectedIndex()+1;
+			int day = dayListBox.getSelectedIndex()+1;
+			int month = monthListBox.getSelectedIndex()+1;
 			int year = 0;
+		    Country country = Country.getByIndex(countryListBox.getSelectedIndex());
 			try{
 			   year = Integer.parseInt(yearTextBox.getText());
 			}catch( NumberFormatException ex){
@@ -141,20 +165,22 @@ public class WellcomePanel extends Composite implements ClickHandler, ChangeHand
 			}
 			
 			if(valid){
-				onSignIn(day,month,year);
+				onSignIn(day,month,year,country);
 			}
 		}
 	}
 
     private void fillDays(int numDaysInMonth){
-    	days.clear();
+    	dayListBox.clear();
         String[] listDayTypes = constants.cwListBoxDays();
         for (int i = 0; i < numDaysInMonth; i++) {
-            days.addItem(listDayTypes[i]);
+            dayListBox.addItem(listDayTypes[i]);
          }
     }
 	public void onChange(ChangeEvent event) {
-		switch(months.getSelectedIndex()){
+		if(event.getSource() != monthListBox)
+			return;
+		switch(monthListBox.getSelectedIndex()){
 		case (0) : 
 		case (2) :
 		case (4) :

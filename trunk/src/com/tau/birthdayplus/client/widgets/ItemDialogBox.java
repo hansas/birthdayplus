@@ -1,9 +1,7 @@
 package com.tau.birthdayplus.client.widgets;
 
 import java.util.ArrayList;
-import java.util.List;
-
-
+import java.util.Iterator;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -13,8 +11,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -27,9 +25,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
-public class ItemDialogBox extends DialogBox{
-	private PopupPanel loadingImagePopup;
+
+public class ItemDialogBox extends Composite{
 	private static CwConstants constants = GWT.create(CwConstants.class);
+	private ArrayList<ItemEventHandler>   handlers = new ArrayList<ItemEventHandler>()  ;
+	private DialogBox box;
+	private PopupPanel loadingImagePopup;
 	private VerticalPanel itemDialogBoxVerticalPanel;
 	private FlexTable formTable; 
 	private TextBox itemField;
@@ -44,15 +45,17 @@ public class ItemDialogBox extends DialogBox{
     private Label errorMsgLabel ;
     
     private WishlistItemData item;
+    private Action action;
     private String linkText="";
     
     
     
     public ItemDialogBox(){
-    	super(false,true);
+    	 box = new DialogBox(false,true);
+    	
     	
     	itemDialogBoxVerticalPanel = new VerticalPanel();
-    	add(itemDialogBoxVerticalPanel); 
+    	box.add(itemDialogBoxVerticalPanel); 
     
 	    errorMsgLabel = new Label();
 	    itemDialogBoxVerticalPanel.add(errorMsgLabel);
@@ -78,11 +81,9 @@ public class ItemDialogBox extends DialogBox{
 	    wireEvents();
     }
     
-    public void setButtonText(String text){
-    	this.boxButton.setText(text);
-    }
-    
-    public void show(WishlistItemData item){
+   
+    public void show(WishlistItemData item,Action action){
+    	
     	this.item = item;
     	if(item.getItemName()!=null)
         	this.itemField.setText(item.getItemName());
@@ -101,12 +102,18 @@ public class ItemDialogBox extends DialogBox{
            this.thumbnailField.setText("");
         this.itemField.setFocus(true);
         linkText="";
-        super.show();
+        
+        
+        this.action = action;
+    	box.setText(action.toString()+" Item");
+    	boxButton.setText(action.toString()+" item");
+    	
+        
+        box.center();
+        box.show();
     }
     
-    public WishlistItemData getInput(){
-    	return this.item;
-    }
+    
     
     
     private void buildForm() {
@@ -161,6 +168,32 @@ public class ItemDialogBox extends DialogBox{
     }
     
     
+    public void addItemEvent(ItemEventHandler handler){
+		handlers.add(handler);
+	}
+	
+	public void removeItemEvent(ItemEventHandler handler){
+		handlers.remove(handler);
+	}
+	
+	
+	private void onCreateItem(){
+		for(Iterator<ItemEventHandler> it = handlers.iterator(); it.hasNext();)
+        {
+            ItemEventHandler handler = it.next();
+            handler.onCreateItem(item);
+        }
+	}
+	
+	private void onUpdateItem(){
+		for(Iterator<ItemEventHandler> it = handlers.iterator(); it.hasNext();)
+        {
+            ItemEventHandler handler = it.next();
+            handler.onUpdateItem(item);
+        }
+	}
+    
+    
     private boolean checkIfValid(){
         if(itemField.getText().equals("")){
         	errorMsgLabel.setText("Enter item name ");
@@ -205,13 +238,35 @@ public class ItemDialogBox extends DialogBox{
     }
     
     
+    private void sendEvent(){
+    	switch(action){
+    	case CREATE : onCreateItem();
+    	              break;
+    	case UPDATE : onUpdateItem();
+    	              break;
+    	}
+    }
+    
+    
+    private void cleanDialogBox(){
+    	errorMsgLabel.setVisible(false);
+    	action = Action.NONE;
+    	item = null;
+    	linkText = "";
+    	box.setText("");
+    	boxButton.setText("");
+    	
+    }
+    
+    
     private void wireEvents(){
     	this.boxButton.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
             	if(checkIfValid()){
                     copyFields();
-                    errorMsgLabel.setVisible(false);
-    				hide();
+    				box.hide();
+    				sendEvent();
+    				cleanDialogBox();
             	}
             }});
         
@@ -219,9 +274,8 @@ public class ItemDialogBox extends DialogBox{
         
 		this.cancelButton.addClickHandler(new ClickHandler(){
         	public void onClick(ClickEvent event){
-        		item = null;
-        		errorMsgLabel.setVisible(false);
-				hide();
+        		box.hide();
+        		cleanDialogBox();
         	}
         });
 		
@@ -240,8 +294,10 @@ public class ItemDialogBox extends DialogBox{
 					if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
 						if(checkIfValid()){
 							copyFields();
-		                    errorMsgLabel.setVisible(false);
-		    				hide();
+		    				box.hide();
+		    				sendEvent();
+		    				cleanDialogBox();
+		    				
 						}
 					}
 					
@@ -311,31 +367,5 @@ public class ItemDialogBox extends DialogBox{
 	   return temp;
 	   }-*/;
 	
-	/*
 	
-	private native static  void _match(String text, List matches,String pattern)/*-{
-	  
-	   var regExp = new RegExp(pattern);
-	   
-	   var result = text.match(regExp);
-	   if (result == null) return;
-	   for (var i=0;i<result.length;i++){
-	   if(result[i]=="")
-	   		result[i]=" ";	
-	   
-	   matches.@java.util.ArrayList::add(Ljava/lang/Object;)(result[i]);
-	   }
-	   }-*///;
-	   
-	/*
-	public static String[] match(String text,String pattern) {
-	    List matches = new ArrayList();
-	    Window.alert("match");
-	    _match(text, matches,pattern);
-	    String arr[] = new String[matches.size()];
-	    for (int i = 0; i < matches.size(); i++)
-	      arr[i] = matches.get(i).toString();
-	    return arr;
-	  }
-*/
 }

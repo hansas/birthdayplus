@@ -18,7 +18,7 @@ import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 
 public class EmailDialogBox extends Composite implements ClickHandler{
-	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
+	private   NumberFormat shortMoneyFormat ;
 
 	public static enum Status{
 		CLOSE_GROUP("<FONT color=red >You are responsible for buying this present.</FONT><br /> Please enter the actual price for the item and a short message for the group.We will send an email to the group.<br /><FONT color=red >You can reopen this group by clicking on the reopen button in IBuy tab.</FONT >"),
@@ -49,9 +49,10 @@ public class EmailDialogBox extends Composite implements ClickHandler{
 	private ArrayList<GroupEventHandler>   handlers = new ArrayList<GroupEventHandler>()  ;
 	
 	
-	public EmailDialogBox(){
+	public EmailDialogBox(String currency){
 		emailPanel = new DialogBox(false,true); 
 		
+	    this.shortMoneyFormat = NumberFormat.getFormat(currency+"#,##0");
 		emailTextArea = new RichTextArea();
 	    emailTextArea.setSize("288px", "9em");
 	    
@@ -82,7 +83,7 @@ public class EmailDialogBox extends Composite implements ClickHandler{
 	    
 	    emailGrid.setHTML(0, 0, Status.CLOSE_GROUP.getHelpMessage());
 	    emailGrid.getFlexCellFormatter().setColSpan(0, 0, 2);
-	    emailGrid.setHTML(1, 0, "<STRONG> Actual price in "+'\u20AA'+ ":</STRONG>");
+	    emailGrid.setHTML(1, 0, "<STRONG> Actual price in "+currency+ ":</STRONG>");
 	    emailGrid.setWidget(1, 1,actualPrice);
 	    
 	    emailGrid.setWidget(2, 0, errorMessage);
