@@ -9,8 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
@@ -24,28 +23,20 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.PushButton;
-import com.google.gwt.user.client.ui.RadioButton;
+
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
-import com.google.gwt.user.datepicker.client.DateBox;
+
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
-import com.tau.birthdayplus.client.Services.UserException;
-import com.tau.birthdayplus.client.Services.UserNotFoundException;
-import com.tau.birthdayplus.client.widgets.EventDialogBox;
+import com.tau.birthdayplus.client.widgets.Action;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
-import com.tau.birthdayplus.client.widgets.MessagePanel;
+
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
+import com.tau.birthdayplus.client.widgets.EventDialogBox.EventDialogBox;
+import com.tau.birthdayplus.client.widgets.EventDialogBox.GadgetEventHandler;
 import com.tau.birthdayplus.dto.client.EventData;
 
 
@@ -90,22 +81,7 @@ public class EventTabGUI {
 
 	
 	
-	private enum Actions {
-		CREATE("Add"), 
-		REMOVE("Delete"), 
-		UPDATE("Update");
-		
-		private String description;
-		
-		private Actions(String description){
-			this.description = description;
-		}
-		
-		public String toString(){
-			return description;
-		}
 	
-	}
 	
 	
 
@@ -221,12 +197,15 @@ public class EventTabGUI {
      * show the form
      */
 
-    private void loadForm(EventData eventData,Actions action) {
-    	this.currentEvent = eventData;
-		eventDialogBox.center();
-		eventDialogBox.setText(action.toString()+ " Event");
-		eventDialogBox.setButtonText(action.toString());
-		eventDialogBox.show(eventData);
+    private void loadForm(EventData event,Action action) {
+    	this.currentEvent = event;
+    	switch(action){
+    	case CREATE :eventDialogBox.show(action);
+    	             break;
+    	case UPDATE: eventDialogBox.show(event.getEventName(), event.getEventDate(), event.getRecurrence(), action);
+    	             break;
+    	}
+	
 	}
     
  
@@ -259,7 +238,7 @@ public class EventTabGUI {
                            
         case UPDATE_LINK : if(event.getUserId().equals(entryPoint.userId)){
                               this.addEvent = false;
-                              loadForm(event,Actions.UPDATE);
+                              loadForm(event,Action.UPDATE);
                            }
                            break;
                            
@@ -281,7 +260,7 @@ public class EventTabGUI {
      */
     public void gui_eventAddEventButtonClicked() {
         this.addEvent = true;
-        loadForm(new EventData(entryPoint.userId),Actions.CREATE);
+        loadForm(new EventData(entryPoint.userId),Action.CREATE);
     }
     
    
@@ -413,23 +392,28 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 				   gui_eventEventGridClicked(cellForEvent);
 			}
 		});
-		
-		this.eventDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
+		 
+		this.eventDialogBox.addGagdetEventEvent(new GadgetEventHandler(){
 
-			public void onClose(CloseEvent<PopupPanel> event) {
-				if(event.isAutoClosed())
-					return;
-				else{
-					EventData data = eventDialogBox.getInput();
-					if(data == null)
-						return;
-					if(addEvent)
-						 eventService.createEvent(data);
-					else
-						eventService.updateEvent(data);
-				}
+			public void onCreateGadgetEvent(String eventName, Date eventDate,
+					boolean recurrence) {
+				currentEvent.setEventName(eventName);
+				currentEvent.setEventDate(eventDate);
+				currentEvent.setRecurrence(recurrence);
+				eventService.createEvent(currentEvent);
 			}
+
+			public void onUpdateGadgetEvent(String eventName, Date eventDate,
+					boolean recurrence) {
+				currentEvent.setEventName(eventName);
+				currentEvent.setEventDate(eventDate);
+				currentEvent.setRecurrence(recurrence);
+				eventService.updateEvent(currentEvent);
+				
+			}
+			
 		});
+		
 
 	
 	}

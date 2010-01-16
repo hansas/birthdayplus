@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client.widgets.EmailDialogBox;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,7 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
+
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 
-public class EmailDialogBox extends Composite implements ClickHandler{
+public class EmailDialogBox  implements ClickHandler{
 	private   NumberFormat shortMoneyFormat ;
 
 	public static enum Status{
@@ -115,13 +115,11 @@ public class EmailDialogBox extends Composite implements ClickHandler{
     		case CLOSE_GROUP  : emailPanel.setText("Buy a present for the group");
 	                            emailGrid.setHTML(0, 0, Status.CLOSE_GROUP.getHelpMessage()); 
                         	    emailGrid.getRowFormatter().setVisible(1, true);
-                        	    actualPrice.setFocus(true);
                         	    break;
                         	    
     		case REOPEN_GROUP : emailPanel.setText("Reopen this group");
 		                        emailGrid.setHTML(0, 0,Status.REOPEN_GROUP.getHelpMessage());
 		                        emailGrid.getRowFormatter().setVisible(1, false);
-		                        emailTextArea.setFocus(true);  
 		                        break;
 		}
 		
@@ -129,6 +127,14 @@ public class EmailDialogBox extends Composite implements ClickHandler{
 
 		emailPanel.center();
         emailPanel.show();
+        
+        // we have to wait until the popup is shown, or the setFocus will have no effect
+        switch(status){
+        case CLOSE_GROUP:  actualPrice.setFocus(true);
+                           break;
+        case REOPEN_GROUP: emailTextArea.setFocus(true); 
+                           break;
+        }
 	}
 	
 	public void addGroupEvent(GroupEventHandler handler){

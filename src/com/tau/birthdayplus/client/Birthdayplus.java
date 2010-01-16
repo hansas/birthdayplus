@@ -6,70 +6,33 @@ package com.tau.birthdayplus.client;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
-
-
-
-
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.gadgets.client.DynamicHeightFeature;
 import com.google.gwt.gadgets.client.Gadget;
-import com.google.gwt.gadgets.client.NeedsDynamicHeight;
-import com.google.gwt.gadgets.client.UserPreferences;
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
-
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
-
-
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.datepicker.client.DateBox;
-
-
-
 import com.tau.birthdayplus.client.Services.ProfileService;
 import com.tau.birthdayplus.client.Services.ProfileServiceAsync;
 import com.tau.birthdayplus.client.Services.RequestProxy;
 import com.tau.birthdayplus.client.Services.UserNotFoundException;
-
 import com.tau.birthdayplus.client.widgets.MessagePanel;
-import com.tau.birthdayplus.client.widgets.SignInEventHandler;
-import com.tau.birthdayplus.client.widgets.WelcomePanel;
-
-
-
+import com.tau.birthdayplus.client.widgets.WelcomePanel.SignInEventHandler;
+import com.tau.birthdayplus.client.widgets.WelcomePanel.WelcomePanel;
 import com.tau.birthdayplus.dto.client.GuestData;
+
+
+
 
 
 @com.google.gwt.gadgets.client.Gadget.ModulePrefs(

@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client.widgets.ItemDialogBox;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.tau.birthdayplus.dto.client.WishlistItemData;

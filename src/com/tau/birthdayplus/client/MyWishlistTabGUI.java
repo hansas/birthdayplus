@@ -5,17 +5,11 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.tau.birthdayplus.client.Birthdayplus;
@@ -23,12 +17,9 @@ import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.Action;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
-import com.tau.birthdayplus.client.widgets.ItemDialogBox;
-import com.tau.birthdayplus.client.widgets.ItemEventHandler;
-import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
-
-import com.tau.birthdayplus.client.widgets.TooltipListener;
+import com.tau.birthdayplus.client.widgets.ItemDialogBox.ItemDialogBox;
+import com.tau.birthdayplus.client.widgets.ItemDialogBox.ItemEventHandler;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class MyWishlistTabGUI {

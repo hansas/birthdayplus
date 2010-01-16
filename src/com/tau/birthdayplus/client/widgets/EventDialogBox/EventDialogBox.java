@@ -1,18 +1,17 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client.widgets.EventDialogBox;
 
 
 
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -24,12 +23,15 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.tau.birthdayplus.client.CwConstants;
-import com.tau.birthdayplus.dto.client.EventData;
+import com.tau.birthdayplus.client.widgets.Action;
 
-public class EventDialogBox extends DialogBox{
+
+
+public class EventDialogBox {
 	CwConstants constants = GWT.create(CwConstants.class);
+	private ArrayList<GadgetEventHandler>   handlers = new ArrayList<GadgetEventHandler>()  ;
 
-	
+	private DialogBox box;
 	private VerticalPanel eventDialogBoxVerticalPanel;
 	private FlexTable layout; 
 	private  SuggestBox txtName;
@@ -38,13 +40,14 @@ public class EventDialogBox extends DialogBox{
     private Button boxButton;
     private Button cancelButton;
     private Label errorMsgLabel ;
-    private EventData data;
+ 
+    private Action action;
     
     
     public EventDialogBox(){
-    	super(false,true);
+    	box = new DialogBox(false,true);
     	eventDialogBoxVerticalPanel = new VerticalPanel();
-		add(eventDialogBoxVerticalPanel);
+		box.add(eventDialogBoxVerticalPanel);
 		
 	    errorMsgLabel = new Label();
 	    eventDialogBoxVerticalPanel.add(errorMsgLabel);
@@ -56,23 +59,56 @@ public class EventDialogBox extends DialogBox{
 		buildForm();
     }
     
-    public void setButtonText(String text){
-    	boxButton.setText(text);
+   
+    
+    public void show(String eventName,Date eventDate, Boolean recurrence,Action action){
+    	
+    	this.action = action;
+    	
+    	box.setText(action.toString()+ " Event");
+		boxButton.setText(action.toString());
+		
+    	this.txtName.setText(eventName);
+		this.txtDate.setValue(eventDate);
+		this.chkRecurrence.setValue(recurrence);
+		
+		box.center();
+		box.show();
+		
+		this.txtName.setFocus(true);
     }
     
-    public void show(EventData data){
-    	this.data = data;
-    	this.txtName.setText(data.getEventName());
-		this.txtDate.setValue(data.getEventDate());
-		this.chkRecurrence.setValue(data.getRecurrence());
-		this.txtName.setFocus(true);
-		super.show();
+    public void show(Action action){
+    	show("",null,false,action);
     }
+    
+    
+    public void addGagdetEventEvent(GadgetEventHandler handler){
+		handlers.add(handler);
+	}
+	
+	public void removeGadgetEvent(GadgetEventHandler handler){
+		handlers.remove(handler);
+	}
+	
+	private void onCreateGadgetEvent(String eventName,Date eventDate,boolean recurrence){
+		for(Iterator<GadgetEventHandler> it = handlers.iterator(); it.hasNext();)
+        {
+            GadgetEventHandler handler = it.next();
+            handler.onCreateGadgetEvent(eventName,eventDate,recurrence);
+        }
+	}
+	
+	private void onUpdateGadgetEvent(String eventName,Date eventDate,boolean recurrence){
+		for(Iterator<GadgetEventHandler> it = handlers.iterator(); it.hasNext();)
+        {
+            GadgetEventHandler handler = it.next();
+            handler.onUpdateGadgetEvent(eventName,eventDate,recurrence);
+        }
+	}
     
    
-    public EventData getInput(){
-    	return this.data;
-    }
+   
     
    private void buildForm(){
 		
@@ -137,29 +173,36 @@ private boolean checkIfValidEvent(){
     return true;
 }
 
+
+private void sendEvent(String eventName,Date eventDate,Boolean recurrence){
+	switch(action){
+	case CREATE: onCreateGadgetEvent(eventName,eventDate,recurrence);
+	             break;
+	case UPDATE: onUpdateGadgetEvent(eventName,eventDate,recurrence);
+	             break;
+	}
+	
+}
+
 private void wireEvents(){
 	this.boxButton.addClickHandler(new ClickHandler(){
-        @SuppressWarnings("deprecation")
+        
 		public void onClick(ClickEvent event) {
         	if(checkIfValidEvent()){
-        		data.setEventName(txtName.getText());
+        		String eventName = txtName.getText();
         		Date dateStart = txtDate.getValue();
-                dateStart.setMinutes(0); // minute 0
-                dateStart.setHours(0);   // hour 0
-                dateStart.setSeconds(0); // second 0
-        		data.setEventDate(dateStart);
-        	    data.setRecurrence(chkRecurrence.getValue());
+        	    Boolean recurrence = chkRecurrence.getValue();
         	    errorMsgLabel.setVisible(false);
-        		hide();
+        		box.hide();
+        		sendEvent(eventName,dateStart,recurrence);
         	}
         }});
    
     
 	this.cancelButton.addClickHandler(new ClickHandler(){
     	public void onClick(ClickEvent event){
-    		data = null;
     		errorMsgLabel.setVisible(false);
-    		hide();
+    		box.hide();
     	}
     });
 	

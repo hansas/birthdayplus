@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client.widgets.ItemDialogBox;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -23,10 +22,11 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
+import com.tau.birthdayplus.client.widgets.Action;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 
-public class ItemDialogBox extends Composite{
+public class ItemDialogBox {
 	private static CwConstants constants = GWT.create(CwConstants.class);
 	private ArrayList<ItemEventHandler>   handlers = new ArrayList<ItemEventHandler>()  ;
 	private DialogBox box;
@@ -108,9 +108,10 @@ public class ItemDialogBox extends Composite{
     	box.setText(action.toString()+" Item");
     	boxButton.setText(action.toString()+" item");
     	
-        
         box.center();
         box.show();
+        
+        this.itemField.setFocus(true);
     }
     
     
@@ -292,13 +293,7 @@ public class ItemDialogBox extends Composite{
 		this.priceField.addKeyUpHandler(new KeyUpHandler(){
 			public void onKeyUp(KeyUpEvent event) {
 					if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
-						if(checkIfValid()){
-							copyFields();
-		    				box.hide();
-		    				sendEvent();
-		    				cleanDialogBox();
-		    				
-						}
+						boxButton.click();
 					}
 					
 				}
@@ -330,9 +325,9 @@ public class ItemDialogBox extends Composite{
 		    if (obj.text === undefined) {
                 
             }else
-		    	thisTabGui.@com.tau.birthdayplus.client.widgets.ItemDialogBox::linkText=obj.text;
+		    	thisTabGui.@com.tau.birthdayplus.client.widgets.ItemDialogBox.ItemDialogBox::linkText=obj.text;
 			
-			thisTabGui.@com.tau.birthdayplus.client.widgets.ItemDialogBox::parse()();
+			thisTabGui.@com.tau.birthdayplus.client.widgets.ItemDialogBox.ItemDialogBox::parse()();
 	};
 }-*/;
 	
