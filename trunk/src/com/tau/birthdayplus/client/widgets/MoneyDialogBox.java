@@ -30,7 +30,7 @@ public class MoneyDialogBox extends DialogBox {
 	private Integer sum ;
 	
 	
-	public MoneyDialogBox(String help){
+	public MoneyDialogBox(String help,String currency){
 		
 	
 		moneyVerticalPanel  = new VerticalPanel();
@@ -71,7 +71,7 @@ public class MoneyDialogBox extends DialogBox {
 		layout.setWidget(0, 0, errorMsgLabel);
 		layout.getFlexCellFormatter().setColSpan(0, 0, 1);
 		
-		layout.setText(1,0, "Amount you are willing to spend in "+'\u20AA' );
+		layout.setText(1,0, "Amount you are willing to spend in "+currency );
         layout.setWidget(1, 1, enterSumTextBox);
         layout.getCellFormatter().addStyleName(1,0, "amountLabel");
 		layout.getCellFormatter().addStyleName(1,1, "amount");

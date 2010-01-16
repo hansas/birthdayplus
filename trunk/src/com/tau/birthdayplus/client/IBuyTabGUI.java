@@ -15,12 +15,9 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -29,33 +26,23 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.RichTextArea;
-
 import com.google.gwt.user.client.ui.ScrollPanel;
-
 import com.google.gwt.user.client.ui.TextBox;
-
-
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
-
-import com.tau.birthdayplus.client.widgets.EmailDialogBox;
-import com.tau.birthdayplus.client.widgets.GroupEventHandler;
-import com.tau.birthdayplus.client.widgets.MessagePanel;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.ParticipatorList;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
 import com.tau.birthdayplus.client.widgets.TooltipListener;
-import com.tau.birthdayplus.client.widgets.UnorderedList;
-import com.tau.birthdayplus.client.widgets.EmailDialogBox.Status;
-import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
+import com.tau.birthdayplus.client.widgets.EmailDialogBox.EmailDialogBox;
+import com.tau.birthdayplus.client.widgets.EmailDialogBox.GroupEventHandler;
+import com.tau.birthdayplus.client.widgets.EmailDialogBox.EmailDialogBox.Status;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
-
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 
@@ -63,7 +50,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 
 public class IBuyTabGUI {
 //////////////////Constants///////////////////////////
-//	private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
+    private static String helpMessage = "Update the amount you're willing to spend on this present";
 	private static 	DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
 	private static final int CHAT_LINK = 6;
 	private static final int BUY_LINK = 5;
@@ -148,7 +135,7 @@ public class IBuyTabGUI {
 		
 	    buildChat();
 		
-	    moneyDialogBox = new MoneyDialogBox("Update the amount you're willing to spend on this present");
+	    moneyDialogBox = new MoneyDialogBox(helpMessage,entryPoint.preferences.getCountry().getValue().getCurrency());
 	   
 	 
 	

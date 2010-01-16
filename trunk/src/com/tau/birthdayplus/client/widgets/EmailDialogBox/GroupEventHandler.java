@@ -1,4 +1,4 @@
-package com.tau.birthdayplus.client.widgets;
+package com.tau.birthdayplus.client.widgets.EmailDialogBox;
 
 import com.google.gwt.event.shared.EventHandler;
 

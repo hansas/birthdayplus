@@ -44,6 +44,7 @@ public class WishListFriendsGUI  {
 	 * constants
 	 */
 	CwConstants constants = GWT.create(CwConstants.class);
+	private static String helpMessage = "When there is enough money to buy this present someone (it can be you) should close this group and buy the present.<br/>We will send an email when someone closes this group. <br/>You can close the group in IBuy tab.";
 
 	private static final int BUY_LINK = 4;
     private static final int GROUP_BUY_LINK = 5;
@@ -111,7 +112,7 @@ public class WishListFriendsGUI  {
 			polani = wishlistBoxPanel.addMenuItem("Polani",polaniTable);
 			
 			buildFriendWishlistTable();
-			moneyDialogBox = new MoneyDialogBox("When there is enough money to buy this present someone (it can be you) should close this group and buy the present.<br/>We will send an email when someone closes this group. <br/>You can close the group in IBuy tab.");
+			moneyDialogBox = new MoneyDialogBox(helpMessage,parent.entryPoint.preferences.getCountry().getValue().getCurrency());
 			
 			
 			
