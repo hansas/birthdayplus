@@ -138,7 +138,7 @@ public class EventManagement {
 	
 	public static void sendEmailAndDeleteParticipators(WishlistItem item,Event e,DALWrapper wrapper,Boolean isCron) throws Exception{
 		ArrayList<Participator> participators = item.getParticipators();
-		if (participators!=null||!participators.isEmpty()){
+		if ((participators!=null)&& (!participators.isEmpty())){
 			log.info("There is participators in item "+item.getItemName());
 		}
 	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
