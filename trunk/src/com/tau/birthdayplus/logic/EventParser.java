@@ -8,6 +8,9 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.tau.birthdayplus.client.Services.UserException;
+import com.tau.birthdayplus.client.Services.UserNotFoundException;
 import com.tau.birthdayplus.dto.client.EventData;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
@@ -119,7 +122,7 @@ public class EventParser {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static void parseEvent(InputStream inContent,String from){
+	public static void parseEvent(InputStream inContent,String from) throws UserException, UserNotFoundException{
 		//unfolding
 		String content = unfolding(inContent);
 		//avoids empty properties
