@@ -81,12 +81,26 @@ public class DALWrapper {
 		return pm.getObjectById(Event.class, eventKey);
 	}
 	
-	public void newCreateEvent(EventData eventD,Guest user) throws UserException{
-		BusinessObjectDAL.newCreateEvent(eventD, user, pm);
+	public Event newCreateEvent(EventData eventD,Guest user) throws UserException{
+		return BusinessObjectDAL.newCreateEvent(eventD, user, pm);
+	}
+	
+	public Event createEvent(EventData eventD) throws UserNotFoundException, UserException{
+		String userId = eventD.getUserId();
+		Guest user = getGuestById(userId);
+		return BusinessObjectDAL.newCreateEvent(eventD,user,pm);
+	}
+	
+	public void makePersistant(Event e){
+		pm.makePersistent(e);
 	}
 	
 	public void deleteEvent(EventData eventD,ArrayList<WishlistItem> itemParticipatorDelete,Event ev) throws UserException{
 		BusinessObjectDAL.deleteEvent(eventD, itemParticipatorDelete, ev, pm);
+	}
+	
+	public Event deleteCalendarEvent(String gmail, String googleUID) throws UserException{
+		return BusinessObjectDAL.deleteCalendarEvent(gmail, googleUID,pm);
 	}
 	
 	public void newCreateWishlistItem(WishlistItemData itemData,Guest user) throws UserException{
@@ -128,6 +142,10 @@ public class DALWrapper {
 	
 	public void cronDeleteEventAndUpdateRecurrent(ArrayList<WishlistItem> itemParticipatorDelete,Event e) throws UserException{
 		BusinessObjectDAL.cronDeleteEventAndUpdateRecurrent(itemParticipatorDelete,e,pm);
+	}
+
+	public Boolean createOrUpdateEvent(String gmail, String googleUID,EventData eventD) throws UserException {
+		return BusinessObjectDAL.createOrUpdateEvent(gmail,googleUID,eventD,pm);
 	}
 	
 //	public void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{

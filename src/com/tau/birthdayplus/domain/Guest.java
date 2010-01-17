@@ -11,6 +11,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.listener.StoreCallback;
 //import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
@@ -19,7 +20,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
  
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Guest   {
+public class Guest  implements StoreCallback {
 		@PrimaryKey
 		@Persistent
 		private Key idKey;
@@ -35,6 +36,8 @@ public class Guest   {
 		private Date birthday;
 		@Persistent
 		private String email;
+		@Persistent
+		private String uppercaseEmail;
 	
 	    @Persistent (defaultFetchGroup="true")
 		List<Event> events;
@@ -156,6 +159,23 @@ public class Guest   {
 		
 		public void setGoogleId(String googleId){
 			this.googleId= googleId;
+		}
+
+		@Override
+		public void jdoPreStore() {
+			if (email != null) {
+			      setUppercaseEmail(email.toUpperCase());
+			    } else {
+			    setUppercaseEmail(null);
+			  }
+		}
+
+		public void setUppercaseEmail(String uppercaseEmail) {
+			this.uppercaseEmail = uppercaseEmail;
+		}
+
+		public String getUppercaseEmail() {
+			return uppercaseEmail;
 		}
 		
 		/*

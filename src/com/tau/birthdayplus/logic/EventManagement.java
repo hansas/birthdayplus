@@ -48,14 +48,20 @@ public class EventManagement {
 				}
 		};
 
-	public static void createEvent(EventData event) throws UserNotFoundException, UserException{
+	public static Event createEvent(EventData event) throws UserNotFoundException, UserException{
 		DALWrapper wrapper = new DALWrapper();
+		Event e = null;
 		try{
-			BusinessObjectDAL.createEvent(event,wrapper);
+			e = wrapper.createEvent(event);
 		}
 		finally{
 			wrapper.close();
 		}
+		return e;
+	}
+	
+	public static Event createEventWithWrapper(EventData event,DALWrapper wrapper) throws UserNotFoundException, UserException{
+		return wrapper.createEvent(event);
 	}
 	
 	public static void createEvent(EventData event,String gmail) throws UserException{
@@ -138,6 +144,7 @@ public class EventManagement {
 	
 	public static void sendEmailAndDeleteParticipators(WishlistItem item,Event e,DALWrapper wrapper,Boolean isCron) throws Exception{
 		ArrayList<Participator> participators = item.getParticipators();
+		ArrayList<Participator> participatorsToDelete = new ArrayList<Participator>();
 		if ((participators!=null)&& (!participators.isEmpty())){
 			log.info("There is participators in item "+item.getItemName());
 		}
@@ -153,9 +160,13 @@ public class EventManagement {
 		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,cancel,e);
 		log.info("cancel email was sent to group of item "+item.getItemName()+" because event was deleted");
 		for (Participator p : participators){
-			log.info("participator is: "+ p.getId());
+			participatorsToDelete.add(p);
+		}
+		for (Participator p : participatorsToDelete){
 			item.removeParticipator(p);
+			log.info("participator "+p.getIdKey()+" was removed from item: "+ item.getItemName());
 			wrapper.deleteParticipator(p);
+			log.info("participator was deleted from db");
 		}
 		wrapper.makePersistantItem(item);
 		if (item.getParticipators()==null||item.getParticipators().isEmpty()){
@@ -184,15 +195,36 @@ public class EventManagement {
 	/*
 	 * find guest by gmail and if he has event with googleUID == googleUID then delete this event
 	 */
-	public static void deleteEvent(String gmail,String googleUID){
-		
+	public static void deleteEvent(String gmail,String googleUID) throws Exception{
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			Event event = wrapper.deleteCalendarEvent(gmail,googleUID);
+			if (event!=null){
+				EventData eventD = eventToEventData(event, wrapper);
+				deleteEvent(eventD);
+			}
+		}
+		finally{
+			wrapper.close();
+		}
 	}
 	/*
 	 * find guest by gmail and if he has event with googleUID== googleUID then update this event 
 	 * with data from event , else create new event for this guest with given googleUID
 	 */
-	public static void createOrUpdateEvent(String gmail,String googleUID,EventData event){
-		
+	public static void createOrUpdateEvent(String gmail,String googleUID,EventData eventD) throws UserException, UserNotFoundException{
+		DALWrapper wrapper = new DALWrapper();
+		try{
+			Boolean exists = wrapper.createOrUpdateEvent(gmail,googleUID,eventD);
+			if (!exists){
+				Event e = createEventWithWrapper(eventD, wrapper);
+				e.setGoogleUID(googleUID);
+				wrapper.makePersistant(e);
+			}
+		}
+		finally{
+			wrapper.close();
+		}
 	}
 	
 	

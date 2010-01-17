@@ -112,9 +112,9 @@ public class BusinessObjectDAL {
 		List<Guest> guest = new ArrayList<Guest>();
 		try{
 			Query query = pm.newQuery(Guest.class);
-			query.setFilter("email == gmail");
+			query.setFilter("uppercaseEmail == gmail");
 			query.declareParameters("String gmail");
-			guest =(List<Guest>)query.execute(gmail);
+			guest =(List<Guest>)query.execute(gmail.toUpperCase());
 			if (guest!=null){
 				return guest.get(0);
 			}
@@ -347,13 +347,13 @@ public class BusinessObjectDAL {
 		pm.close();
 	}
 
-	public static void createEvent(EventData eventD,DALWrapper wrapper) throws UserNotFoundException, UserException {
-		String userId = eventD.getUserId();
-		Guest user = wrapper.getGuestById(userId);
-		wrapper.newCreateEvent(eventD,user);
-	}
+//	public static void createEvent(EventData eventD,DALWrapper wrapper) throws UserNotFoundException, UserException {
+//		String userId = eventD.getUserId();
+//		Guest user = wrapper.getGuestById(userId);
+//		wrapper.newCreateEvent(eventD,user);
+//	}
 		
-	public static void newCreateEvent(EventData eventD,Guest user,PersistenceManager pm) throws UserException{
+	public static Event newCreateEvent(EventData eventD,Guest user,PersistenceManager pm) throws UserException{
 		Transaction tx = (Transaction) pm.currentTransaction();
 		Event event = new Event(eventD);
 		try {
@@ -370,6 +370,7 @@ public class BusinessObjectDAL {
 				tx.rollback();
 			}
 		}
+		return event;
 	}
 	
 	public static Event loadEvent(String eventId, PersistenceManager pm) throws UserException {
@@ -1051,58 +1052,27 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	/*public static void checkAllPossibleParticipators(){
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		try {
-			Query query = pm.newQuery(Guest.class);
-			List<Guest> guests = (List<Guest>) query.execute();//query.execute(gid);
-			for (Guest p: guests){
-				System.out.print(p.getId()+":" + p.getFirstName()+" - ");
-				List<WishlistItem> items = p.getWishlistItems();
-				for (WishlistItem wi: items){
-					System.out.print(wi.getItemName()+" {");
-					List<Participator> pars = wi.getParticipators();
-					
-					for (Participator pr: pars){
-						System.out.print(pr.getUserId() + " $" + pr.getMoney()+". ");
-					}
-					System.out.print("},");
-				}
-				System.out.println();
+	public static Event deleteCalendarEvent(String gmail, String googleUID,PersistenceManager pm) throws UserException {
+		Guest g = loadGuestByGmail(gmail, pm);
+		for (Event e : g.getEvents()){
+			if (e.getGoogleUID()!=null&&e.getGoogleUID().equals(googleUID)){
+				return e;
 			}
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
 		}
-		finally{
-			pm.close();
-		}
+		return null;
 	}
-	public static List<WishlistItem> getParticipationWishlist(Guest g) {
-		checkAllPossibleParticipators();
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		List<WishlistItem> wishlistItems = new ArrayList<WishlistItem>();
-		List<Participator> p = new ArrayList<Participator>();
-		try {
 
-			Query query = pm.newQuery(Participator.class);
-			String gid = g.getId();
-			query.setFilter("userId == :keyList");
-			//guests = (List<Guest>) query.execute(keys);
-			//query.setFilter("userId == \"123\"");
-			//query.declareParameters("String gid");
-			ArrayList<String> keys = new ArrayList<String>();
-			keys.add("123");
-			p = (List<Participator>) query.execute(keys);//query.execute(gid);
-			for (Participator pr: p){
-				System.out.print(pr.getUserId() + " $" + pr.getMoney()+". ");
+	public static Boolean createOrUpdateEvent(String gmail, String googleUID,EventData eventD,
+			PersistenceManager pm) throws UserException {
+		Guest g = loadGuestByGmail(gmail, pm);
+		for (Event e : g.getEvents()){
+			if (e.getGoogleUID()!=null && e.getGoogleUID().equals(googleUID)){
+				updateEvent(eventD);
+				return true;
 			}
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
 		}
-		finally{
-			pm.close();
-		}
-		return wishlistItems;
-	}*/
+		return false;
+	}
+
 
 }
