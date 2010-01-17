@@ -39,6 +39,8 @@ import com.tau.birthdayplus.dto.client.WishlistItemNewData;
 import com.tau.birthdayplus.dto.client.WishlistItemPolaniData;
 import com.tau.birthdayplus.logic.EventManagement;
 import com.tau.birthdayplus.logic.WishlistManagement;
+
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BusinessObjectDAL {
@@ -115,13 +117,15 @@ public class BusinessObjectDAL {
 			query.setFilter("uppercaseEmail == gmail");
 			query.declareParameters("String gmail");
 			guest =(List<Guest>)query.execute(gmail.toUpperCase());
-			if (guest!=null){
+			if ((guest!=null) && (!guest.isEmpty())){
 				return guest.get(0);
 			}
 			else{
 				return null;
 			}
 		} catch (Exception ex) {
+         	log.log(Level.INFO, "the log from loadGuestByGmail", ex);
+
 			throw new UserException("cannot get your profile by gmail");
 		}
 	}
@@ -405,7 +409,7 @@ public class BusinessObjectDAL {
 			query.setFilter("idKey == :keyList");
 			guests = (List<Guest>) query.execute(keys);
 		} catch (Exception ex) {
-			log.severe("error in getGuestsById");
+         	log.log(Level.INFO, "the log from getGuestsById", ex);
 			throw new UserException("an error occured while getting your profile");
 		}
 		return guests;
@@ -532,6 +536,8 @@ public class BusinessObjectDAL {
 				}
 			}
 		} catch (Exception ex) {
+         	log.log(Level.INFO, "the log from getWishlist", ex);
+
 			throw new UserException("can't get your wishlist,please try again later");
 		}
 		return itemList;
