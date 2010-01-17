@@ -21,7 +21,7 @@ import com.tau.birthdayplus.dto.client.GuestData;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Guest  implements StoreCallback {
-		@PrimaryKey
+		@PrimaryKey  
 		@Persistent
 		private Key idKey;
 		@Persistent
@@ -161,7 +161,6 @@ public class Guest  implements StoreCallback {
 			this.googleId= googleId;
 		}
 
-		@Override
 		public void jdoPreStore() {
 			if (email != null) {
 			      setUppercaseEmail(email.toUpperCase());
