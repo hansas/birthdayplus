@@ -34,7 +34,7 @@ public class AddEventServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(AddEventServlet.class.getName());
-	
+	private static Pattern emailPattern = Pattern.compile("(?:[\\w ]+) (?:<)([\\w@.]+)(>)");
 	
 	
     public void doPost(HttpServletRequest req, HttpServletResponse resp)  throws IOException {
@@ -49,6 +49,13 @@ public class AddEventServlet extends HttpServlet {
 			if (from.length > 0) {
 		       fromAddress = from[0].toString();
 			        }
+			
+			Matcher emailMatcher = emailPattern.matcher(fromAddress);
+			String email;
+			if (emailMatcher.matches()){
+				email = emailMatcher.group(1);
+			}else
+				return;
 			
 			String contentType = message.getContentType();
 			InputStream inContent = null;
@@ -76,7 +83,7 @@ public class AddEventServlet extends HttpServlet {
                         
                         if(contentType.indexOf("application/ics")>-1){
                         	logger.info("it's ics file,lets read it");
-                            EventParser.parseEvent(inContent, fromAddress);
+                            EventParser.parseEvent(inContent, email);
                         }	
                     }
 				}

@@ -176,7 +176,7 @@ public class EventParser {
 			    			    	logger.info("can't parse this event");
 			    			    	return;
 			    			    }else{
-			    			        logger.info("add or update event "+data.getEventName()+" "+data.getEventDate().toGMTString()+" "+data.getRecurrence());
+			    			        logger.info("add or update event "+data.getEventName()+" "+data.getEventDate().toGMTString()+" "+data.getRecurrence()+" for "+from.toUpperCase());
 			    			        EventManagement.createOrUpdateEvent(from, uid.getValue(), data);
 			    			    }
 			    			}
