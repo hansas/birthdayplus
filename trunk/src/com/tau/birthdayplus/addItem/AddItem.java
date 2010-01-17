@@ -36,7 +36,7 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 
 public class AddItem implements EntryPoint{
 	private final AddItemServiceAsync wishlistService = GWT.create(AddItemService.class);
-	private char currancy = '\u20AA';   
+	
  	private PopupPanel loadingImagePopup;
 	
 	private VerticalPanel mainPanel;
@@ -184,7 +184,7 @@ public class AddItem implements EntryPoint{
 	        this.linkField.setText(link);
 
 	        
-	        formTable.setText(3, 0, "Price in "+currancy);
+	        formTable.setText(3, 0, "Price  ");
 	        formTable.setWidget(3, 1, priceField);
 	        formTable.getFlexCellFormatter().setColSpan(3, 1, 2);
 	        this.priceField.setText(price);
