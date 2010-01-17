@@ -178,7 +178,12 @@ public class MyWishlistTabGUI {
 	  */
 	 private void loadForm(WishlistItemData item,Action action) {
 		    currentItem = item; 
-   	        addItemBox.show(item,action);
+		    switch(action){
+		    case CREATE: addItemBox.show(action);
+		                 break;
+		    case UPDATE: addItemBox.show(item.getItemName(),item.getLink(),item.getPrice(),item.getThumbnail(),action);
+		                 break;
+		    }
 	    }
 
 
@@ -193,7 +198,8 @@ public class MyWishlistTabGUI {
 	/*
 	 * wishlist returned from the server
 	 */
-	@SuppressWarnings("deprecation")
+
+
 	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemData> result) {
 	        this.items = result;
 	        this.wishTable.clear(true);
@@ -288,13 +294,23 @@ public class MyWishlistTabGUI {
 		
 		this.addItemBox.addItemEvent(new ItemEventHandler(){
 
-			public void onCreateItem(WishlistItemData item) {
-				wishlistService.createWishlistItem(item);
+			public void onCreateItem(String itemName,Boolean priority,String link,Double price,String thumbnail) {
+				currentItem.setItemName(itemName);
+				currentItem.setPriority(priority);
+				currentItem.setLink(link);
+				currentItem.setPrice(price);
+				currentItem.setThumbnail(thumbnail);
+				wishlistService.createWishlistItem(currentItem);
 				
 			}
 
-			public void onUpdateItem(WishlistItemData item) {
-				wishlistService.updateWishlistItem(item);
+			public void onUpdateItem(String itemName,Boolean priority,String link,Double price,String thumbnail) {
+				currentItem.setItemName(itemName);
+				currentItem.setPriority(priority);
+				currentItem.setLink(link);
+				currentItem.setPrice(price);
+				currentItem.setThumbnail(thumbnail);
+				wishlistService.updateWishlistItem(currentItem);
 				
 			}
 			
