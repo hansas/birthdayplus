@@ -7,5 +7,9 @@ public class UserNotFoundException extends Exception implements IsSerializable{
 	public UserNotFoundException(){
 		
 	}
+	
+	public String getMessage(){
+		return "can't get your profile";
+	}
 
 }

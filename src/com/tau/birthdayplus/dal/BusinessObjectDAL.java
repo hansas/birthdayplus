@@ -77,7 +77,7 @@ public class BusinessObjectDAL {
 		}catch(JDOObjectNotFoundException ex){
 			throw new UserNotFoundException();
 		}catch(Exception ex){
-			log.severe("the error is: " + ex.getMessage());
+			log.log(Level.SEVERE, "the log from loadGuest", ex);
 			throw new UserException("can't get your profile");
 		}
 		return guest;
@@ -99,13 +99,14 @@ public class BusinessObjectDAL {
 			query.setFilter("googleId == id");
 			query.declareParameters("String id");
 			guest = (List<Guest>)query.execute(id);
-			if (guest!=null){
+			if ((guest!=null)&&(!guest.isEmpty())){
 				return guest.get(0);
 			}
 			else{
 				return null;
 			}
 		} catch (Exception ex) {
+			log.log(Level.SEVERE, "the log from loadGuestByGoogleId", ex);
 			throw new UserException("cannot get your profile by google id");
 		}
 	}
@@ -124,7 +125,7 @@ public class BusinessObjectDAL {
 				return null;
 			}
 		} catch (Exception ex) {
-         	log.log(Level.INFO, "the log from loadGuestByGmail", ex);
+         	log.log(Level.SEVERE, "the log from loadGuestByGmail", ex);
 
 			throw new UserException("cannot get your profile by gmail");
 		}
@@ -143,6 +144,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(guest);
 			pm.makePersistent(e);
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from createProfile", ex);
 			throw new UserException("failed to create profile, please try later");
 		} finally {
 			pm.close();
@@ -156,6 +158,7 @@ public class BusinessObjectDAL {
 		try {
 			pm.makePersistent(guest);
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from updateGuest", ex);
 			throw new UserException("an error occured while updating your profile, please try again later");
 		} finally {
 			pm.close();
@@ -172,6 +175,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(e);
 			tx.commit();
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from updateEvent", ex);
 			throw new UserException("an error occured while updating the event, please try again later");
 		} finally {
 			if (tx.isActive()) {
@@ -202,12 +206,12 @@ public class BusinessObjectDAL {
 		} 
 		catch (RuntimeException e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from deleteEvent", e);
             throw new UserException("an error occured while deleting the event, please try again later");
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from deleteEvent", e);
             throw new UserException("an error occured while deleting the event, please try again later");
         } 
 		finally {
@@ -273,12 +277,12 @@ public class BusinessObjectDAL {
 		}
 		catch (RuntimeException e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from mayIDeleteEvent", e);
             throw new UserException("Error mayIDeleteEvent");
         }
 		catch (Exception ex) 
 		{
-			log.severe("Error in second part of mayIDeleteEvent");
+         	log.log(Level.SEVERE, "the log from mayIDeleteEvent", ex);
 			throw new UserException("Error mayIDeleteEvent");
 		}
 		return result;
@@ -368,6 +372,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(event);
 			tx.commit();
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from newCreateEvent", ex);
 			throw new UserException("an error occured while creating the event, please try again later");
 		} finally {
 			if (tx.isActive()) {
@@ -383,6 +388,7 @@ public class BusinessObjectDAL {
 			Key key = KeyFactory.stringToKey(eventId);
 			event = pm.getObjectById(Event.class, key);
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from loadEvent", ex);
 			throw new UserException("an error occured while loading the event, please try again later");
 		}
 		return event;
@@ -409,7 +415,7 @@ public class BusinessObjectDAL {
 			query.setFilter("idKey == :keyList");
 			guests = (List<Guest>) query.execute(keys);
 		} catch (Exception ex) {
-         	log.log(Level.INFO, "the log from getGuestsById", ex);
+         	log.log(Level.SEVERE, "the log from getGuestsById", ex);
 			throw new UserException("an error occured while getting your profile");
 		}
 		return guests;
@@ -432,6 +438,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(item);
 			tx.commit();
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from newCreateWishlistItem", ex);
 			throw new UserException("an error occured while creating the wishlist item,please try again later");
 		} finally {
 			if (tx.isActive()) {
@@ -447,6 +454,7 @@ public class BusinessObjectDAL {
 			Key key = KeyFactory.stringToKey(wishlistItemId);
 			item = pm.getObjectById(WishlistItem.class, key);
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from loadWishlistItem", ex);
 			throw new UserException("an error occured while loading the wishlist item");
 		}
 		return item;
@@ -472,6 +480,7 @@ public class BusinessObjectDAL {
 			tx.commit();
 			return item;
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from updateWishlistItem", ex);
 			throw new UserException("an error occured while updating the wishlist item,please try again later");
 		} finally {
 			if (tx.isActive()) {
@@ -509,12 +518,12 @@ public class BusinessObjectDAL {
 		} 
 		catch (RuntimeException e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from deleteWishlistItem", e);
             throw new UserException("an error occured while deleting the wishlist item,please try again later");
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from deleteWishlistItem", e);
             throw new UserException("an error occured while deleting the wishlist item,please try again later");
         }
 		finally {
@@ -536,7 +545,7 @@ public class BusinessObjectDAL {
 				}
 			}
 		} catch (Exception ex) {
-         	log.log(Level.INFO, "the log from getWishlist", ex);
+         	log.log(Level.SEVERE, "the log from getWishlist", ex);
 
 			throw new UserException("can't get your wishlist,please try again later");
 		}
@@ -550,6 +559,7 @@ public class BusinessObjectDAL {
 			query.setFilter("key == :keyList");
 			items = (List<WishlistItem>) query.execute(keys);
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from getWishlistItemById", ex);
 			throw new UserException("an error occured while getting the wishlist item");
 		}
 		return items;
@@ -590,7 +600,7 @@ public class BusinessObjectDAL {
 			query.declareParameters("Key gkey");
 			buyers = (List<WishlistItem>) query.execute(g.getIdKey());
 		} catch (Exception ex) {
-			log.severe("Error in getBookedWishlistItems2's second query"+ex.getMessage());
+         	log.log(Level.SEVERE, "Error in getBookedWishlistItems2's second query", ex);
 			throw new UserException("can't get your booked wishlist items, please try later");
 		}
 		if (buyers==null){
@@ -684,12 +694,12 @@ public class BusinessObjectDAL {
 		}
         catch (RuntimeException e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from getWishlistItemId", e);
             throw new UserException("an error occured while booking the wishlist item for you,please try again later");
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from getWishlistItemId", e);
             throw new UserException("an error occured while booking the wishlist item for you,please try again later");
         }
         finally {
@@ -715,6 +725,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
+	         	log.log(Level.SEVERE, "the log from cancelBookItemForUser", ex);
 				throw new UserException("an error occured while canceling the booked wishlist item for you,please try again later");
 			} finally {
 				if (tx.isActive()) {
@@ -746,12 +757,12 @@ public class BusinessObjectDAL {
 		}
 		catch (RuntimeException e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from bookItemForGroup", e);
             throw new UserException("an error occured while booking the wishlist item for group,please try again later");
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from bookItemForGroup", e);
             throw new UserException("an error occured while booking the wishlist item for group,please try again later");
         }
         finally {
@@ -795,7 +806,7 @@ public class BusinessObjectDAL {
 //		}
 //	}
 	
-	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor,Event ev) throws EmailException, UserException{
+	public static void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,PersistenceManager pm,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor,Event ev) throws  UserException{
 		try{
 			if (participatorsE!=null){
 				if (ev==null){
@@ -833,7 +844,8 @@ public class BusinessObjectDAL {
 				}
 		}
 		catch(EmailException e){
-			throw new EmailException(e.getMessage());
+         	log.log(Level.SEVERE, "the log from sendEmailToGroup", e);
+			throw new UserException(e.getMessage());
 		}
 	}
 	/*
@@ -863,12 +875,12 @@ public class BusinessObjectDAL {
 		}
 		catch (RuntimeException e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from cancelBookItemForGroup", e);
             throw new UserException("an error occured while canceling booked wishlist item for group,please try again later");
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+         	log.log(Level.SEVERE, "the log from cancelBookItemForGroup", e);
             throw new UserException(e);
         }
 		finally {
@@ -944,6 +956,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(participator);
 				tx.commit();
 			} catch (Exception ex) {
+	         	log.log(Level.SEVERE, "the log from addParticipator", ex);
 				throw new UserException("an error occured while adding you to group,please try again later");
 			} finally {
 				if (tx.isActive()) {
@@ -972,6 +985,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
+	         	log.log(Level.SEVERE, "the log from updateParticipator", ex);
 				throw new UserException("an error occured while updating yor participation details,please try again later");
 			} finally {
 				if (tx.isActive()) {
@@ -1004,6 +1018,7 @@ public class BusinessObjectDAL {
 				pm.makePersistent(item);
 				tx.commit();
 			} catch (Exception ex) {
+	         	log.log(Level.SEVERE, "the log from deleteParticipator", ex);
 				throw new UserException("an error occured while canceling your participation in group,please try again later");
 			} finally {
 				if (tx.isActive()) {
@@ -1025,6 +1040,7 @@ public class BusinessObjectDAL {
 			pm.makePersistent(item);
 			tx.commit();
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from addChatMessageData", ex);
 			throw new UserException("can't add a message, please try again later");
 		} finally {
 			if (tx.isActive()) {
@@ -1050,6 +1066,7 @@ public class BusinessObjectDAL {
 			}
 		//	tx.commit();
 		} catch (Exception ex) {
+         	log.log(Level.SEVERE, "the log from removeChatMessageData", ex);
 			throw new UserException("can't remove a messages, please try again later");
 		} finally {
 		//	if (tx.isActive()) {
@@ -1060,6 +1077,8 @@ public class BusinessObjectDAL {
 
 	public static Event deleteCalendarEvent(String gmail, String googleUID,PersistenceManager pm) throws UserException {
 		Guest g = loadGuestByGmail(gmail, pm);
+		if(g == null)
+			return null;
 		for (Event e : g.getEvents()){
 			if (e.getGoogleUID()!=null&&e.getGoogleUID().equals(googleUID)){
 				return e;
@@ -1071,6 +1090,8 @@ public class BusinessObjectDAL {
 	public static Boolean createOrUpdateEvent(String gmail, String googleUID,EventData eventD,
 			PersistenceManager pm) throws UserException {
 		Guest g = loadGuestByGmail(gmail, pm);
+		if(g == null)
+			return null;
 		for (Event e : g.getEvents()){
 			if (e.getGoogleUID()!=null && e.getGoogleUID().equals(googleUID)){
 				updateEvent(eventD);
