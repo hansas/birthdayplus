@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.Action;
-import com.tau.birthdayplus.dto.client.WishlistItemData;
+
 
 
 public class ItemDialogBox {
@@ -86,8 +86,10 @@ public class ItemDialogBox {
     
    
     public void show(String itemName,String link,Double price,String thumbnail,Action action){
-    	
-        this.itemField.setText(itemName);
+    	if(itemName!=null)    		
+           this.itemField.setText(itemName);
+    	else
+    		this.itemField.setText("");
         
     	if(link!=null)
            this.linkField.setText(link);
@@ -103,9 +105,10 @@ public class ItemDialogBox {
         	formTable.setWidget(4, 0, thumbImage);
         	thumbImage.setSize("60px", "60px");
         	formTable.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
-        	formTable.getCellFormatter().setStyleName(4,0,"thumbnail");
+        	thumbImage.setStyleName("thumbnail");
             this.thumbnailField.setText(thumbnail);
             rightImage.setValue(true);
+           
             formTable.getRowFormatter().setVisible(4, true);
         }
         else
@@ -136,7 +139,8 @@ public class ItemDialogBox {
     private void buildForm() {
         formTable = new FlexTable();
         itemDialogBoxVerticalPanel.add(formTable);
-        formTable.setCellSpacing(20);
+       // formTable.setCellSpacing(20);
+        formTable.setCellPadding(3);
         
         itemField=new TextBox();
         itemField.setMaxLength(25);
