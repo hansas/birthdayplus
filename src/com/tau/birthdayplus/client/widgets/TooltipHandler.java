@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TooltipListener implements MouseOverHandler,MouseOutHandler{
+public class TooltipHandler implements MouseOverHandler,MouseOutHandler{
 	private static final String DEFAULT_TOOLTIP_STYLE = "TooltipPopup";
 	  private static final int DEFAULT_OFFSET_X = 10;
 	  private static final int DEFAULT_OFFSET_Y = 35;
@@ -55,11 +55,11 @@ public class TooltipListener implements MouseOverHandler,MouseOutHandler{
 	  private int offsetX = DEFAULT_OFFSET_X;
 	  private int offsetY = DEFAULT_OFFSET_Y;
 
-	  public TooltipListener(String text, int delay,boolean setDelay) {
+	  public TooltipHandler(String text, int delay,boolean setDelay) {
 	    this(text, delay, DEFAULT_TOOLTIP_STYLE,setDelay);
 	  }
 
-	  public TooltipListener(String text, int delay, String styleName,boolean setDelay) {
+	  public TooltipHandler(String text, int delay, String styleName,boolean setDelay) {
 	    this.text = text;
 	    this.delay = delay;
 	    this.styleName = styleName;
@@ -76,16 +76,7 @@ public class TooltipListener implements MouseOverHandler,MouseOutHandler{
 		    tooltip.showRelativeTo(sender);
 			
 		}
-/*
-	  public void onMouseEnter(Widget sender) {
-	    if (tooltip != null) {
-	      tooltip.hide();
-	    }
-	    tooltip = new Tooltip(sender, offsetX, offsetY, text, delay, styleName,setDelay);
-	//    tooltip.show();
-	    tooltip.showRelativeTo(sender);
-	  }
-*/
+
 	  
 	  public void onMouseOut(MouseOutEvent event) {
 		  if (tooltip != null) {
@@ -93,13 +84,7 @@ public class TooltipListener implements MouseOverHandler,MouseOutHandler{
 		    }
 			
 		}
-	 /* 
-	  public void onMouseLeave(Widget sender) {
-	    if (tooltip != null) {
-	      tooltip.hide();
-	    }
-	  }
-*/
+	
 	  public String getStyleName() {
 	    return styleName;
 	  }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.CwConstants;
@@ -167,14 +169,6 @@ public class MyWishlistTabGUI {
         case DELETE_LINK : this.wishlistService.deleteWishlistItem(item);
                            break;
         }
-         
-       /*
-         if (col==UPDATE_LINK) {
-             loadForm(item,Action.UPDATE);
-         } else if (col==DELETE_LINK) {
-             this.wishlistService.deleteWishlistItem(item);
-         }
-         */
     }
 	 
 
@@ -216,30 +210,26 @@ public class MyWishlistTabGUI {
 	        int row = 0;
 	        for (WishlistItemData item : result) {
 	        	//link
-	        	if ((item.getLink()== null) ||(item.getLink().equals("")))
-	        		wishTable.setWidget(row, 0,new Label(item.getItemName()));
-	        	else{
-	        		if((item.getThumbnail() == null) || (item.getThumbnail().equals(""))  )
-	        	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
-	        		else	        		
-	        			wishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));   	
-	        	}
-	        	
+	        //	if ((item.getLink()== null) ||(item.getLink().equals("")))
+	        //		wishTable.setWidget(row, 0,new Label(item.getItemName()));
+	        //	else{
+	        //		if((item.getThumbnail() == null) || (item.getThumbnail().equals(""))  )
+	        //	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
+	        //		else	        		
+	        //			wishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));   	
+	        //	}
+	        	//link 
+	        	Widget itemName = StaticFunctions.getAnchorWithThumbnail(item.getLink(),item.getItemName(), item.getThumbnail());
+	        	wishTable.setWidget(row, 0, itemName);
 	        	//priority
-	        	
 	        	String priority = item.getPriority() ? "hight" : "low" ;
 	        	wishTable.setText(row, 1, priority);
-	        	
-	        	
+	        	//price
 	    	    wishTable.setText(row, 2,entryPoint.shortMoneyFormat.format(item.getPrice()));
-	    	    
-	    	//    Image updateImage = icons.updateIcon().createImage();
-		//	    updateImage.setTitle("update item");
-		//	    Image deleteImage = icons.deleteIcon().createImage();
-			//    deleteImage.setTitle("delete item");
-			    
+	    	    //icons
 	    	    wishTable.setWidget(row, UPDATE_LINK, StaticFunctions.createIcon(icons.updateIcon(),"update item"));
-	    	    wishTable.setWidget(row,DELETE_LINK,StaticFunctions.createIcon(icons.deleteIcon(),"delete item")); 
+	    	    wishTable.setWidget(row,DELETE_LINK,StaticFunctions.createIcon(icons.deleteIcon(),"delete item"));
+	    	    
 	    	    if(!item.getIsActive())
 	    	    {
 	    	        wishTable.getWidget(row, 0).addStyleName(constants.cwInactiveRowStyle());

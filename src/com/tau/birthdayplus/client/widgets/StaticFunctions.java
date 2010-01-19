@@ -3,17 +3,20 @@ package com.tau.birthdayplus.client.widgets;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 
 public class StaticFunctions {
-	
-
-	
+	private abstract class MouseWidget extends Widget implements HasAllMouseHandlers{
+		
+	}
 	/*
 	 * return % of the total width in pixels
 	 */
@@ -25,18 +28,28 @@ public class StaticFunctions {
 	/*
 	 * return anchor with thumbnail tooltip
 	 */
-	public static Anchor getAnchorWithThumbnail(String url,String title,String thumbnailUrl){
-		Anchor anchor =new Anchor(title,url,"_blank");
-		TooltipListener listener  = new TooltipListener(
+	public static Widget getAnchorWithThumbnail(String url,String title,String thumbnailUrl){
+		HasAllMouseHandlers widget ;
+		
+		if((url == null) || (url.length() == 0))
+			widget = new Label(title);
+		else
+			widget = new Anchor(title,url,"_blank");
+
+		if((thumbnailUrl == null) || (thumbnailUrl.length() == 0) )
+			return (Widget) widget;
+		
+		TooltipHandler handler  = new TooltipHandler(
 	        		"<img   src="+"'"+thumbnailUrl+"'"+"alt='"+title+"' height='90' width='90' style = 'background-color: #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
-		anchor.addMouseOverHandler( listener);
-		anchor.addMouseOutHandler(listener);
+		widget.addMouseOverHandler(handler);
+		widget.addMouseOutHandler(handler);
 		
-		
-		return anchor;
+		return (Widget) widget;
 		
 		
 	}
+	
+	
 	
 	
 
