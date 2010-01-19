@@ -10,7 +10,6 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -24,10 +23,8 @@ import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.Icons;
 import com.tau.birthdayplus.client.widgets.ParticipatorList;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
-
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
-import com.tau.birthdayplus.client.widgets.TooltipListener;
-
+import com.tau.birthdayplus.client.widgets.TooltipHandler;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -300,6 +297,7 @@ public class WishListFriendsGUI  {
         int row = 0;
         for (WishlistItemNewData item : result) {
         	//link
+        	/*
         	if ((item.getLink() == null) || (item.getLink().equals(""))  )
         		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
         	else {
@@ -308,7 +306,8 @@ public class WishListFriendsGUI  {
         		else{
         			friendWishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
         		}
-        	}
+        	}*/
+			friendWishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
         	//priority
         	String priority = item.getPriority() ? "hight" : "low";
         	friendWishTable.setText(row,1,priority);
@@ -316,38 +315,27 @@ public class WishListFriendsGUI  {
         	
             if(item.getIsActive()){	
         	   if(item.getParticipators().isEmpty()){
+        		  //price
         	      friendWishTable.setWidget(row, 2,new Label(parent.entryPoint.shortMoneyFormat.format(item.getPrice())) );
-        	    //  Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
-			    //  buyImage.setTitle("I'll buy");
+        	      //icons
         	      friendWishTable.setWidget(row, BUY_LINK ,StaticFunctions.createIcon(icons.presentIcon(),"I'll buy"));
-        	      
-        	     // Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
-			     // groupImage.setTitle("Start a group");
-			     // groupImage.setPixelSize(16, 16);
     	          friendWishTable.setWidget(row ,GROUP_BUY_LINK, StaticFunctions.createIcon(icons.groupIcon(),"Start a group"));
             	}else{
-        	   
         	      Boolean userInGroup = false;
-	    		
-        	     ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), parent.entryPoint.userId,parent.entryPoint.shortMoneyFormat);
-        	     if(list.getUserPart() > 0)
+        	      ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), parent.entryPoint.userId,parent.entryPoint.shortMoneyFormat);
+        	      
+        	      if(list.getUserPart() > 0)
         	    	 userInGroup = true;
+        	      
+        	      //price
         	      Label price = new Label (parent.entryPoint.shortMoneyFormat.format(list.getTotalAmount()) +" / "+parent.entryPoint.shortMoneyFormat.format(item.getPrice()));
           	      friendWishTable.setWidget(row, 2,price );
-          	      
-          	      TooltipListener listener  = new TooltipListener(list.getHtmlList(), 10000 ,false);
-          	      price.addMouseOverHandler(listener);
-          	      price.addMouseOutHandler(listener);
-
-        	   
-        	    //  friendWishTable.setWidget(row, 2,new Hyperlink(sum +"/"+item.getPrice().toString(),null) );
-        	      if(!userInGroup){
-        		//     Image groupImage = new Image( GWT.getModuleBaseURL() + "group_24.png");
-        		     
-    			 //    groupImage.setTitle("Join the group");
-    			  //   groupImage.setPixelSize(16, 16);
-        	         friendWishTable.setWidget(row, GROUP_BUY_LINK, StaticFunctions.createIcon(icons.groupIcon(), "Join the group"));
-        	      }
+          	      TooltipHandler handler  = new TooltipHandler(list.getHtmlList(), 10000 ,false);
+          	      price.addMouseOverHandler(handler);
+          	      price.addMouseOutHandler(handler);
+                  //icons
+        	      if(!userInGroup)
+        	         friendWishTable.setWidget(row, GROUP_BUY_LINK, StaticFunctions.createIcon(icons.groupIcon(), "Join the group")); 
             	}
             }else {
             	friendWishTable.setWidget(row, 2,new Label(parent.entryPoint.shortMoneyFormat.format(item.getPrice())));

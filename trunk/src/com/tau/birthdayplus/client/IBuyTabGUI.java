@@ -22,12 +22,13 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
+
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
@@ -38,7 +39,8 @@ import com.tau.birthdayplus.client.widgets.Icons;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.ParticipatorList;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
-import com.tau.birthdayplus.client.widgets.TooltipListener;
+import com.tau.birthdayplus.client.widgets.TooltipHandler;
+
 import com.tau.birthdayplus.client.widgets.EmailDialogBox.EmailDialogBox;
 import com.tau.birthdayplus.client.widgets.EmailDialogBox.GroupEventHandler;
 import com.tau.birthdayplus.client.widgets.EmailDialogBox.EmailDialogBox.Status;
@@ -373,9 +375,9 @@ public class IBuyTabGUI {
 	        
 	        for (WishlistItemNewData item : result) {
 	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
-	            Boolean thisMonthEvent = (item.getEventDate().getYear() == today.getYear()) && (item.getEventDate().getMonth() == today.getMonth());
+	            Boolean isCurrentMonthEvent = (item.getEventDate().getYear() == today.getYear()) && (item.getEventDate().getMonth() == today.getMonth());
 
-	        
+	        /*
 	        	if ((item.getLink()== null) || (item.getLink().equals("")) ){
 	        		Label link = new Label(what);
 	        		link.setTitle(dateFormatter.format(item.getEventDate()));
@@ -390,52 +392,49 @@ public class IBuyTabGUI {
 	        		link.setTitle(dateFormatter.format(item.getEventDate()));
 	        		wishTable.setWidget(row, 0,link);
 	        	}
-	        
-	    	    //it's only me
-	    	    if(item.getParticipators().isEmpty()){
+	        */
+	            Widget itemName = StaticFunctions.getAnchorWithThumbnail(item.getLink(), what, item.getThumbnail());
+	            itemName.setTitle(dateFormatter.format(item.getEventDate()));
+        		wishTable.setWidget(row, 0,itemName);
+        		
+	    	        //it's only me
+	    	    if(item.getParticipators().isEmpty())
+	    	    {
+	    	    	//price
 	    	    	wishTable.setWidget(row, 1,new Label(entryPoint.shortMoneyFormat.format(item.getPrice()))) ;
-	    	    	if(thisMonthEvent)
+	    	    	
+	    	    	if(isCurrentMonthEvent)
 	    	    		countMoney+=item.getPrice();
-	    	    //	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
-				//    cancelImage.setTitle("cancel reservation");
+	    	    	//icon
 		    	    wishTable.setWidget(row, CANCEL_LINK, StaticFunctions.createIcon(icons.cancelIcon(), "cancel reservation")); 
 		
-	    	    }else{
+	    	    }else
+	    	    	//group present 
+	    	    {
 	    	    	ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), entryPoint.userId,entryPoint.shortMoneyFormat);
-	    	    	if(thisMonthEvent)
+	    	    	if(isCurrentMonthEvent)
 	    	    	   countMoney+=list.getUserPart();
 	    	    	
+	    	    	//price
 	    	    	Label priceLabel = new Label(entryPoint.shortMoneyFormat.format(list.getTotalAmount())+" / "+entryPoint.shortMoneyFormat.format(item.getPrice()));
-	    	        wishTable.setWidget(row, 1,priceLabel );
-	    	        
-	    	        TooltipListener listener  = new TooltipListener(list.getHtmlList(), 10000 ,false);
-	          	    priceLabel.addMouseOverHandler(listener);
-	          	    priceLabel.addMouseOutHandler(listener);
+	    	        wishTable.setWidget(row, 1,priceLabel );     
+	    	        //participators
+	    	        TooltipHandler handler  = new TooltipHandler(list.getHtmlList(), 10000 ,false);
+	          	    priceLabel.addMouseOverHandler(handler);
+	          	    priceLabel.addMouseOutHandler(handler);
 	          	    
+	          	    //icons
 	    	        if(item.getIsActive()){
-	    	     //   	Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
-	    			//    updateImage.setTitle("update my sum");
-	    		//	    Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
-	    		//	    cancelImage.setTitle("leave this group");
-	    			//    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
-	    			//    buyImage.setTitle("There is enough money to buy the present. \n I'll buy a present on behalf of the group.");
 	    	        	wishTable.setWidget(row, UPDATE_LINK, StaticFunctions.createIcon(icons.updateIcon(), "update my amount"));
 	    	        	wishTable.setWidget(row, CANCEL_LINK, StaticFunctions.createIcon(icons.cancelIcon(), "leave this group"));
 	    	        	wishTable.setWidget(row, BUY_LINK, StaticFunctions.createIcon(icons.presentIcon(), "There is enough money to buy the present. \n I'll buy a present on behalf of the group."));
 	    	        }else{
-	    	        	if(item.getBuyer().getUserId().equals(entryPoint.userId)){
-	    	        //	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "reload16.png");
-	    			//       cancelImage.setTitle("reopen this group");
+	    	        	if(item.getBuyer().getUserId().equals(entryPoint.userId))
 	    			       wishTable.setWidget(row, CANCEL_LINK, StaticFunctions.createIcon(icons.reloadIcon(), "reopen this group"));
-	    	        	}
-	    	        	
 	    	        }
-	    	        
-	    	     //   Image chatImage = new Image(GWT.getModuleBaseURL()+"chat-icon.png");
-	    	     //   chatImage.setTitle("chat");
 	    	        wishTable.setWidget(row, CHAT_LINK, StaticFunctions.createIcon(icons.chatIcon(), "chat"));
 
-	        }   
+	    	    }
 	    	    row ++;
 	        }
 	        wishPanel.setTitle("In this month you're going to spend "+entryPoint.shortMoneyFormat.format(countMoney));
