@@ -50,6 +50,7 @@ public class EventTabGUI {
 	private ArrayList<EventData> eventList = null;
 	private EventData currentEvent;
 	protected Birthdayplus entryPoint;
+	private Action currentAction = Action.NONE;
 	
 
 	
@@ -203,7 +204,8 @@ public class EventTabGUI {
                            break;
                            
         case UPDATE_LINK : if(event.getUserId().equals(entryPoint.userId)){
-                              loadForm(event,Action.UPDATE);
+        	                  this.currentAction = Action.UPDATE;
+                              loadForm(event,currentAction);
                            }
                            break;
                            
@@ -224,7 +226,8 @@ public class EventTabGUI {
      * on click on add item
      */
     public void gui_eventAddEventButtonClicked() {
-        loadForm(new EventData(entryPoint.userId),Action.CREATE);
+        this.currentAction = Action.CREATE;
+        loadForm(new EventData(entryPoint.userId),currentAction);
     }
     
    
@@ -352,33 +355,23 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 		});
 		 
 		this.eventDialogBox.addGagdetEventEvent(new GadgetEventHandler(){
-
-			public void onCreateGadgetEvent(String eventName, Date eventDate,
+			public void onSaveGadgetEvent(String eventName, Date eventDate,
 					boolean recurrence) {
 				currentEvent.setEventName(eventName);
 				currentEvent.setEventDate(eventDate);
 				currentEvent.setRecurrence(recurrence);
-				eventService.createEvent(currentEvent);
-			}
-
-			public void onUpdateGadgetEvent(String eventName, Date eventDate,
-					boolean recurrence) {
-				currentEvent.setEventName(eventName);
-				currentEvent.setEventDate(eventDate);
-				currentEvent.setRecurrence(recurrence);
-				eventService.updateEvent(currentEvent);
 				
+				switch(currentAction){
+				case CREATE : eventService.createEvent(currentEvent);
+				              break;
+				case UPDATE : eventService.updateEvent(currentEvent);
+				              break;
+				
+				}
 			}
-			
 		});
-		
-
-	
 	}
 
-	
-
-	
 
 	
 	

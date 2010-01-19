@@ -41,7 +41,7 @@ public class EventDialogBox {
     private Button cancelButton;
     private Label errorMsgLabel ;
  
-    private Action action;
+  
     
     
     public EventDialogBox(){
@@ -62,9 +62,6 @@ public class EventDialogBox {
    
     
     public void show(String eventName,Date eventDate, Boolean recurrence,Action action){
-    	
-    	this.action = action;
-    	
     	box.setText(action.toString()+ " Event");
 		boxButton.setText(action.toString());
 		
@@ -91,22 +88,14 @@ public class EventDialogBox {
 		handlers.remove(handler);
 	}
 	
-	private void onCreateGadgetEvent(String eventName,Date eventDate,boolean recurrence){
+	private void onSaveGadgetEvent(String eventName,Date eventDate,boolean recurrence){
 		for(Iterator<GadgetEventHandler> it = handlers.iterator(); it.hasNext();)
         {
             GadgetEventHandler handler = it.next();
-            handler.onCreateGadgetEvent(eventName,eventDate,recurrence);
+            handler.onSaveGadgetEvent(eventName,eventDate,recurrence);
         }
 	}
 	
-	private void onUpdateGadgetEvent(String eventName,Date eventDate,boolean recurrence){
-		for(Iterator<GadgetEventHandler> it = handlers.iterator(); it.hasNext();)
-        {
-            GadgetEventHandler handler = it.next();
-            handler.onUpdateGadgetEvent(eventName,eventDate,recurrence);
-        }
-	}
-    
    
    
     
@@ -174,15 +163,7 @@ private boolean checkIfValidEvent(){
 }
 
 
-private void sendEvent(String eventName,Date eventDate,Boolean recurrence){
-	switch(action){
-	case CREATE: onCreateGadgetEvent(eventName,eventDate,recurrence);
-	             break;
-	case UPDATE: onUpdateGadgetEvent(eventName,eventDate,recurrence);
-	             break;
-	}
-	
-}
+
 
 private void wireEvents(){
 	this.boxButton.addClickHandler(new ClickHandler(){
@@ -194,7 +175,8 @@ private void wireEvents(){
         	    Boolean recurrence = chkRecurrence.getValue();
         	    errorMsgLabel.setVisible(false);
         		box.hide();
-        		sendEvent(eventName,dateStart,recurrence);
+        		onSaveGadgetEvent(eventName,dateStart,recurrence);
+        		
         	}
         }});
    
