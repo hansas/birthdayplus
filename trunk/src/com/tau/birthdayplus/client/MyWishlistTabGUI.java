@@ -5,12 +5,8 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -48,9 +44,9 @@ public class MyWishlistTabGUI {
 	 */
 	private  ArrayList<WishlistItemData> items = null;
     private WishlistItemData currentItem;
-    public MyWishlistDelegate wishlistService;
-    public Birthdayplus entryPoint;
-
+    protected MyWishlistDelegate wishlistService;
+    protected Birthdayplus entryPoint;
+    private Action currentAction = Action.NONE;
     
     public static native String getUserAgent() /*-{
     var ua = navigator.userAgent.toLowerCase();
@@ -164,7 +160,8 @@ public class MyWishlistTabGUI {
         WishlistItemData item = this.items.get(row);
         
         switch(col){
-        case UPDATE_LINK : loadForm(item,Action.UPDATE);
+        case UPDATE_LINK : currentAction = Action.UPDATE;
+        	               loadForm(item,currentAction);
                            break;
         case DELETE_LINK : this.wishlistService.deleteWishlistItem(item);
                            break;
@@ -191,7 +188,8 @@ public class MyWishlistTabGUI {
      * on click on add item
      */
     public void gui_eventAddItemButtonClicked() {
-        loadForm(new WishlistItemData(entryPoint.userId),Action.CREATE);
+    	this.currentAction = Action.CREATE;
+        loadForm(new WishlistItemData(entryPoint.userId),currentAction);
     }
     
     
@@ -209,15 +207,6 @@ public class MyWishlistTabGUI {
            	        
 	        int row = 0;
 	        for (WishlistItemData item : result) {
-	        	//link
-	        //	if ((item.getLink()== null) ||(item.getLink().equals("")))
-	        //		wishTable.setWidget(row, 0,new Label(item.getItemName()));
-	        //	else{
-	        //		if((item.getThumbnail() == null) || (item.getThumbnail().equals(""))  )
-	        //	    	wishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
-	        //		else	        		
-	        //			wishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));   	
-	        //	}
 	        	//link 
 	        	Widget itemName = StaticFunctions.getAnchorWithThumbnail(item.getLink(),item.getItemName(), item.getThumbnail());
 	        	wishTable.setWidget(row, 0, itemName);
@@ -290,25 +279,20 @@ public class MyWishlistTabGUI {
             }});
 		
 		this.addItemBox.addItemEvent(new ItemEventHandler(){
-
-			public void onCreateItem(String itemName,Boolean priority,String link,Double price,String thumbnail) {
+			public void onSaveItem(String itemName, Boolean priority,
+					String link, Double price, String thumbnail) {
 				currentItem.setItemName(itemName);
 				currentItem.setPriority(priority);
 				currentItem.setLink(link);
 				currentItem.setPrice(price);
 				currentItem.setThumbnail(thumbnail);
-				wishlistService.createWishlistItem(currentItem);
 				
-			}
-
-			public void onUpdateItem(String itemName,Boolean priority,String link,Double price,String thumbnail) {
-				currentItem.setItemName(itemName);
-				currentItem.setPriority(priority);
-				currentItem.setLink(link);
-				currentItem.setPrice(price);
-				currentItem.setThumbnail(thumbnail);
-				wishlistService.updateWishlistItem(currentItem);
-				
+				switch (currentAction){
+				case CREATE : wishlistService.createWishlistItem(currentItem);
+				              break;
+				case UPDATE : wishlistService.updateWishlistItem(currentItem);
+				              break;
+				}
 			}
 			
 		});

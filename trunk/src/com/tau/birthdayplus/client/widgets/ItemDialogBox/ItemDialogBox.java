@@ -205,21 +205,15 @@ public class ItemDialogBox {
 	}
 	
 	
-	private void onCreateItem(String itemName,Boolean priority,String link,Double price,String thumbnail){
+	private void onSaveItem(String itemName,Boolean priority,String link,Double price,String thumbnail){
 		for(Iterator<ItemEventHandler> it = handlers.iterator(); it.hasNext();)
         {
             ItemEventHandler handler = it.next();
-            handler.onCreateItem(itemName,priority,link,price,thumbnail);
+            handler.onSaveItem(itemName,priority,link,price,thumbnail);
         }
 	}
 	
-	private void onUpdateItem(String itemName,Boolean priority,String link,Double price,String thumbnail){
-		for(Iterator<ItemEventHandler> it = handlers.iterator(); it.hasNext();)
-        {
-            ItemEventHandler handler = it.next();
-            handler.onUpdateItem(itemName,priority,link,price,thumbnail);
-        }
-	}
+	
     
     
     private boolean checkIfValid(){
@@ -256,14 +250,7 @@ public class ItemDialogBox {
   
     
     
-    private void sendEvent(String itemName,Boolean priority,String link,Double price,String thumbnail){
-    	switch(action){
-    	case CREATE : onCreateItem(itemName,priority,link,price,thumbnail);
-    	              break;
-    	case UPDATE : onUpdateItem(itemName,priority,link,price,thumbnail);
-    	              break;
-    	}
-    }
+   
     
     
     private void cleanDialogBox(){
@@ -294,7 +281,7 @@ public class ItemDialogBox {
         	        }
                     
     				box.hide();
-    				sendEvent(itemName,priority,link,price,thumbnail);
+    				onSaveItem(itemName,priority,link,price,thumbnail);
     				cleanDialogBox();
             	}
             }});
