@@ -1,12 +1,15 @@
 package com.tau.birthdayplus.client.widgets;
 
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.MouseListenerAdapter;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class TooltipListener extends MouseListenerAdapter{
+public class TooltipListener implements MouseOverHandler,MouseOutHandler{
 	private static final String DEFAULT_TOOLTIP_STYLE = "TooltipPopup";
 	  private static final int DEFAULT_OFFSET_X = 10;
 	  private static final int DEFAULT_OFFSET_Y = 35;
@@ -62,7 +65,18 @@ public class TooltipListener extends MouseListenerAdapter{
 	    this.styleName = styleName;
 	    this.setDelay = setDelay;
 	  }
-
+	  
+	  public void onMouseOver(MouseOverEvent event) {
+		  Widget sender = (Widget) event.getSource();
+		  
+		  if (tooltip != null) {
+		      tooltip.hide();
+		    }
+		    tooltip = new Tooltip(sender, offsetX, offsetY, text, delay, styleName,setDelay);
+		    tooltip.showRelativeTo(sender);
+			
+		}
+/*
 	  public void onMouseEnter(Widget sender) {
 	    if (tooltip != null) {
 	      tooltip.hide();
@@ -71,13 +85,21 @@ public class TooltipListener extends MouseListenerAdapter{
 	//    tooltip.show();
 	    tooltip.showRelativeTo(sender);
 	  }
-
+*/
+	  
+	  public void onMouseOut(MouseOutEvent event) {
+		  if (tooltip != null) {
+		      tooltip.hide();
+		    }
+			
+		}
+	 /* 
 	  public void onMouseLeave(Widget sender) {
 	    if (tooltip != null) {
 	      tooltip.hide();
 	    }
 	  }
-
+*/
 	  public String getStyleName() {
 	    return styleName;
 	  }
@@ -101,5 +123,9 @@ public class TooltipListener extends MouseListenerAdapter{
 	  public void setOffsetY(int offsetY) {
 	    this.offsetY = offsetY;
 	  }
+
+	
+
+	
 
 }

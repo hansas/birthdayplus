@@ -305,17 +305,46 @@ border: none;
 }
 
 
-/***********Wellcome panel**************/
+/***********Welcome panel**************/
 
-.wellcomePanel {
+.welcomePanel {
 padding: 4px 2px 4px 2px;
+background-color: #DDEEFF;
 }
 
-.wellcomePanelPart {
+.welcomePanelPart {
 background-color: #DDEEFF;
 margin : 0px;
 padding-bottom: 2px;
 padding-left: 2px;
 padding-right: 2px;
 padding-top: 2px;
+}
+
+/**************Backgrounf for thumbnails**********/
+.thumbnail{
+background-color:  #f7d8a9 !important; 
+padding: 3px;
+ border: 1px solid #6f3d29;
+}
+
+
+
+/***********AlertBox************/
+
+.alertBox {
+/*background-color:#FFFFCC;*/
+color:#224499;
+/*border:2px solid #FFCC35;*/
+font-size:13px;
+text-align:center;	
+padding: 3px;					
+}
+
+
+.alertBoxMessage{
+height:50px;
+color:#224499;
+font-size:13px;
+overflow:hidden;	
 }

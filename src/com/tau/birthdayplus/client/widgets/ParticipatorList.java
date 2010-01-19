@@ -5,6 +5,7 @@ public class ParticipatorList {
 	private Integer userPart;
 	private Integer totalAmount;
 	
+	
 	public ParticipatorList(String htmlList,Integer userPart,Integer totalAmount){
 		this.htmlList = htmlList;
 		this.userPart = userPart;

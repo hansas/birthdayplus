@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.HTMLTable.RowFormatter;
 import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.Icons;
 import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.ParticipatorList;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
@@ -52,6 +53,8 @@ public class IBuyTabGUI {
 //////////////////Constants///////////////////////////
     private static String helpMessage = "Update the amount you're willing to spend on this present";
 	private static 	DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
+	private static Icons icons = (Icons) GWT.create(Icons.class);
+	
 	private static final int CHAT_LINK = 6;
 	private static final int BUY_LINK = 5;
 	private static final int CANCEL_LINK = 4;
@@ -151,6 +154,8 @@ public class IBuyTabGUI {
 	
 	protected void makeDirtyIBuyItems(){
 		this.itemsToBuy = null;
+		this.wishTable.clear(true);
+	    wishTable.resizeRows(0);
 		
 	}
 	
@@ -368,7 +373,8 @@ public class IBuyTabGUI {
 	        
 	        for (WishlistItemNewData item : result) {
 	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
-	        
+	            Boolean thisMonthEvent = (item.getEventDate().getYear() == today.getYear()) && (item.getEventDate().getMonth() == today.getMonth());
+
 	        
 	        	if ((item.getLink()== null) || (item.getLink().equals("")) ){
 	        		Label link = new Label(what);
@@ -379,9 +385,6 @@ public class IBuyTabGUI {
 	        		Anchor link;
 	        		if((item.getThumbnail()!= null) && (!item.getThumbnail().equals("")) ){
 	        			link = StaticFunctions.getAnchorWithThumbnail(item.getLink(), what, item.getThumbnail());
-	        		//	TooltipListener listener  = new TooltipListener(
-	     		     //   		"<img   src="+"'"+item.getThumbnail()+"'"+"alt='"+item.getItemName()+"' height='90' width='90' style = 'background-color:  #f7d8a9; padding: 3px; border: 1px solid #6f3d29;'>", 5000 ,true);
-	        		//	link.addMouseListener( listener);	
 	        		}else
 	        			link = new Anchor(what,item.getLink(),"_blank");
 	        		link.setTitle(dateFormatter.format(item.getEventDate()));
@@ -391,59 +394,46 @@ public class IBuyTabGUI {
 	    	    //it's only me
 	    	    if(item.getParticipators().isEmpty()){
 	    	    	wishTable.setWidget(row, 1,new Label(entryPoint.shortMoneyFormat.format(item.getPrice()))) ;
-	    	    	if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
+	    	    	if(thisMonthEvent)
 	    	    		countMoney+=item.getPrice();
-	    	    	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
-				    cancelImage.setTitle("cancel reservation");
-		    	    wishTable.setWidget(row, CANCEL_LINK, cancelImage); 
+	    	    //	Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
+				//    cancelImage.setTitle("cancel reservation");
+		    	    wishTable.setWidget(row, CANCEL_LINK, StaticFunctions.createIcon(icons.cancelIcon(), "cancel reservation")); 
 		
 	    	    }else{
-	    	    	/*
-	    	    	Integer sum = 0;
-	    			 String html =" <div style='background-color:#FFFFCC;border:1px solid #FFCC35;'><p style ='color:#224499;font-weight:bold;'>Participators are :<p><UL style='list-style-type: square;padding:1px 10px 1px 10px !important;margin:0px !important; list-style-position:inside;'>";
-	    	    	for(ParticipatorData user : item.getParticipators()){
-	    	    		sum+=user.getMoney();
-	    	    		if(user.getUserId().equals(entryPoint.userId)){
-	    	    			if((item.getEventDate().getYear()==today.getYear()) && (item.getEventDate().getMonth() == today.getMonth()))
-	    	    	    		countMoney+=user.getMoney();
-		        		    html+="<LI style='color:#224499'>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortMoneyFormat.format(user.getMoney());
-
-	    	    		}else
-	        		        html+="<LI>"+user.getUserFirstName()+" "+user.getUserLastName()+" - "+shortMoneyFormat.format(user.getMoney());
-
-	    	    	}
-	    	    	html+="</UL></div>";
-	    	    	*/
-	    	    	ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), entryPoint.userId);
-	    	    	countMoney+=list.getUserPart();
+	    	    	ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), entryPoint.userId,entryPoint.shortMoneyFormat);
+	    	    	if(thisMonthEvent)
+	    	    	   countMoney+=list.getUserPart();
+	    	    	
 	    	    	Label priceLabel = new Label(entryPoint.shortMoneyFormat.format(list.getTotalAmount())+" / "+entryPoint.shortMoneyFormat.format(item.getPrice()));
 	    	        wishTable.setWidget(row, 1,priceLabel );
 	    	        
 	    	        TooltipListener listener  = new TooltipListener(list.getHtmlList(), 10000 ,false);
-	          	    priceLabel.addMouseListener(listener);
+	          	    priceLabel.addMouseOverHandler(listener);
+	          	    priceLabel.addMouseOutHandler(listener);
 	          	    
 	    	        if(item.getIsActive()){
-	    	        	Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
-	    			    updateImage.setTitle("update my sum");
-	    			    Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
-	    			    cancelImage.setTitle("leave this group");
-	    			    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
-	    			    buyImage.setTitle("There is enough money to buy the present. \n I'll buy a present on behalf of the group.");
-	    	        	wishTable.setWidget(row, UPDATE_LINK, updateImage);
-	    	        	wishTable.setWidget(row, CANCEL_LINK, cancelImage);
-	    	        	wishTable.setWidget(row, BUY_LINK, buyImage);
+	    	     //   	Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
+	    			//    updateImage.setTitle("update my sum");
+	    		//	    Image cancelImage = new Image( GWT.getModuleBaseURL() + "delete_16.png");
+	    		//	    cancelImage.setTitle("leave this group");
+	    			//    Image buyImage = new Image( GWT.getModuleBaseURL() + "present_16.png");
+	    			//    buyImage.setTitle("There is enough money to buy the present. \n I'll buy a present on behalf of the group.");
+	    	        	wishTable.setWidget(row, UPDATE_LINK, StaticFunctions.createIcon(icons.updateIcon(), "update my amount"));
+	    	        	wishTable.setWidget(row, CANCEL_LINK, StaticFunctions.createIcon(icons.cancelIcon(), "leave this group"));
+	    	        	wishTable.setWidget(row, BUY_LINK, StaticFunctions.createIcon(icons.presentIcon(), "There is enough money to buy the present. \n I'll buy a present on behalf of the group."));
 	    	        }else{
 	    	        	if(item.getBuyer().getUserId().equals(entryPoint.userId)){
-	    	        	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "reload16.png");
-	    			       cancelImage.setTitle("reopen this group");
-	    			       wishTable.setWidget(row, CANCEL_LINK, cancelImage);
+	    	        //	   Image cancelImage = new Image( GWT.getModuleBaseURL() + "reload16.png");
+	    			//       cancelImage.setTitle("reopen this group");
+	    			       wishTable.setWidget(row, CANCEL_LINK, StaticFunctions.createIcon(icons.reloadIcon(), "reopen this group"));
 	    	        	}
 	    	        	
 	    	        }
 	    	        
-	    	        Image chatImage = new Image(GWT.getModuleBaseURL()+"chat-icon.png");
-	    	        chatImage.setTitle("chat");
-	    	        wishTable.setWidget(row, CHAT_LINK, chatImage);
+	    	     //   Image chatImage = new Image(GWT.getModuleBaseURL()+"chat-icon.png");
+	    	     //   chatImage.setTitle("chat");
+	    	        wishTable.setWidget(row, CHAT_LINK, StaticFunctions.createIcon(icons.chatIcon(), "chat"));
 
 	        }   
 	    	    row ++;
@@ -487,6 +477,8 @@ public class IBuyTabGUI {
 			this.wishTable.addClickHandler(new ClickHandler(){
 				public void onClick(ClickEvent event){
 					Cell cellForEvent=wishTable.getCellForEvent(event);
+					if(cellForEvent == null)
+						return;
 					gui_eventItemGridClicked(cellForEvent);
 				}
 			});

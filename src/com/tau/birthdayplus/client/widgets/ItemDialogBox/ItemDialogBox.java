@@ -86,21 +86,17 @@ public class ItemDialogBox {
     
    
     public void show(String itemName,String link,Double price,String thumbnail,Action action){
-    	if(itemName!=null)    		
+    	if((itemName!=null) && (itemName.length()>0) )    		
            this.itemField.setText(itemName);
-    	else
-    		this.itemField.setText("");
         
-    	if(link!=null)
+    	if((link!=null) && (link.length()>0))
            this.linkField.setText(link);
-    	else
-    		this.linkField.setText("");
     	
         this.priceField.setText(price.toString());
         
         this.highPriorityButton.setValue(true);
         
-        if((thumbnail!=null) && (!thumbnail.equals(""))){
+        if((thumbnail!=null) && (thumbnail.length()>0)){
         	Image thumbImage = new Image(thumbnail);
         	formTable.setWidget(4, 0, thumbImage);
         	thumbImage.setSize("60px", "60px");
@@ -130,7 +126,7 @@ public class ItemDialogBox {
     
     
     public void show(Action action){
-    	show("","",0.0,"",action);
+    	show(null,null,0.0,null,action);
     }
     
     
@@ -271,6 +267,10 @@ public class ItemDialogBox {
     
     
     private void cleanDialogBox(){
+    	itemField.setText("");
+    	linkField.setText("");
+    	priceField.setText("");
+    	thumbnailField.setText("");
     	errorMsgLabel.setVisible(false);
     	action = Action.NONE;
     	linkText = "";
