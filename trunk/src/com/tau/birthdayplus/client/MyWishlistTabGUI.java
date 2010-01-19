@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Image;
@@ -17,7 +18,9 @@ import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.Action;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.Icons;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
+
 import com.tau.birthdayplus.client.widgets.ItemDialogBox.ItemDialogBox;
 import com.tau.birthdayplus.client.widgets.ItemDialogBox.ItemEventHandler;
 import com.tau.birthdayplus.dto.client.WishlistItemData;
@@ -25,21 +28,18 @@ import com.tau.birthdayplus.dto.client.WishlistItemData;
 public class MyWishlistTabGUI {
 	// CONSTANTS 
 	private static CwConstants constants = GWT.create(CwConstants.class);
-	//private static  NumberFormat shortMoneyFormat = NumberFormat.getFormat("\u20AA#,##0");
+	private static Icons icons = (Icons) GWT.create(Icons.class);
 	private static final int UPDATE_LINK = 4;
     private static final int DELETE_LINK = 5;
 
 	/*GUI Widgets*/
     private FlowPanelMenuTitle wishlistPanel;
-	private FlexTable wishTableHeader;
+	//private FlexTable wishTableHeader;
 	private HoverTable wishTable;
-	private ScrollPanel wishlistScrollPanel;
+	//private ScrollPanel wishlistScrollPanel;
 	private ItemDialogBox addItemBox;
  
     
-    
-    
-
  
 	/*  
 	 * Data Model
@@ -115,16 +115,15 @@ public class MyWishlistTabGUI {
 	 * create flex table for wishlist items
 	 */
 	private void buildWishlistTable(){
-		wishTableHeader = new FlexTable();
+		FlexTable wishTableHeader = new FlexTable();
 		wishlistPanel.add(wishTableHeader);
 		wishTableHeader.addStyleName("TableHeader");
 		wishTableHeader.setCellSpacing(0);
-	//	wishTableHeader.setSize("100%", "25px");
+	
 		
 		wishTableHeader.getColumnFormatter().setWidth(0,StaticFunctions.getPercentWidthPixels(35, 40) +"px");
 		wishTableHeader.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40)+"px");
-	//	wishTableHeader.getColumnFormatter().setWidth(0, "100px");
-	//	wishTableHeader.getColumnFormatter().setWidth(1, "55px");
+	
 	
 				
 		wishTableHeader.setWidget(0, 0, new Label("Item"));
@@ -132,17 +131,16 @@ public class MyWishlistTabGUI {
 		wishTableHeader.setWidget(0, 2, new Label("Price"));
 		wishTableHeader.getFlexCellFormatter().setColSpan(0, 2, 3);
 		
-		wishlistScrollPanel = new ScrollPanel();
+		ScrollPanel wishlistScrollPanel = new ScrollPanel();
 		wishlistPanel.add(wishlistScrollPanel);
 		wishlistScrollPanel.addStyleName("ShortScrollPanel");
-	//	wishlistScrollPanel.setSize("100%", "300px");
-		//create table for whishlistitems
+	
 		
 		wishTable = new HoverTable(0,6);
 		wishlistScrollPanel.add(wishTable);
 		wishTable.addStyleName("Table");
 		wishTable.setCellSpacing(0);
-	//	wishTable.setWidth("100%");
+	
 		
 		wishTable.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(35, 40) +"px");
 		wishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40)+"px");
@@ -162,13 +160,21 @@ public class MyWishlistTabGUI {
          int col = cellClicked.getCellIndex();
         
         WishlistItemData item = this.items.get(row);
+        
+        switch(col){
+        case UPDATE_LINK : loadForm(item,Action.UPDATE);
+                           break;
+        case DELETE_LINK : this.wishlistService.deleteWishlistItem(item);
+                           break;
+        }
          
-       
+       /*
          if (col==UPDATE_LINK) {
              loadForm(item,Action.UPDATE);
          } else if (col==DELETE_LINK) {
              this.wishlistService.deleteWishlistItem(item);
          }
+         */
     }
 	 
 
@@ -194,12 +200,12 @@ public class MyWishlistTabGUI {
         loadForm(new WishlistItemData(entryPoint.userId),Action.CREATE);
     }
     
+    
+    
    
 	/*
 	 * wishlist returned from the server
 	 */
-
-
 	public void service_eventGetWishlistSuccesfull(ArrayList<WishlistItemData> result) {
 	        this.items = result;
 	        this.wishTable.clear(true);
@@ -220,20 +226,20 @@ public class MyWishlistTabGUI {
 	        	}
 	        	
 	        	//priority
-	        	if(item.getPriority())
-	        		wishTable.setText(row,1,"high");
-	        	else	
-	    	        wishTable.setText(row,1,"low");
-	        	        
+	        	
+	        	String priority = item.getPriority() ? "hight" : "low" ;
+	        	wishTable.setText(row, 1, priority);
+	        	
+	        	
 	    	    wishTable.setText(row, 2,entryPoint.shortMoneyFormat.format(item.getPrice()));
 	    	    
-	    	    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
-			    updateImage.setTitle("update item");
-			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
-			    deleteImage.setTitle("delete item");
+	    	//    Image updateImage = icons.updateIcon().createImage();
+		//	    updateImage.setTitle("update item");
+		//	    Image deleteImage = icons.deleteIcon().createImage();
+			//    deleteImage.setTitle("delete item");
 			    
-	    	    wishTable.setWidget(row, UPDATE_LINK, updateImage);
-	    	    wishTable.setWidget(row,DELETE_LINK,deleteImage); 
+	    	    wishTable.setWidget(row, UPDATE_LINK, StaticFunctions.createIcon(icons.updateIcon(),"update item"));
+	    	    wishTable.setWidget(row,DELETE_LINK,StaticFunctions.createIcon(icons.deleteIcon(),"delete item")); 
 	    	    if(!item.getIsActive())
 	    	    {
 	    	        wishTable.getWidget(row, 0).addStyleName(constants.cwInactiveRowStyle());
@@ -289,7 +295,8 @@ public class MyWishlistTabGUI {
 		this.wishTable.addClickHandler(new ClickHandler(){
             public void onClick(ClickEvent event) {
                  Cell cellForEvent = wishTable.getCellForEvent(event);
-                 gui_eventItemGridClicked(cellForEvent);                
+                 if(cellForEvent!=null)
+                    gui_eventItemGridClicked(cellForEvent);                
             }});
 		
 		this.addItemBox.addItemEvent(new ItemEventHandler(){

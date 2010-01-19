@@ -14,10 +14,11 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.tau.birthdayplus.client.widgets.RichTextToolbar.RichTextToolbar;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 
-public class EmailDialogBox  implements ClickHandler{
+public class EmailDialogBox  {
 	private   NumberFormat shortMoneyFormat ;
 
 	public static enum Status{
@@ -36,6 +37,24 @@ public class EmailDialogBox  implements ClickHandler{
 		}
 	}
 	
+	
+	private class EventHandler implements ClickHandler{
+
+		public void onClick(ClickEvent event) {
+			Widget sender = (Widget) event.getSource();
+			
+			if(sender == sendEmail){
+				gui_eventSendEmailButtomClicked();
+			}else
+				if(sender == cancelEmail){
+					gui_eventCanelEmailButtonClicked();
+				}
+			
+			
+		}
+		
+	}
+	
 	//text area for message to group
 	private  DialogBox emailPanel;
 	private  RichTextArea emailTextArea;
@@ -46,7 +65,8 @@ public class EmailDialogBox  implements ClickHandler{
 	private Anchor cancelEmail;
 	private Status currentStatus;
 	private ArrayList<ParticipatorData> participators;
-	private ArrayList<GroupEventHandler>   handlers = new ArrayList<GroupEventHandler>()  ;
+	private ArrayList<GroupEventHandler>   handlers = new ArrayList<GroupEventHandler>();
+	private EventHandler handler = new EventHandler();
 	
 	
 	public EmailDialogBox(String currency){
@@ -60,9 +80,9 @@ public class EmailDialogBox  implements ClickHandler{
 	    emailTextToolbar.setWidth("290px");
 	    
 	    sendEmail = new Anchor("send this message");
-	    sendEmail.addClickHandler(this);
+	    sendEmail.addClickHandler(handler);
 	    cancelEmail = new Anchor("cancel");
-	    cancelEmail.addClickHandler(this);
+	    cancelEmail.addClickHandler(handler);
 	    
 	    actualPrice = new TextBox();
 	    actualPrice.setTabIndex(1);

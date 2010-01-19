@@ -33,6 +33,7 @@ import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.Action;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
+import com.tau.birthdayplus.client.widgets.Icons;
 
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
 import com.tau.birthdayplus.client.widgets.EventDialogBox.EventDialogBox;
@@ -42,6 +43,8 @@ import com.tau.birthdayplus.dto.client.EventData;
 
 public class EventTabGUI {
 	private static final DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
+	private static Icons icons = (Icons) GWT.create(Icons.class);
+	
 	private static final long ONE_HOUR = 60 * 60 * 1000L;
 	private static final int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
 	
@@ -308,9 +311,9 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	
 		for (EventData event : eventList) {
 			Boolean myEvent = event.getUserId().equals(entryPoint.userId);
-			Image alarmImage = new Image(GWT.getModuleBaseURL() + "alarm-icon.png");
-			eventTable.setWidget(row, 0, alarmImage);
-			alarmImage.setTitle("Remind me with Google Calendar");
+		//	Image alarmImage = new Image(GWT.getModuleBaseURL() + "alarm-icon.png");
+			eventTable.setWidget(row, 0,StaticFunctions.createIcon(icons.alarmIcon(), "Remind me with Google Calendar") );
+//			alarmImage.setTitle("Remind me with Google Calendar");
 			
 			
 			if(myEvent){
@@ -330,12 +333,12 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 			eventTable.setWidget(row, 2, lblEventDate);
 			
 			if(myEvent){
-			    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
-			    updateImage.setTitle("update event");
-			    Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
-			    deleteImage.setTitle("delete event");
-				eventTable.setWidget(row, UPDATE_LINK, updateImage);
-	    	    eventTable.setWidget(row,DELETE_LINK, deleteImage); 
+			//    Image updateImage = new Image( GWT.getModuleBaseURL() + "pencil_16.png");
+			 //   updateImage.setTitle("update event");
+			  //  Image deleteImage = new Image( GWT.getModuleBaseURL() + "trash_16.png");
+			  //  deleteImage.setTitle("delete event");
+				eventTable.setWidget(row, UPDATE_LINK, StaticFunctions.createIcon(icons.updateIcon(),"update event"));
+	    	    eventTable.setWidget(row,DELETE_LINK, StaticFunctions.createIcon(icons.deleteIcon(), "delete event")); 
 			}
 			row++;
 			
