@@ -46,9 +46,6 @@ public class ItemDialogBox {
     private Button cancelButton;
     private Label errorMsgLabel ;
     private CheckBox rightImage;
-    
- //   private WishlistItemData item;
-    private Action action;
     private String linkText="";
     
     
@@ -97,15 +94,8 @@ public class ItemDialogBox {
         this.highPriorityButton.setValue(true);
         
         if((thumbnail!=null) && (thumbnail.length()>0)){
-        	Image thumbImage = new Image(thumbnail);
-        	formTable.setWidget(4, 0, thumbImage);
-        	thumbImage.setSize("60px", "60px");
-        	formTable.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
-        	thumbImage.setStyleName("thumbnail");
-            this.thumbnailField.setText(thumbnail);
-            rightImage.setValue(true);
-           
-            formTable.getRowFormatter().setVisible(4, true);
+        	this.thumbnailField.setText(thumbnail);
+        	showThumbnail();
         }
         else
         {
@@ -113,7 +103,6 @@ public class ItemDialogBox {
            this.thumbnailField.setText("");
         }
         
-        this.action = action;
     	box.setText(action.toString()+" Item");
     	boxButton.setText(action.toString()+" item");
     	
@@ -130,7 +119,17 @@ public class ItemDialogBox {
     }
     
     
-    
+    private void showThumbnail(){
+    	Image thumbImage = new Image(this.thumbnailField.getText());
+    	formTable.setWidget(4, 0, thumbImage);
+    	thumbImage.setSize("60px", "60px");
+    	formTable.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
+    	thumbImage.setStyleName("thumbnail");
+        
+        rightImage.setValue(true);
+        formTable.getRowFormatter().setVisible(4, true);
+    	
+    }
     
     private void buildForm() {
         formTable = new FlexTable();
@@ -259,7 +258,6 @@ public class ItemDialogBox {
     	priceField.setText("");
     	thumbnailField.setText("");
     	errorMsgLabel.setVisible(false);
-    	action = Action.NONE;
     	linkText = "";
     	
     }
@@ -358,15 +356,9 @@ public class ItemDialogBox {
 	    
 	    String thumbnail = match(linkText,"(?:href=\")([^\"]+\\.gif|jpg|jpeg|png|mng)(?:\")");
 	    
-	    if((thumbnail!=null)&& (!thumbnail.equals(""))){
-        	Image thumbImage = new Image(thumbnail);
-        	formTable.setWidget(4, 0, thumbImage);
-        	thumbImage.setSize("60px", "60px");
-        	formTable.getCellFormatter().setStyleName(4,0,"image");
-            this.thumbnailField.setText(thumbnail);
-            rightImage.setValue(true);
-            formTable.getRowFormatter().setVisible(4, true);
-            box.center();
+	    if((thumbnail!=null)&& (thumbnail.length()>0)){
+	    	this.thumbnailField.setText(thumbnail);
+        	showThumbnail();
         }
         else
         {
