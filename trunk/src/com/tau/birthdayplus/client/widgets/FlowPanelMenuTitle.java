@@ -3,6 +3,7 @@ package com.tau.birthdayplus.client.widgets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -11,7 +12,7 @@ import com.google.gwt.user.client.ui.MenuItem;
 
 public class FlowPanelMenuTitle extends FlowPanel{
 	private MenuBar menu ;
-	private HorizontalPanel panel;
+//	private FlexTable panel;
     private Label title;
     
     
@@ -24,24 +25,25 @@ public class FlowPanelMenuTitle extends FlowPanel{
 		menu.setAutoOpen(true);
 		menu.setAnimationEnabled(true);
 		
-		panel = new HorizontalPanel();
+		Grid panel = new Grid(1,3);
 		add(panel);
 		panel.addStyleName("titlePanel");
 		
 	    Image bar1 = new Image(GWT.getModuleBaseURL()+"bar1.gif");
-	    panel.add(bar1);
-	    panel.setCellWidth(bar1, "21px");
+	    panel.setWidget(0, 0, bar1);
+	    panel.getCellFormatter().setWidth(0, 0,"21px");
 	    
 	    
 		title = new Label("");
-		panel.add(title);
-		title.addStyleName("Label");
+		panel.setWidget(0, 1,title);
+		
+		panel.getCellFormatter().addStyleName(0, 1,"Label");
 		
 		Image bar3 = new Image(GWT.getModuleBaseURL()+"bar3.gif");
-        panel.add(bar3);
-        panel.setCellWidth(bar3, "21px");
+        panel.setWidget(0, 2,bar3);
+        panel.getCellFormatter().setWidth(0, 2,"21px");
         
-        title.setText(" ");
+       
     	
     }
     

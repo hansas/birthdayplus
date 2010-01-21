@@ -108,12 +108,8 @@ public class EventTabGUI {
 	}
 	
 	protected void showEventTab(){
-		if (eventList == null){
-			ArrayList<String> userAndFriends = entryPoint.getUserAndFriendsIds();
-			if(userAndFriends.size() == 1)
-				entryPoint.messages.setText("You can add friends by clicking on icon and share this gadget by clicking on the icon in the gadget panel");
-			 this.eventService.getEvents(userAndFriends);
-		}
+		if (eventList == null)
+			this.eventService.getEvents(entryPoint.getUserAndFriendsIds());
 		wishlistFriendGUI.closeTab();
 		eventPanel.setVisible(true);
 	}
@@ -328,19 +324,19 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	public void service_eventGetEventsFailed(Throwable caught) {
 		this.eventTable.clear(true);
 		eventTable.resizeRows(0);
-		entryPoint.messages.setText("GetEventsFailed"+caught.getMessage());
+		entryPoint.messages.showMessage(caught.getMessage());
 	}
 	
 	public void service_eventCreateEventFailed(Throwable caught) {
-		entryPoint.messages.setText("CreateEventFAiled"+caught.getMessage());
+		entryPoint.messages.showMessage(caught.getMessage());
 	}
 
 	public void service_eventUpdateEventFailed(Throwable caught) {
-		entryPoint.messages.setText("UpdateEventFailed"+caught.getMessage());
+		entryPoint.messages.showMessage(caught.getMessage());
 	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-		entryPoint.messages.setText("DeleteEventFailed"+caught.getMessage());
+		entryPoint.messages.showMessage(caught.getMessage());
 	}
 	
 

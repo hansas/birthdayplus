@@ -53,6 +53,7 @@ public class IBuyTabGUI {
     private static String helpMessage = "Update the amount you're willing to spend on this present";
 	private static 	DateTimeFormat dateFormatter = 	DateTimeFormat.getFormat("EEE, dd MMM , yyyy");
 	private static Icons icons = (Icons) GWT.create(Icons.class);
+	private static int SUM_THRESHOLD = 200;
 	
 	private static final int CHAT_LINK = 6;
 	private static final int BUY_LINK = 5;
@@ -362,12 +363,14 @@ public class IBuyTabGUI {
 	        int row = 0;
 	        
 	        for (WishlistItemNewData item : result) {
-	        	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
+	     //   	String what = item.getItemName()+" for "+ item.getUserName()+"'s "+item.getEventName();
+	        	String what = item.getItemName()+" for "+ item.getUserName();
 	            Boolean isCurrentMonthEvent = (item.getEventDate().getYear() == today.getYear()) && (item.getEventDate().getMonth() == today.getMonth());
 
 	    
-	            Widget itemName = StaticFunctions.getAnchorWithThumbnail(item.getLink(), what, item.getThumbnail());
-	            itemName.setTitle(dateFormatter.format(item.getEventDate()));
+	            //Widget itemName = StaticFunctions.getAnchorWithThumbnail(item.getLink(), what, null);
+	            Widget itemName = StaticFunctions.showEventItemInfo(what, item.getLink(), item.getThumbnail(), item.getEventName(), item.getEventDate());
+	         //   itemName.setTitle(dateFormatter.format(item.getEventDate()));
         		wishTable.setWidget(row, 0,itemName);
         		
 	    	        //it's only me
@@ -390,7 +393,9 @@ public class IBuyTabGUI {
 	    	    	
 	    	    	//price
 	    	    	Label priceLabel = new Label(entryPoint.shortMoneyFormat.format(list.getTotalAmount())+" / "+entryPoint.shortMoneyFormat.format(item.getPrice()));
-	    	        wishTable.setWidget(row, 1,priceLabel );     
+	    	        wishTable.setWidget(row, 1,priceLabel );    
+	    	        if((list.getTotalAmount()> item.getPrice()) || (item.getPrice() - list.getTotalAmount() < SUM_THRESHOLD))
+	    	        	priceLabel.setStyleName("enoughtMoney");
 	    	        //participators
 	    	        TooltipHandler handler  = new TooltipHandler(list.getHtmlList(), 10000 ,false);
 	          	    priceLabel.addMouseOverHandler(handler);
@@ -517,7 +522,7 @@ public class IBuyTabGUI {
 
 
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
-			entryPoint.messages.setText("CancelBookItemForUserFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 		
 		public void service_eventCancelBookItemForUserSuccesfull() {
@@ -525,7 +530,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
-			entryPoint.messages.setText("DeleteParticipatorFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 
 		public void service_eventDeleteParticipatorSuccesfull() {
@@ -533,7 +538,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteItemFromTabFailed(Throwable caught) {
-			entryPoint.messages.setText("DeleteItemFromTabFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
@@ -541,7 +546,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventUpdateParticipatorFailed(Throwable caught) {
-			entryPoint.messages.setText("UpdateParticipatorFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 
 		public void service_eventUpdateParticipatorSuccesfull() {
@@ -551,11 +556,11 @@ public class IBuyTabGUI {
 		public void service_getBookedWishlistFailed(Throwable caught) {
 			this.wishTable.clear(true);
 		    wishTable.resizeRows(0);
-			entryPoint.messages.setText("BookedWishlistFailed"+caught.getMessage());			
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 
 		public void service_addChatMessageFailed(Throwable caught) {
-			entryPoint.messages.setText("ChatMessageFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 
 		public void service_addChatMessageSuccesfull() {
@@ -565,7 +570,7 @@ public class IBuyTabGUI {
 
 
 		public void service_cancelBookItemForGroupFailed(Throwable caught) {
-			entryPoint.messages.setText("BookItemForGroupFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 
 		public void service_cancelBookItemForGroupSuccesfull() {
@@ -573,7 +578,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_bookItemForGroupFailed(Throwable caught) {
-			entryPoint.messages.setText("ItemForGroupFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 		}
 
 		public void service_bookItemForGroupSuccesfull() {
@@ -583,7 +588,7 @@ public class IBuyTabGUI {
 
 		public void service_getChatMessagesFailed(Throwable caught) {
 			removeAllRows(chatTable);
-			entryPoint.messages.setText("getChatMessagesFailed"+caught.getMessage());
+			entryPoint.messages.showMessage(caught.getMessage());
 			
 		}
 
