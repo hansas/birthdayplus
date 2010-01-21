@@ -12,8 +12,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
@@ -24,7 +22,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -35,7 +32,6 @@ import com.tau.birthdayplus.client.Birthdayplus;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.Icons;
-import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.ParticipatorList;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
 import com.tau.birthdayplus.client.widgets.TooltipHandler;
@@ -43,6 +39,8 @@ import com.tau.birthdayplus.client.widgets.TooltipHandler;
 import com.tau.birthdayplus.client.widgets.EmailDialogBox.EmailDialogBox;
 import com.tau.birthdayplus.client.widgets.EmailDialogBox.GroupEventHandler;
 import com.tau.birthdayplus.client.widgets.EmailDialogBox.EmailDialogBox.Status;
+import com.tau.birthdayplus.client.widgets.MoneyDialogBox.MoneyDialogBox;
+import com.tau.birthdayplus.client.widgets.MoneyDialogBox.MoneyEventHandler;
 import com.tau.birthdayplus.dto.client.ChatMessageData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -148,18 +146,28 @@ public class IBuyTabGUI {
 	}
 	
 	protected void makeDirtyIBuyItems(){
-		this.itemsToBuy = null;
 		this.wishTable.clear(true);
 	    wishTable.resizeRows(0);
+		this.itemsToBuy = null;
+		
 		
 	}
 	
 	
+	private int userPart(ArrayList<ParticipatorData> participators){
+		if(participators == null)
+			return 0;
+		for(ParticipatorData data : participators){
+			if(data.getUserId().equals(entryPoint.userId))
+				return data.getMoney();
+		}
+		
+		return 0;
+	}
 	
 	private void loadMoneyDialog(WishlistItemNewData item){
 		currentItem = item;
-		moneyDialogBox.center();
-	    moneyDialogBox.show();
+	    moneyDialogBox.show(userPart(currentItem.getParticipators()));
 	}
 	
 	
@@ -448,6 +456,15 @@ public class IBuyTabGUI {
 			});
 			
 			
+			this.moneyDialogBox.addMoneyEvent(new MoneyEventHandler(){
+
+				public void onMoneySave(int amount) {
+					ParticipatorData data = new ParticipatorData(entryPoint.userId,entryPoint.user.getFirstName(),entryPoint.user.getLastName(),amount);
+					wishlistService.updateParticipator(currentItem.getWishlistItemId(), data);
+				}
+			});
+			
+			/*
 			this.moneyDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
 
 				public void onClose(CloseEvent<PopupPanel> event) {
@@ -466,6 +483,7 @@ public class IBuyTabGUI {
 				}
 				
 			});
+			*/
 			
 			this.addMessageButton.addClickHandler(new ClickHandler(){
 
@@ -479,7 +497,7 @@ public class IBuyTabGUI {
 
 				public void onKeyUp(KeyUpEvent event) {
 					if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
-					   gui_eventAddMessageButtonClicked();
+					   addMessageButton.click();
 				}
 				
 			});
