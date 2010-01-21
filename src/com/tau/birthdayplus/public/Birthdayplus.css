@@ -333,9 +333,9 @@ padding: 3px;
 /***********AlertBox************/
 
 .alertBox {
-/*background-color:#FFFFCC;*/
+background-color:#FFFFCC;
 color:#224499;
-/*border:2px solid #FFCC35;*/
+border:2px solid #FFCC35;
 font-size:13px;
 text-align:center;	
 padding: 3px;					
@@ -347,4 +347,10 @@ height:50px;
 color:#224499;
 font-size:13px;
 overflow:hidden;	
+}
+
+
+/********sumThreshold*******8/
+.enoughtMoney{
+color:#009900;
 }
