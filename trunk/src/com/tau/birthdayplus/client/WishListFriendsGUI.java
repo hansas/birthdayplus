@@ -6,25 +6,22 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.HTMLTable.Cell;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.tau.birthdayplus.client.CwConstants;
 import com.tau.birthdayplus.client.widgets.FlowPanelMenuTitle;
 import com.tau.birthdayplus.client.widgets.HoverTable;
 import com.tau.birthdayplus.client.widgets.Icons;
 import com.tau.birthdayplus.client.widgets.ParticipatorList;
 import com.tau.birthdayplus.client.widgets.StaticFunctions;
-import com.tau.birthdayplus.client.widgets.MoneyDialogBox;
 import com.tau.birthdayplus.client.widgets.TooltipHandler;
+import com.tau.birthdayplus.client.widgets.MoneyDialogBox.MoneyDialogBox;
+import com.tau.birthdayplus.client.widgets.MoneyDialogBox.MoneyEventHandler;
 import com.tau.birthdayplus.dto.client.EventData;
 import com.tau.birthdayplus.dto.client.ParticipatorData;
 import com.tau.birthdayplus.dto.client.WishlistItemNewData;
@@ -44,28 +41,16 @@ public class WishListFriendsGUI  {
 
 	/*GUI Widgets*/
     private FlowPanelMenuTitle wishlistBoxPanel;
-
-	
 	//polani
     private MenuBar polaniTable ;
     private Command emptyCommand;
     private MenuItem polani ;
-
-	
-	//friend's wishlist table
-	private ScrollPanel scrollWishlistPanel;
-	private FlexTable headerFriendWishTable;
+    //wish list table
 	private HoverTable friendWishTable;
-
-	
-	
 	private MoneyDialogBox moneyDialogBox;
 	
 	
-	/*  
-	 * Data Model
-	 */
-	//list of friends items for the event
+	/*Data Model*/
 	private ArrayList<WishlistItemNewData> items;
     private WishlistItemNewData currentItem;
     protected WishListFriendsDelegate wishlistService;
@@ -81,10 +66,8 @@ public class WishListFriendsGUI  {
 			items = new ArrayList<WishlistItemNewData>();
 
 			wishlistBoxPanel = new FlowPanelMenuTitle();
-		//	wishlistBoxPanel = new FlowPanel();
 			parent.mainPanel.add(wishlistBoxPanel);
 			wishlistBoxPanel.addStyleName("mainPanel");
-		//	wishlistBoxPanel.setSize("100%", "350px");
 			wishlistBoxPanel.setVisible(false);
 			
 			
@@ -105,14 +88,10 @@ public class WishListFriendsGUI  {
 			polani = wishlistBoxPanel.addMenuItem("Polani",polaniTable);
 			
 			buildFriendWishlistTable();
-			moneyDialogBox = new MoneyDialogBox(helpMessage,parent.entryPoint.preferences.getCountry().getValue().getCurrency());
-			
-			
-			
-			 
-			
-			   
+			moneyDialogBox = new MoneyDialogBox(helpMessage,parent.entryPoint.preferences.getCountry().getValue().getCurrency());	    
 		}
+		
+		
 		
 		protected void showDialogBox(EventData event){
 			  currentEvent = event;
@@ -128,45 +107,25 @@ public class WishListFriendsGUI  {
 		
 	
 	
-	private void loadMoneyDialog(WishlistItemNewData item,Widget widgetClicked){
+	private void loadMoneyDialog(WishlistItemNewData item){
 		currentItem = item;
-		moneyDialogBox.center();
 	    moneyDialogBox.show();
 
 	}
 	
 	
-	private void showPolaniItems(ArrayList<WishlistItemPolaniData> result){
-		polaniTable.clearItems();
-		if(polaniItems.isEmpty())
-			polaniTable.addItem( parent.entryPoint.userFriends.get(currentEvent.getUserId())+ " hasn't bought you anything yet", emptyCommand);
-		else{
-	        for(WishlistItemPolaniData item : result){
-	        	polaniTable.addItem(item.getItemName()+" for "+item.getEventName(), emptyCommand);
-	        }
-		}		
-	}
-	
-	
-	
-
-	
 	/*
 	 * create flex table for friend's wishlist items
 	 */
 	private void buildFriendWishlistTable(){
-		headerFriendWishTable = new FlexTable();
+		FlexTable headerFriendWishTable = new FlexTable();
 		wishlistBoxPanel.add(headerFriendWishTable);
 		headerFriendWishTable.addStyleName("TableHeader");
 		headerFriendWishTable.setCellSpacing(0);
-	//	headerFriendWishTable.setSize("100%", "25px");
 		 
 	
 		headerFriendWishTable.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(35, 40) +"px");
 		headerFriendWishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40) +"px");
-	//	headerFriendWishTable.getColumnFormatter().setWidth(0, "100px");
-	//	headerFriendWishTable.getColumnFormatter().setWidth(1, "55px");
-	//	headerFriendWishTable.getColumnFormatter().setWidth(2, "80px");
 	
 		
 		headerFriendWishTable.setWidget(0, 0, new Label ("Item"));
@@ -175,22 +134,19 @@ public class WishListFriendsGUI  {
 		headerFriendWishTable.getFlexCellFormatter().setColSpan(0, 2, 3);
 
 		
-		scrollWishlistPanel = new ScrollPanel();
+		ScrollPanel scrollWishlistPanel = new ScrollPanel();
 		wishlistBoxPanel.add(scrollWishlistPanel);
 		scrollWishlistPanel.addStyleName("ShortScrollPanel");
-	//	scrollWishlistPanel.setSize("100%", "275px");
 
 	   
 		friendWishTable = new HoverTable(0,6);
 		scrollWishlistPanel.add(friendWishTable);
-	//	friendWishTable.setWidth("100%");
 		friendWishTable.addStyleName("Table");
 		friendWishTable.setCellSpacing(0);
 		
 		friendWishTable.getColumnFormatter().setWidth(0, StaticFunctions.getPercentWidthPixels(35, 40) +"px");
 		friendWishTable.getColumnFormatter().setWidth(1, StaticFunctions.getPercentWidthPixels(20, 40) +"px");
 		friendWishTable.getColumnFormatter().setWidth(2,  StaticFunctions.getPercentWidthPixels(30, 40) +"px");
-//		friendWishTable.getColumnFormatter().setWidth(2, "80px");
 		friendWishTable.getColumnFormatter().setWidth(BUY_LINK, "20px");
 		friendWishTable.getColumnFormatter().setWidth(GROUP_BUY_LINK, "20px");
 		
@@ -203,8 +159,10 @@ public class WishListFriendsGUI  {
     	boolean userInGroup = false;
     
     	 for (ParticipatorData data : item.getParticipators()){
-		      if(parent.entryPoint.userId.equals(data.getUserId()))
+		      if(parent.entryPoint.userId.equals(data.getUserId())){
 			     userInGroup = true;
+			     break;
+		      }
     	 }
     	 return userInGroup;
     	
@@ -218,7 +176,6 @@ public class WishListFriendsGUI  {
          int col = cellClicked.getCellIndex();
         
         WishlistItemNewData item = this.items.get(row);
-        Widget widgetClicked = friendWishTable.getWidget(row, col);
          
        switch(col){   	                                       
        case BUY_LINK :      if(item.getIsActive()&& item.getParticipators().isEmpty())
@@ -230,7 +187,7 @@ public class WishListFriendsGUI  {
     	                    	   moneyDialogBox.setText("Start a group", "Participate");
     	                       else
     	                    	   moneyDialogBox.setText("Join to the group", "Participate");
-    	                       loadMoneyDialog(item , widgetClicked);
+    	                       loadMoneyDialog(item );
                             }
                             break;
        }      
@@ -243,6 +200,9 @@ public class WishListFriendsGUI  {
 			wishlistBoxPanel.setVisible(false);
 			friendWishTable.clear(true);
 			friendWishTable.resizeRows(0);
+			items = null;
+			
+			polaniTable.clearItems();
 			polaniItems = null;
 			parent.entryPoint.messages.hide();
 			
@@ -266,6 +226,14 @@ public class WishListFriendsGUI  {
                     gui_eventItemGridClicked(cellForEvent);                
             }});
 		
+		this.moneyDialogBox.addMoneyEvent(new MoneyEventHandler(){
+			public void onMoneySave(int amount) {
+				 ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),amount);
+		         wishlistService.addParticipator(currentItem.getWishlistItemId(), currentEvent.getEventId(), data);	
+			}
+			
+		});
+		/*
 		this.moneyDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
 			public void onClose(CloseEvent<PopupPanel> event) {
 				if(event.isAutoClosed())
@@ -281,6 +249,7 @@ public class WishListFriendsGUI  {
 				}
 			}
 		});
+		*/
 	}
 	
 	
@@ -296,22 +265,10 @@ public class WishListFriendsGUI  {
         
         int row = 0;
         for (WishlistItemNewData item : result) {
-        	//link
-        	/*
-        	if ((item.getLink() == null) || (item.getLink().equals(""))  )
-        		friendWishTable.setWidget(row, 0,new Label(item.getItemName()));
-        	else {
-        		if((item.getThumbnail() == null)||(item.getThumbnail().equals(""))  )
-            		friendWishTable.setWidget(row, 0,new Anchor(item.getItemName(),item.getLink(),"_blank"));
-        		else{
-        			friendWishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
-        		}
-        	}*/
+        	//item
 			friendWishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
         	//priority
-        	String priority = item.getPriority() ? "hight" : "low";
-        	friendWishTable.setText(row,1,priority);
-        	
+        	friendWishTable.setText(row,1,item.getPriority() ? "hight" : "low");
         	
             if(item.getIsActive()){	
         	   if(item.getParticipators().isEmpty()){
@@ -323,7 +280,6 @@ public class WishListFriendsGUI  {
             	}else{
         	      Boolean userInGroup = false;
         	      ParticipatorList list = StaticFunctions.getParticipatorsList(item.getParticipators(), item.getEventDate(), parent.entryPoint.userId,parent.entryPoint.shortMoneyFormat);
-        	      
         	      if(list.getUserPart() > 0)
         	    	 userInGroup = true;
         	      
@@ -379,7 +335,14 @@ public class WishListFriendsGUI  {
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
 		polaniItems = result;
-		showPolaniItems(result);	
+		polaniTable.clearItems();
+		if(polaniItems.isEmpty())
+			polaniTable.addItem( parent.entryPoint.userFriends.get(currentEvent.getUserId())+ " hasn't bought you anything yet", emptyCommand);
+		else{
+	        for(WishlistItemPolaniData item : result){
+	        	polaniTable.addItem(item.getItemName()+" for "+item.getEventName(), emptyCommand);
+	        }
+		}	
 		
 	}
 	
