@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 
 import com.google.gwt.user.client.ui.DialogBox;
@@ -130,9 +131,7 @@ public class MoneyDialogBox  {
 		errorMsgLabel.setVisible(true);
 		enterSumTextBox.setEnabled(true);
 		enterSumTextBox.setFocus(true);
-		enterSumTextBox.selectAll();
-		
-		
+		enterSumTextBox.selectAll();		
 	}
 	
 	private boolean checkIfValidSum(){
@@ -194,6 +193,7 @@ public class MoneyDialogBox  {
 		public void onKeyUp(KeyUpEvent event) {
 			if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) 
 				okMoneyButton.click();
+				
 			}
 	});
 	}

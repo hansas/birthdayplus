@@ -145,7 +145,7 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 		    tab.addStyleName("tabsPanel");
 		
 		    
-		    messages = new MessagePanel(25000);
+		    messages = new MessagePanel();
 	    
 		   
 			

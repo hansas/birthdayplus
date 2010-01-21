@@ -305,32 +305,32 @@ public class WishListFriendsGUI  {
 	public void service_eventGetWishlistFailed(Throwable caught) {
 		friendWishTable.clear(true);
         friendWishTable.resizeRows(0);
-		parent.entryPoint.messages.setText("GetWishlistFailed"+caught.getMessage());
+		parent.entryPoint.messages.showMessage(caught.getMessage());
 	}
 	
 	public void service_eventBookItemForUserFailed(Throwable caught) {
-		parent.entryPoint.messages.setText("BookItemForUserFailed"+caught.getMessage());		
+		parent.entryPoint.messages.showMessage(caught.getMessage());
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		parent.entryPoint.messages.setText("In IBuy tab you can cancel the reservation for the item.");	
+		parent.entryPoint.messages.showMessage("In IBuy tab you can cancel the reservation for the item.");	
 		
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-		parent.entryPoint.messages.setText("AddParticipatorFailed"+caught.getMessage());		
+		parent.entryPoint.messages.showMessage(caught.getMessage());
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		parent.entryPoint.messages.setText("In IBuy tab you can see the progress and chat with your group.");	
+		parent.entryPoint.messages.showMessage("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
-		parent.entryPoint.messages.setText("GetPolaniItemsFailed"+caught.getMessage());		
+		parent.entryPoint.messages.showMessage(caught.getMessage());		
 	}
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
