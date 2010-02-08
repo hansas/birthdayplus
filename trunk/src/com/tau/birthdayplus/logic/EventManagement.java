@@ -216,6 +216,9 @@ public class EventManagement {
 		DALWrapper wrapper = new DALWrapper();
 		try{
 			Boolean exists = wrapper.createOrUpdateEvent(gmail,googleUID,eventD);
+			if (exists==null){
+				return;
+			}
 			if (!exists){
 				//Event e = createEventWithWrapper(eventD, wrapper);
 				Guest guest = wrapper.loadGuestByGmail(gmail);
