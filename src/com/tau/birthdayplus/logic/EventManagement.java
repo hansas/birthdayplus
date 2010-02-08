@@ -95,7 +95,7 @@ public class EventManagement {
 	}
 
 	public static void updateEvent( EventData eventD) throws UserException{
-		BusinessObjectDAL.updateEvent(eventD);
+		BusinessObjectDAL.updateEvent(eventD,eventD.getEventId());
 	}
 	
 	public static EventData eventToEventData(Event event,DALWrapper wrapper){
