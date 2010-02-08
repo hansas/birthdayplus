@@ -165,12 +165,18 @@ public class BusinessObjectDAL {
 		}
 	}
 
-	public static void updateEvent(EventData eventD) throws UserException {
+	public static void updateEvent(EventData eventD,String eventId) throws UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
 			tx.begin();
-			Event e = pm.getObjectById(Event.class, eventD.getEventId());
+			Event e;
+			if (eventD.getEventId()==null){
+				e = pm.getObjectById(Event.class, eventId);
+			}
+			else{
+				e = pm.getObjectById(Event.class, eventD.getEventId());
+			}
 			e.copyFromEventData(eventD);
 			pm.makePersistent(e);
 			tx.commit();
@@ -1094,7 +1100,7 @@ public class BusinessObjectDAL {
 			return null;
 		for (Event e : g.getEvents()){
 			if (e.getGoogleUID()!=null && e.getGoogleUID().equals(googleUID)){
-				updateEvent(eventD);
+				updateEvent(eventD,g.getId());
 				return true;
 			}
 		}
