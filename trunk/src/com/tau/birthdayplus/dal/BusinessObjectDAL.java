@@ -1100,7 +1100,7 @@ public class BusinessObjectDAL {
 			return null;
 		for (Event e : g.getEvents()){
 			if (e.getGoogleUID()!=null && e.getGoogleUID().equals(googleUID)){
-				updateEvent(eventD,g.getId());
+				updateEvent(eventD,KeyFactory.keyToString(e.getKey()));
 				return true;
 			}
 		}
