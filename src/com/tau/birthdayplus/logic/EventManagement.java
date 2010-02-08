@@ -209,7 +209,7 @@ public class EventManagement {
 		}
 	}
 	/*
-	 * find guest by gmail and if he has event with googleUID== googleUID then update this event 
+	 * find guest by gmail and if he has event with googleUID == googleUID then update this event 
 	 * with data from event , else create new event for this guest with given googleUID
 	 */
 	public static void createOrUpdateEvent(String gmail,String googleUID,EventData eventD) throws UserException, UserNotFoundException{
@@ -217,7 +217,9 @@ public class EventManagement {
 		try{
 			Boolean exists = wrapper.createOrUpdateEvent(gmail,googleUID,eventD);
 			if (!exists){
-				Event e = createEventWithWrapper(eventD, wrapper);
+				//Event e = createEventWithWrapper(eventD, wrapper);
+				Guest guest = wrapper.loadGuestByGmail(gmail);
+				Event e = wrapper.newCreateEvent(eventD, guest);
 				e.setGoogleUID(googleUID);
 				wrapper.makePersistant(e);
 			}
