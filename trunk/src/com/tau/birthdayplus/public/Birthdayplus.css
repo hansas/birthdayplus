@@ -227,6 +227,10 @@ cursor: default;
 margin: -1px -1px 0px;
 }
 
+.titlePanel .gwt-Label{
+max-height: 16px;
+}
+
 .Label{
 background-image:url('http://birthdayplus.googlecode.com/svn/trunk/bar2.gif');
 background-repeat:repeat-x;
