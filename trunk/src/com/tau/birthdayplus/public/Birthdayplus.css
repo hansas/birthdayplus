@@ -220,7 +220,11 @@ width : 100%;
 height : 16px;
 padding : 3px 25px;
 top: 2px;
+}
 
+.titlePanel .gwt-Image{
+cursor: default;
+margin: -1px -1px 0px;
 }
 
 .Label{
@@ -261,6 +265,11 @@ table-layout: fixed;
 .emailActualPrice{
  background-color: #9FCBEF;
 }
+
+.emailActualPrice .gwt-TextBox{
+ width:100%;
+}
+
 
 .emailTextArea{
 background-color: white;
