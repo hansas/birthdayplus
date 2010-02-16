@@ -187,6 +187,7 @@ public class ItemDialogBox {
         
      //   formTable.setWidget(4, 0, updateButton);
         formTable.setWidget(5, 0, boxButton);
+        boxButton.setWidth("100px");
     //    formTable.getCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_LEFT);
         formTable.setWidget(5, 2, cancelButton);
         formTable.getCellFormatter().setHorizontalAlignment(5, 2, HasHorizontalAlignment.ALIGN_RIGHT);
