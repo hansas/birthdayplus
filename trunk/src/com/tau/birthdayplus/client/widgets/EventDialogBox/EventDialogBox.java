@@ -123,16 +123,18 @@ public class EventDialogBox {
 		
 	    layout.setText(0,0,"Event Name");
 	    layout.setWidget(0, 1, txtName);
+	    txtName.setWidth("150px");
 	    
 	    layout.setText(1, 0, "Date");
 	    layout.setWidget(1, 1, txtDate);
+	    txtDate.setWidth("150px");
 	    
 	    layout.setText(2, 0, "Annual");
 	    layout.setWidget(2, 1, chkRecurrence);
 	    
 	 
         layout.setWidget(3, 1, boxButton);
-        boxButton.setWidth("50px");
+        boxButton.setWidth("60px");
         layout.setWidget(3, 2, cancelButton);
 	    
         wireEvents();
