@@ -224,11 +224,12 @@ top: 2px;
 
 .titlePanel .gwt-Image{
 cursor: default;
-margin: -1px -1px 0px;
+margin: -1px -1px 0px -1px;
 }
 
 .titlePanel .gwt-Label{
 max-height: 16px;
+top: -1px;
 }
 
 .Label{
