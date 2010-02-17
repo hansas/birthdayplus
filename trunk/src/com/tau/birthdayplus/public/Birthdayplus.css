@@ -125,7 +125,8 @@ padding: 3px;
 
 .mainPanel {
 													/* width : 316px; */
-height : 415px !important;
+height: 415px !important;
+max-height: 415px;
 }
 
 													/*
