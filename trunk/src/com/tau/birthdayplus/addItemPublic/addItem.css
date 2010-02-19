@@ -5,8 +5,11 @@ display:table;
 
 
 .loading{
-left:200px !important;
-top:210px !important;
+position:relative;
+left:50% !important;
+top:50% !important;
+margin-left:-15px;
+margin-top:-15px;
 }
 
 .gwt-Button 
