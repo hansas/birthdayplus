@@ -112,7 +112,7 @@ public class AddItem implements EntryPoint{
 	    loadingImagePopup = new PopupPanel(false,true);
 	    loadingImagePopup.setAnimationEnabled(true);
 	    loadingImagePopup.setWidget(loadingImage);
-	    loadingImagePopup.setStyleName("loading");
+	    loadingImagePopup.addStyleName("loading");
 	    
 	 //   resize(430,450);
 	    
