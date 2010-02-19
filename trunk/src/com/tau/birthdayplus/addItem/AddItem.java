@@ -71,12 +71,14 @@ public class AddItem implements EntryPoint{
 		
 		 
 		
-		DecoratorPanel	 decPanel = new DecoratorPanel();
-		RootPanel.get().add(decPanel);
-		decPanel.addStyleName("mainPanel");
+	//	DecoratorPanel	 decPanel = new DecoratorPanel();
+	//	RootPanel.get().add(decPanel);
+	//	decPanel.addStyleName("mainPanel");
 		
 	    mainPanel = new VerticalPanel();
-    	decPanel.setWidget(mainPanel);
+	    RootPanel.get().add(mainPanel);
+	    mainPanel.addStyleName("mainPanel");
+    //	decPanel.setWidget(mainPanel);
     	mainPanel.setSize("100%", "100%");
     	
   //  	mainPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
