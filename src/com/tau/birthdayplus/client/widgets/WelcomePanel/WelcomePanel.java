@@ -36,17 +36,19 @@ public class WelcomePanel extends Composite implements ClickHandler, ChangeHandl
 	
 	
 	public WelcomePanel(String firstName){	
-    	DecoratorPanel	 decPanel = new DecoratorPanel();
-        initWidget(decPanel);
-        decPanel.setSize("100%","95%" );
+    //	DecoratorPanel	 decPanel = new DecoratorPanel();
+     //   initWidget(decPanel);
+     //   decPanel.setSize("100%","95%" );
         
        
         VerticalPanel	 panel = new VerticalPanel();
-        decPanel.setWidget(panel);
-    	panel.setSpacing(10);
+        initWidget(panel);
+        panel.setSize("100%", "95%");
+       // decPanel.setWidget(panel);
+    	panel.setSpacing(20);
     	panel.addStyleName("welcomePanel");
 	
-    	Image logo = new Image( GWT.getModuleBaseURL() + "logo.gif");
+    	Image logo = new Image( GWT.getModuleBaseURL() + "logoBlue.gif");
     	panel.add(logo);
     	panel.setCellHorizontalAlignment(logo, HasHorizontalAlignment.ALIGN_CENTER);
 	
