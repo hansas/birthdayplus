@@ -315,7 +315,7 @@ public class WishListFriendsGUI  {
 	public void service_eventBookItemForUserSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		parent.entryPoint.messages.showMessage("In IBuy tab you can cancel the reservation for the item.");	
+	//	parent.entryPoint.messages.showMessage("In IBuy tab you can cancel the reservation for the item.");	
 		
 	}
 
@@ -326,7 +326,7 @@ public class WishListFriendsGUI  {
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-		parent.entryPoint.messages.showMessage("In IBuy tab you can see the progress and chat with your group.");	
+	//	parent.entryPoint.messages.showMessage("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
