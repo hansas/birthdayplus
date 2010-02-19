@@ -32,6 +32,7 @@ public class FlowPanelMenuTitle extends FlowPanel{
 	    Image bar1 = new Image(GWT.getModuleBaseURL()+"bar1.gif");
 	    panel.setWidget(0, 0, bar1);
 	    panel.getCellFormatter().setWidth(0, 0,"21px");
+	    bar1.addStyleName("leftBar");
 	    
 	    
 		title = new Label("");
@@ -42,6 +43,7 @@ public class FlowPanelMenuTitle extends FlowPanel{
 		Image bar3 = new Image(GWT.getModuleBaseURL()+"bar3.gif");
         panel.setWidget(0, 2,bar3);
         panel.getCellFormatter().setWidth(0, 2,"21px");
+        bar3.setStyleName("rightbar");
         
        
     	
