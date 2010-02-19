@@ -50,10 +50,10 @@ public class AddWishlistItem  extends HttpServlet {
         	if(req.getCharacterEncoding() == null) {
         		   req.setCharacterEncoding("UTF-8");
         		}
-        	log.info("request query string"+req.getQueryString());
-        	log.info(req.getParameter("link"));
-        	log.info(req.getParameter("wish"));
-        	log.info(req.getParameter("thumbnail"));
+        //	log.info("request query string"+req.getQueryString());
+        //	log.info(req.getParameter("link"));
+        //	log.info(req.getParameter("wish"));
+        //	log.info(req.getParameter("thumbnail"));
         		
         	price = Parse( req.getParameter("link"));
         	
@@ -80,7 +80,7 @@ public class AddWishlistItem  extends HttpServlet {
 		    	charset = contentMatcher.group(1);
 		    }
 		  Scanner scanner;
-		  log.info("charset is : "+charset);
+	//	  log.info("charset is : "+charset);
 		  if(charset!=null)  
 		     scanner = new Scanner(connection.getInputStream(),charset);
 		  else
@@ -125,7 +125,7 @@ public class AddWishlistItem  extends HttpServlet {
 		    	price = Double.parseDouble(priceMatcher.group(1));
 		    else
 		    	price = Double.parseDouble(priceMatcher.group(1)+priceMatcher.group(2));
-		    System.out.println("the price is :"+price);
+		//    System.out.println("the price is :"+price);
 		    return price;
 		 
 	 }
