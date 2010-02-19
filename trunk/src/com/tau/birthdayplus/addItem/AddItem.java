@@ -103,7 +103,7 @@ public class AddItem implements EntryPoint{
 	    
 	    
 	    Image loadingImage=new Image( GWT.getModuleBaseURL() + "ajax-loader.gif");
-	    loadingImage.setStyleName("loading image");
+	    loadingImage.addStyleName("loadingImage");
 		
 
 		

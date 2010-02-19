@@ -1,8 +1,20 @@
-.mainPanel{
-width :430px;
-height :450px;
-background-color: #F6F9FF;
+.mainPanel {
+background-color:#F6F9FF;
+height:450px;
+left:50%;
+margin-left:-215px;
+margin-top:-225px;
+position:absolute;
+top:50%;
+width:430px;
+}
 
+.loadingImage{
+left:50%;
+margin-left:-20px;
+margin-top:-20px;
+position:absolute;
+top:50%;
 }
 
 .gwt-Button 
