@@ -1,6 +1,6 @@
 package com.tau.birthdayplus.server;
 
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 import com.google.appengine.api.users.User;
