@@ -43,7 +43,7 @@ public class WelcomePanel extends Composite implements ClickHandler, ChangeHandl
        
         VerticalPanel	 panel = new VerticalPanel();
         initWidget(panel);
-        panel.setSize("100%", "95%");
+      //  panel.setSize("100%", "95%");
        // decPanel.setWidget(panel);
     	panel.setSpacing(20);
     	panel.addStyleName("welcomePanel");
