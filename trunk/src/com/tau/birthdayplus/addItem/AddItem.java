@@ -88,7 +88,7 @@ public class AddItem implements EntryPoint{
     	
     	Image logo = new Image(GWT.getModuleBaseURL()+"Birthday+.gif");
 		mainPanel.add(logo);
-		mainPanel.setCellHorizontalAlignment(logo,HasHorizontalAlignment.ALIGN_CENTER);
+//		mainPanel.setCellHorizontalAlignment(logo,HasHorizontalAlignment.ALIGN_CENTER);
 		mainPanel.setCellHeight(logo, "20%");
 	
     
