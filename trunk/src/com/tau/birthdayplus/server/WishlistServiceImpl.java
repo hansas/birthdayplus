@@ -50,8 +50,6 @@ WishlistService  {
 	
 	private static final Logger log = Logger.getLogger(WishlistServiceImpl.class.getName());
 
-   
-
 	/*
 	 * creates new item for the user
 	 */
@@ -143,15 +141,7 @@ WishlistService  {
 		WishlistManagement.deleteParticipator(wishlistItemId, userId);
 		
 	}
-	/*
-	 * remove this item from this user's "I buy " list , check if item isActive == false
-	 * (won't remove item with open group)
-	 */
-//	public void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException {
-//		WishlistManagement.deleteBookedWishlistItem(userId, wishlistItemId);
-//		
-//	}
-
+	
 	/*
 	 * update participator (update money only)
 	 * Server - check if the item is active (group is not closed yet) 
