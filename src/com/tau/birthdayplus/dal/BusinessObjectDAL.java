@@ -642,6 +642,10 @@ public class BusinessObjectDAL {
 	
 	public static void bookItemForUser(String wishlistItemId, String eventId,String userId) throws UserNotFoundException, UserException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Event event = loadEvent(eventId);
+		if ((event==null)||event.getIsDeleted()){
+			throw new UserException("The event was deleted, please refresh the page");
+		}
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
@@ -818,6 +822,10 @@ public class BusinessObjectDAL {
 
 	public static List<WishlistItem> getWishlistForEvent(String userId,String eventId,
 			PersistenceManager pm) throws UserNotFoundException, UserException{
+		Event e = loadEvent(eventId);
+		if ((e==null)||e.getIsDeleted()){
+			throw new UserException("The event was deleted, please refresh the page");
+		}
 		Guest guest = loadGuest(userId, pm);
 		Key eventKey = KeyFactory.stringToKey(eventId);
 		List<WishlistItem> items = guest.getWishlistItems();
@@ -833,6 +841,10 @@ public class BusinessObjectDAL {
 	public static void addParticipator(String wishlistItemId, String eventId,
 			ParticipatorData participatorD) throws UserNotFoundException, UserException {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Event e = loadEvent(eventId);
+		if ((e==null)||e.getIsDeleted()){
+			throw new UserException("The event was deleted, please refresh the page");
+		}
 		WishlistItem item = loadWishlistItem(wishlistItemId, pm);
 		List<Participator> partisipators = item.getParticipators();
 		Boolean contains = false;
