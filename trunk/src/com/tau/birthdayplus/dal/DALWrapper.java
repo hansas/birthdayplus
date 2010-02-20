@@ -128,10 +128,6 @@ public class DALWrapper {
 		BusinessObjectDAL.cancelBookItemForGroup(itemId, userId);
 	}
 	
-//	public void sendEmailCloseGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice) throws Exception{
-//		BusinessObjectDAL.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice, pm);
-//	}
-	
 	public void sendEmailToGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE,Double actualPrice,GroupStatus status,SendEmail.CancelFor cancelFor,Event e) throws Exception{
 		BusinessObjectDAL.sendEmailToGroup(itemId, userId, message, participatorsE, pm, actualPrice, status,cancelFor,e);
 	}
@@ -147,10 +143,5 @@ public class DALWrapper {
 	public Boolean createOrUpdateEvent(String gmail, String googleUID,EventData eventD) throws UserException {
 		return BusinessObjectDAL.createOrUpdateEvent(gmail,googleUID,eventD,pm);
 	}
-	
-//	public void sendEmailOpenGroup(String itemId, String userId,String message,ArrayList<ParticipatorEmail> participatorsE) throws Exception{
-//		BusinessObjectDAL.sendEmailOpenGroup(itemId, userId, message, participatorsE, pm);
-//	}
-	
 	
 }
