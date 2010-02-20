@@ -364,7 +364,7 @@ public class BusinessObjectDAL {
 			event = pm.getObjectById(Event.class, key);
 		} catch (Exception ex) {
          	log.log(Level.SEVERE, "the log from loadEvent", ex);
-			throw new UserException("an error occured while loading the event, please try again later");
+			throw new UserException("an error occured while loading the event, probably this event was deleted, try to refresh the page");
 		}
 		return event;
 	}
