@@ -79,45 +79,25 @@ public class WishlistManagement {
 		}
 	}
 	
-//	public static void removeWishlistItemForEventFromCache(WishlistItem i){
-//		if ((i!=null)&&(i.getEventKey()!=null)){
-//			Cache cache = Caching.getWishlistForEventCache();
-//			String key = Caching.generateWishlistForEventKey(i.getEventKey());
-//			cache.remove(key);
-//		}
-//	}
-		
 	public static void updateWishlistItem(WishlistItemData item) throws UserException {
 		WishlistItem i = BusinessObjectDAL.updateWishlistItem(item);
 	}
 	
 	public static void deleteWishlistItem(WishlistItemData itemD) throws Exception {
 		DALWrapper wrapper = new DALWrapper();
-	//	WishlistItem i = null;
 		try{
 			WishlistItem item = wrapper.getWishlistItem(itemD.getWishlistItemId());
 			ArrayList<Participator> participators = item.getParticipators();
 			if ((item.getBuyerKey()==null)&&(item.getEventKey()!=null)&&(participators!=null)&&(!participators.isEmpty())){
-				log.info("need to send email to participators of item: "+item.getItemName());
 				ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
 				GroupStatus status = GroupStatus.CANCEL;
 				wrapper.sendEmailToGroup(itemD.getWishlistItemId(), itemD.getUserId(), "", participatorsE, 0.0, status,SendEmail.CancelFor.ITEM,null);
-			}
-			else if (item.getBuyerKey()!=null){
-				log.info("There is buyer for item: "+item.getItemName());
-			}
-			else if(item.getEventKey()==null){
-				log.info("There is no buyers and participators for item: "+item.getItemName());
-			}
-			else if((participators==null)||(participators.isEmpty())){
-				log.info("There is no participators for item: "+item.getItemName());
 			}
 			wrapper.deleteWishlistItem(itemD);
 		}
 		finally{
 			wrapper.close();
 		}
-		//removeWishlistItemForEventFromCache(i);
 	}
 	
 	public static ArrayList<WishlistItemData> getWishlistItemData(List<WishlistItem> itemList,String userId){
@@ -206,54 +186,31 @@ public class WishlistManagement {
 	}
 	
 	public static ArrayList<WishlistItemNewData> getWishlistForEvent(String userId,String eventId) throws UserNotFoundException, UserException{
-	//	Cache cache = Caching.getWishlistForEventCache();
-	//	String key = Caching.generateWishlistForEventId(eventId);
-		ArrayList<WishlistItemNewData> result = null;// (ArrayList<WishlistItemNewData>)cache.get(key);
-	//	if (result==null){
+		ArrayList<WishlistItemNewData> result = null;
 			DALWrapper wrapper = new DALWrapper();
 			try{
 				List<WishlistItem> itemList = wrapper.getWishlistForEvent(userId,eventId);
 				Guest guest = wrapper.getGuestById(userId);
 				result = getWishlistItemNewDataForEvent(itemList,guest,wrapper);
-				//cache.put(key, result);
 			}
 			finally{
 				wrapper.close();
 			}
-	//	}
 		return result;
 	}
 	
-//	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId) throws UserNotFoundException{
-//		DALWrapper wrapper = new DALWrapper();
-//		try{
-//			Guest guest = wrapper.getGuestById(userId);
-//			List<Key> bookedItemList = guest.getIBuyItems();
-//			List<WishlistItem> items = wrapper.getWishlistItemById(bookedItemList);
-//			return getBookedWishlistItemNewData(items,wrapper);
-//		}
-//		finally{
-//			wrapper.close();
-//		}
-//	}
-	
 	public static ArrayList<WishlistItemNewData> getBookedWishlistItems(String userId)
 	throws UserNotFoundException, UserException{
-	//	Cache cache = Caching.getBookedWishlistItemsCache();
-	//	String key = Caching.generateBookedWishlistItemsId(userId);
-		ArrayList<WishlistItemNewData> result = null;//(ArrayList<WishlistItemNewData>)cache.get(key);
-	//	if (result==null){
+		ArrayList<WishlistItemNewData> result = null;
 			DALWrapper wrapper = new DALWrapper();
 			try{
 				List<WishlistItem> items = wrapper.getBookedWishlistItems2(userId);
 				result = getBookedWishlistItemNewData(items,wrapper);
 				Collections.sort(result,WishlistManagement.WISHLISTITEM_NEWDATA_ORDER);
-			//	cache.put(key, result);
 			}
 			finally{
 				wrapper.close();
 			}
-		//}
 		return result;
 	}
 	
@@ -300,7 +257,6 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			//wrapper.sendEmailCloseGroup(itemId, userId, message, participatorsE,actualPrice);
 			GroupStatus status = GroupStatus.CLOSE;
 			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, actualPrice, status,SendEmail.CancelFor.NONE,null);
 		}
@@ -316,7 +272,6 @@ public class WishlistManagement {
 			WishlistItem item = wrapper.getWishlistItem(itemId);
 			ArrayList<Participator> participators = item.getParticipators();
 			ArrayList<ParticipatorEmail> participatorsE = getParticipatorEmailList(participators,wrapper);
-			//wrapper.sendEmailOpenGroup(itemId, userId, message, participatorsE);
 			GroupStatus status = GroupStatus.OPEN;
 			wrapper.sendEmailToGroup(itemId, userId, message, participatorsE, 0.0, status,SendEmail.CancelFor.NONE,null);
 		}
@@ -378,11 +333,6 @@ public class WishlistManagement {
 		}
 		return messagesD;
 	}
-	
-	
-//	public static void deleteBookedWishlistItem(String userId, String wishlistItemId) throws UserNotFoundException{
-//		BusinessObjectDAL.deleteBookedWishlistItem(userId,wishlistItemId);
-//	}
 	
 	public static ParticipatorData participatorToParticipatorData(Participator participator,DALWrapper wrapper) throws UserNotFoundException, UserException{
 		Guest guest = wrapper.getGuestById(participator.getId());

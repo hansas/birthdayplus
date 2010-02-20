@@ -51,15 +51,11 @@ public class UserManagement {
 	 @SuppressWarnings("deprecation")
 	 public static void createProfile(Guest guest) throws UserException {
          int guestDom = guest.getBirthday().getDate();
-         log.info("user's day of month: "+guestDom);
          int guestMonth = guest.getBirthday().getMonth()+1;
-         log.info("user's month: "+guestMonth);
          Calendar cal = Calendar.getInstance();
          Date birthday = new Date(cal.get(Calendar.YEAR)-1900, guestMonth-1, guestDom);
          int currentDom = cal.get(Calendar.DAY_OF_MONTH);
-         log.info("today's day of month: "+currentDom);
          int currentMonth = cal.get(Calendar.MONTH) + 1;
-         log.info("today's month: "+currentMonth);
          if ((currentMonth > guestMonth)
                          || ((currentMonth == guestMonth) && (currentDom > guestDom))) {
                  birthday.setYear(cal.get(Calendar.YEAR) + 1-1900);

@@ -145,9 +145,6 @@ public class EventManagement {
 	public static void sendEmailAndDeleteParticipators(WishlistItem item,Event e,DALWrapper wrapper,Boolean isCron) throws Exception{
 		ArrayList<Participator> participators = item.getParticipators();
 		ArrayList<Participator> participatorsToDelete = new ArrayList<Participator>();
-		if ((participators!=null)&& (!participators.isEmpty())){
-			log.info("There is participators in item "+item.getItemName());
-		}
 	    ArrayList<ParticipatorEmail> participatorsE = WishlistManagement.getParticipatorEmailList(participators,wrapper);
 		GroupStatus status = GroupStatus.CANCEL;
 		CancelFor cancel;
@@ -158,20 +155,14 @@ public class EventManagement {
 			cancel = CancelFor.EVENT;
 		}
 		wrapper.sendEmailToGroup(KeyFactory.keyToString(item.getKey()), wrapper.getGuestByKey(item.getKey().getParent()).getId(), "", participatorsE, 0.0, status,cancel,e);
-		log.info("cancel email was sent to group of item "+item.getItemName()+" because event was deleted");
 		for (Participator p : participators){
 			participatorsToDelete.add(p);
 		}
 		for (Participator p : participatorsToDelete){
 			item.removeParticipator(p);
-			log.info("participator "+p.getIdKey()+" was removed from item: "+ item.getItemName());
 			wrapper.deleteParticipator(p);
-			log.info("participator was deleted from db");
 		}
 		wrapper.makePersistantItem(item);
-		if (item.getParticipators()==null||item.getParticipators().isEmpty()){
-			log.info("participators of item "+item.getItemName() +" were deleted");
-		}
 	}
 	
 	public static void cronDeleteEventAndUpdateRecurrent() throws Exception{
@@ -220,7 +211,6 @@ public class EventManagement {
 				return;
 			}
 			if (!exists){
-				//Event e = createEventWithWrapper(eventD, wrapper);
 				Guest guest = wrapper.loadGuestByGmail(gmail);
 				Event e = wrapper.newCreateEvent(eventD, guest);
 				e.setGoogleUID(googleUID);
