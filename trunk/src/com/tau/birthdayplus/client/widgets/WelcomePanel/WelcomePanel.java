@@ -45,7 +45,7 @@ public class WelcomePanel extends Composite implements ClickHandler, ChangeHandl
         initWidget(panel);
       //  panel.setSize("100%", "95%");
        // decPanel.setWidget(panel);
-    	panel.setSpacing(20);
+    	panel.setSpacing(13);
     	panel.addStyleName("welcomePanel");
 	
     	Image logo = new Image( GWT.getModuleBaseURL() + "logoBlue.gif");
