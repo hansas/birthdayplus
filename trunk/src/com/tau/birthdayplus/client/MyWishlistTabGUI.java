@@ -211,7 +211,7 @@ public class MyWishlistTabGUI {
 	        	Widget itemName = StaticFunctions.getAnchorWithThumbnail(item.getLink(),item.getItemName(), item.getThumbnail());
 	        	wishTable.setWidget(row, 0, itemName);
 	        	//priority
-	        	String priority = item.getPriority() ? "hight" : "low" ;
+	        	String priority = item.getPriority() ? "high" : "low" ;
 	        	wishTable.setText(row, 1, priority);
 	        	//price
 	    	    wishTable.setText(row, 2,entryPoint.shortMoneyFormat.format(item.getPrice()));
@@ -228,7 +228,7 @@ public class MyWishlistTabGUI {
 	    	    row ++;
 	        }
 	        
-	        wishlistPanel.setTitle("Your friends will give you "+countInactive+" presents soon");
+	        wishlistPanel.setTitle("You will receive "+countInactive+" presents soon");
 	    }
 	
 	
