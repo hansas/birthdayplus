@@ -247,11 +247,11 @@ public class EventTabGUI {
 	   String title = "";
 	   
 	   switch(numEvents){
-	   case 0: title = "In this month there are no events";
+	   case 0: title = "No events this month";
 	           break;	           
-	   case 1: title = "In this month there is one event";
+	   case 1: title = "1 event this month";
 	           break;	           
-	   default : title = "In this month there are "+numEvents+" events"; 
+	   default : title = numEvents +" events this month"; 
 	   }
 	   
 	   eventPanel.setTitle(title);

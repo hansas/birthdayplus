@@ -290,7 +290,7 @@ public class IBuyTabGUI {
 	
 	private void loadChat(WishlistItemNewData item){
 	    	currentItem = item;
-	    	mainChatPanel.setTitle("Group chat for buying a "+item.getItemName()+" for "+item.getUserName());
+	    	mainChatPanel.setTitle("Chat for " + item.getUserName() + "'s present");
 	    	entryPoint.messages.hide();
 	    	wishPanel.setVisible(false);
 	    	mainChatPanel.setVisible(true);
@@ -415,7 +415,7 @@ public class IBuyTabGUI {
 	    	    }
 	    	    row ++;
 	        }
-	        wishPanel.setTitle("In this month you're going to spend "+entryPoint.shortMoneyFormat.format(countMoney));
+	        wishPanel.setTitle("You'll spend "+entryPoint.shortMoneyFormat.format(countMoney) + " this month");
 			    
 		}
 		

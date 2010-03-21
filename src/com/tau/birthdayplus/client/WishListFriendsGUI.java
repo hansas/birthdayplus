@@ -96,7 +96,7 @@ public class WishListFriendsGUI  {
 		protected void showDialogBox(EventData event){
 			  currentEvent = event;
 			  String friendName = parent.entryPoint.userFriends.get(currentEvent.getUserId());
-		      wishlistBoxPanel.setTitle("wishlist for " +friendName+ "'s "+event.getEventName());
+		      wishlistBoxPanel.setTitle(friendName+ "'s wishlist");
 		      polani.setText(friendName+" bought you recently");
 		      polani.setTitle("Items that "+friendName+" bought you recently");
 		      wishlistBoxPanel.setVisible(true);
