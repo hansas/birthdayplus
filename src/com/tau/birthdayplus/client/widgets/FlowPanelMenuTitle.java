@@ -37,6 +37,7 @@ public class FlowPanelMenuTitle extends FlowPanel{
 	    
 		title = new Label("");
 		panel.setWidget(0, 1,title);
+		panel.getCellFormatter().setHeight(0, 1, "16px");
 		
 		panel.getCellFormatter().addStyleName(0, 1,"Label");
 		
