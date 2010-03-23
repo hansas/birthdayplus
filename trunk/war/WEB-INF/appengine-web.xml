@@ -11,6 +11,9 @@
 	<inbound-services>
   <service>mail</service>
 </inbound-services>
+
+<precompilation-enabled>true</precompilation-enabled>
+	
 	
 
 </appengine-web-app>
