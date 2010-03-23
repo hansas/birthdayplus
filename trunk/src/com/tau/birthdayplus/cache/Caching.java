@@ -1,8 +1,9 @@
 package com.tau.birthdayplus.cache;
 
-import java.util.Collections;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.cache.Cache;
@@ -13,13 +14,14 @@ import javax.cache.CacheManager;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.memcache.stdimpl.GCacheFactory;
+import com.tau.birthdayplus.client.Services.UserException;
 
 public class Caching {
 	private static final Logger log = Logger.getLogger(Caching.class.getName());
 	
 	private static Cache guestCache;
 	
-	public static Cache getGuestCache(){
+	public static Cache getGuestCache() throws UserException{
 		if (guestCache == null){
 		    try {
 		    	CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
@@ -28,7 +30,8 @@ public class Caching {
 		        guestCache = cacheFactory.createCache(props);
 		    }
 		    catch (Exception ex){
-		    	log.severe(ex.getMessage());
+		    	log.log(Level.SEVERE, "the log from getGuestCache", ex);
+				throw new UserException("can't get your profile, try again later");
 		    }
 		}
 		return guestCache;
@@ -40,7 +43,7 @@ public class Caching {
 	
 private static Cache wishlistForEventCache;
 	
-	public static Cache getWishlistForEventCache(){
+	public static Cache getWishlistForEventCache() throws UserException{
 		if (wishlistForEventCache == null){
 		    try {
 		    	CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
@@ -49,7 +52,8 @@ private static Cache wishlistForEventCache;
 		        wishlistForEventCache = cacheFactory.createCache(props);
 		    }
 		    catch (Exception ex){
-		    	log.severe(ex.getMessage());
+		    	log.log(Level.SEVERE, "the log from getWishlistForEventCache", ex);
+				throw new UserException("can't get the wishlist , please try again later");
 		    }
 		}
 		return wishlistForEventCache;
@@ -65,7 +69,7 @@ private static Cache wishlistForEventCache;
 	
 	private static Cache bookedWishlistItemCache;
 	
-	public static Cache getBookedWishlistItemsCache(){
+	public static Cache getBookedWishlistItemsCache() throws UserException{
 		if (bookedWishlistItemCache == null){
 		    try {
 		    	CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
@@ -74,7 +78,8 @@ private static Cache wishlistForEventCache;
 		        bookedWishlistItemCache = cacheFactory.createCache(props);
 		    }
 		    catch (Exception ex){
-		    	log.severe(ex.getMessage());
+		    	log.log(Level.SEVERE, "the log from getBookedWishlistItemsCache", ex);
+				throw new UserException("can't get the wishlist, try again later");
 		    }
 		}
 		return bookedWishlistItemCache;
