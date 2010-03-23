@@ -278,13 +278,12 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 		 * function that is called after retrieving social information about the user
 		 */
 		public void getProfile(){
-		//	Window.alert(firstName); 
+		//	Window.alert("Trying to get the profile"); 
 		//	Window.alert(lastName);
 			RequestBuilder requestBuilder=profileService.getProfile(userId, new AsyncCallback<GuestData>(){
 
 				public void onFailure(Throwable caught) {
 					loadingImagePopup.hide();
-			//		Window.alert("creating new profile" +caught);
 					if (caught instanceof UserNotFoundException) {
 						final WelcomePanel panel = new WelcomePanel(firstName);
 				        RootPanel.get().add(panel);
@@ -302,7 +301,9 @@ public class Birthdayplus extends Gadget<CountryPreferences>   {
 				        	
 				        });
 					}else{
-						Label label = new Label(caught.getMessage());
+					//	Window.alert("try to refresh");
+
+						Label label = new Label("A problem occured while trying to get your profile, please try to refresh ");
 						RootPanel.get().add(label);
 						label.setWidth("100%");
 						

@@ -551,7 +551,7 @@ public class BusinessObjectDAL {
 			query.declareParameters("String gid");
 			partisipators = (List<Participator>) query.execute(g.getId());
 		} catch (Exception ex) {
-			log.severe("Error in getBookedWishlistItems2's first query");
+			log.log(Level.SEVERE,"Error in getBookedWishlistItems2's first query");
 			throw new UserException("can't get your booked wishlist items, please try later");
 		}
 		if (partisipators==null){
@@ -726,11 +726,6 @@ public class BusinessObjectDAL {
 				throw new UserException("The buyer for this item already exists");
 			}
 		}
-		catch (RuntimeException e)
-        {
-         	log.log(Level.SEVERE, "the log from bookItemForGroup", e);
-            throw new UserException("an error occured while booking the wishlist item for group,please try again later");
-        }
         catch (Exception e)
         {
          	log.log(Level.SEVERE, "the log from bookItemForGroup", e);
@@ -775,7 +770,7 @@ public class BusinessObjectDAL {
 		}
 		catch(EmailException e){
          	log.log(Level.SEVERE, "the log from sendEmailToGroup", e);
-			throw new UserException(e.getMessage());
+			throw new UserException("an error occured while sending emails");
 		}
 	}
 	/*
@@ -801,16 +796,10 @@ public class BusinessObjectDAL {
 			else{
 				throw new UserException("You can not cancel reservation that you didn't book");
 			}
-		}
-		catch (RuntimeException e)
+		}catch (Exception e)
         {
          	log.log(Level.SEVERE, "the log from cancelBookItemForGroup", e);
             throw new UserException("an error occured while canceling booked wishlist item for group,please try again later");
-        }
-        catch (Exception e)
-        {
-         	log.log(Level.SEVERE, "the log from cancelBookItemForGroup", e);
-            throw new UserException(e);
         }
 		finally {
 			if (tx.isActive()) {
