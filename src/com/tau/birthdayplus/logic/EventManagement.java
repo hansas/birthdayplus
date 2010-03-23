@@ -80,10 +80,10 @@ public class EventManagement {
 		ArrayList<WishlistItem> itemParticipatorDelete = new ArrayList<WishlistItem>();
 		Event e = new Event("Dummy from delete event", "", new Date(), false, false);
 	    wrapper.deleteEvent(eventD,itemParticipatorDelete,e);
-	    log.info("The event that was reterned by BusinessObjectDAL.deleteEvent is: "+e.getEventName());
+	 //   log.info("The event that was reterned by BusinessObjectDAL.deleteEvent is: "+e.getEventName());
 	    try{
 		    if (itemParticipatorDelete!=null){
-		    	log.info("there is participators in items that should be deleted");
+		    //	log.info("there is participators in items that should be deleted");
 			    for (WishlistItem item : itemParticipatorDelete){
 			    	sendEmailAndDeleteParticipators(item,e,wrapper,false);
 			    }

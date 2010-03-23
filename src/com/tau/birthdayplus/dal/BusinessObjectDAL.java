@@ -251,7 +251,7 @@ public class BusinessObjectDAL {
 								pm.makePersistent(item);
 							}
 							catch (Exception ex) {
-								log.severe("Error in second part of mayIDeleteEvent in item "+item.getItemName());
+								log.log(Level.SEVERE,"Error in second part of mayIDeleteEvent in item "+item.getItemName());
 								throw new UserException("Error mayIDeleteEvent in item "+item.getItemName());
 							}
 						}
@@ -710,7 +710,8 @@ public class BusinessObjectDAL {
 	public static void bookItemForGroup(String itemId, String userId,PersistenceManager pm) throws UserNotFoundException, UserException{
 		WishlistItem item = loadWishlistItem(itemId, pm);
 		if (item==null){
-			log.severe("There is no item with item id "+itemId);
+			log.log(Level.SEVERE,"There is no item with item id "+itemId);
+			throw new UserException("can't book this item");
 		}
 		Transaction tx = (Transaction) pm.currentTransaction();
 		try {
