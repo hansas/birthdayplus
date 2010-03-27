@@ -469,27 +469,6 @@ public class IBuyTabGUI {
 				}
 			});
 			
-			/*
-			this.moneyDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
-
-				public void onClose(CloseEvent<PopupPanel> event) {
-					if(event.isAutoClosed())
-						return;
-					Integer sum = moneyDialogBox.getInput();
-					if (sum == null)
-						return;
-					else
-					{
-						  ParticipatorData data = new ParticipatorData(entryPoint.userId,entryPoint.user.getFirstName(),entryPoint.user.getLastName(),sum);
-						  wishlistService.updateParticipator(currentItem.getWishlistItemId(), data);
-						
-					}
-					
-				}
-				
-			});
-			*/
-			
 			this.addMessageButton.addClickHandler(new ClickHandler(){
 
 				public void onClick(ClickEvent event) {
@@ -521,8 +500,13 @@ public class IBuyTabGUI {
 		}
 
 
+		private void showMessage(Throwable caught){
+			String message = caught.getMessage().equals("") ? "Timeout occurred, try again later " : caught.getMessage(); 
+			entryPoint.messages.showMessage(message);
+		}
+		
 		public void sevice_eventCancelBookItemForUserFailed(Throwable caught) {
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 		
 		public void service_eventCancelBookItemForUserSuccesfull() {
@@ -530,7 +514,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteParticipatorFailed(Throwable caught) {
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 
 		public void service_eventDeleteParticipatorSuccesfull() {
@@ -538,7 +522,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventDeleteItemFromTabFailed(Throwable caught) {
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 
 		public void service_eventDeleteItemFromTabSuccesfull() {
@@ -546,7 +530,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_eventUpdateParticipatorFailed(Throwable caught) {
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 
 		public void service_eventUpdateParticipatorSuccesfull() {
@@ -556,11 +540,11 @@ public class IBuyTabGUI {
 		public void service_getBookedWishlistFailed(Throwable caught) {
 			this.wishTable.clear(true);
 		    wishTable.resizeRows(0);
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 
 		public void service_addChatMessageFailed(Throwable caught) {
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 
 		public void service_addChatMessageSuccesfull() {
@@ -570,7 +554,7 @@ public class IBuyTabGUI {
 
 
 		public void service_cancelBookItemForGroupFailed(Throwable caught) {
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 
 		public void service_cancelBookItemForGroupSuccesfull() {
@@ -578,7 +562,7 @@ public class IBuyTabGUI {
 		}
 
 		public void service_bookItemForGroupFailed(Throwable caught) {
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 		}
 
 		public void service_bookItemForGroupSuccesfull() {
@@ -588,7 +572,7 @@ public class IBuyTabGUI {
 
 		public void service_getChatMessagesFailed(Throwable caught) {
 			removeAllRows(chatTable);
-			entryPoint.messages.showMessage(caught.getMessage());
+			showMessage(caught);
 			
 		}
 

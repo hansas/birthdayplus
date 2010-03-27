@@ -321,23 +321,26 @@ public void service_eventGetEventsSuccessful(ArrayList<EventData> result) {
 	     this.eventService.getEvents(entryPoint.getUserAndFriendsIds());				
 	}
 	
+	private void showMessage(Throwable caught){
+		String message = caught.getMessage().equals("") ? "Timeout occurred, try again later " : caught.getMessage(); 
+		entryPoint.messages.showMessage(message);
+	}
+	
 	public void service_eventGetEventsFailed(Throwable caught) {
 		this.eventTable.clear(true);
 		eventTable.resizeRows(0);
-		entryPoint.messages.showMessage(caught.getMessage());
+		showMessage(caught);
 	}
 	
 	public void service_eventCreateEventFailed(Throwable caught) {
-		entryPoint.messages.showMessage(caught.getMessage());
-	}
+		showMessage(caught);
+ 	}
 
 	public void service_eventUpdateEventFailed(Throwable caught) {
-		entryPoint.messages.showMessage(caught.getMessage());
-	}
+		showMessage(caught);	}
 
 	public void service_eventDeleteEventFailed(Throwable caught) {
-		entryPoint.messages.showMessage(caught.getMessage());
-	}
+		showMessage(caught);	}
 	
 
 	

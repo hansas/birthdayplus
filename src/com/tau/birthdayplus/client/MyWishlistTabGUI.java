@@ -233,6 +233,11 @@ public class MyWishlistTabGUI {
 	
 	
 	
+	private void showMessage(Throwable caught){
+		String message = caught.getMessage().equals("") ? "Timeout occurred, try again later " : caught.getMessage(); 
+		entryPoint.messages.showMessage(message);
+	}
+	
 	
 	public void service_eventCreateWishlistItemSuccessful(){
         this.wishlistService.getMyWishlist(entryPoint.userId);
@@ -253,20 +258,20 @@ public class MyWishlistTabGUI {
         wishlistPanel.setTitle("");
 		this.wishTable.clear(true);
         wishTable.resizeRows(0);
-	    entryPoint.messages.showMessage(caught.getMessage());
+	    showMessage(caught);
 
 	}
 	
 	public void service_eventCreateWishlistItemFailed(Throwable caught){
-	    entryPoint.messages.showMessage(caught.getMessage());
+	    showMessage(caught);
 	}
 	
 	public void service_eventUpdateWishlistItemFailed(Throwable caught){
-	    entryPoint.messages.showMessage(caught.getMessage());
+	    showMessage(caught);
 	}
 	
 	public void service_deleteWishlistItemFailed(Throwable caught){
-	    entryPoint.messages.showMessage(caught.getMessage());
+	    showMessage(caught);
 	}
 	
 	
