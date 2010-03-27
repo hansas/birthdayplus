@@ -233,23 +233,6 @@ public class WishListFriendsGUI  {
 			}
 			
 		});
-		/*
-		this.moneyDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
-			public void onClose(CloseEvent<PopupPanel> event) {
-				if(event.isAutoClosed())
-					return;
-				else{
-					Integer sum = moneyDialogBox.getInput();
-					if(sum == null)
-						return;
-					else {
-						 ParticipatorData data = new ParticipatorData(parent.entryPoint.userId,parent.entryPoint.user.getFirstName(),parent.entryPoint.user.getLastName(),sum);
-				         wishlistService.addParticipator(currentItem.getWishlistItemId(), currentEvent.getEventId(), data);
-					}	
-				}
-			}
-		});
-		*/
 	}
 	
 	
@@ -301,36 +284,40 @@ public class WishListFriendsGUI  {
             row ++;
         }
 	}
-
+    
+	private void showMessage(Throwable caught){
+		String message = caught.getMessage().equals("") ? "Timeout occurred, try again later " : caught.getMessage(); 
+		parent.entryPoint.messages.showMessage(message);
+	}
+	
+	
 	public void service_eventGetWishlistFailed(Throwable caught) {
 		friendWishTable.clear(true);
         friendWishTable.resizeRows(0);
-		parent.entryPoint.messages.showMessage(caught.getMessage());
-	}
+        showMessage(caught);
+ 	}
 	
 	public void service_eventBookItemForUserFailed(Throwable caught) {
-		parent.entryPoint.messages.showMessage(caught.getMessage());
+        showMessage(caught);
 	}
 
 	public void service_eventBookItemForUserSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-	//	parent.entryPoint.messages.showMessage("In IBuy tab you can cancel the reservation for the item.");	
 		
 	}
 
 	public void service_eventAddParticipatorFailed(Throwable caught) {
-		parent.entryPoint.messages.showMessage(caught.getMessage());
+        showMessage(caught);
 	}
 
 	public void service_eventAddParticipatorSuccesfull() {
 		parent.entryPoint.iBuyGUI.makeDirtyIBuyItems();
 		parent.entryPoint.tab.selectTab(2);
-	//	parent.entryPoint.messages.showMessage("In IBuy tab you can see the progress and chat with your group.");	
 	}
 
 	public void service_eventGetPolaniItemsFailed(Throwable caught) {
-		parent.entryPoint.messages.showMessage(caught.getMessage());		
+        showMessage(caught);
 	}
 
 	public void service_eventGetPolaniItemsSuccesfull(ArrayList<WishlistItemPolaniData> result) {
