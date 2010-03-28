@@ -278,14 +278,14 @@ public class AddItem implements EntryPoint{
 							public void onFailure(Throwable caught) {
 								mainPanel.remove(formTable);
 								loadingImagePopup.hide();
-								mainPanel.add(new HTML("<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' ><b><br />"+caught.getMessage()+"<br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>Click here to close the window</u></a></b></td></tr></table></div></div>"));
+								mainPanel.add(new HTML("<div id='pnl_AfterAction'><table width='100%'><tr><td  class='ablack' ><b><br />"+caught.getMessage()+"<br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>Click here to close the window</u></a></b></td></tr></table></div></div>"));
 								
 							}
 
 							public void onSuccess(Void result) {
 								mainPanel.remove(formTable);
 								loadingImagePopup.hide();
-								mainPanel.add(new HTML("<div id='pnl_AfterAction'><table width='100%'><tr><td  align='center' class='ablack' ><b><br />The item was successfully added <br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>Click here to close the window</u></a></b></td></tr></table></div></div>"));
+								mainPanel.add(new HTML("<div id='pnl_AfterAction'><table width='100%'><tr><td  class='ablack' ><b><br />The item was successfully added <br /><br /><a href='javascript:void(0);' onClick='window.close()'><u>Click here to close the window</u></a></b></td></tr></table></div></div>"));
 								
 							}
 	                    	
