@@ -251,7 +251,7 @@ public class WishListFriendsGUI  {
         	//item
 			friendWishTable.setWidget(row,0,StaticFunctions.getAnchorWithThumbnail(item.getLink(), item.getItemName(), item.getThumbnail()));
         	//priority
-        	friendWishTable.setText(row,1,item.getPriority() ? "hight" : "low");
+        	friendWishTable.setText(row,1,item.getPriority() ? "high" : "low");
         	
             if(item.getIsActive()){	
         	   if(item.getParticipators().isEmpty()){
